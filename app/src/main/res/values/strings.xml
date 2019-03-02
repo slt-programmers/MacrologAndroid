@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MacrologAndroid</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="diary_title">Diary fragment</string>
+    <string name="meals_title">Meals fragment</string>
+    <string name="user_title">User fragment</string>
+    <string name="botnav_diary">Diary</string>
+    <string name="botnav_meals">Meals</string>
+    <string name="botnav_user">User</string>
 </resources>
