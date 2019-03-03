@@ -2,6 +2,7 @@ package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,7 +28,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
+        ActionBar actionbar = getSupportActionBar();
+        if (actionbar != null) {
+            actionbar.hide();
+        }
         // Set up the login form.
         mUserOrEmailView = findViewById(R.id.user_email);
         mPasswordView = findViewById(R.id.password);
