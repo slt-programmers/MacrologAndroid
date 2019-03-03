@@ -1,5 +1,6 @@
 package com.example.macrologandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -40,6 +41,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(isLoggedIn()) {
+            getSharedPreferences("AUTH", MODE_PRIVATE).edit().remove("TOKEN").remove("USER").apply();
+
+        } else {
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
+    }
+
+    private void init() {
         changeFragment(new DiaryFragment());
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -53,5 +70,9 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    private boolean isLoggedIn() {
+        String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", null);
+        return token != null;
+    }
 
 }
