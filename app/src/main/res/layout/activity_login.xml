@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -11,17 +13,28 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".LoginActivity">
 
-
-
         <LinearLayout
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/action_sign_in" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                app:hintTextAppearance="@style/EditTextTheme"
+                app:errorTextAppearance="@style/EditTextErrorTheme">
 
                 <EditText
                     android:id="@+id/user_email"
@@ -29,14 +42,22 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_user_email"
                     android:inputType="text"
+                    android:theme="@style/EditTextHintTheme"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorLink="@color/white"
+                    android:backgroundTint="@color/white"/>
+
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                app:hintTextAppearance="@style/EditTextTheme"
+                app:errorTextAppearance="@style/EditTextErrorTheme">
 
                 <EditText
                     android:id="@+id/password"
@@ -48,7 +69,12 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:backgroundTint="@color/white"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorLink="@color/white"
+                    android:theme="@style/EditTextHintTheme"
+                    />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -56,6 +82,8 @@
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
