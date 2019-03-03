@@ -22,4 +22,6 @@
         completions."
     </string>
     <string name="logout">Log out</string>
+    <string name="splash_message">The hamsters in the treadmill powering this app are still asleep.
+        Please wait while we wake them up…</string>
 </resources>
