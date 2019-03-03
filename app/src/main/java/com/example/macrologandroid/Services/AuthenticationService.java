@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-public class AuthenticationService extends Service {
+public class AuthenticationService {
 
     private ApiService apiService;
 
@@ -33,12 +33,6 @@ public class AuthenticationService extends Service {
 
     public Observable<LoginResponse>  authenticate(String username, String password) {
         return  apiService.authenticate(new LoginRequest(username, password));
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     private interface ApiService {

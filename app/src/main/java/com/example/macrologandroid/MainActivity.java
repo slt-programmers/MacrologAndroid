@@ -97,8 +97,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isLoggedIn() {
+        boolean tokenExpired = getIntent().getBooleanExtra("TOKEN_EXPIRED", false);
         String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", null);
-        return token != null;
+        return token != null && !tokenExpired;
     }
 
 }
