@@ -2,14 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:icon="@drawable/ic_import_contacts_black_24dp"
         android:id="@+id/navigation_diary"
         android:title="@string/botnav_diary" />
 
     <item
+        android:icon="@drawable/ic_restaurant_menu_black_24dp"
         android:id="@+id/navigation_meals"
         android:title="@string/botnav_meals" />
 
     <item
+        android:icon="@drawable/ic_account_circle_black_24dp"
         android:id="@+id/navigation_user"
         android:title="@string/botnav_user" />
 
