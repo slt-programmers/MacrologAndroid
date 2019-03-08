@@ -1,5 +1,6 @@
 package com.example.macrologandroid.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
 public class UserFragment extends Fragment {
 
     private UserService userService;
-
+    private View view;
     private List<UserSettingResponse> userSettings;
 
     public UserFragment() {
@@ -35,10 +36,11 @@ public class UserFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user, container, false);
+        view = inflater.inflate(R.layout.fragment_user, container, false);
 
         userService.getSettings()
                 .subscribeOn(Schedulers.io())
@@ -70,7 +72,7 @@ public class UserFragment extends Fragment {
     }
 
     private void fillView() {
-        TextView username = getView().findViewById(R.id.user_name);
+        TextView username = view.findViewById(R.id.user_name);
         List<UserSettingResponse> setting = userSettings.stream().filter(s -> s.getName().equals("name")).collect(Collectors.toList());
         username.setText(setting.get(0).getValue());
     }
