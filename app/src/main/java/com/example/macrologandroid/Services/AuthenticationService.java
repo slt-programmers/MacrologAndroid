@@ -1,4 +1,8 @@
 package com.example.macrologandroid.Services;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+
 import com.example.macrologandroid.Models.AuthenticationRequest;
 import com.example.macrologandroid.Models.AuthenticationResponse;
 
@@ -9,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
-public class AuthenticationService {
+public class AuthenticationService extends Service {
 
     private ApiService apiService;
 
@@ -21,6 +25,11 @@ public class AuthenticationService {
                 .build();
 
         apiService = retrofit.create(ApiService.class);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     // The username field is used for both username and email when logging in

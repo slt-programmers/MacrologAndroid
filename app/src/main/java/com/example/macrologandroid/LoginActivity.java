@@ -15,6 +15,7 @@ import com.example.macrologandroid.Models.AuthenticationResponse;
 import com.example.macrologandroid.Services.AuthenticationService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -44,14 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = findViewById(R.id.password);
         mLoginResultView = findViewById(R.id.login_result);
 
-        mPasswordView.setOnEditorActionListener((v, actionId, event) -> {
-            System.out.println(v.toString());
-            if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                attemptLogin();
-            }
-            return false;
-        });
-
         Button mLoginButton = findViewById(R.id.login_button);
         mLoginButton.setOnClickListener(view -> attemptLogin());
 
@@ -63,19 +56,12 @@ public class LoginActivity extends AppCompatActivity {
         Button mRegisterButton = findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(v -> attemptRegister());
 
-        mNewPasswordView.setOnEditorActionListener((v, actionId, event) -> {
-            System.out.println(v.toString());
-            if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                attemptRegister();
-            }
-            return false;
-        });
-
         authService = new AuthenticationService();
 
     }
 
     private void attemptLogin() {
+        resetErrors();
         mUserOrEmailView.setError(null);
         mPasswordView.setError(null);
 
@@ -85,15 +71,17 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (!isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
         if (!isUsernameValid(username)) {
             mUserOrEmailView.setError(getString(R.string.error_field_required));
             focusView = mUserOrEmailView;
+            cancel = true;
+        }
+
+        if (!isPasswordValid(password)) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            if (focusView == null) {
+                focusView = mPasswordView;
+            }
             cancel = true;
         }
 
@@ -105,6 +93,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
+        resetErrors();
+
         mNewUsernameView.setError(null);
         mNewEmailView.setError(null);
         mNewPasswordView.setError(null);
@@ -139,11 +129,15 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             register(username, email, password);
         }
+    }
 
+    private void resetErrors() {
+        mLoginResultView.setVisibility(View.GONE);
+        mRegisterResultView.setVisibility(View.GONE);
     }
 
     private boolean isUsernameValid(String username) {
-        return !TextUtils.isEmpty(username) && username.length() >= 4;
+        return !TextUtils.isEmpty(username);
     }
 
     private boolean isEmailValid(String email) {
@@ -151,7 +145,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        return !TextUtils.isEmpty(password);
+
+        return !TextUtils.isEmpty(password) && password.length() >= 6;
     }
 
     @SuppressLint("CheckResult")
@@ -160,7 +155,10 @@ public class LoginActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {saveCredentials(res); finish();},
-                        err -> mLoginResultView.setText(err.toString())
+                        err -> {
+                    mLoginResultView.setText(R.string.login_failed);
+                    mLoginResultView.setVisibility(View.VISIBLE);
+                }
                 );
 
     }
@@ -171,7 +169,10 @@ public class LoginActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {saveCredentials(res); finish();},
-                        err -> mRegisterResultView.setText(err.toString()));
+                        err -> {
+                            mRegisterResultView.setText(((HttpException) err).response().errorBody().string());
+                            mRegisterResultView.setVisibility(View.VISIBLE);
+                        });
     }
 
     private void saveCredentials(AuthenticationResponse result) {

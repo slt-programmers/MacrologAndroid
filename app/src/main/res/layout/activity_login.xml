@@ -37,8 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
-                app:errorTextAppearance="@style/EditTextErrorTheme">
+                app:hintTextAppearance="@style/EditTextTheme">
 
                 <EditText
                     android:id="@+id/user_email"
@@ -58,24 +57,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
-                app:errorTextAppearance="@style/EditTextErrorTheme">
+                app:hintTextAppearance="@style/EditTextTheme">
 
                 <EditText
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_password"
+                    android:theme="@style/EditTextHintTheme"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:backgroundTint="@color/white"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
-                    android:theme="@style/EditTextHintTheme"
                     />
 
             </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:visibility="gone"
+                android:textColor="@color/colorSignal"
+                android:textSize="16sp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:id="@+id/login_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <Button
                 android:id="@+id/login_button"
@@ -89,11 +97,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/login_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/login_or"
@@ -101,6 +104,7 @@
                 android:textAllCaps="true"
                 android:textSize="20sp"
                 android:textAlignment="center"
+                android:layout_marginTop="12dp"
                 android:padding="4dp"
                 />
 
@@ -119,8 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
-                app:errorTextAppearance="@style/EditTextErrorTheme">
+                app:hintTextAppearance="@style/EditTextTheme">
 
                 <EditText
                     android:id="@+id/register_username"
@@ -128,8 +131,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/login_username"
                     android:inputType="text"
-                    android:theme="@style/EditTextHintTheme"
                     android:maxLines="1"
+                    android:theme="@style/EditTextHintTheme"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
@@ -140,16 +143,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
-                app:errorTextAppearance="@style/EditTextErrorTheme">
+                app:hintTextAppearance="@style/EditTextTheme">
 
                 <EditText
                     android:id="@+id/register_email"
                     android:layout_width="match_parent"
+                    android:theme="@style/EditTextHintTheme"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_email"
                     android:inputType="textEmailAddress"
-                    android:theme="@style/EditTextHintTheme"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/white"
@@ -161,14 +163,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
-                app:errorTextAppearance="@style/EditTextErrorTheme">
+                app:hintTextAppearance="@style/EditTextTheme">
 
                 <EditText
                     android:id="@+id/register_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_password"
+                    android:theme="@style/EditTextHintTheme"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/login_password"
                     android:imeOptions="actionUnspecified"
@@ -178,10 +180,19 @@
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
-                    android:theme="@style/EditTextHintTheme"
                     />
 
             </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/register_result"
+                android:textColor="@color/colorSignal"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/register_button"
@@ -194,10 +205,7 @@
                 android:text="@string/login_register"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/register_result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
     </ScrollView>
