@@ -20,10 +20,6 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/LoginActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/AuthenticationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/AuthenticationResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/AuthenticationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/HealthcheckService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/HealthcheckService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
@@ -54,7 +50,7 @@
         <counts>
           <entry key="class" value="7" />
           <entry key="gradle" value="7" />
-          <entry key="java" value="42" />
+          <entry key="java" value="47" />
           <entry key="pro" value="1" />
           <entry key="properties" value="3" />
           <entry key="svg" value="1" />
@@ -65,7 +61,7 @@
         <counts>
           <entry key="CLASS" value="7" />
           <entry key="Groovy" value="7" />
-          <entry key="JAVA" value="42" />
+          <entry key="JAVA" value="47" />
           <entry key="ProGuard File" value="1" />
           <entry key="Properties" value="3" />
           <entry key="SVG" value="1" />
@@ -76,17 +72,17 @@
         <counts>
           <entry key="dummy" value="60" />
           <entry key="gradle" value="1" />
-          <entry key="java" value="7335" />
+          <entry key="java" value="7561" />
           <entry key="txt" value="32" />
-          <entry key="xml" value="2349" />
+          <entry key="xml" value="2520" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="1" />
-          <entry key="JAVA" value="7335" />
+          <entry key="JAVA" value="7561" />
           <entry key="PLAIN_TEXT" value="92" />
-          <entry key="XML" value="2349" />
+          <entry key="XML" value="2520" />
         </counts>
       </usages-collector>
     </session>
@@ -96,8 +92,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="50" selection-start-line="50" selection-end-line="50" />
+            <state relative-caret-position="347">
+              <caret line="99" selection-start-line="99" selection-end-line="99" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -108,21 +104,29 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="155" lean-forward="true" selection-start-line="155" selection-end-line="155" />
+            <state relative-caret-position="177">
+              <caret line="53" column="9" lean-forward="true" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1653#1654#0" expanded="true" />
-                <element signature="e#1699#1700#0" expanded="true" />
-                <element signature="e#2168#2169#0" expanded="true" />
-                <element signature="e#2217#2218#0" expanded="true" />
-                <element signature="e#4293#4333#0" expanded="true" />
-                <element signature="e#4426#4465#0" expanded="true" />
-                <element signature="e#4502#4544#0" expanded="true" />
-                <element signature="e#4786#4787#0" expanded="true" />
-                <element signature="e#4825#4826#0" expanded="true" />
-                <element signature="e#4897#4898#0" expanded="true" />
-                <element signature="e#4947#4948#0" expanded="true" />
+                <element signature="e#4014#4054#0" expanded="true" />
+                <element signature="e#4208#4247#0" expanded="true" />
+                <element signature="e#4407#4449#0" expanded="true" />
+                <element signature="e#4985#4986#0" expanded="true" />
+                <element signature="e#5027#5028#0" expanded="true" />
+                <element signature="e#5083#5084#0" expanded="true" />
+                <element signature="e#5134#5135#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/view/KeyEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="183">
+              <caret line="2423" selection-start-line="2423" selection-end-line="2423" />
+              <folding>
+                <element signature="e#102368#102369#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -131,19 +135,24 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="172" column="48" selection-start-line="172" selection-start-column="48" selection-end-line="172" selection-end-column="48" />
+            <state relative-caret-position="324">
+              <caret line="72" selection-start-line="72" selection-end-line="72" />
               <folding>
-                <element signature="e#1287#1308#0" expanded="true" />
-                <element signature="e#1886#1916#0" expanded="true" />
-                <element signature="e#2907#2931#0" expanded="true" />
-                <element signature="e#3973#3994#0" expanded="true" />
-                <element signature="e#4629#4653#0" expanded="true" />
-                <element signature="e#5223#5247#0" expanded="true" />
-                <element signature="e#6250#6271#0" expanded="true" />
-                <element signature="e#7286#7310#0" expanded="true" />
-                <element signature="e#7398#7422#0" expanded="true" />
-                <element signature="e#8382#8406#0" expanded="true" />
+                <element signature="e#454#489#0" expanded="true" />
+                <element signature="e#513#546#0" expanded="true" />
+                <element signature="e#572#607#0" expanded="true" />
+                <element signature="e#634#667#0" expanded="true" />
+                <element signature="e#1418#1439#0" expanded="true" />
+                <element signature="e#2014#2044#0" expanded="true" />
+                <element signature="e#3038#3062#0" expanded="true" />
+                <element signature="e#3926#3947#0" expanded="true" />
+                <element signature="e#4326#4344#0" expanded="true" />
+                <element signature="e#4981#5005#0" expanded="true" />
+                <element signature="e#5587#5611#0" expanded="true" />
+                <element signature="e#6611#6632#0" expanded="true" />
+                <element signature="e#7647#7671#0" expanded="true" />
+                <element signature="e#7759#7783#0" expanded="true" />
+                <element signature="e#8709#8733#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -151,10 +160,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/SplashscreenActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="354">
+              <caret line="35" selection-start-line="35" selection-end-line="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
+            <state relative-caret-position="255">
+              <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -207,16 +225,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-          <provider editor-type-id="android-manifest" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="30" column="68" selection-start-line="30" selection-start-column="68" selection-end-line="30" selection-end-column="68" />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -239,6 +247,7 @@
       <find>Selected</find>
       <find>email</find>
       <find>email_sign_in_button</find>
+      <find>ime</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -270,13 +279,13 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/SplashscreenActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/HealthcheckService.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/RegisterRequest.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/RegisterResponse.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/LoginResponse.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/LoginRequest.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/AuthenticationService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/LoginActivity.java" />
       </list>
     </option>
@@ -478,16 +487,16 @@
       <window_info id="Designer" order="3" />
       <window_info id="Build Variants" order="4" side_tool="true" />
       <window_info id="Capture Tool" order="5" />
-      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.18681319" />
+      <window_info content_ui="combo" id="Project" order="6" visible="true" weight="0.18681319" />
       <window_info id="Captures" order="7" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="0" weight="0.3290398" />
       <window_info anchor="bottom" id="Logcat" order="1" weight="0.33021078" />
       <window_info anchor="bottom" id="TODO" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3290398" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.32865497" />
       <window_info anchor="bottom" id="Terminal" order="4" weight="0.3290398" />
       <window_info anchor="bottom" id="Version Control" order="5" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="6" sideWeight="0.50061053" side_tool="true" weight="0.31381732" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4993895" visible="true" weight="0.3134503" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4993895" weight="0.3134503" />
       <window_info anchor="bottom" id="Android Profiler" order="8" />
       <window_info anchor="bottom" id="Run" order="9" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
@@ -533,30 +542,6 @@
           <line>62</line>
           <properties />
           <option name="timeStamp" value="24" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/SplashscreenActivity.java</url>
-          <line>30</line>
-          <properties />
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/SplashscreenActivity.java</url>
-          <line>35</line>
-          <properties />
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/HealthcheckService.java</url>
-          <line>23</line>
-          <properties />
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/MainActivity.java</url>
-          <line>99</line>
-          <properties />
-          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -617,27 +602,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/19634586802c990b211c4bdc090298b8/jars/classes.jar!/android/support/v7/widget/VectorEnabledTintResources.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/content/res/Resources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="1154" selection-start-line="1154" selection-end-line="1154" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/view/LayoutInflater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1897">
-          <caret line="540" selection-start-line="540" selection-end-line="540" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/java/lang/reflect/Proxy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="413">
@@ -753,6 +717,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2397">
           <caret line="129" column="43" selection-start-line="129" selection-start-column="25" selection-end-line="129" selection-end-column="43" />
+          <folding>
+            <element signature="e#2573#2574#0" expanded="true" />
+            <element signature="e#2636#2637#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -867,20 +835,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/HealthcheckService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="39" column="5" selection-start-line="39" selection-start-column="5" selection-end-line="39" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/SplashscreenActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
@@ -889,47 +843,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="32" selection-start-line="13" selection-start-column="32" selection-end-line="13" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="172" column="48" selection-start-line="172" selection-start-column="48" selection-end-line="172" selection-end-column="48" />
-          <folding>
-            <element signature="e#1287#1308#0" expanded="true" />
-            <element signature="e#1886#1916#0" expanded="true" />
-            <element signature="e#2907#2931#0" expanded="true" />
-            <element signature="e#3973#3994#0" expanded="true" />
-            <element signature="e#4629#4653#0" expanded="true" />
-            <element signature="e#5223#5247#0" expanded="true" />
-            <element signature="e#6250#6271#0" expanded="true" />
-            <element signature="e#7286#7310#0" expanded="true" />
-            <element signature="e#7398#7422#0" expanded="true" />
-            <element signature="e#8382#8406#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Models/RegisterResponse.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="17" column="27" lean-forward="true" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -999,23 +916,99 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/LoginActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="155" lean-forward="true" selection-start-line="155" selection-end-line="155" />
+        <state relative-caret-position="347">
+          <caret line="99" selection-start-line="99" selection-end-line="99" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1653#1654#0" expanded="true" />
-            <element signature="e#1699#1700#0" expanded="true" />
-            <element signature="e#2168#2169#0" expanded="true" />
-            <element signature="e#2217#2218#0" expanded="true" />
-            <element signature="e#4293#4333#0" expanded="true" />
-            <element signature="e#4426#4465#0" expanded="true" />
-            <element signature="e#4502#4544#0" expanded="true" />
-            <element signature="e#4786#4787#0" expanded="true" />
-            <element signature="e#4825#4826#0" expanded="true" />
-            <element signature="e#4897#4898#0" expanded="true" />
-            <element signature="e#4947#4948#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/Services/HealthcheckService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/SplashscreenActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="45" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
+          <folding>
+            <element signature="e#454#489#0" expanded="true" />
+            <element signature="e#513#546#0" expanded="true" />
+            <element signature="e#572#607#0" expanded="true" />
+            <element signature="e#634#667#0" expanded="true" />
+            <element signature="e#1418#1439#0" expanded="true" />
+            <element signature="e#2014#2044#0" expanded="true" />
+            <element signature="e#3038#3062#0" expanded="true" />
+            <element signature="e#3926#3947#0" expanded="true" />
+            <element signature="e#4326#4344#0" expanded="true" />
+            <element signature="e#4981#5005#0" expanded="true" />
+            <element signature="e#5587#5611#0" expanded="true" />
+            <element signature="e#6611#6632#0" expanded="true" />
+            <element signature="e#7647#7671#0" expanded="true" />
+            <element signature="e#7759#7783#0" expanded="true" />
+            <element signature="e#8709#8733#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="5743" selection-start-line="5743" selection-end-line="5743" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/view/KeyEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="2423" selection-start-line="2423" selection-end-line="2423" />
+          <folding>
+            <element signature="e#102368#102369#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/widget/TextView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="7572" selection-start-line="7572" selection-end-line="7572" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/macrologandroid/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="53" column="9" lean-forward="true" selection-start-line="53" selection-start-column="9" selection-end-line="53" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4014#4054#0" expanded="true" />
+            <element signature="e#4208#4247#0" expanded="true" />
+            <element signature="e#4407#4449#0" expanded="true" />
+            <element signature="e#4985#4986#0" expanded="true" />
+            <element signature="e#5027#5028#0" expanded="true" />
+            <element signature="e#5083#5084#0" expanded="true" />
+            <element signature="e#5134#5135#0" expanded="true" />
           </folding>
         </state>
       </provider>

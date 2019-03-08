@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,13 +44,16 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = findViewById(R.id.password);
         mLoginResultView = findViewById(R.id.login_result);
 
-        Button mLoginButton = findViewById(R.id.login_button);
-        mLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        mPasswordView.setOnEditorActionListener((v, actionId, event) -> {
+            System.out.println(v.toString());
+            if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 attemptLogin();
             }
+            return false;
         });
+
+        Button mLoginButton = findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(view -> attemptLogin());
 
         mNewUsernameView = findViewById(R.id.register_username);
         mNewEmailView = findViewById(R.id.register_email);
@@ -58,23 +61,20 @@ public class LoginActivity extends AppCompatActivity {
         mRegisterResultView = findViewById(R.id.register_result);
 
         Button mRegisterButton = findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mRegisterButton.setOnClickListener(v -> attemptRegister());
+
+        mNewPasswordView.setOnEditorActionListener((v, actionId, event) -> {
+            System.out.println(v.toString());
+            if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 attemptRegister();
             }
+            return false;
         });
 
         authService = new AuthenticationService();
 
     }
 
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
         mUserOrEmailView.setError(null);
         mPasswordView.setError(null);
