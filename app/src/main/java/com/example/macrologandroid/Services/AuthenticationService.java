@@ -1,16 +1,8 @@
 package com.example.macrologandroid.Services;
-
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-import android.util.Log;
-
-import com.example.macrologandroid.Models.LoginRequest;
-import com.example.macrologandroid.Models.LoginResponse;
+import com.example.macrologandroid.Models.AuthenticationRequest;
+import com.example.macrologandroid.Models.AuthenticationResponse;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -31,14 +23,22 @@ public class AuthenticationService {
         apiService = retrofit.create(ApiService.class);
     }
 
-    public Observable<LoginResponse>  authenticate(String username, String password) {
-        return  apiService.authenticate(new LoginRequest(username, password));
+    // The username field is used for both username and email when logging in
+    // This is handled properly by the backend
+    public Observable<AuthenticationResponse> authenticate(String username, String password) {
+        return apiService.authenticate(new AuthenticationRequest(username, "",password));
+    }
+
+    public Observable<AuthenticationResponse> register(String username, String email, String password) {
+        return apiService.register((new AuthenticationRequest(username, email, password)));
     }
 
     private interface ApiService {
 
         @POST("authenticate")
-        Observable<LoginResponse> authenticate(@Body LoginRequest request);
+        Observable<AuthenticationResponse> authenticate(@Body AuthenticationRequest request);
 
+        @POST("signup")
+        Observable<AuthenticationResponse> register(@Body AuthenticationRequest request);
     }
 }

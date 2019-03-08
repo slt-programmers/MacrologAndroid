@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.macrologandroid.Models.LoginResponse;
+import com.example.macrologandroid.Models.AuthenticationResponse;
 import com.example.macrologandroid.Services.AuthenticationService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -23,6 +23,13 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mUserOrEmailView;
     private EditText mPasswordView;
     private TextView mLoginResultView;
+
+    private EditText mNewUsernameView;
+    private EditText mNewEmailView;
+    private EditText mNewPasswordView;
+    private TextView mRegisterResultView;
+
+    private AuthenticationService authService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +44,29 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = findViewById(R.id.password);
         mLoginResultView = findViewById(R.id.login_result);
 
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button mLoginButton = findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
+
+        mNewUsernameView = findViewById(R.id.register_username);
+        mNewEmailView = findViewById(R.id.register_email);
+        mNewPasswordView = findViewById(R.id.register_password);
+        mRegisterResultView = findViewById(R.id.register_result);
+
+        Button mRegisterButton = findViewById(R.id.register_button);
+        mRegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptRegister();
+            }
+        });
+
+        authService = new AuthenticationService();
+
     }
 
 
@@ -53,45 +76,86 @@ public class LoginActivity extends AppCompatActivity {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        // Reset errors.
         mUserOrEmailView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
         String username = mUserOrEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password)) {
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(username)) {
+        if (!isUsernameValid(username)) {
             mUserOrEmailView.setError(getString(R.string.error_field_required));
             focusView = mUserOrEmailView;
             cancel = true;
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             login(username, password);
         }
     }
 
+    private void attemptRegister() {
+        mNewUsernameView.setError(null);
+        mNewEmailView.setError(null);
+        mNewPasswordView.setError(null);
+
+        String username = mNewUsernameView.getText().toString();
+        String email = mNewEmailView.getText().toString();
+        String password = mNewPasswordView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        if (!isUsernameValid(username)) {
+            mNewUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mNewUsernameView;
+            cancel = true;
+        }
+
+        if (!isEmailValid(email)) {
+            mNewEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mNewEmailView;
+            cancel = true;
+        }
+
+        if (!isPasswordValid(password)) {
+            mNewPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mNewPasswordView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            register(username, email, password);
+        }
+
+    }
+
+    private boolean isUsernameValid(String username) {
+        return !TextUtils.isEmpty(username) && username.length() >= 4;
+    }
+
+    private boolean isEmailValid(String email) {
+        return email.contains("@");
+    }
+
+    private boolean isPasswordValid(String password) {
+        return !TextUtils.isEmpty(password);
+    }
+
     @SuppressLint("CheckResult")
     private void login(String username, String password) {
-        AuthenticationService authService = new AuthenticationService();
         authService.authenticate(username, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -101,7 +165,16 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void saveCredentials(LoginResponse result) {
+    @SuppressLint("CheckResult")
+    private void register(String username, String email, String password) {
+        authService.register(username, email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {saveCredentials(res); finish();},
+                        err -> mRegisterResultView.setText(err.toString()));
+    }
+
+    private void saveCredentials(AuthenticationResponse result) {
         getSharedPreferences("AUTH", MODE_PRIVATE)
                 .edit()
                 .putString("USER", result.getName())

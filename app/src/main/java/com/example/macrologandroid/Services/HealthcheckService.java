@@ -1,22 +1,11 @@
 package com.example.macrologandroid.Services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-
-import com.example.macrologandroid.Models.LoginRequest;
-import com.example.macrologandroid.Models.LoginResponse;
-
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public class HealthcheckService {
 

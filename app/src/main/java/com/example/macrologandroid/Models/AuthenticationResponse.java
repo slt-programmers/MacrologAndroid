@@ -3,17 +3,17 @@ package com.example.macrologandroid.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginResponse {
+public class AuthenticationResponse {
 
-    @SerializedName("name")
     @Expose
+    @SerializedName("name")
     private String name;
 
-    @SerializedName("token")
     @Expose
+    @SerializedName("token")
     private String token;
 
-    public LoginResponse(String name, String token) {
+    public AuthenticationResponse(String name, String token) {
         this.name = name;
         this.token = token;
     }
