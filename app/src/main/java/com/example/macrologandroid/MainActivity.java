@@ -1,6 +1,9 @@
 package com.example.macrologandroid;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,30 +24,30 @@ import com.example.macrologandroid.Fragments.UserFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private static SharedPreferences preferences;
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_diary:
-                    setFragment(new DiaryFragment());
-                    return true;
-                case R.id.navigation_meals:
-                    setFragment(new MealsFragment());
-                    return true;
-                case R.id.navigation_user:
-                    setFragment(new UserFragment());
-                    return true;
-            }
-            return false;
-        }
-    };
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = item -> {
+                switch (item.getItemId()) {
+                    case R.id.navigation_diary:
+                        setFragment(new DiaryFragment());
+                        return true;
+                    case R.id.navigation_meals:
+                        setFragment(new MealsFragment());
+                        return true;
+                    case R.id.navigation_user:
+                        setFragment(new UserFragment());
+                        return true;
+                }
+                return false;
+            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferences = getSharedPreferences("AUTH", MODE_PRIVATE);
+
         if (!isLoggedIn()) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
@@ -71,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         init();
+    }
+
+    public static SharedPreferences getPreferences() {
+        return preferences;
     }
 
     private void logout() {
