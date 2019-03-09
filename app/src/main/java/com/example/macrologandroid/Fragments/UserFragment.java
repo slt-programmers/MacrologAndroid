@@ -1,6 +1,7 @@
 package com.example.macrologandroid.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserFragment extends Fragment {
 
+    private static final int EDIT_DETAILS_ID = 123;
+
     private UserService userService;
     private View view;
     private UserSettings userSettings;
@@ -40,6 +43,19 @@ public class UserFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (EDIT_DETAILS_ID) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    fetchUserSettings();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -50,19 +66,7 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user, container, false);
 
-        userService.getSettings()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    res -> {
-                        this.userSettings = new UserSettings(res);
-                        setUserData();
-                    },
-                    err -> {
-                        System.out.println(err.toString());
-                    }
-
-        );
+        fetchUserSettings();
 
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(v -> callback.onLogoutPressed());
@@ -76,7 +80,7 @@ public class UserFragment extends Fragment {
             intent.putExtra("height", userSettings.getHeight());
             intent.putExtra("weight", userSettings.getWeight());
             intent.putExtra("activity", userSettings.getActivity());
-            startActivity(intent);
+            startActivityForResult(intent, EDIT_DETAILS_ID);
         });
 
         Button adjustIntake = view.findViewById(R.id.adjust_intake);
@@ -96,6 +100,22 @@ public class UserFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    protected void fetchUserSettings() {
+        userService.getSettings()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        res -> {
+                            this.userSettings = new UserSettings(res);
+                            setUserData();
+                        },
+                        err -> {
+                            System.out.println(err.toString());
+                        }
+
+                );
     }
 
     private void setUserData() {
