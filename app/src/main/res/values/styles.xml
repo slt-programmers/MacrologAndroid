@@ -6,7 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
         <item name="buttonStyle">@style/buttonStyle</item>
+
+        <!--color selected item-->
+        <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
     </style>
 
     <style name="EditTextTheme" parent="TextAppearance.AppCompat">
@@ -22,4 +26,14 @@
         <item name="android:background">@color/transparent</item>
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
+
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingLeft">8dp</item>
+    </style>
+
+
+
+
 </resources>

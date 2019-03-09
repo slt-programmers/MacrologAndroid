@@ -103,31 +103,38 @@ public class UserFragment extends Fragment {
         userName.setText(userSettings.getName());
 
         TextView userAge = view.findViewById(R.id.user_age);
-        userAge.setText(userSettings.getAge());
+        userAge.setText(String.valueOf(userSettings.getAge()));
 
         TextView userGender = view.findViewById(R.id.user_gender);
-        userGender.setText(userSettings.getGender().toString());
+
+        String gender = userSettings.getGender().toString();
+        gender = gender.substring(0,1) + gender.substring(1).toLowerCase();
+        userGender.setText(gender);
 
         TextView userHeight = view.findViewById(R.id.user_height);
-        userHeight.setText(userSettings.getHeight());
+        String height = String.valueOf(userSettings.getHeight()) + " cm";
+        userHeight.setText(height);
 
         TextView userWeight = view.findViewById(R.id.user_weight);
-        userWeight.setText(String.valueOf(userSettings.getWeight()));
+        String weight = String.valueOf(userSettings.getWeight()) + " kg";
+        userWeight.setText(weight);
 
         TextView userActivity = view.findViewById(R.id.user_activity);
         userActivity.setText(String.valueOf(userSettings.getActivity()));
 
 
         TextView userProtein = view.findViewById(R.id.user_protein);
-        userProtein.setText(userSettings.getProtein());
+        String protein = String.valueOf(userSettings.getProtein()) + " gr";
+        userProtein.setText(protein);
 
         TextView userFat = view.findViewById(R.id.user_fat);
-        userFat.setText(userSettings.getFat());
+        String fat = String.valueOf(userSettings.getFat()) + " gr";
+        userFat.setText(fat);
 
         TextView userCarbs = view.findViewById(R.id.user_carbs);
-        userCarbs.setText(userSettings.getCarbs());
+        String carbs = String.valueOf(userSettings.getCarbs()) + " gr";
+        userCarbs.setText(carbs);
     }
-
 
     public interface OnLogoutPressedListener {
         void onLogoutPressed();

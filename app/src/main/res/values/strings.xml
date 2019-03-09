@@ -44,6 +44,7 @@
 
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="activity_level">Activity level</string>
 
     <string name="adjust_user">Edit details</string>
     <string name="adjust_intake">Adjust intake</string>
