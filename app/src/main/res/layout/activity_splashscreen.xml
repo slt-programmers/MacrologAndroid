@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:text="@string/splash_message"
             />
     </LinearLayout>

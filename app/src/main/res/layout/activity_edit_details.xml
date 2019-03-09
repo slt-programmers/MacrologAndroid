@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backbutton"
+        android:layout_gravity="start"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:drawableStart="@drawable/ic_arrow_back_24dp"
+        />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                app:hintTextAppearance="@style/EditTextTheme">
+
+                <EditText
+                    android:id="@+id/edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/user_name"
+                    android:inputType="text"
+                    android:theme="@style/EditTextHintTheme"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/white"
+                    android:textColorLink="@color/white"
+                    android:backgroundTint="@color/white"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                app:hintTextAppearance="@style/EditTextTheme">
+
+                <EditText
+                    android:id="@+id/edit_age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/user_age"
+                    android:layout_marginBottom="8dp"
+                    android:theme="@style/EditTextHintTheme"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/white"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorLink="@color/white"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radiogroup_gender"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/check_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:buttonTint="@color/white"
+                    android:text="@string/male"/>
+                <RadioButton
+                    android:id="@+id/check_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_weight="1"
+                    android:buttonTint="@color/white"
+                    android:textSize="18sp"
+                    android:text="@string/female"/>
+            </RadioGroup>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                app:hintTextAppearance="@style/EditTextTheme">
+
+                <EditText
+                    android:id="@+id/edit_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="@string/user_height"
+                    android:theme="@style/EditTextHintTheme"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/white"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorLink="@color/white"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                app:hintTextAppearance="@style/EditTextTheme">
+
+                <EditText
+                    android:id="@+id/edit_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/user_weight"
+                    android:layout_marginBottom="8dp"
+                    android:theme="@style/EditTextHintTheme"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/white"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorLink="@color/white"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/white"
+                app:hintTextAppearance="@style/EditTextTheme">
+
+                <EditText
+                    android:id="@+id/edit_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/user_activity"
+                    android:theme="@style/EditTextHintTheme"
+                    android:layout_marginBottom="8dp"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:backgroundTint="@color/white"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textColorLink="@color/white"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/savebutton"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimary"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/save"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>

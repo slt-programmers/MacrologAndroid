@@ -3,8 +3,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.example.macrologandroid.Models.AuthenticationRequest;
-import com.example.macrologandroid.Models.AuthenticationResponse;
+import com.example.macrologandroid.DTO.AuthenticationRequest;
+import com.example.macrologandroid.DTO.AuthenticationResponse;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;

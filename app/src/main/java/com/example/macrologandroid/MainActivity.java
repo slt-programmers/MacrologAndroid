@@ -45,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
 
         preferences = getSharedPreferences("AUTH", MODE_PRIVATE);
 
+        setFragment(new DiaryFragment());
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         if (!isLoggedIn()) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
@@ -69,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     @Override
     public void onResume() {
         super.onResume();
-        init();
     }
 
     public static SharedPreferences getPreferences() {
@@ -79,17 +82,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     private void logout() {
         getSharedPreferences("AUTH", MODE_PRIVATE).edit().remove("TOKEN").remove("USER").apply();
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
-    }
-
-    private void init() {
-//        Toolbar myToolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(myToolbar);
-
-
-        setFragment(new DiaryFragment());
-
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     private void setFragment(Fragment fragment) {

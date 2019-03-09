@@ -1,7 +1,6 @@
 package com.example.macrologandroid.Fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,25 +11,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.macrologandroid.LoginActivity;
+import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.MainActivity;
-import com.example.macrologandroid.Models.UserSetting;
+import com.example.macrologandroid.DTO.UserSettingResponse;
+import com.example.macrologandroid.Models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.UserService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class UserFragment extends Fragment {
 
     private UserService userService;
     private View view;
-    private List<UserSetting> userSettings;
+    private UserSettings userSettings;
 
     private OnLogoutPressedListener callback;
 
@@ -58,8 +55,7 @@ public class UserFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     res -> {
-                        System.out.println(res.toString());
-                        this.userSettings = res;
+                        this.userSettings = new UserSettings(res);
                         setUserData();
                     },
                     err -> {
@@ -71,8 +67,25 @@ public class UserFragment extends Fragment {
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(v -> callback.onLogoutPressed());
 
-        return view;
+        Button editDetails = view.findViewById(R.id.edit_details);
+        editDetails.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditPersonalDetailsActivity.class);
+            intent.putExtra("name", userSettings.getName());
+            intent.putExtra("age", userSettings.getAge());
+            intent.putExtra("gender", userSettings.getGender());
+            intent.putExtra("height", userSettings.getHeight());
+            intent.putExtra("weight", userSettings.getWeight());
+            intent.putExtra("activity", userSettings.getActivity());
+            startActivity(intent);
+        });
 
+        Button adjustIntake = view.findViewById(R.id.adjust_intake);
+        adjustIntake.setOnClickListener(v -> {});
+
+        Button changePassword = view.findViewById(R.id.change_password);
+        changePassword.setOnClickListener(v -> {});
+
+        return view;
     }
 
     @Override
@@ -87,41 +100,34 @@ public class UserFragment extends Fragment {
 
     private void setUserData() {
         TextView userName = view.findViewById(R.id.user_name);
-        userName.setText(findSetting("name"));
+        userName.setText(userSettings.getName());
 
         TextView userAge = view.findViewById(R.id.user_age);
-        userAge.setText(findSetting("age"));
+        userAge.setText(userSettings.getAge());
 
         TextView userGender = view.findViewById(R.id.user_gender);
-        userGender.setText(findSetting("gender"));
+        userGender.setText(userSettings.getGender().toString());
 
         TextView userHeight = view.findViewById(R.id.user_height);
-        userHeight.setText(findSetting("height"));
+        userHeight.setText(userSettings.getHeight());
 
         TextView userWeight = view.findViewById(R.id.user_weight);
-        userWeight.setText(findSetting("weight"));
+        userWeight.setText(String.valueOf(userSettings.getWeight()));
 
         TextView userActivity = view.findViewById(R.id.user_activity);
-        userActivity.setText(findSetting("activity"));
+        userActivity.setText(String.valueOf(userSettings.getActivity()));
 
 
         TextView userProtein = view.findViewById(R.id.user_protein);
-        userProtein.setText(findSetting("goalProtein"));
+        userProtein.setText(userSettings.getProtein());
 
         TextView userFat = view.findViewById(R.id.user_fat);
-        userFat.setText(findSetting("goalFat"));
+        userFat.setText(userSettings.getFat());
 
         TextView userCarbs = view.findViewById(R.id.user_carbs);
-        userCarbs.setText(findSetting("goalCarbs"));
+        userCarbs.setText(userSettings.getCarbs());
     }
 
-    private String findSetting(String identifier) {
-        UserSetting setting = userSettings.stream()
-                .filter(s -> s.getName().equals(identifier))
-                .findAny()
-                .orElse(new UserSetting(0, "", ""));
-        return setting.getValue();
-    }
 
     public interface OnLogoutPressedListener {
         void onLogoutPressed();

@@ -8,6 +8,8 @@
     <string name="botnav_meals">Meals</string>
     <string name="botnav_user">User</string>
     <string name="title_activity_login">Log in</string>
+    <string name="title_edit_details">Edit personal details</string>
+
 
     <!-- Strings related to login -->
     <string name="login_username_email">Username or Email</string>
@@ -39,5 +41,14 @@
     <string name="protein">Protein</string>
     <string name="fat">Fat</string>
     <string name="carbs">Carbs</string>
+
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+
+    <string name="adjust_user">Edit details</string>
+    <string name="adjust_intake">Adjust intake</string>
+    <string name="change_password">Change password</string>
+
+    <string name="save">Save</string>
 
 </resources>

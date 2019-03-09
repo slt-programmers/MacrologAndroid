@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.macrologandroid.Models.AuthenticationResponse;
+import com.example.macrologandroid.DTO.AuthenticationResponse;
 import com.example.macrologandroid.Services.AuthenticationService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.example.macrologandroid.MainActivity;
-import com.example.macrologandroid.Models.UserSetting;
+import com.example.macrologandroid.DTO.UserSettingResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,7 +55,7 @@ public class UserService extends Service {
     }
 
 
-    public Observable<List<UserSetting>> getSettings() {
+    public Observable<List<UserSettingResponse>> getSettings() {
         return apiService.getSettings();
     }
 
@@ -63,6 +63,6 @@ public class UserService extends Service {
     private interface ApiService {
         @GET("settings")
         @Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2Vycy9Uek1Vb2NNRjRwIiwiZXhwIjoxNTUyOTIzODk0LCJuYW1lIjoiQ2FybWVuIiwidXNlcklkIjoyfQ.Qk5wE9p-S5jZxJUlCbZ-tUV6ZGoV_qMZdVEnCbQWLFE")
-        Observable<List<UserSetting>> getSettings();
+        Observable<List<UserSettingResponse>> getSettings();
     }
 }
