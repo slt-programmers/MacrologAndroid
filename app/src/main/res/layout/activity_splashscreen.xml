@@ -15,6 +15,16 @@
         android:gravity="center"
         android:layout_marginRight="32dp"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_marginBottom="12dp"/>
+
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,7 +32,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_hamster_wheel"/>
+                android:src="@drawable/hamster_wheel"/>
         </FrameLayout>
 
         <TextView
@@ -30,7 +40,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textAlignment="center"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text="@string/splash_message"
             />
     </LinearLayout>

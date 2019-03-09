@@ -1,19 +1,13 @@
 package com.example.macrologandroid;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,7 +16,7 @@ import com.example.macrologandroid.Fragments.MealsFragment;
 import com.example.macrologandroid.Fragments.UserFragment;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener {
 
     private static SharedPreferences preferences;
 
@@ -36,7 +30,9 @@ public class MainActivity extends AppCompatActivity {
                         setFragment(new MealsFragment());
                         return true;
                     case R.id.navigation_user:
-                        setFragment(new UserFragment());
+                        UserFragment fragment = new UserFragment();
+                        fragment.setOnLogoutPressedListener(this);
+                        setFragment(fragment);
                         return true;
                 }
                 return false;
@@ -46,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         preferences = getSharedPreferences("AUTH", MODE_PRIVATE);
 
         if (!isLoggedIn()) {
@@ -63,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        Log.d("LOG", menuItem.toString());
         if (menuItem.getTitle().equals(getResources().getString(R.string.logout))) {
             logout();
         }
@@ -86,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        Toolbar myToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+//        Toolbar myToolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(myToolbar);
+
 
         setFragment(new DiaryFragment());
 
@@ -109,4 +106,8 @@ public class MainActivity extends AppCompatActivity {
         return token != null && !tokenExpired;
     }
 
+    @Override
+    public void onLogoutPressed() {
+        logout();
+    }
 }

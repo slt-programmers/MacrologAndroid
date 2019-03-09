@@ -21,20 +21,19 @@
             android:exported="true" />
 
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
             android:name=".SplashscreenActivity"
-            android:label="SplashscreenActivity">
+            android:label="@string/app_name">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name"/>
     </application>
 
 </manifest>

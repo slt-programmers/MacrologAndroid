@@ -1,32 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.UserFragment"
-    android:padding="16dp"
-    >
+    tools:context=".Fragments.UserFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/user_title" />
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/logout_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:background="@color/transparent"
+            android:layout_gravity="end"
+            android:textColor="@color/white"
             android:layout_height="wrap_content"
-            android:text="@string/user_name"/>
+            android:drawableEnd="@drawable/sign_out"
+            />
 
         <TextView
             android:id="@+id/user_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/whiteTransparent"
+        >
+
+        <!--Personal-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:gravity="fill"
+                >
+                <TableRow
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:text="@string/user_age"/>
+                    <TextView
+                        android:id="@+id/user_age"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="viewEnd"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textSize="18sp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_gender"/>
+                    <TextView
+                        android:id="@+id/user_gender"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="viewEnd"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:textSize="18sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_height"/>
+                    <TextView
+                        android:id="@+id/user_height"
+                        android:textSize="18sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        android:textAlignment="viewEnd"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textSize="18sp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_weight"/>
+                    <TextView
+                        android:id="@+id/user_weight"
+                        android:layout_width="match_parent"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="viewEnd"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:textSize="18sp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_activity"/>
+                    <TextView
+                        android:id="@+id/user_activity"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="viewEnd"/>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!--Intake-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:padding="16dp"
+                android:gravity="fill"
+                android:layout_height="wrap_content">
+                <TableRow
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:text="@string/protein"/>
+                    <TextView
+                        android:id="@+id/user_protein"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="viewEnd"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:text="@string/fat"/>
+                    <TextView
+                        android:id="@+id/user_fat"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="viewEnd"/>
+                </TableRow>
+                <TableRow
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:text="@string/carbs"/>
+                    <TextView
+                        android:id="@+id/user_carbs"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="viewEnd"/>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
 
     </LinearLayout>
 
-
-</FrameLayout>
+</LinearLayout>
