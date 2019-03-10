@@ -34,21 +34,18 @@ public class UserService extends Service {
         String token = MainActivity.getPreferences().getString("TOKEN", "");
         authHeader = "Authorization: Bearer " + token;
         OkHttpClient.Builder client = new OkHttpClient.Builder();
-        client.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
-                Request request = original.newBuilder()
-                        .header("Autorization", "Bearer " + token)
-                        .method(original.method(), original.body())
-                        .build();
-                return chain.proceed(request);
-            }
+        client.addInterceptor(chain -> {
+            Request original = chain.request();
+            Request request = original.newBuilder()
+                    .header("Authorization", "Bearer " + token)
+                    .method(original.method(), original.body())
+                    .build();
+            return chain.proceed(request);
         });
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://macrolog-backend.herokuapp.com/")
-//                .client(client.build())
+                .client(client.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -71,12 +68,11 @@ public class UserService extends Service {
     }
 
     private interface ApiService {
+
         @GET("settings")
-        @Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2Vycy9Uek1Vb2NNRjRwIiwiZXhwIjoxNTUyOTIzODk0LCJuYW1lIjoiQ2FybWVuIiwidXNlcklkIjoyfQ.Qk5wE9p-S5jZxJUlCbZ-tUV6ZGoV_qMZdVEnCbQWLFE")
         Observable<List<UserSettingResponse>> getSettings();
         
         @PUT("settings")
-        @Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2Vycy9Uek1Vb2NNRjRwIiwiZXhwIjoxNTUyOTIzODk0LCJuYW1lIjoiQ2FybWVuIiwidXNlcklkIjoyfQ.Qk5wE9p-S5jZxJUlCbZ-tUV6ZGoV_qMZdVEnCbQWLFE")
         Observable<ResponseEntity> putSetting(@Body UserSettingResponse setting);
     
     }
