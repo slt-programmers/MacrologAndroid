@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.DTO.UserSettingResponse;
@@ -28,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 public class UserFragment extends Fragment {
 
     private static final int EDIT_DETAILS_ID = 123;
+    private static final int CHANGE_PASSWORD_ID = 234;
 
     private UserService userService;
     private View view;
@@ -88,7 +91,10 @@ public class UserFragment extends Fragment {
         adjustIntake.setOnClickListener(v -> {});
 
         Button changePassword = view.findViewById(R.id.change_password);
-        changePassword.setOnClickListener(v -> {});
+        changePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            startActivity(intent);
+        });
 
         return view;
     }
@@ -114,7 +120,7 @@ public class UserFragment extends Fragment {
                             setUserData();
                         },
                         err -> {
-                            System.out.println(err.toString());
+                            Log.d("Macrolog", err.getMessage());
                         }
 
                 );

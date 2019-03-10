@@ -5,8 +5,10 @@ import android.os.IBinder;
 
 import com.example.macrologandroid.DTO.AuthenticationRequest;
 import com.example.macrologandroid.DTO.AuthenticationResponse;
+import com.example.macrologandroid.DTO.ChangePasswordRequest;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -42,6 +44,10 @@ public class AuthenticationService extends Service {
         return apiService.register((new AuthenticationRequest(username, email, password)));
     }
 
+    public Observable<ResponseBody> changePassword(String confirmNew, String oldPassword, String newPassword) {
+        return apiService.changePassword(new ChangePasswordRequest(confirmNew, oldPassword, newPassword));
+    }
+
     private interface ApiService {
 
         @POST("authenticate")
@@ -49,5 +55,8 @@ public class AuthenticationService extends Service {
 
         @POST("signup")
         Observable<AuthenticationResponse> register(@Body AuthenticationRequest request);
+
+        @POST("changePassword")
+        Observable<ResponseBody> changePassword(@Body ChangePasswordRequest request);
     }
 }
