@@ -19,6 +19,7 @@ import com.example.macrologandroid.Models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -102,6 +103,7 @@ public class UserFragment extends Fragment {
         super.onDetach();
     }
 
+    @SuppressLint("CheckResult")
     protected void fetchUserSettings() {
         userService.getSettings()
                 .subscribeOn(Schedulers.io())
@@ -140,8 +142,16 @@ public class UserFragment extends Fragment {
         userWeight.setText(weight);
 
         TextView userActivity = view.findViewById(R.id.user_activity);
-        userActivity.setText(String.valueOf(userSettings.getActivity()));
-
+        String activity;
+        switch (String.valueOf(userSettings.getActivity())) {
+            case "1.2": activity = "Sedentary"; break;
+            case "1.375": activity = "Lightly active"; break;
+            case "1.55": activity = "Moderately active"; break;
+            case "1.725": activity = "Very active"; break;
+            case "1.9": activity = "Extremely active"; break;
+            default: activity = "Lightly active";
+        }
+        userActivity.setText(String.valueOf(activity));
 
         TextView userProtein = view.findViewById(R.id.user_protein);
         String protein = String.valueOf(userSettings.getProtein()) + " gr";

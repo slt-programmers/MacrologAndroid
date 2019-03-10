@@ -1,4 +1,5 @@
 package com.example.macrologandroid.Services;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -6,33 +7,26 @@ import android.os.IBinder;
 import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.DTO.UserSettingResponse;
 
-import org.springframework.http.ResponseEntity;
-
-import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.Observable;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.PUT;
 
 public class UserService extends Service {
 
-    private String authHeader;
-    
     private ApiService apiService;
 
     public UserService() {
         String token = MainActivity.getPreferences().getString("TOKEN", "");
-        authHeader = "Authorization: Bearer " + token;
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -62,8 +56,8 @@ public class UserService extends Service {
     public Observable<List<UserSettingResponse>> getSettings() {
         return apiService.getSettings();
     }
-    
-    public Observable<ResponseEntity> putSetting(UserSettingResponse setting) {
+
+    public Observable<ResponseBody> putSetting(UserSettingResponse setting) {
         return apiService.putSetting(setting);
     }
 
@@ -71,9 +65,9 @@ public class UserService extends Service {
 
         @GET("settings")
         Observable<List<UserSettingResponse>> getSettings();
-        
+
         @PUT("settings")
-        Observable<ResponseEntity> putSetting(@Body UserSettingResponse setting);
-    
+        Observable<ResponseBody> putSetting(@Body UserSettingResponse setting);
+
     }
 }

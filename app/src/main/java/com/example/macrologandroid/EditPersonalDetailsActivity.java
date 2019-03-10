@@ -1,9 +1,9 @@
 package com.example.macrologandroid;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -14,11 +14,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.example.macrologandroid.DTO.UserSettingResponse;
-import com.example.macrologandroid.Fragments.UserFragment;
 import com.example.macrologandroid.Models.Gender;
 import com.example.macrologandroid.Services.UserService;
-
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +23,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class EditPersonalDetailsActivity extends AppCompatActivity {
 
@@ -42,8 +40,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     private EditText editHeight;
     private EditText editWeight;
     private Spinner editActivity;
-
-    private boolean oneOrMoreUpdated = false;
 
     private UserService userService = new UserService();
 
@@ -86,12 +82,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.savebutton);
         saveButton.setOnClickListener(v -> {
             saveSettings();
-            if (oneOrMoreUpdated) {
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("RELOAD", true);
-                setResult(Activity.RESULT_OK, resultIntent);
-            }
-            finish();
         });
     }
 
@@ -119,36 +109,34 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("CheckResult")
     private void saveSettings() {
+        List<Observable<ResponseBody>> obsList = new ArrayList<>();
+
         String newName = editName.getText().toString();
         if (!originalName.equals(newName)) {
-            subscribeToResult(userService.putSetting(new UserSettingResponse(1, "name", newName)));
-            oneOrMoreUpdated = true;
+            obsList.add(userService.putSetting(new UserSettingResponse(1, "name", newName)));
         }
 
         String newAge = editAge.getText().toString();
         if (originalAge != (Integer.valueOf(newAge))) {
-            subscribeToResult(userService.putSetting(new UserSettingResponse(1, "age", newAge)));
-            oneOrMoreUpdated = true;
+            obsList.add(userService.putSetting(new UserSettingResponse(1, "age", newAge)));
         }
 
         RadioButton selected = findViewById(genderRadios.getCheckedRadioButtonId());
         String newGender = selected.getText().toString().toUpperCase();
         if (!newGender.equals(originalGender.toString())) {
-            subscribeToResult(userService.putSetting(new UserSettingResponse(1, "gender", newGender)));
-            oneOrMoreUpdated = true;
+            obsList.add(userService.putSetting(new UserSettingResponse(1, "gender", newGender)));
         }
 
         String newHeight = editHeight.getText().toString();
         if (originalHeight != Integer.valueOf(newHeight)) {
-            subscribeToResult(userService.putSetting(new UserSettingResponse(1, "height", newHeight)));
-            oneOrMoreUpdated = true;
+            obsList.add(userService.putSetting(new UserSettingResponse(1, "height", newHeight)));
         }
 
         String newWeight = editWeight.getText().toString();
         if (!String.valueOf(originalWeight).equals(String.valueOf(newWeight))) {
-            subscribeToResult(userService.putSetting(new UserSettingResponse(1, "weight", newWeight)));
-            oneOrMoreUpdated = true;
+            obsList.add(userService.putSetting(new UserSettingResponse(1, "weight", newWeight)));
         }
 
         String item = (String) editActivity.getSelectedItem();
@@ -162,18 +150,18 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             default: newActivity = "1.375";
         }
         if (!String.valueOf(originalActivity).equals(newActivity)) {
-            subscribeToResult(userService.putSetting(new UserSettingResponse(1, "activity", newActivity)));
-            oneOrMoreUpdated = true;
+            obsList.add(userService.putSetting(new UserSettingResponse(1, "activity", newActivity)));
         }
-    }
 
-    private void subscribeToResult(Observable<ResponseEntity> serviceCall) {
-        serviceCall.subscribeOn(Schedulers.io())
+        Observable.zip(obsList, i -> i)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        res -> Log.d("MACROLOG", res.toString()),
-                        err -> Log.d("MACROLOG", err.getMessage())
-                        );
-
+                .subscribe(res -> {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("RELOAD", true);
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish();
+                    }, err -> Log.d("Macrolog", err.getMessage()));
     }
+
 }
