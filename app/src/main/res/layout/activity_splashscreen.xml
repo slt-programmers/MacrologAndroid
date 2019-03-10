@@ -30,9 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp">
             <ImageView
+                android:id="@+id/animated_image"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/hamster_wheel"/>
+                android:layout_height="100dp"/>
         </FrameLayout>
 
         <TextView

@@ -2,9 +2,16 @@ package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Animatable2;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 
 import com.example.macrologandroid.Services.HealthcheckService;
 
@@ -22,6 +29,11 @@ public class SplashscreenActivity extends AppCompatActivity {
         HealthcheckService service = new HealthcheckService();
 
         String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", null);
+
+        ImageView image = findViewById(R.id.animated_image);
+        image.setBackgroundResource(R.drawable.hamster_wheel);
+        AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
+        animation.start();
 
         service.healthcheck(token).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
