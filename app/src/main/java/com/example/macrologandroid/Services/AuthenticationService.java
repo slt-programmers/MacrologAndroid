@@ -44,8 +44,8 @@ public class AuthenticationService extends Service {
         return apiService.register((new AuthenticationRequest(username, email, password)));
     }
 
-    public Observable<ResponseBody> changePassword(String confirmNew, String oldPassword, String newPassword) {
-        return apiService.changePassword(new ChangePasswordRequest(confirmNew, oldPassword, newPassword));
+    public Observable<ResponseBody> changePassword(String oldPassword, String newPassword, String confirmNew) {
+        return apiService.changePassword(new ChangePasswordRequest(oldPassword, newPassword, confirmNew));
     }
 
     private interface ApiService {

@@ -55,5 +55,8 @@
     <string name="change">Change</string>
     <string name="old_password">Old password</string>
     <string name="new_password">New password</string>
-
+    <string name="confirm_password">Confirm password</string>
+    <string name="old_same_as_new">Your new password is the same as your old password</string>
+    <string name="must_be_same_passwords">The confirmation password does not match with the new password</string>
+    <string name="old_password_incorrect">Your old password is incorrect</string>
 </resources>
