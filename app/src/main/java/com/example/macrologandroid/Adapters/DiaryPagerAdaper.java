@@ -16,15 +16,11 @@ import java.util.List;
 public class DiaryPagerAdaper extends PagerAdapter {
 
     private Context context;
-    private List<String> strings;
+
+    private static final int LOOP_COUNT = 1000;
 
     public DiaryPagerAdaper(Context context) {
         this.context = context;
-        List<String> strings = new ArrayList<>();
-        strings.add("ONE");
-        strings.add("TWO");
-        strings.add("THREE");
-        this.strings = strings;
     }
 
     @Override
@@ -44,7 +40,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return this.strings.size();
+        return LOOP_COUNT;
     }
 
     @Override

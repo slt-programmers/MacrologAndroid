@@ -62,6 +62,7 @@ public class DiaryFragment extends Fragment {
     public void onViewCreated(View view, Bundle bundle) {
         ViewPager viewPager = view.findViewById(R.id.day_view_pager);
         viewPager.setAdapter(new DiaryPagerAdaper(getContext()));
+        viewPager.setCurrentItem(500);
     }
 
     @Override
