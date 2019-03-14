@@ -44,6 +44,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:orientation="vertical">
+
+                    <!--breakfast-->
                     <TableLayout
                         android:id="@+id/breakfast_table"
                         android:layout_width="match_parent"
@@ -53,33 +55,33 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3"
+                                android:layout_weight="8.0"
                                 android:textStyle="bold"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:text="@string/breakfast" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:textAlignment="center"
                                 android:text="P" />
                             <TextView
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_width="wrap_content"
                                 android:textStyle="bold"
                                 android:textAlignment="center"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:text="F" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:textAlignment="center"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:text="C" />
                         </TableRow>
                     </TableLayout>
@@ -101,33 +103,33 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3"
+                                android:layout_weight="8.0"
                                 android:textStyle="bold"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:text="@string/lunch" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:textAlignment="center"
                                 android:text="P" />
                             <TextView
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_width="wrap_content"
                                 android:textStyle="bold"
                                 android:textAlignment="center"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:text="F" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:textAlignment="center"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:text="C" />
                         </TableRow>
                     </TableLayout>
@@ -149,33 +151,33 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3"
+                                android:layout_weight="8.0"
                                 android:textStyle="bold"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:text="@string/dinner" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:textAlignment="center"
                                 android:text="P" />
                             <TextView
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_width="wrap_content"
                                 android:textStyle="bold"
                                 android:textAlignment="center"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:text="F" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:textAlignment="center"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:text="C" />
                         </TableRow>
                     </TableLayout>
@@ -197,33 +199,33 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="3"
+                                android:layout_weight="8.0"
                                 android:textStyle="bold"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:text="@string/snacks" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:textAlignment="center"
                                 android:text="P" />
                             <TextView
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_width="wrap_content"
                                 android:textStyle="bold"
                                 android:textAlignment="center"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:text="F" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:textAlignment="center"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="0.1"
                                 android:text="C" />
                         </TableRow>
                     </TableLayout>

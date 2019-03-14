@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,23 +91,15 @@ public class DiaryFragment extends Fragment {
     private void addEntryToTable(TableLayout table, LogEntryResponse entry) {
         TableRow row = new TableRow(getContext());
         TextView name = getCustomizedTextView();
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 3f);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 8.0f);
         name.setText(entry.getFood().getName());
         name.setLayoutParams(lp);
 
-        TableRow.LayoutParams lpSmall = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
 
-        TextView protein = getCustomizedTextView();
-        protein.setText(String.format(Locale.ENGLISH,"%.1f", entry.getMacrosCalculated().getProtein()));
-        protein.setLayoutParams(lpSmall);
-
-        TextView fat = getCustomizedTextView();
-        fat.setText(String.format(Locale.ENGLISH,"%.1f", entry.getMacrosCalculated().getFat()));
-        fat.setLayoutParams(lpSmall);
-
-        TextView carbs = getCustomizedTextView();
-        carbs.setText(String.format(Locale.ENGLISH,"%.1f", entry.getMacrosCalculated().getCarbs()));
-        carbs.setLayoutParams(lpSmall);
+        TextView protein = getCustomizedMacroTextView(entry.getMacrosCalculated().getProtein());
+        TextView fat = getCustomizedMacroTextView(entry.getMacrosCalculated().getFat());
+        TextView carbs = getCustomizedMacroTextView(entry.getMacrosCalculated().getCarbs());
 
         row.addView(name);
         row.addView(protein);
@@ -115,9 +108,28 @@ public class DiaryFragment extends Fragment {
         table.addView(row);
     }
 
+    private TextView getCustomizedMacroTextView(double text) {
+        TextView view = new TextView(getContext());
+        view.setText(String.format(Locale.ENGLISH,"%.1f", text));
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f);
+        view.setLayoutParams(lp);
+        view.setGravity(Gravity.END);
+
+        if (getContext() != null) {
+            final float scale = getContext().getResources().getDisplayMetrics().density;
+            int pixels = (int) (48 * scale + 0.5f);
+            view.setWidth(pixels);
+        } else {
+            view.setWidth(120);
+        }
+        view.setTextSize(16);
+        return view;
+    }
+
     private TextView getCustomizedTextView() {
         TextView view = new TextView(getContext());
-        view.setTextSize(18);
+        view.setTextSize(16);
         return view;
     }
 }
