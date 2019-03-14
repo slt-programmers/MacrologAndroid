@@ -2,9 +2,9 @@ package com.example.macrologandroid.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,13 +14,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.macrologandroid.Adapters.DiaryPagerAdaper;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.DiaryLogService;
 
-import java.sql.Date;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
@@ -60,6 +59,12 @@ public class DiaryFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle bundle) {
+        ViewPager viewPager = view.findViewById(R.id.day_view_pager);
+        viewPager.setAdapter(new DiaryPagerAdaper(getContext()));
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
@@ -95,7 +100,6 @@ public class DiaryFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT, 8.0f);
         name.setText(entry.getFood().getName());
         name.setLayoutParams(lp);
-
 
         TextView protein = getCustomizedMacroTextView(entry.getMacrosCalculated().getProtein());
         TextView fat = getCustomizedMacroTextView(entry.getMacrosCalculated().getFat());
