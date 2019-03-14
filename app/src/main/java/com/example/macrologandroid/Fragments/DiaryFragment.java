@@ -38,23 +38,11 @@ public class DiaryFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @SuppressLint("CheckResult")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_diary, container, false);
-
-        DiaryLogService service = new DiaryLogService();
-        service.getLogsForDay(LocalDate.now())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(res -> {
-                    fillDiary(res);
-                }, err -> {
-                    Log.d("Macrolog", err.getMessage());
-                });
-
         return view;
     }
 
@@ -68,6 +56,23 @@ public class DiaryFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        DiaryLogService service = new DiaryLogService();
+        service.getLogsForDay(LocalDate.now())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+                    fillDiary(res);
+                }, err -> {
+                    Log.d("Macrolog", err.getMessage());
+                });
+
     }
 
     @Override
