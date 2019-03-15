@@ -146,13 +146,13 @@ public class DiaryPagerAdaper extends PagerAdapter {
         } else {
             view.setWidth(120);
         }
-        view.setTextSize(16);
+        view.setTextSize(14);
         return view;
     }
 
     private TextView getCustomizedTextView() {
         TextView view = new TextView(context);
-        view.setTextSize(16);
+        view.setTextSize(14);
         return view;
     }
 

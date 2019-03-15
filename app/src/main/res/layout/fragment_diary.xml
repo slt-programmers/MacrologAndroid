@@ -1,67 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".Fragments.DiaryFragment">
 
     <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:elevation="4dp"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/date_picker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/progress_circle_protein"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Diary"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:contentDescription="@string/progress_circle_protein"
+            android:src="@drawable/progress_circle" />
+
+        <ImageView
+            android:id="@+id/progress_circle_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:contentDescription="@string/progress_circle_fat"
+            android:src="@drawable/progress_circle" />
+
+        <ImageView
+            android:id="@+id/progress_circle_carbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/progress_circle_carbs"
+            android:src="@drawable/progress_circle" />
+
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/date_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/whiteTransparent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
         <ImageView
             android:id="@+id/arrow_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@color/colorPrimary"
+            android:contentDescription="@string/arrow_left"
             android:padding="8dp"
             android:src="@drawable/ic_chevron_left_black_24dp"
-            android:textAlignment="viewStart" />
+            android:textAlignment="viewStart"
+            android:tint="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/diary_date"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
-            android:padding="8dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="8dp"
             android:textAlignment="center"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/arrow_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@color/colorPrimary"
+            android:contentDescription="@string/arrow_right"
             android:padding="8dp"
             android:src="@drawable/ic_chevron_right_black_24dp"
-            android:textAlignment="viewEnd" />
+            android:textAlignment="viewEnd"
+            android:tint="@color/colorPrimary" />
     </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/day_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/date_picker" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

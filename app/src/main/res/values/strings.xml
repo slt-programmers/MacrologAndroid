@@ -64,4 +64,15 @@
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="snacks">Snacks</string>
+
+    <string name="progress_circle_protein">Progress circle protein</string>
+    <string name="progress_circle_fat">Progress circle fat</string>
+    <string name="progress_circle_carbs">Progress circle carbs</string>
+
+    <string name="arrow_left">Arrow left</string>
+    <string name="arrow_right">Arrow right</string>
+
+    <string name="p">P</string>
+    <string name="f">F</string>
+    <string name="c">C</string>
 </resources>

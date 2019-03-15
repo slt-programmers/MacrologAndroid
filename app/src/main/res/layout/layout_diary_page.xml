@@ -1,243 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@color/whiteTransparent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="72dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/whiteTransparent"
-                android:orientation="vertical"
-                android:paddingBottom="72dp">
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <!--breakfast-->
+                <TableLayout
+                    android:id="@+id/breakfast_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="vertical">
+                    android:padding="16dp">
 
-                    <!--breakfast-->
-                    <TableLayout
-                        android:id="@+id/breakfast_table"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
+                    <TableRow>
 
-                        <TableRow>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8.0"
+                            android:text="@string/breakfast"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="8.0"
-                                android:text="@string/breakfast"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/p"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="P"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/f"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="F"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/c"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="C"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </TableRow>
-                    </TableLayout>
-                </LinearLayout>
+            <!--Lunch-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                <!--Lunch-->
-                <LinearLayout
+                <TableLayout
+                    android:id="@+id/lunch_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/white"
-                    android:orientation="vertical">
+                    android:padding="16dp">
 
-                    <TableLayout
-                        android:id="@+id/lunch_table"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
+                    <TableRow>
 
-                        <TableRow>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8.0"
+                            android:text="@string/lunch"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="8.0"
-                                android:text="@string/lunch"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/p"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="P"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/f"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="F"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/c"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="C"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </TableRow>
-                    </TableLayout>
-                </LinearLayout>
+            <!--Dinner-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                <!--Dinner-->
-                <LinearLayout
+                <TableLayout
+                    android:id="@+id/dinner_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/white"
-                    android:orientation="vertical">
+                    android:padding="16dp">
 
-                    <TableLayout
-                        android:id="@+id/dinner_table"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
+                    <TableRow>
 
-                        <TableRow>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8.0"
+                            android:text="@string/dinner"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="8.0"
-                                android:text="@string/dinner"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/p"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="P"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/f"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="F"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/c"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="C"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </TableRow>
-                    </TableLayout>
-                </LinearLayout>
+            <!--Snacks-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                <!--Snacks-->
-                <LinearLayout
+                <TableLayout
+                    android:id="@+id/snacks_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/white"
-                    android:orientation="vertical">
+                    android:padding="16dp">
 
-                    <TableLayout
-                        android:id="@+id/snacks_table"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
+                    <TableRow>
 
-                        <TableRow>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8.0"
+                            android:text="@string/snacks"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="8.0"
-                                android:text="@string/snacks"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/p"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="P"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/f"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="F"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.1"
-                                android:text="C"
-                                android:textAlignment="center"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-                        </TableRow>
-                    </TableLayout>
-                </LinearLayout>
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"
+                            android:paddingEnd="8dp"
+                            android:text="@string/c"
+                            android:textAlignment="viewEnd"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </TableRow>
+                </TableLayout>
             </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
