@@ -10,47 +10,67 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.macrologandroid.Adapters.DiaryPagerAdaper;
+import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.DiaryLogService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 public class DiaryFragment extends Fragment {
 
     private View view;
 
-    public DiaryFragment() { }
+    private ViewPager viewPager;
+
+    private DiaryLogCache cache;
+    private DiaryLogService service;
+
+    public DiaryFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cache = DiaryLogCache.getInstance();
+        service = new DiaryLogService();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_diary, container, false);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle bundle) {
-        ViewPager viewPager = view.findViewById(R.id.day_view_pager);
-        viewPager.setAdapter(new DiaryPagerAdaper(getContext()));
-        viewPager.setCurrentItem(500);
+        setupViewPager(view);
+
+        ImageView arrowLeft = view.findViewById(R.id.arrow_left);
+        ImageView arrowRight = view.findViewById(R.id.arrow_right);
+        arrowLeft.setOnClickListener((args) -> {
+            viewPager.arrowScroll(View.FOCUS_LEFT);
+        });
+
+        arrowRight.setOnClickListener((args) -> {
+            viewPager.arrowScroll(View.FOCUS_RIGHT);
+        });
     }
 
     @Override
@@ -62,17 +82,6 @@ public class DiaryFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        DiaryLogService service = new DiaryLogService();
-        service.getLogsForDay(LocalDate.now())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(res -> {
-                    fillDiary(res);
-                }, err -> {
-                    Log.d("Macrolog", err.getMessage());
-                });
-
     }
 
     @Override
@@ -80,66 +89,37 @@ public class DiaryFragment extends Fragment {
         super.onDetach();
     }
 
-    private void fillDiary(List<LogEntryResponse> entries) {
-        TableLayout breakfastTable = view.findViewById(R.id.breakfast_table);
-        TableLayout lunchTable = view.findViewById(R.id.lunch_table);
-        TableLayout dinnerTable = view.findViewById(R.id.dinner_table);
-        TableLayout snacksTable = view.findViewById(R.id.snacks_table);
-        for (LogEntryResponse entry : entries) {
-            if (entry.getMeal() == Meal.BREAKFAST) {
-                addEntryToTable(breakfastTable, entry);
-            } else if (entry.getMeal() == Meal.LUNCH) {
-                addEntryToTable(lunchTable, entry);
-            } else if (entry.getMeal() == Meal.DINNER) {
-                addEntryToTable(dinnerTable, entry);
-            } else {
-                addEntryToTable(snacksTable, entry);
+    private void setupViewPager(View view) {
+        TextView diaryDate = view.findViewById(R.id.diary_date);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        diaryDate.setText(LocalDate.now().format(formatter));
+
+        viewPager = view.findViewById(R.id.day_view_pager);
+        DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache, service);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(500);
+
+        viewPager.arrowScroll(View.FOCUS_LEFT);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
             }
 
-        }
+            @Override
+            public void onPageSelected(int i) {
+                LocalDate date = getDateFromPosition(i);
+                diaryDate.setText(date.format(formatter));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+
     }
 
-    private void addEntryToTable(TableLayout table, LogEntryResponse entry) {
-        TableRow row = new TableRow(getContext());
-        TextView name = getCustomizedTextView();
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 8.0f);
-        name.setText(entry.getFood().getName());
-        name.setLayoutParams(lp);
-
-        TextView protein = getCustomizedMacroTextView(entry.getMacrosCalculated().getProtein());
-        TextView fat = getCustomizedMacroTextView(entry.getMacrosCalculated().getFat());
-        TextView carbs = getCustomizedMacroTextView(entry.getMacrosCalculated().getCarbs());
-
-        row.addView(name);
-        row.addView(protein);
-        row.addView(fat);
-        row.addView(carbs);
-        table.addView(row);
+    private LocalDate getDateFromPosition(int position) {
+        return LocalDate.now().plusDays(position - 500);
     }
 
-    private TextView getCustomizedMacroTextView(double text) {
-        TextView view = new TextView(getContext());
-        view.setText(String.format(Locale.ENGLISH,"%.1f", text));
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f);
-        view.setLayoutParams(lp);
-        view.setGravity(Gravity.END);
-
-        if (getContext() != null) {
-            final float scale = getContext().getResources().getDisplayMetrics().density;
-            int pixels = (int) (48 * scale + 0.5f);
-            view.setWidth(pixels);
-        } else {
-            view.setWidth(120);
-        }
-        view.setTextSize(16);
-        return view;
-    }
-
-    private TextView getCustomizedTextView() {
-        TextView view = new TextView(getContext());
-        view.setTextSize(16);
-        return view;
-    }
 }

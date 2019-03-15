@@ -9,6 +9,7 @@ import com.example.macrologandroid.DTO.UserSettingResponse;
 import com.example.macrologandroid.MainActivity;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -55,9 +56,8 @@ public class DiaryLogService extends Service {
         return null;
     }
 
-    public Observable<List<LogEntryResponse>> getLogsForDay(LocalDate date) {
-        return apiService.getLogsForDay(LocalDate.of(2019, 3, 7));
-//        return apiService.getLogsForDay(date);
+    public Observable<List<LogEntryResponse>> getLogsForDay(LocalDate localDate) {
+        return apiService.getLogsForDay(localDate);
     }
 
     private interface ApiService {

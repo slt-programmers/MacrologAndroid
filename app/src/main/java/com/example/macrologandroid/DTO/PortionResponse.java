@@ -3,11 +3,11 @@ package com.example.macrologandroid.DTO;
 public class PortionResponse {
 
     private int id;
-    private int grams;
+    private double grams;
     private String description;
     private MacrosResponse macros;
 
-    public PortionResponse(int id, int grams, String description, MacrosResponse macros) {
+    public PortionResponse(int id, double grams, String description, MacrosResponse macros) {
         this.id = id;
         this.grams = grams;
         this.description = description;
@@ -22,11 +22,11 @@ public class PortionResponse {
         this.id = id;
     }
 
-    public int getGrams() {
+    public double getGrams() {
         return grams;
     }
 
-    public void setGrams(int grams) {
+    public void setGrams(double grams) {
         this.grams = grams;
     }
 

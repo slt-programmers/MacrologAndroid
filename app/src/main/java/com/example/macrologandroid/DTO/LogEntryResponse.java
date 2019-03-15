@@ -2,6 +2,7 @@ package com.example.macrologandroid.DTO;
 
 import com.example.macrologandroid.Models.Meal;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class LogEntryResponse {
@@ -14,7 +15,8 @@ public class LogEntryResponse {
     private Date day;
     private Meal meal;
 
-    public LogEntryResponse(int id, FoodResponse food, PortionResponse portion, MacrosResponse macrosCalculated, double multiplier, Date day, Meal meal) {
+    public LogEntryResponse(int id, FoodResponse food, PortionResponse portion,
+                            MacrosResponse macrosCalculated, double multiplier, Date day, Meal meal) {
         this.id = id;
         this.food = food;
         this.portion = portion;
