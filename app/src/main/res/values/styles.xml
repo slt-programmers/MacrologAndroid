@@ -13,6 +13,11 @@
         <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
     </style>
 
+    <style name="bottomNavigationView"
+        parent="Widget.Design.BottomNavigationView">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="EditTextTheme" parent="TextAppearance.AppCompat">
         <!--color of hint when field focussed-->
         <item name="android:textColor">@color/white</item>

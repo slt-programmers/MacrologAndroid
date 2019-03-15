@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:textSize="30sp"
+                    android:textSize="24sp"
                     android:textColor="@color/white"/>
             </LinearLayout>
 
@@ -65,11 +65,11 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:text="@string/user_age"/>
                             <TextView
                                 android:id="@+id/user_age"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -81,12 +81,12 @@
                             android:layout_marginBottom="4dp">
                             <TextView
                                 android:layout_width="match_parent"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/user_gender"/>
                             <TextView
                                 android:id="@+id/user_gender"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -97,13 +97,13 @@
                             android:layout_marginTop="4dp"
                             android:layout_marginBottom="4dp">
                             <TextView
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/user_height"/>
                             <TextView
                                 android:id="@+id/user_height"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
@@ -115,13 +115,13 @@
                             android:layout_marginBottom="4dp">
                             <TextView
                                 android:layout_width="match_parent"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/user_weight"/>
                             <TextView
                                 android:id="@+id/user_weight"
                                 android:layout_width="match_parent"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -132,12 +132,12 @@
                             android:layout_marginBottom="4dp">
                             <TextView
                                 android:layout_width="match_parent"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/user_activity"/>
                             <TextView
                                 android:id="@+id/user_activity"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -171,11 +171,11 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:text="@string/protein"/>
                             <TextView
                                 android:id="@+id/user_protein"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -188,11 +188,11 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:text="@string/fat"/>
                             <TextView
                                 android:id="@+id/user_fat"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -205,11 +205,11 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:text="@string/carbs"/>
                             <TextView
                                 android:id="@+id/user_carbs"
-                                android:textSize="18sp"
+                                android:textSize="16sp"
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
