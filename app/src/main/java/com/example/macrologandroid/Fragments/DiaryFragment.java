@@ -97,7 +97,7 @@ public class DiaryFragment extends Fragment {
         viewPager = view.findViewById(R.id.day_view_pager);
         DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache, service);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(500);
+        viewPager.setCurrentItem(501);
 
         viewPager.arrowScroll(View.FOCUS_LEFT);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

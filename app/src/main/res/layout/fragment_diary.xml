@@ -27,7 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/whiteTransparent"
-        android:padding="8dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -35,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:tint="@color/colorPrimary"
+            android:padding="8dp"
             android:src="@drawable/ic_chevron_left_black_24dp"
             android:textAlignment="viewStart" />
 
@@ -42,6 +42,7 @@
             android:id="@+id/diary_date"
             android:textColor="@color/colorPrimary"
             android:textSize="16sp"
+            android:padding="8dp"
             android:layout_weight="1"
             android:textAlignment="center"
             android:textStyle="bold"
@@ -53,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:tint="@color/colorPrimary"
+            android:padding="8dp"
             android:src="@drawable/ic_chevron_right_black_24dp"
             android:textAlignment="viewEnd" />
     </LinearLayout>
