@@ -40,6 +40,9 @@
         <activity
             android:name=".EditPersonalDetailsActivity"
             android:label="@string/title_edit_details" />
+        <activity
+            android:name=".AdjustIntakeActivity"
+            android:label="@string/title_adjust_intake" />
     </application>
 
 </manifest>

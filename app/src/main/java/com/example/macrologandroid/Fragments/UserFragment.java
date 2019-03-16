@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.MainActivity;
@@ -88,7 +89,13 @@ public class UserFragment extends Fragment {
         });
 
         Button adjustIntake = view.findViewById(R.id.adjust_intake);
-        adjustIntake.setOnClickListener(v -> {});
+        adjustIntake.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AdjustIntakeActivity.class);
+            intent.putExtra("goalProtein", userSettings.getProtein());
+            intent.putExtra("goalFat", userSettings.getFat());
+            intent.putExtra("goalCarbs", userSettings.getCarbs());
+            startActivity(intent);
+        });
 
         Button changePassword = view.findViewById(R.id.change_password);
         changePassword.setOnClickListener(v -> {
