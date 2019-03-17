@@ -20,74 +20,72 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/calories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1960"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="24sp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backbutton" />
-    <!--android:text="@string/calories"-->
+        app:layout_constraintTop_toBottomOf="@+id/backbutton"
+        app:layout_constraintVertical_bias="1.0">
 
-    <Button
-        android:id="@+id/button_macros"
-        style="?android:textAppearanceSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/change_macros"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calories" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/button_calories"
-        style="?android:textAppearanceSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:background="@color/white"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/change_calories"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calories" />
+            <Button
+                android:id="@+id/button_macros"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/change_macros"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        app:layout_constraintTop_toBottomOf="@id/button_macros"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </FrameLayout>
+            <Button
+                android:id="@+id/button_calories"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:background="@color/white"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/change_calories"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        app:layout_constraintTop_toBottomOf="@id/fragment_container"
-        android:id="@+id/save_button"
-        style="?android:textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/colorPrimary"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/save"
-        android:textStyle="bold" />
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/button_macros" />
+
+            <Button
+                android:id="@+id/save_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@color/white"
+                android:text="@string/save"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/fragment_container"
+                tools:layout_editor_absoluteX="0dp" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

@@ -6,56 +6,113 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/calories_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/calories"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
         android:id="@+id/calories_output"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/calories_label"
         app:layout_constraintTop_toTopOf="parent" />
 
     <SeekBar
         android:id="@+id/slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/calories_output" />
 
     <TextView
-        android:id="@+id/protein_output"
+        android:id="@+id/protein_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
+        android:text="@string/protein"
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/slider" />
+    <TextView
+        android:id="@+id/protein_output"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/protein_label"
+        app:layout_constraintTop_toBottomOf="@+id/slider" />
+
+
+    <TextView
+        android:id="@+id/fat_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/fat"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/protein_label" />
 
     <TextView
         android:id="@+id/fat_output"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toRightOf="@id/fat_label"
+        app:layout_constraintTop_toBottomOf="@+id/protein_output" />
+
+    <TextView
+        android:id="@+id/carbs_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/carbs"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/protein_output" />
+        app:layout_constraintTop_toBottomOf="@id/fat_label" />
 
     <TextView
         android:id="@+id/carbs_output"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:textColor="@color/white"
+        android:textStyle="bold"
         android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fat_output"
-        />
+        app:layout_constraintLeft_toRightOf="@id/carbs_label"
+        app:layout_constraintTop_toBottomOf="@+id/fat_output" />
 
 </android.support.constraint.ConstraintLayout>

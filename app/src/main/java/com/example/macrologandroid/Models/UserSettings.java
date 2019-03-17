@@ -1,12 +1,11 @@
 package com.example.macrologandroid.Models;
 
 import com.example.macrologandroid.DTO.UserSettingResponse;
-import com.example.macrologandroid.Fragments.UserFragment;
-import com.example.macrologandroid.Services.UserService;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class UserSettings {
+public class UserSettings implements Serializable {
 
     private String name;
     private int age;
@@ -109,7 +108,7 @@ public class UserSettings {
 
     private String mapSetting(List<UserSettingResponse> response, String identifier) {
         return response.stream().filter(s -> s.getName().equals(identifier)).findFirst()
-                .orElse(new UserSettingResponse(0, "","")).getValue();
+                .orElse(new UserSettingResponse(0, "", "")).getValue();
 
     }
 }

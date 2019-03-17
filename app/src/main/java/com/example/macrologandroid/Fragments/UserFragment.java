@@ -31,7 +31,7 @@ import io.reactivex.schedulers.Schedulers;
 public class UserFragment extends Fragment {
 
     private static final int EDIT_DETAILS_ID = 123;
-    private static final int CHANGE_PASSWORD_ID = 234;
+    private static final int ADJUST_INTAKE_ID = 234;
 
     private UserService userService;
     private View view;
@@ -51,7 +51,8 @@ public class UserFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case (EDIT_DETAILS_ID) : {
+            case (EDIT_DETAILS_ID) :
+            case (ADJUST_INTAKE_ID): {
                 if (resultCode == Activity.RESULT_OK) {
                     fetchUserSettings();
                 }
@@ -91,10 +92,8 @@ public class UserFragment extends Fragment {
         Button adjustIntake = view.findViewById(R.id.adjust_intake);
         adjustIntake.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AdjustIntakeActivity.class);
-            intent.putExtra("goalProtein", userSettings.getProtein());
-            intent.putExtra("goalFat", userSettings.getFat());
-            intent.putExtra("goalCarbs", userSettings.getCarbs());
-            startActivity(intent);
+            intent.putExtra("userSettings", userSettings);
+            startActivityForResult(intent, ADJUST_INTAKE_ID);
         });
 
         Button changePassword = view.findViewById(R.id.change_password);
