@@ -80,4 +80,5 @@
 
     <string name="change_macros">Change macros</string>
     <string name="change_calories">Change calories</string>
+    <string name="header_curved">Header curved</string>
 </resources>

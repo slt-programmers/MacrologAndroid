@@ -25,6 +25,12 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/progress_circle_protein"
             android:src="@drawable/progress_circle" />
+        <TextView
+            android:id="@+id/total_protein"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            />
 
         <ImageView
             android:id="@+id/progress_circle_fat"

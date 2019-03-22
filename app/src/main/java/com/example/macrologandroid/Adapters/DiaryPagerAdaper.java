@@ -46,7 +46,6 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     @SuppressLint("CheckResult")
     @Override
-
     // Is called for item not yet visible
     public Object instantiateItem(ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(context);
