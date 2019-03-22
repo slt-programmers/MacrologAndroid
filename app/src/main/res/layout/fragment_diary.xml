@@ -6,49 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.DiaryFragment">
 
-    <LinearLayout
+    <ImageView
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:elevation="4dp"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/date_picker"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="225dp"
+        android:contentDescription="@string/header_curved"
+        android:scaleType="centerCrop"
+        android:src="@drawable/header_curved"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/progress_circle_protein"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/progress_circle_protein"
-            android:src="@drawable/progress_circle" />
-        <TextView
-            android:id="@+id/total_protein"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            />
+    <ImageView
+        android:id="@+id/progress_circle_protein"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:contentDescription="@string/progress_circle_protein"
+        android:src="@drawable/progress_circle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/progress_circle_fat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:contentDescription="@string/progress_circle_fat"
-            android:src="@drawable/progress_circle" />
+    <ImageView
+        android:id="@+id/progress_circle_fat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:contentDescription="@string/progress_circle_fat"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:src="@drawable/progress_circle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/progress_circle_carbs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/progress_circle_carbs"
-            android:src="@drawable/progress_circle" />
+    <ImageView
+        android:id="@+id/progress_circle_carbs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="@string/progress_circle_carbs"
+        android:src="@drawable/progress_circle"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/date_picker"
@@ -76,7 +78,6 @@
             android:padding="8dp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
             android:textStyle="bold" />
 
         <ImageView

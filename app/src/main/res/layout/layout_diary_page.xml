@@ -26,7 +26,7 @@
                     android:id="@+id/breakfast_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="24dp">
 
                     <TableRow>
 
@@ -83,7 +83,7 @@
                     android:id="@+id/lunch_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="24dp">
 
                     <TableRow>
 
@@ -140,7 +140,7 @@
                     android:id="@+id/dinner_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="24dp">
 
                     <TableRow>
 
@@ -197,7 +197,7 @@
                     android:id="@+id/snacks_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="24dp">
 
                     <TableRow>
 
