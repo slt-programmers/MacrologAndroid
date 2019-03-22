@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/change_calories"
     android:layout_width="match_parent"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
     android:layout_height="wrap_content">
 
     <TextView
@@ -62,12 +64,11 @@
         app:layout_constraintLeft_toRightOf="@id/protein_label"
         app:layout_constraintTop_toBottomOf="@+id/slider" />
 
-
     <TextView
         android:id="@+id/fat_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:text="@string/fat"
@@ -75,12 +76,11 @@
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/protein_label" />
-
     <TextView
         android:id="@+id/fat_output"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:textColor="@color/white"
@@ -93,7 +93,7 @@
         android:id="@+id/carbs_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:text="@string/carbs"
@@ -101,12 +101,11 @@
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fat_label" />
-
     <TextView
         android:id="@+id/carbs_output"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:textColor="@color/white"
