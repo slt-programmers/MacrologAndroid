@@ -87,26 +87,11 @@
 
             <Button
                 android:id="@+id/login_button"
-                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/login_login"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/login_or"
-                android:textColor="@color/white"
-                android:textAllCaps="true"
-                android:textSize="20sp"
-                android:textAlignment="center"
-                android:layout_marginTop="12dp"
-                android:padding="4dp"
-                />
+                android:layout_marginBottom="60dp"
+                android:text="@string/login_login"/>
 
             <!--Register-->
             <TextView
@@ -196,14 +181,10 @@
 
             <Button
                 android:id="@+id/register_button"
-                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/login_register"
-                android:textStyle="bold" />
+                android:text="@string/login_register" />
 
 
         </LinearLayout>

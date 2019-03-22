@@ -7,7 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="buttonStyle">@style/buttonStyle</item>
+        <!--All buttons unless style is defined on xml-->
+        <item name="buttonStyle">@style/buttonRound</item>
 
         <!--color selected item-->
         <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
@@ -27,9 +28,19 @@
         <item name="colorControlActivated">@color/white</item>
     </style>
 
-    <style name="buttonStyle" parent="Base.Widget.AppCompat.Button">
+    <style name="buttonRound" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_background</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="buttonBack" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@color/transparent</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="buttonGradient" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_gradient_background</item>
     </style>
 
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">

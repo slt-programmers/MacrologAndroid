@@ -23,11 +23,9 @@
 
                 <Button
                     android:id="@+id/logout_button"
-                    style="?android:textAppearanceSmall"
                     android:layout_width="wrap_content"
                     android:background="@color/transparent"
                     android:layout_gravity="end"
-                    android:textColor="@color/white"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/sign_out"
                     />
@@ -53,11 +51,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:padding="16dp"
                     android:orientation="vertical">
                     <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:layout_marginBottom="16dp"
                         android:gravity="fill">
                         <TableRow
                             android:layout_marginTop="4dp"
@@ -148,6 +147,7 @@
 
                     <Button
                         android:id="@+id/edit_details"
+                        style="@style/buttonGradient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/adjust_user"/>
@@ -158,12 +158,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:padding="16dp"
                     android:layout_marginTop="8dp"
                     android:orientation="vertical">
                     <TableLayout
                         android:layout_width="match_parent"
-                        android:padding="16dp"
                         android:gravity="fill"
+                        android:layout_marginBottom="16dp"
                         android:layout_height="wrap_content">
                         <TableRow
                             android:layout_marginTop="4dp"
@@ -220,6 +221,7 @@
 
                     <Button
                         android:id="@+id/adjust_intake"
+                        style="@style/buttonGradient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/adjust_intake"/>
@@ -231,9 +233,11 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:layout_marginTop="8dp"
+                    android:padding="16dp"
                     android:orientation="vertical">
 
                     <Button
+                        style="@style/buttonGradient"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/change_password"

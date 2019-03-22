@@ -10,6 +10,7 @@
     tools:context=".LoginActivity">
 
     <Button
+        style="@style/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/backbutton"
@@ -18,7 +19,6 @@
         android:layout_marginStart="16dp"
         android:drawableStart="@drawable/ic_arrow_back_24dp"
         />
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
                 app:hintTextAppearance="@style/EditTextTheme">
-
                 <EditText
                     android:id="@+id/edit_name"
                     android:layout_width="match_parent"
@@ -56,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
                 app:hintTextAppearance="@style/EditTextTheme">
-
                 <EditText
                     android:id="@+id/edit_age"
                     android:layout_width="match_parent"
@@ -104,7 +102,6 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
                 app:hintTextAppearance="@style/EditTextTheme">
-
                 <EditText
                     android:id="@+id/edit_height"
                     android:layout_width="match_parent"
@@ -126,7 +123,6 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
                 app:hintTextAppearance="@style/EditTextTheme">
-
                 <EditText
                     android:id="@+id/edit_weight"
                     android:layout_width="match_parent"
@@ -155,14 +151,10 @@
 
             <Button
                 android:id="@+id/savebutton"
-                style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimary"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/save"
-                android:textStyle="bold" />
+                android:text="@string/save"/>
 
         </LinearLayout>
 
