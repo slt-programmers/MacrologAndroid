@@ -22,21 +22,21 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
-                switch (item.getItemId()) {
-                    case R.id.navigation_diary:
-                        setFragment(new DiaryFragment());
-                        return true;
-                    case R.id.navigation_meals:
-                        setFragment(new MealsFragment());
-                        return true;
-                    case R.id.navigation_user:
-                        UserFragment fragment = new UserFragment();
-                        fragment.setOnLogoutPressedListener(this);
-                        setFragment(fragment);
-                        return true;
-                }
-                return false;
-            };
+        switch (item.getItemId()) {
+            case R.id.navigation_diary:
+                setFragment(new DiaryFragment());
+                return true;
+            case R.id.navigation_meals:
+                setFragment(new MealsFragment());
+                return true;
+            case R.id.navigation_user:
+                UserFragment fragment = new UserFragment();
+                fragment.setOnLogoutPressedListener(this);
+                setFragment(fragment);
+                return true;
+        }
+        return false;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment_content, fragment);
-        ft.addToBackStack(null);
+//        ft.addToBackStack(null);
         ft.commit();
     }
 
