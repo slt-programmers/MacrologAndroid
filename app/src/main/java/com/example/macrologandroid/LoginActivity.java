@@ -1,10 +1,12 @@
 package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +44,10 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mUserOrEmailView = findViewById(R.id.user_email);
         mPasswordView = findViewById(R.id.password);
+
+        mPasswordView.setTypeface(Typeface.DEFAULT);
+        mPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+
         mLoginResultView = findViewById(R.id.login_result);
 
         Button mLoginButton = findViewById(R.id.login_button);
@@ -50,6 +56,10 @@ public class LoginActivity extends AppCompatActivity {
         mNewUsernameView = findViewById(R.id.register_username);
         mNewEmailView = findViewById(R.id.register_email);
         mNewPasswordView = findViewById(R.id.register_password);
+
+        mNewPasswordView.setTypeface(Typeface.DEFAULT);
+        mNewPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+
         mRegisterResultView = findViewById(R.id.register_result);
 
         Button mRegisterButton = findViewById(R.id.register_button);
