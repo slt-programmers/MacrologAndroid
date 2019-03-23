@@ -55,6 +55,38 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            app:layout_constraintTop_toTopOf="@+id/progress_circle_protein"
+            app:layout_constraintLeft_toLeftOf="@+id/progress_circle_protein"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_circle_protein"
+            app:layout_constraintRight_toRightOf="@+id/progress_circle_protein"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/total_protein"/>
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@+id/progress_circle_fat"
+            app:layout_constraintLeft_toLeftOf="@+id/progress_circle_fat"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_circle_fat"
+            app:layout_constraintRight_toRightOf="@+id/progress_circle_fat"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/total_fat"/>
+
+        <TextView
+            app:layout_constraintTop_toTopOf="@+id/progress_circle_carbs"
+            app:layout_constraintLeft_toLeftOf="@+id/progress_circle_carbs"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_circle_carbs"
+            app:layout_constraintRight_toRightOf="@+id/progress_circle_carbs"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/total_carbs"/>
 
         <ImageView
             app:layout_constraintTop_toBottomOf="@+id/header"

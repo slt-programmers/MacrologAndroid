@@ -1,8 +1,10 @@
 package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,8 +30,16 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
 
         oldPasswordView = findViewById(R.id.old_password);
+        oldPasswordView.setTypeface(Typeface.DEFAULT);
+        oldPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+
         newPasswordView = findViewById(R.id.new_password);
+        newPasswordView.setTypeface(Typeface.DEFAULT);
+        newPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+
         confirmPasswordView = findViewById(R.id.confirm_password);
+        confirmPasswordView.setTypeface(Typeface.DEFAULT);
+        confirmPasswordView.setTransformationMethod(new PasswordTransformationMethod());
 
         errorTextView = findViewById(R.id.error_text);
         errorTextView.setVisibility(View.GONE);

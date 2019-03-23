@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.macrologandroid.Adapters.DiaryPagerAdaper;
 import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
+import com.example.macrologandroid.DTO.MacrosResponse;
 import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.DiaryLogService;
@@ -55,9 +56,6 @@ public class DiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
-
-
-
         return view;
     }
 
@@ -112,6 +110,7 @@ public class DiaryFragment extends Fragment {
             public void onPageSelected(int i) {
                 LocalDate date = getDateFromPosition(i);
                 diaryDate.setText(date.format(formatter));
+                updateTotals(date);
             }
 
             @Override
@@ -119,6 +118,27 @@ public class DiaryFragment extends Fragment {
             }
         });
 
+    }
+
+    private void updateTotals(LocalDate date) {
+        List<LogEntryResponse> entries = cache.getFromCache(date);
+        double totalProtein = 0.0;
+        double totalFat = 0.0;
+        double totalCarbs = 0.0;
+
+        for (LogEntryResponse entry : entries) {
+            MacrosResponse macros = entry.getMacrosCalculated();
+            totalProtein += macros.getProtein();
+            totalFat += macros.getFat();
+            totalCarbs += macros.getCarbs();
+        }
+
+        TextView totalProteinView = view.findViewById(R.id.total_protein);
+        totalProteinView.setText(String.valueOf(totalProtein));
+        TextView totalFatView = view.findViewById(R.id.total_fat);
+        totalFatView.setText(String.valueOf(totalFat));
+        TextView totalCarbsView = view.findViewById(R.id.total_carbs);
+        totalCarbsView.setText(String.valueOf(totalCarbs));
     }
 
     private LocalDate getDateFromPosition(int position) {
