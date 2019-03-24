@@ -126,19 +126,21 @@ public class DiaryFragment extends Fragment {
         double totalFat = 0.0;
         double totalCarbs = 0.0;
 
-        for (LogEntryResponse entry : entries) {
-            MacrosResponse macros = entry.getMacrosCalculated();
-            totalProtein += macros.getProtein();
-            totalFat += macros.getFat();
-            totalCarbs += macros.getCarbs();
+        if (entries != null) {
+            for (LogEntryResponse entry : entries) {
+                MacrosResponse macros = entry.getMacrosCalculated();
+                totalProtein += macros.getProtein();
+                totalFat += macros.getFat();
+                totalCarbs += macros.getCarbs();
+            }
         }
 
         TextView totalProteinView = view.findViewById(R.id.total_protein);
-        totalProteinView.setText(String.valueOf(totalProtein));
+        totalProteinView.setText(String.valueOf(Math.round(totalProtein * 10) / 10f));
         TextView totalFatView = view.findViewById(R.id.total_fat);
-        totalFatView.setText(String.valueOf(totalFat));
+        totalFatView.setText(String.valueOf(Math.round(totalFat * 10) /10f));
         TextView totalCarbsView = view.findViewById(R.id.total_carbs);
-        totalCarbsView.setText(String.valueOf(totalCarbs));
+        totalCarbsView.setText(String.valueOf(Math.round(totalCarbs * 10) / 10f));
     }
 
     private LocalDate getDateFromPosition(int position) {
