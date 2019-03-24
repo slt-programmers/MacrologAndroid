@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,9 +20,12 @@ import com.example.macrologandroid.Adapters.DiaryPagerAdaper;
 import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.DTO.MacrosResponse;
+import com.example.macrologandroid.DTO.UserSettingResponse;
 import com.example.macrologandroid.Models.Meal;
+import com.example.macrologandroid.Models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.DiaryLogService;
+import com.example.macrologandroid.Services.UserService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
@@ -40,7 +45,12 @@ public class DiaryFragment extends Fragment {
     private ViewPager viewPager;
 
     private DiaryLogCache cache;
-    private DiaryLogService service;
+
+    private DiaryLogService logService;
+
+    private UserService userService;
+
+    private int goalProtein, goalFat, goalCarbs;
 
     public DiaryFragment() {
     }
@@ -49,13 +59,20 @@ public class DiaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cache = DiaryLogCache.getInstance();
-        service = new DiaryLogService();
+        logService = new DiaryLogService();
+        userService = new UserService();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
+        userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    getGoalIntake(new UserSettings(result));
+                }, (error) -> {
+                    System.out.print(error.getMessage());
+                });
         return view;
     }
 
@@ -90,13 +107,19 @@ public class DiaryFragment extends Fragment {
         super.onDetach();
     }
 
+    private void getGoalIntake(UserSettings settings) {
+        goalProtein = settings.getProtein();
+        goalFat = settings.getFat();
+        goalCarbs = settings.getCarbs();
+    }
+
     private void setupViewPager(View view) {
         TextView diaryDate = view.findViewById(R.id.diary_date);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         diaryDate.setText(LocalDate.now().format(formatter));
 
         viewPager = view.findViewById(R.id.day_view_pager);
-        DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache, service);
+        DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache, logService);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(501);
 
@@ -141,6 +164,22 @@ public class DiaryFragment extends Fragment {
         totalFatView.setText(String.valueOf(Math.round(totalFat * 10) /10f));
         TextView totalCarbsView = view.findViewById(R.id.total_carbs);
         totalCarbsView.setText(String.valueOf(Math.round(totalCarbs * 10) / 10f));
+
+        setProgress(totalProtein, totalFat, totalCarbs);
+    }
+
+    private void setProgress(double protein, double fat, double carbs) {
+        ProgressBar progressProtein = view.findViewById(R.id.progress_ring_protein);
+        progressProtein.setMax(goalProtein);
+        progressProtein.setProgress((int) Math.round(protein));
+
+        ProgressBar progressFat = view.findViewById(R.id.progress_ring_fat);
+        progressFat.setMax(goalFat);
+        progressFat.setProgress((int) Math.round(fat));
+
+        ProgressBar progressCarbs = view.findViewById(R.id.progress_ring_carbs);
+        progressCarbs.setMax(goalCarbs);
+        progressCarbs.setProgress((int) Math.round(carbs));
     }
 
     private LocalDate getDateFromPosition(int position) {

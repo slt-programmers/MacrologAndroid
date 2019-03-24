@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment_content, fragment);
-//        ft.addToBackStack(null);
         ft.commit();
     }
 
