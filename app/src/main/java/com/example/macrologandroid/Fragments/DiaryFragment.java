@@ -2,46 +2,33 @@ package com.example.macrologandroid.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.macrologandroid.Adapters.DiaryPagerAdaper;
+import com.example.macrologandroid.AddLogEntryActivity;
 import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.DTO.MacrosResponse;
-import com.example.macrologandroid.DTO.UserSettingResponse;
-import com.example.macrologandroid.LoginActivity;
-import com.example.macrologandroid.MainActivity;
-import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.Models.UserSettings;
 import com.example.macrologandroid.R;
-import com.example.macrologandroid.Services.DiaryLogService;
 import com.example.macrologandroid.Services.UserService;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -78,6 +65,13 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
                 }, (error) -> {
                     System.out.print(error.getMessage());
                 });
+
+        FloatingActionButton button = view.findViewById(R.id.floating_button);
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AddLogEntryActivity.class);
+            startActivity(intent);
+        });
+
         return view;
     }
 

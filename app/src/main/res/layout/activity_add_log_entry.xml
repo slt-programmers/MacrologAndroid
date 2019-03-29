@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/background_gradient"
+    android:layout_height="match_parent"
+    tools:context=".AddLogEntryActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/backbutton"
+        style="@style/buttonBack"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:drawableStart="@drawable/ic_arrow_back_24dp"
+        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:padding="16dp"
+        android:layout_height="match_parent">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/mealTextView"
+                android:layout_width="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_height="wrap_content"
+                android:text="@string/meal_type"
+                />
+            <Spinner
+                app:layout_constraintTop_toBottomOf="@+id/mealTextView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/edit_meal_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/activity_level"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:layout_marginBottom="16dp">
+            </Spinner>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

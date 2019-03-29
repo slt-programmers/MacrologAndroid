@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.macrologandroid.Services.AuthenticationService;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
