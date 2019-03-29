@@ -3,7 +3,10 @@ package com.example.macrologandroid.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,12 +24,15 @@ import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.DTO.MacrosResponse;
 import com.example.macrologandroid.DTO.UserSettingResponse;
+import com.example.macrologandroid.LoginActivity;
+import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.Models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.DiaryLogService;
 import com.example.macrologandroid.Services.UserService;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -38,15 +44,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
-public class DiaryFragment extends Fragment {
+
+public class DiaryFragment extends Fragment implements Serializable, DiaryPagerAdaper.OnTotalUpdateListener {
 
     private View view;
 
     private ViewPager viewPager;
 
     private DiaryLogCache cache;
-
-    private DiaryLogService logService;
 
     private UserService userService;
 
@@ -59,17 +64,17 @@ public class DiaryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cache = DiaryLogCache.getInstance();
-        logService = new DiaryLogService();
         userService = new UserService();
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
         userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe((result) -> {
-                    getGoalIntake(new UserSettings(result));
+                    setGoalIntake(new UserSettings(result));
                 }, (error) -> {
                     System.out.print(error.getMessage());
                 });
@@ -103,11 +108,16 @@ public class DiaryFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
     }
 
-    private void getGoalIntake(UserSettings settings) {
+    private void setGoalIntake(UserSettings settings) {
         goalProtein = settings.getProtein();
         goalFat = settings.getFat();
         goalCarbs = settings.getCarbs();
@@ -119,7 +129,8 @@ public class DiaryFragment extends Fragment {
         diaryDate.setText(LocalDate.now().format(formatter));
 
         viewPager = view.findViewById(R.id.day_view_pager);
-        DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache, logService);
+        DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache);
+        adapter.setOnTotalsUpdateListener(this);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(501);
 
@@ -143,7 +154,7 @@ public class DiaryFragment extends Fragment {
 
     }
 
-    private void updateTotals(LocalDate date) {
+    public void updateTotals(LocalDate date) {
         List<LogEntryResponse> entries = cache.getFromCache(date);
         double totalProtein = 0.0;
         double totalFat = 0.0;
@@ -186,4 +197,15 @@ public class DiaryFragment extends Fragment {
         return LocalDate.now().plusDays(position - 500);
     }
 
+    @SuppressLint("CheckResult")
+    public void updatePage() {
+        userService = new UserService();
+        userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    setGoalIntake(new UserSettings(result));
+                    setupViewPager(view);
+                }, (error) -> {
+                    System.out.print(error.getMessage());
+                });
+    }
 }

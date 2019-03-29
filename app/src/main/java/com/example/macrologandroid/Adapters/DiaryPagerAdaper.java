@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.Fragments.DiaryFragment;
+import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.DiaryLogService;
@@ -38,19 +39,29 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
 
-    public DiaryPagerAdaper(Context context, DiaryLogCache cache, DiaryLogService service) {
+    private OnTotalUpdateListener callback;
+
+    public void setOnTotalsUpdateListener(DiaryFragment fragment) {
+        callback = fragment;
+    }
+
+
+    public DiaryPagerAdaper(Context context, DiaryLogCache cache) {
         this.context = context;
         this.cache = cache;
-        this.service = service;
+        this.service = new DiaryLogService();
     }
 
     @SuppressLint("CheckResult")
     @Override
     // Is called for item not yet visible
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.layout_diary_page, container, false);
 
+        if (service.isTokenEmpty()) {
+            return layout;
+        }
         LocalDate date = getDateFromPosition(position);
 
         List<LogEntryResponse> entries = cache.getFromCache(date);
@@ -61,6 +72,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
                     .subscribe(
                             res -> {
                                 cache.addToCache(date, res);
+                                notifyForTotalsUpdate(date);
                                 fillDiaryPage(res, layout);
                                 container.addView(layout);
                             }, err -> {
@@ -74,8 +86,14 @@ public class DiaryPagerAdaper extends PagerAdapter {
         return layout;
     }
 
+    private void notifyForTotalsUpdate(LocalDate date) {
+        if (date.equals(LocalDate.now())) {
+            callback.updateTotals(date);
+        }
+    }
+
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position,@NonNull Object object) {
         container.removeView((View) object);
     }
 
@@ -93,7 +111,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
         return LocalDate.now().plusDays(position - START_COUNT);
     }
 
-    public void fillDiaryPage(List<LogEntryResponse> entries, ViewGroup view) {
+    private void fillDiaryPage(List<LogEntryResponse> entries, ViewGroup view) {
         TableLayout breakfastTable = view.findViewById(R.id.breakfast_table);
         TableLayout lunchTable = view.findViewById(R.id.lunch_table);
         TableLayout dinnerTable = view.findViewById(R.id.dinner_table);
@@ -155,5 +173,8 @@ public class DiaryPagerAdaper extends PagerAdapter {
         return view;
     }
 
+    public interface OnTotalUpdateListener {
+        void updateTotals(LocalDate date);
+    }
 
 }

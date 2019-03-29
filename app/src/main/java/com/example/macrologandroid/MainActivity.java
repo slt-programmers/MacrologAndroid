@@ -16,23 +16,32 @@ import com.example.macrologandroid.Fragments.MealsFragment;
 import com.example.macrologandroid.Fragments.UserFragment;
 
 
-public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener {
+public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener, LoginActivity.OnLoggedInListener {
 
     private static SharedPreferences preferences;
+
+    private static MainActivity instance;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
+    private DiaryFragment diaryFragment;
+
+    private UserFragment userFragment;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
         switch (item.getItemId()) {
             case R.id.navigation_diary:
-                setFragment(new DiaryFragment());
+                setFragment(diaryFragment);
                 return true;
             case R.id.navigation_meals:
                 setFragment(new MealsFragment());
                 return true;
             case R.id.navigation_user:
-                UserFragment fragment = new UserFragment();
-                fragment.setOnLogoutPressedListener(this);
-                setFragment(fragment);
+                userFragment.setOnLogoutPressedListener(this);
+                setFragment(userFragment);
                 return true;
         }
         return false;
@@ -42,10 +51,13 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        instance = this;
+        diaryFragment = new DiaryFragment();
+        userFragment = new UserFragment();
 
         preferences = getSharedPreferences("AUTH", MODE_PRIVATE);
 
-        setFragment(new DiaryFragment());
+        setFragment(diaryFragment);
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -101,4 +113,10 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     public void onLogoutPressed() {
         logout();
     }
+
+    @Override
+    public void updatePage() {
+        diaryFragment.updatePage();
+    }
+
 }

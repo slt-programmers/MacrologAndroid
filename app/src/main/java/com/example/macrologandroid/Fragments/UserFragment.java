@@ -40,7 +40,6 @@ public class UserFragment extends Fragment {
     private OnLogoutPressedListener callback;
 
     public UserFragment() {
-        this.userService = new UserService();
     }
 
     public void setOnLogoutPressedListener(MainActivity main) {
@@ -64,6 +63,9 @@ public class UserFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.userService = new UserService();
+
     }
 
     @SuppressLint("CheckResult")
@@ -72,7 +74,11 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user, container, false);
 
-        fetchUserSettings();
+        if (this.userSettings == null) {
+            fetchUserSettings();
+        } else {
+            setUserData();
+        }
 
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(v -> callback.onLogoutPressed());

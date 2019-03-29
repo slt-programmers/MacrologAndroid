@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.macrologandroid.DTO.AuthenticationResponse;
+import com.example.macrologandroid.Fragments.DiaryFragment;
 import com.example.macrologandroid.Services.AuthenticationService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -33,10 +34,19 @@ public class LoginActivity extends AppCompatActivity {
 
     private AuthenticationService authService;
 
+    private OnLoggedInListener callback;
+
+    public void setOnLoggedInListener(MainActivity activity) {
+        callback = activity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        setOnLoggedInListener(MainActivity.getInstance());
+
         ActionBar actionbar = getSupportActionBar();
         if (actionbar != null) {
             actionbar.hide();
@@ -163,13 +173,17 @@ public class LoginActivity extends AppCompatActivity {
         authService.authenticate(username, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(res -> {saveCredentials(res); finish();},
+                .subscribe(res -> {saveCredentials(res); notifyDiaryFragment(); finish();},
                         err -> {
                     mLoginResultView.setText(R.string.login_failed);
                     mLoginResultView.setVisibility(View.VISIBLE);
                 }
                 );
 
+    }
+
+    private void notifyDiaryFragment() {
+        callback.updatePage();
     }
 
     @SuppressLint("CheckResult")
@@ -190,6 +204,10 @@ public class LoginActivity extends AppCompatActivity {
                 .putString("USER", result.getName())
                 .putString("TOKEN", result.getToken())
                 .apply();
+    }
+
+    public interface OnLoggedInListener {
+        void updatePage();
     }
 
 }

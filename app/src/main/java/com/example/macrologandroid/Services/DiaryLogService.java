@@ -29,8 +29,10 @@ public class DiaryLogService extends Service {
 
     private ApiService apiService;
 
+    private String token = "";
+
     public DiaryLogService() {
-        String token = MainActivity.getPreferences().getString("TOKEN", "");
+        token = MainActivity.getPreferences().getString("TOKEN", "");
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -49,6 +51,10 @@ public class DiaryLogService extends Service {
                 .build();
 
         apiService = retrofit.create(ApiService.class);
+    }
+
+    public boolean isTokenEmpty() {
+        return token.isEmpty();
     }
 
     @Override
