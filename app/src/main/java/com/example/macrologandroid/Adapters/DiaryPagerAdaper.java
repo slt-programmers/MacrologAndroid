@@ -81,6 +81,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
                     );
         } else {
             fillDiaryPage(entries, layout);
+            notifyForTotalsUpdate(date);
             container.addView(layout);
         }
         return layout;
