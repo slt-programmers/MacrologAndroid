@@ -32,4 +32,8 @@ public class DiaryLogCache {
         return logEntryCache.get(localDate);
     }
 
+    public void removeFromCache(LocalDate localDate) {
+        logEntryCache.put(localDate, null);
+    }
+
 }

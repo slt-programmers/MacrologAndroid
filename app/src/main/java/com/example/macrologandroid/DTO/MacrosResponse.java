@@ -2,7 +2,6 @@ package com.example.macrologandroid.DTO;
 
 public class MacrosResponse {
 
-
     private double protein;
     private double fat;
     private double carbs;

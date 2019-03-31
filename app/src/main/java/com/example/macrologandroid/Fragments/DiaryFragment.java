@@ -1,6 +1,7 @@
 package com.example.macrologandroid.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,15 +35,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DiaryFragment extends Fragment implements Serializable, DiaryPagerAdaper.OnTotalUpdateListener {
 
+    private static final int ADD_LOG_ENTRY_ID = 345;
+
     private View view;
-
     private ViewPager viewPager;
-
     private DiaryLogCache cache;
-
     private UserService userService;
-
     private int goalProtein, goalFat, goalCarbs;
+    private LocalDate selectedDate;
 
     public DiaryFragment() {
     }
@@ -53,6 +53,21 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         cache = DiaryLogCache.getInstance();
         userService = new UserService();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (ADD_LOG_ENTRY_ID) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    invalidateCache();
+                    setupViewPager(view);
+                }
+                break;
+            }
+        }
+    }
+
 
     @SuppressLint("CheckResult")
     @Override
@@ -69,7 +84,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         FloatingActionButton button = view.findViewById(R.id.floating_button);
         button.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddLogEntryActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, ADD_LOG_ENTRY_ID);
         });
 
         return view;
@@ -95,20 +110,8 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         super.onAttach(context);
     }
 
-    @SuppressLint("CheckResult")
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    private void invalidateCache() {
+        cache.removeFromCache(selectedDate);
     }
 
     private void setGoalIntake(UserSettings settings) {
@@ -120,7 +123,8 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     private void setupViewPager(View view) {
         TextView diaryDate = view.findViewById(R.id.diary_date);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        diaryDate.setText(LocalDate.now().format(formatter));
+        selectedDate = LocalDate.now();
+        diaryDate.setText(selectedDate.format(formatter));
 
         viewPager = view.findViewById(R.id.day_view_pager);
         DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache);
@@ -136,9 +140,9 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
 
             @Override
             public void onPageSelected(int i) {
-                LocalDate date = getDateFromPosition(i);
-                diaryDate.setText(date.format(formatter));
-                updateTotals(date);
+                selectedDate = getDateFromPosition(i);
+                diaryDate.setText(selectedDate.format(formatter));
+                updateTotals(selectedDate);
             }
 
             @Override
