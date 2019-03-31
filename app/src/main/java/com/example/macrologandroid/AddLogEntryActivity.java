@@ -87,17 +87,23 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     private void addLogEntry() {
-        int portionId = 0;
+        Long portionId = null;
         for (PortionResponse portion: selectedFood.getPortions()) {
             String portionDescription = (String) editPortionOrUnitSpinner.getSelectedItem();
             if (portionDescription.equals(portion.getDescription())) {
-                portionId = portion.getId();
+                portionId = Long.valueOf(portion.getId());
                 break;
             }
         }
 
-        LogEntryRequest entry = new LogEntryRequest(null, selectedFood.getId(), portionId,
-                1, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+        double multiplier = Double.valueOf(editGramsOrAmount.getText().toString());
+        if (portionId == null && selectedFood.getMeasurementUnit() == MeasurementUnit.GRAMS) {
+            multiplier = multiplier/100;
+        }
+
+        Long foodId = Long.valueOf(selectedFood.getId());
+        LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
+                multiplier, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 selectedMeal.toString());
         List<LogEntryRequest> entryList = new ArrayList<>();
         entryList.add(entry);
@@ -195,12 +201,16 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 switch(((AppCompatTextView)view).getText().toString()) {
                     case "Breakfast":
                         selectedMeal = Meal.BREAKFAST;
+                        break;
                     case "Lunch":
                         selectedMeal = Meal.LUNCH;
+                        break;
                     case "Dinner":
                         selectedMeal = Meal.DINNER;
+                        break;
                     case "Snacks":
                         selectedMeal = Meal.SNACKS;
+                        break;
                     default:
                         selectedMeal = Meal.BREAKFAST;
                 }

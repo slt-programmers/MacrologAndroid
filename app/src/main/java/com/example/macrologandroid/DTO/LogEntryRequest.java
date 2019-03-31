@@ -11,11 +11,11 @@ public class LogEntryRequest {
 
     @Expose
     @SerializedName("foodId")
-    private int foodId;
+    private Long foodId;
 
     @Expose
     @SerializedName("portionId")
-    private int portionId;
+    private Long portionId;
 
     @Expose
     @SerializedName("multiplier")
@@ -29,7 +29,7 @@ public class LogEntryRequest {
     @SerializedName("meal")
     private String meal;
 
-    public LogEntryRequest(Long id, int foodId, int portionId, double multiplier, String day, String meal) {
+    public LogEntryRequest(Long id, Long foodId, Long portionId, double multiplier, String day, String meal) {
         this.id = id;
         this.foodId = foodId;
         this.portionId = portionId;
@@ -46,19 +46,19 @@ public class LogEntryRequest {
         this.id = id;
     }
 
-    public int getFoodId() {
+    public Long getFoodId() {
         return foodId;
     }
 
-    public void setFoodId(int foodId) {
+    public void setFoodId(Long foodId) {
         this.foodId = foodId;
     }
 
-    public int getPortionId() {
+    public Long getPortionId() {
         return portionId;
     }
 
-    public void setPortionId(int portionId) {
+    public void setPortionId(Long portionId) {
         this.portionId = portionId;
     }
 
