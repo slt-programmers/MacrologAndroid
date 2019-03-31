@@ -81,5 +81,5 @@
     <string name="change_macros">Change macros</string>
     <string name="change_calories">Change calories</string>
     <string name="header_curved">Header curved</string>
-    <string name="meal_type">Meal</string>
+    <string name="eaten">What did you eat?</string>
 </resources>

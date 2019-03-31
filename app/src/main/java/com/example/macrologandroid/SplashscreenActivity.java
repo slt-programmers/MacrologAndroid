@@ -43,6 +43,7 @@ public class SplashscreenActivity extends AppCompatActivity {
                             finish();
                         },
                         err -> {
+                            // TODO: differentiate between timeout and token expired
                             Intent intent = new Intent(this, MainActivity.class);
                             intent.putExtra("TOKEN_EXPIRED", true);
                             startActivity(intent);
