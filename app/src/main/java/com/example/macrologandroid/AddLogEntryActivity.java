@@ -28,6 +28,7 @@ import com.example.macrologandroid.Services.DiaryLogService;
 import com.example.macrologandroid.Services.FoodService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private FoodResponse selectedFood;
     private Meal selectedMeal;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +73,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
             finish();
         });
 
-        setupSpinner();
+        setupMealSpinner();
         setupAutoCompleteTextView();
         editPortionOrUnitSpinner = findViewById(R.id.edit_portion_unit);
         editPortionOrUnitSpinner.setVisibility(View.GONE);
@@ -91,7 +93,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         for (PortionResponse portion: selectedFood.getPortions()) {
             String portionDescription = (String) editPortionOrUnitSpinner.getSelectedItem();
             if (portionDescription.equals(portion.getDescription())) {
-                portionId = Long.valueOf(portion.getId());
+                portionId = (long) portion.getId();
                 break;
             }
         }
@@ -101,7 +103,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
             multiplier = multiplier/100;
         }
 
-        Long foodId = Long.valueOf(selectedFood.getId());
+        Long foodId = (long) selectedFood.getId();
         LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
                 multiplier, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 selectedMeal.toString());
@@ -136,7 +138,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 setupPortionUnitSpinner(((AppCompatCheckedTextView) view).getText().toString());
                 saveButton.setVisibility(View.VISIBLE);
         });
-
     }
 
     private void setupPortionUnitSpinner(String foodname) {
@@ -182,7 +183,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         editGramsOrAmount.setVisibility(View.VISIBLE);
     }
 
-    private void setupSpinner() {
+    private void setupMealSpinner() {
         mealtypeSpinner = findViewById(R.id.edit_meal_type);
 
         List<String> list = new ArrayList<>();
@@ -194,7 +195,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mealtypeSpinner.setAdapter(dataAdapter);
-        mealtypeSpinner.setSelection(0);
+        setMealBasedOnTime(mealtypeSpinner);
         mealtypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -221,6 +222,28 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void setMealBasedOnTime(Spinner spinner) {
+        LocalDateTime time = LocalDateTime.now();
+        int hour = time.getHour();
+        switch(hour) {
+            case 7:
+            case 8:
+            case 9:
+                spinner.setSelection(0);
+                break;
+            case 12:
+            case 13:
+                spinner.setSelection(1);
+                break;
+            case 17:
+            case 18:
+            case 19:
+                spinner.setSelection(2);
+                break;
+            default:
+                spinner.setSelection(3);
+        }
     }
 }
