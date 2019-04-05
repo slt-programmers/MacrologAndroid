@@ -79,6 +79,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        // Do nothing
+    }
+
     private void attemptLogin() {
         resetErrors();
         mUserOrEmailView.setError(null);

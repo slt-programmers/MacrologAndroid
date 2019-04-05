@@ -15,26 +15,38 @@ import android.widget.ImageView;
 
 import com.example.macrologandroid.Services.HealthcheckService;
 
+import java.net.SocketTimeoutException;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.adapter.rxjava2.HttpException;
 
 public class SplashscreenActivity extends AppCompatActivity {
 
+    private HealthcheckService service;
+    private String token;
+    private int callCounter = 0;
+
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
-        HealthcheckService service = new HealthcheckService();
 
-        String token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", null);
+        service = new HealthcheckService();
+        token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", null);
 
         ImageView image = findViewById(R.id.animated_image);
         image.setBackgroundResource(R.drawable.hamster_wheel);
         AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
         animation.start();
 
+        doHealthCheck();
+    }
+
+    @SuppressLint("CheckResult")
+    private void doHealthCheck() {
+        callCounter++;
         service.healthcheck(token).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -43,11 +55,15 @@ public class SplashscreenActivity extends AppCompatActivity {
                             finish();
                         },
                         err -> {
-                            // TODO: differentiate between timeout and token expired
-                            Intent intent = new Intent(this, MainActivity.class);
-                            intent.putExtra("TOKEN_EXPIRED", true);
-                            startActivity(intent);
-                            finish();
+                            if (err instanceof SocketTimeoutException && callCounter < 3) {
+                                doHealthCheck();
+                            }
+                            else {
+                                Intent intent = new Intent(this, MainActivity.class);
+                                intent.putExtra("TOKEN_EXPIRED", true);
+                                startActivity(intent);
+                                finish();
+                            }
                         });
 
 
