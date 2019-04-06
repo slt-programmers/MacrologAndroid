@@ -1,14 +1,11 @@
 package com.example.macrologandroid.DTO;
 
-import com.example.macrologandroid.Models.MeasurementUnit;
-
 import java.util.List;
 
 public class FoodResponse {
 
     private int id;
     private String name;
-    private MeasurementUnit measurementUnit;
     private String unitName;
     private int unitGrams;
     private double protein;
@@ -16,10 +13,9 @@ public class FoodResponse {
     private double carbs;
     private List<PortionResponse> portions;
 
-    public FoodResponse(int id, String name, MeasurementUnit measurementUnit, String unitName, int unitGrams, double protein, double fat, double carbs, List<PortionResponse> portions) {
+    public FoodResponse(int id, String name, String unitName, int unitGrams, double protein, double fat, double carbs, List<PortionResponse> portions) {
         this.id = id;
         this.name = name;
-        this.measurementUnit = measurementUnit;
         this.unitName = unitName;
         this.unitGrams = unitGrams;
         this.protein = protein;
@@ -42,14 +38,6 @@ public class FoodResponse {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public MeasurementUnit getMeasurementUnit() {
-        return measurementUnit;
-    }
-
-    public void setMeasurementUnit(MeasurementUnit measurementUnit) {
-        this.measurementUnit = measurementUnit;
     }
 
     public String getUnitName() {
