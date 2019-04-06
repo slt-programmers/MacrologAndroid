@@ -19,11 +19,8 @@ import android.widget.Spinner;
 
 import com.example.macrologandroid.DTO.FoodResponse;
 import com.example.macrologandroid.DTO.LogEntryRequest;
-import com.example.macrologandroid.DTO.LogEntryResponse;
-import com.example.macrologandroid.DTO.MacrosResponse;
 import com.example.macrologandroid.DTO.PortionResponse;
 import com.example.macrologandroid.Models.Meal;
-import com.example.macrologandroid.Models.MeasurementUnit;
 import com.example.macrologandroid.Services.DiaryLogService;
 import com.example.macrologandroid.Services.FoodService;
 
@@ -99,7 +96,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         }
 
         double multiplier = Double.valueOf(editGramsOrAmount.getText().toString());
-        if (portionId == null && selectedFood.getMeasurementUnit() == MeasurementUnit.GRAMS) {
+        if (portionId == null) {
             multiplier = multiplier/100;
         }
 
@@ -145,12 +142,8 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 .findFirst().orElse(null);
 
         List<String> list = new ArrayList<>();
-        MeasurementUnit measurementUnit = selectedFood.getMeasurementUnit();
-        if (MeasurementUnit.UNIT == measurementUnit) {
-            list.add(selectedFood.getUnitName());
-        } else {
-            list.add("grams");
-        }
+
+        list.add(selectedFood.getUnitName());
 
         for (PortionResponse portion : selectedFood.getPortions()) {
             String desc = portion.getDescription();
@@ -166,8 +159,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         editPortionOrUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (MeasurementUnit.GRAMS == measurementUnit &&
-                        ((AppCompatTextView)view).getText().toString().equals("grams")) {
+                if (((AppCompatTextView)view).getText().toString().equals("gram")) {
                     editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
                     editGramsOrAmount.setText("100");
                 } else {
