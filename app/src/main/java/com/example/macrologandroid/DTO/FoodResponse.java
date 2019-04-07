@@ -6,18 +6,14 @@ public class FoodResponse {
 
     private int id;
     private String name;
-    private String unitName;
-    private int unitGrams;
     private double protein;
     private double fat;
     private double carbs;
     private List<PortionResponse> portions;
 
-    public FoodResponse(int id, String name, String unitName, int unitGrams, double protein, double fat, double carbs, List<PortionResponse> portions) {
+    public FoodResponse(int id, String name, double protein, double fat, double carbs, List<PortionResponse> portions) {
         this.id = id;
         this.name = name;
-        this.unitName = unitName;
-        this.unitGrams = unitGrams;
         this.protein = protein;
         this.fat = fat;
         this.carbs = carbs;
@@ -38,22 +34,6 @@ public class FoodResponse {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUnitName() {
-        return unitName;
-    }
-
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
-    }
-
-    public int getUnitGrams() {
-        return unitGrams;
-    }
-
-    public void setUnitGrams(int unitGrams) {
-        this.unitGrams = unitGrams;
     }
 
     public double getProtein() {

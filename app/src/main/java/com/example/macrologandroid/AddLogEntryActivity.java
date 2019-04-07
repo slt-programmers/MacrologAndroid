@@ -143,7 +143,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
         List<String> list = new ArrayList<>();
 
-        list.add(selectedFood.getUnitName());
+        list.add("gram");
 
         for (PortionResponse portion : selectedFood.getPortions()) {
             String desc = portion.getDescription();
