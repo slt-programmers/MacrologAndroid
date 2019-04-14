@@ -2,12 +2,13 @@ package com.example.macrologandroid.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.example.macrologandroid.Services.UserService;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -68,12 +70,19 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         }
     }
 
-
     @SuppressLint("CheckResult")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
+
+        SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(() -> {
+            cache.clearCache();
+            setupViewPager(view);
+            pullToRefresh.setRefreshing(false);
+        });
+
         userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe((result) -> {
                     setGoalIntake(new UserSettings(result));
@@ -92,7 +101,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     }
 
     @Override
-    public void onViewCreated(View view, Bundle bundle) {
+    public void onViewCreated(@NonNull View view, Bundle bundle) {
         setupViewPager(view);
 
         ImageView arrowLeft = view.findViewById(R.id.arrow_left);
@@ -104,11 +113,6 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         arrowRight.setOnClickListener((args) -> {
             viewPager.arrowScroll(View.FOCUS_RIGHT);
         });
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 
     private void invalidateCache() {
@@ -124,14 +128,18 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     private void setupViewPager(View view) {
         TextView diaryDate = view.findViewById(R.id.diary_date);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        selectedDate = LocalDate.now();
+
+        if (selectedDate == null) {
+            selectedDate = LocalDate.now();
+        }
         diaryDate.setText(selectedDate.format(formatter));
 
         viewPager = view.findViewById(R.id.day_view_pager);
         DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache);
+        adapter.setSelectedDate(selectedDate);
         adapter.setOnTotalsUpdateListener(this);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(501);
+        viewPager.setCurrentItem(getPositionFromDate(selectedDate));
 
         viewPager.arrowScroll(View.FOCUS_LEFT);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -196,9 +204,9 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         return LocalDate.now().plusDays(position - 500);
     }
 
-//    private int getPositionFromDate(LocalDate date) {
-//
-//    }
+    private int getPositionFromDate(LocalDate date) {
+        return 501 + (int) ChronoUnit.DAYS.between(LocalDate.now(), date);
+    }
 
     @SuppressLint("CheckResult")
     public void updatePage() {

@@ -36,4 +36,8 @@ public class DiaryLogCache {
         logEntryCache.put(localDate, null);
     }
 
+    public void clearCache() {
+        logEntryCache = new HashMap<>();
+    }
+
 }

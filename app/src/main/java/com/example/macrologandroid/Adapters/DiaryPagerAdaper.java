@@ -35,6 +35,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private Context context;
     private DiaryLogService service;
     private DiaryLogCache cache;
+    private LocalDate selectedDate;
 
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
@@ -52,9 +53,13 @@ public class DiaryPagerAdaper extends PagerAdapter {
         this.service = new DiaryLogService();
     }
 
+    public void setSelectedDate(LocalDate date) {
+        this.selectedDate = date;
+    }
+
     @SuppressLint("CheckResult")
     @Override
-    // Is called for item not yet visible
+    @NonNull
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.layout_diary_page, container, false);
@@ -88,7 +93,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     }
 
     private void notifyForTotalsUpdate(LocalDate date) {
-        if (date.equals(LocalDate.now())) {
+        if (date.equals(selectedDate)) {
             callback.updateTotals(date);
         }
     }
