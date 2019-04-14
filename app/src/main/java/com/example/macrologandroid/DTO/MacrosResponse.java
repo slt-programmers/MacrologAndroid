@@ -1,6 +1,8 @@
 package com.example.macrologandroid.DTO;
 
-public class MacrosResponse {
+import java.io.Serializable;
+
+public class MacrosResponse implements Serializable {
 
     private double protein;
     private double fat;

@@ -2,10 +2,11 @@ package com.example.macrologandroid.DTO;
 
 import com.example.macrologandroid.Models.Meal;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class LogEntryResponse {
+public class LogEntryResponse implements Serializable {
 
     private int id;
     private FoodResponse food;

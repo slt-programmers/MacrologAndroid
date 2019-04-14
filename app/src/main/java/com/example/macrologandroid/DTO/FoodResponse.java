@@ -1,8 +1,9 @@
 package com.example.macrologandroid.DTO;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FoodResponse {
+public class FoodResponse implements Serializable {
 
     private int id;
     private String name;

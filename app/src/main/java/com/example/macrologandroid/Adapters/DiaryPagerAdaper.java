@@ -39,7 +39,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private DiaryLogService service;
     private DiaryLogCache cache;
     private LocalDate selectedDate;
-    private Fragment diaryFragmentReference;
+    private DiaryFragment diaryFragmentReference;
 
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
@@ -50,7 +50,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
         callback = fragment;
     }
 
-    public DiaryPagerAdaper(Context context, DiaryLogCache cache, Fragment diaryFragment) {
+    public DiaryPagerAdaper(Context context, DiaryLogCache cache, DiaryFragment diaryFragment) {
         this.context = context;
         this.cache = cache;
         this.service = new DiaryLogService();
@@ -139,20 +139,16 @@ public class DiaryPagerAdaper extends PagerAdapter {
         }
 
         breakfastTable.setOnClickListener((v) -> {
-            Intent intent = new Intent(diaryFragmentReference.getActivity(), EditLogEntryActivity.class);
-            diaryFragmentReference.startActivity(intent);
+            diaryFragmentReference.startEditActivity(Meal.BREAKFAST);
         });
         lunchTable.setOnClickListener((v) -> {
-            Intent intent = new Intent(diaryFragmentReference.getActivity(), EditLogEntryActivity.class);
-            diaryFragmentReference.startActivity(intent);
+            diaryFragmentReference.startEditActivity(Meal.LUNCH);
         });
         dinnerTable.setOnClickListener((v) -> {
-            Intent intent = new Intent(diaryFragmentReference.getActivity(), EditLogEntryActivity.class);
-            diaryFragmentReference.startActivity(intent);
+            diaryFragmentReference.startEditActivity(Meal.DINNER);
         });
         snacksTable.setOnClickListener((v) -> {
-            Intent intent = new Intent(diaryFragmentReference.getActivity(), EditLogEntryActivity.class);
-            diaryFragmentReference.startActivity(intent);
+            diaryFragmentReference.startEditActivity(Meal.SNACKS);
         });
 
     }

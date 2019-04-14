@@ -1,6 +1,8 @@
 package com.example.macrologandroid.Models;
 
-public enum Meal {
+import java.io.Serializable;
+
+public enum Meal implements Serializable {
 
     BREAKFAST, LUNCH, DINNER, SNACKS
 

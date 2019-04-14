@@ -21,6 +21,8 @@ import com.example.macrologandroid.AddLogEntryActivity;
 import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.DTO.MacrosResponse;
+import com.example.macrologandroid.EditLogEntryActivity;
+import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.Models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.Services.UserService;
@@ -31,6 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -39,6 +42,7 @@ import io.reactivex.schedulers.Schedulers;
 public class DiaryFragment extends Fragment implements Serializable, DiaryPagerAdaper.OnTotalUpdateListener {
 
     private static final int ADD_LOG_ENTRY_ID = 345;
+    private static final int EDIT_LOG_ENTRY_ID = 456;
 
     private View view;
     private ViewPager viewPager;
@@ -61,7 +65,8 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
-            case (ADD_LOG_ENTRY_ID) : {
+            case (ADD_LOG_ENTRY_ID) :
+            case (EDIT_LOG_ENTRY_ID) : {
                 if (resultCode == Activity.RESULT_OK) {
                     invalidateCache();
                     setupViewPager(view);
@@ -114,6 +119,14 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         arrowRight.setOnClickListener((args) -> {
             viewPager.arrowScroll(View.FOCUS_RIGHT);
         });
+    }
+
+    public void startEditActivity(Meal meal) {
+        Intent intent = new Intent(getActivity(), EditLogEntryActivity.class);
+        List<LogEntryResponse> entries = cache.getFromCache(selectedDate);
+        entries = entries.stream().filter(entry -> entry.getMeal().equals(meal)).collect(Collectors.toList());
+        intent.putExtra("logentries", (Serializable) entries);
+        startActivityForResult(intent, EDIT_LOG_ENTRY_ID);
     }
 
     private void invalidateCache() {
