@@ -2,7 +2,9 @@ package com.example.macrologandroid.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
+import com.example.macrologandroid.EditLogEntryActivity;
 import com.example.macrologandroid.Fragments.DiaryFragment;
 import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.Models.Meal;
@@ -36,6 +39,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private DiaryLogService service;
     private DiaryLogCache cache;
     private LocalDate selectedDate;
+    private Fragment diaryFragmentReference;
 
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
@@ -46,11 +50,11 @@ public class DiaryPagerAdaper extends PagerAdapter {
         callback = fragment;
     }
 
-
-    public DiaryPagerAdaper(Context context, DiaryLogCache cache) {
+    public DiaryPagerAdaper(Context context, DiaryLogCache cache, Fragment diaryFragment) {
         this.context = context;
         this.cache = cache;
         this.service = new DiaryLogService();
+        this.diaryFragmentReference = diaryFragment;
     }
 
     public void setSelectedDate(LocalDate date) {
@@ -133,6 +137,24 @@ public class DiaryPagerAdaper extends PagerAdapter {
                 addEntryToTable(snacksTable, entry);
             }
         }
+
+        breakfastTable.setOnClickListener((v) -> {
+            Intent intent = new Intent(diaryFragmentReference.getActivity(), EditLogEntryActivity.class);
+            diaryFragmentReference.startActivity(intent);
+        });
+        lunchTable.setOnClickListener((v) -> {
+            Intent intent = new Intent(diaryFragmentReference.getActivity(), EditLogEntryActivity.class);
+            diaryFragmentReference.startActivity(intent);
+        });
+        dinnerTable.setOnClickListener((v) -> {
+            Intent intent = new Intent(diaryFragmentReference.getActivity(), EditLogEntryActivity.class);
+            diaryFragmentReference.startActivity(intent);
+        });
+        snacksTable.setOnClickListener((v) -> {
+            Intent intent = new Intent(diaryFragmentReference.getActivity(), EditLogEntryActivity.class);
+            diaryFragmentReference.startActivity(intent);
+        });
+
     }
 
     private void addEntryToTable(TableLayout table, LogEntryResponse entry) {

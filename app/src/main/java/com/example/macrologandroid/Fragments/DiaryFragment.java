@@ -137,7 +137,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         diaryDate.setText(selectedDate.format(formatter));
 
         viewPager = view.findViewById(R.id.day_view_pager);
-        DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache);
+        DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache, this);
         adapter.setSelectedDate(selectedDate);
         adapter.setOnTotalsUpdateListener(this);
         viewPager.setAdapter(adapter);

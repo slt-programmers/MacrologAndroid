@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddLogEntryActivity"></activity>
+        <activity android:name=".EditLogEntryActivity"></activity>
+        <activity android:name=".AddLogEntryActivity" />
 
         <service
             android:name=".Services.HealthcheckService"
