@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -43,7 +44,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     private ViewPager viewPager;
     private DiaryLogCache cache;
     private UserService userService;
-    private int goalProtein, goalFat, goalCarbs;
+    private int goalProtein, goalFat, goalCarbs, goalCalories;
     private LocalDate selectedDate;
 
     public DiaryFragment() {
@@ -123,6 +124,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         goalProtein = settings.getProtein();
         goalFat = settings.getFat();
         goalCarbs = settings.getCarbs();
+        goalCalories = (goalProtein * 4) + (goalFat * 9) + (goalCarbs * 4);
     }
 
     private void setupViewPager(View view) {
@@ -166,6 +168,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         double totalProtein = 0.0;
         double totalFat = 0.0;
         double totalCarbs = 0.0;
+        int totalCalories = 0;
 
         if (entries != null) {
             for (LogEntryResponse entry : entries) {
@@ -174,6 +177,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
                 totalFat += macros.getFat();
                 totalCarbs += macros.getCarbs();
             }
+            totalCalories = (int) ((totalProtein * 4) + (totalFat * 9) + (totalCarbs * 4));
         }
 
         TextView totalProteinView = view.findViewById(R.id.total_protein);
@@ -182,6 +186,9 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         totalFatView.setText(String.valueOf(Math.round(totalFat * 10) /10f));
         TextView totalCarbsView = view.findViewById(R.id.total_carbs);
         totalCarbsView.setText(String.valueOf(Math.round(totalCarbs * 10) / 10f));
+
+        TextView totalCaloriesView = view.findViewById(R.id.total_calories);
+        totalCaloriesView.setText(String.format(Locale.getDefault(), "%d/%d", totalCalories, goalCalories));
 
         setProgress(totalProtein, totalFat, totalCarbs);
     }
