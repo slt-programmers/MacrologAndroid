@@ -47,12 +47,16 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private ArrayAdapter<String> autocompleteAdapter;
     private FoodResponse selectedFood;
     private Meal selectedMeal;
+    private LocalDate selectedDate;
 
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_log_entry);
+
+        Intent intent = getIntent();
+        selectedDate = (LocalDate) intent.getSerializableExtra("date");
 
         foodService = new FoodService();
         logService = new DiaryLogService();
@@ -102,7 +106,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
         Long foodId = (long) selectedFood.getId();
         LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
-                multiplier, LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                multiplier, selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 selectedMeal.toString());
         List<LogEntryRequest> entryList = new ArrayList<>();
         entryList.add(entry);

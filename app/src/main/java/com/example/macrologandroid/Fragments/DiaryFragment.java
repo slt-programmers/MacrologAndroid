@@ -84,6 +84,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         FloatingActionButton button = view.findViewById(R.id.floating_button);
         button.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddLogEntryActivity.class);
+            intent.putExtra("date", selectedDate);
             startActivityForResult(intent, ADD_LOG_ENTRY_ID);
         });
 
@@ -194,6 +195,10 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     private LocalDate getDateFromPosition(int position) {
         return LocalDate.now().plusDays(position - 500);
     }
+
+//    private int getPositionFromDate(LocalDate date) {
+//
+//    }
 
     @SuppressLint("CheckResult")
     public void updatePage() {
