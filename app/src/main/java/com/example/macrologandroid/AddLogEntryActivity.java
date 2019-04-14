@@ -142,12 +142,8 @@ public class AddLogEntryActivity extends AppCompatActivity {
     }
 
     private void setupPortionUnitSpinner(String foodname) {
-        selectedFood = allFood.stream().filter(f -> f.getName().equals(foodname))
-                .findFirst().orElse(null);
-
+        selectedFood = allFood.stream().filter(f -> f.getName().equals(foodname)).findFirst().orElse(null);
         List<String> list = new ArrayList<>();
-
-        list.add("gram");
 
         for (PortionResponse portion : selectedFood.getPortions()) {
             String desc = portion.getDescription();
@@ -155,6 +151,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 list.add(desc);
             }
         }
+        list.add("gram");
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
