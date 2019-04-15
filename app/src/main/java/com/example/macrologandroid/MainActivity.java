@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.example.macrologandroid.Fragments.DiaryFragment;
 import com.example.macrologandroid.Fragments.MealsFragment;
 import com.example.macrologandroid.Fragments.UserFragment;
+import com.example.macrologandroid.Lifecycle.Session;
 
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener, LoginActivity.OnLoggedInListener {
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -85,6 +85,15 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     @Override
     public void onResume() {
         super.onResume();
+        if (Session.getInstance().isExpired()) {
+            startActivity(new Intent(MainActivity.this, SplashscreenActivity.class));
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Session.getInstance().resetTimestamp();
     }
 
     public static SharedPreferences getPreferences() {

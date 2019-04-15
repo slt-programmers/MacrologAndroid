@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
+import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Services.HealthcheckService;
 
 import java.net.SocketTimeoutException;
@@ -40,6 +41,8 @@ public class SplashscreenActivity extends AppCompatActivity {
         image.setBackgroundResource(R.drawable.hamster_wheel);
         AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
         animation.start();
+
+        Session.getInstance().resetTimestamp();
 
         doHealthCheck();
     }

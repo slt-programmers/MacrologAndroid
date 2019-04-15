@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.macrologandroid.DTO.FoodResponse;
 import com.example.macrologandroid.DTO.LogEntryRequest;
 import com.example.macrologandroid.DTO.PortionResponse;
+import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.Services.DiaryLogService;
 import com.example.macrologandroid.Services.FoodService;
@@ -89,6 +90,20 @@ public class AddLogEntryActivity extends AppCompatActivity {
             addLogEntry();
         });
         saveButton.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Session.getInstance().resetTimestamp();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Session.getInstance().isExpired()) {
+            startActivity(new Intent(AddLogEntryActivity.this, SplashscreenActivity.class));
+        }
     }
 
     @SuppressLint("CheckResult")

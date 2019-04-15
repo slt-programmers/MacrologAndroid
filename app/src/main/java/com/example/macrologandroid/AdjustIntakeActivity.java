@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.example.macrologandroid.DTO.UserSettingResponse;
 import com.example.macrologandroid.Fragments.ChangeCaloriesFragment;
+import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Models.ChangeGoalMacros;
 import com.example.macrologandroid.Fragments.ChangeMacrosFragment;
 import com.example.macrologandroid.Models.UserSettings;
@@ -67,6 +68,20 @@ public class AdjustIntakeActivity extends AppCompatActivity {
 
         Button backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(v -> finish());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Session.getInstance().resetTimestamp();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Session.getInstance().isExpired()) {
+            startActivity(new Intent(AdjustIntakeActivity.this, SplashscreenActivity.class));
+        }
     }
 
     private void setFragment(Fragment fragment) {

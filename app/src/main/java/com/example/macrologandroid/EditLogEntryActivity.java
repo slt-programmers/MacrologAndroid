@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.example.macrologandroid.DTO.LogEntryRequest;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.DTO.PortionResponse;
+import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Services.DiaryLogService;
 
 import java.text.SimpleDateFormat;
@@ -62,6 +63,20 @@ public class EditLogEntryActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> {
             saveLogEntries();
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Session.getInstance().resetTimestamp();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Session.getInstance().isExpired()) {
+            startActivity(new Intent(EditLogEntryActivity.this, SplashscreenActivity.class));
+        }
     }
 
     private void fillLogEntrylayout() {

@@ -1,6 +1,7 @@
 package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Services.AuthenticationService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -50,6 +52,20 @@ public class ChangePasswordActivity extends AppCompatActivity {
         changeButton.setOnClickListener(v -> {
             changePassword();
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Session.getInstance().resetTimestamp();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Session.getInstance().isExpired()) {
+            startActivity(new Intent(ChangePasswordActivity.this, SplashscreenActivity.class));
+        }
     }
 
     @SuppressLint("CheckResult")

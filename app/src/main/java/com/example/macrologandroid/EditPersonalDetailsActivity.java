@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.example.macrologandroid.DTO.UserSettingResponse;
+import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Models.Gender;
 import com.example.macrologandroid.Services.UserService;
 
@@ -83,6 +84,20 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> {
             saveSettings();
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Session.getInstance().resetTimestamp();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Session.getInstance().isExpired()) {
+            startActivity(new Intent(EditPersonalDetailsActivity.this, SplashscreenActivity.class));
+        }
     }
 
     private void setupSpinner() {

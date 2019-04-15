@@ -1,6 +1,7 @@
 package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.macrologandroid.DTO.AuthenticationResponse;
 import com.example.macrologandroid.Fragments.DiaryFragment;
+import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Services.AuthenticationService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -77,6 +79,20 @@ public class LoginActivity extends AppCompatActivity {
 
         authService = new AuthenticationService();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Session.getInstance().isExpired()) {
+            startActivity(new Intent(LoginActivity.this, SplashscreenActivity.class));
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Session.getInstance().resetTimestamp();
     }
 
     @Override
