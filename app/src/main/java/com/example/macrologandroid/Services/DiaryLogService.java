@@ -22,6 +22,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -39,7 +40,8 @@ public class DiaryLogService extends Service {
         client.addInterceptor(chain -> {
             Request original = chain.request();
             Request request = original.newBuilder()
-                    .header("Authorization", "Bearer " + token)
+                    .addHeader("Authorization", "Bearer " + token)
+                    .addHeader("Content-Type", "application/json")
                     .method(original.method(), original.body())
                     .build();
             return chain.proceed(request);
@@ -72,6 +74,10 @@ public class DiaryLogService extends Service {
         return apiService.postLogEntry(entries);
     }
 
+    public Observable<ResponseBody> deleteLogEntry(long id) {
+        return apiService.deleteLogEntry((int) id);
+    }
+
     private interface ApiService {
 
         @GET("logs/day/{date}")
@@ -79,6 +85,9 @@ public class DiaryLogService extends Service {
 
         @POST("logs")
         Observable<ResponseBody> postLogEntry(@Body List<LogEntryRequest> entries);
+
+        @DELETE("logs/{id}")
+        Observable<ResponseBody> deleteLogEntry(@Path("id") int id);
 
     }
 }

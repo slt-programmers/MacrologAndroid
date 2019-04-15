@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.macrologandroid.Models.ChangeGoalMacros;
 import com.example.macrologandroid.Models.Gender;
 import com.example.macrologandroid.Models.UserSettings;
 import com.example.macrologandroid.R;

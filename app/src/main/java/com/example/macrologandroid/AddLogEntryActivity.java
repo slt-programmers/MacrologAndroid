@@ -9,13 +9,16 @@ import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.macrologandroid.DTO.FoodResponse;
 import com.example.macrologandroid.DTO.LogEntryRequest;
@@ -139,6 +142,21 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 setupPortionUnitSpinner(((AppCompatCheckedTextView) view).getText().toString());
                 saveButton.setVisibility(View.VISIBLE);
         });
+
+//        foodTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+//                    if (autocompleteAdapter.getCount() != 0) {
+//                        foodTextView.setSelection(0);
+//                        foodTextView.performCompletion();
+//                    }
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+
     }
 
     private void setupPortionUnitSpinner(String foodname) {

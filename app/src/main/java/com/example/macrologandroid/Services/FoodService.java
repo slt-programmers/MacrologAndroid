@@ -63,6 +63,7 @@ public class FoodService extends Service {
     }
 
     private interface ApiService {
+
         @GET("food")
         Observable<List<FoodResponse>> getAlFood();
 

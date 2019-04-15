@@ -13,7 +13,7 @@ import android.widget.Button;
 
 import com.example.macrologandroid.DTO.UserSettingResponse;
 import com.example.macrologandroid.Fragments.ChangeCaloriesFragment;
-import com.example.macrologandroid.Fragments.ChangeGoalMacros;
+import com.example.macrologandroid.Models.ChangeGoalMacros;
 import com.example.macrologandroid.Fragments.ChangeMacrosFragment;
 import com.example.macrologandroid.Models.UserSettings;
 import com.example.macrologandroid.Services.UserService;

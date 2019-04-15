@@ -1,14 +1,14 @@
 package com.example.macrologandroid;
 
-import android.content.res.Resources;
-import android.graphics.Color;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,55 +20,38 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.macrologandroid.DTO.LogEntryRequest;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.DTO.PortionResponse;
+import com.example.macrologandroid.Services.DiaryLogService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class EditLogEntryActivity extends AppCompatActivity {
 
+    private DiaryLogService diaryLogService;
     private LinearLayout logentryLayout;
-    private List<LogEntryResponse> originalEntries;
+    private List<LogEntryResponse> logEntries;
     private List<LogEntryResponse> copyEntries;
-    private EditText foodAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_log_entry);
 
+        diaryLogService = new DiaryLogService();
+
         logentryLayout = findViewById(R.id.logentry_layout);
-        originalEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("logentries");
-        copyEntries = originalEntries;
+        logEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("logentries");
+        copyEntries = new ArrayList<>(logEntries);
 
-        for (LogEntryResponse entry : originalEntries) {
-            ConstraintLayout logentry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
-
-            TextView foodNameTextView = logentry.findViewById(R.id.food_name);
-            foodNameTextView.setText(entry.getFood().getName());
-
-            ImageView trashImageView = logentry.findViewById(R.id.trash_icon);
-            trashImageView.setOnClickListener((v) -> {
-                originalEntries.remove(entry);
-            });
-
-            Spinner foodPortion = logentry.findViewById(R.id.portion_spinner);
-            setupSpinner(foodPortion, entry);
-
-            EditText foodAmount = logentry.findViewById(R.id.food_amount);
-            foodAmount.setId(R.id.food_amount);
-
-            if (entry.getPortion() == null) {
-                foodAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
-                foodAmount.setText(String.valueOf(entry.getMultiplier() * 100));
-            } else {
-                foodAmount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                foodAmount.setText(String.valueOf(entry.getMultiplier()));
-            }
-
-            logentryLayout.addView(logentry);
-        }
+        fillLogEntrylayout();
 
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> {
@@ -81,11 +64,124 @@ public class EditLogEntryActivity extends AppCompatActivity {
         });
     }
 
-    private void saveLogEntries() {
+    private void fillLogEntrylayout() {
+        for (LogEntryResponse entry : logEntries) {
+            ConstraintLayout logentry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
 
+            TextView foodNameTextView = logentry.findViewById(R.id.food_name);
+            foodNameTextView.setText(entry.getFood().getName());
+
+            ImageView trashImageView = logentry.findViewById(R.id.trash_icon);
+            trashImageView.setOnClickListener((v) -> {
+                toggleToRemoveEntry(entry);
+            });
+
+            EditText foodAmount = logentry.findViewById(R.id.food_amount);
+            foodAmount.setId(R.id.food_amount);
+
+            if (entry.getPortion() == null) {
+                foodAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
+                foodAmount.setText(String.valueOf(Math.round(entry.getMultiplier() * 100)));
+            } else {
+                foodAmount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                foodAmount.setText(String.valueOf(entry.getMultiplier()));
+            }
+
+            Spinner foodPortion = logentry.findViewById(R.id.portion_spinner);
+            setupSpinner(foodPortion, entry, foodAmount);
+
+            logentryLayout.addView(logentry);
+        }
     }
 
-    private void setupSpinner(Spinner foodPortion, LogEntryResponse entry) {
+    @SuppressLint("CheckResult")
+    private void toggleToRemoveEntry(LogEntryResponse entry) {
+        int index = logEntries.indexOf(entry);
+
+        ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
+        TextView foodName = (TextView) logEntryLayout.getChildAt(0);
+        ImageView trashcan = (ImageView) logEntryLayout.getChildAt(1);
+        View foodSpinner = logEntryLayout.getChildAt(2);
+        View foodAmount = logEntryLayout.getChildAt(3);
+
+        if (copyEntries.indexOf(entry) == -1) {
+            // item was removed, so add it again
+            if (index > copyEntries.size()) {
+                copyEntries.add(entry);
+            } else {
+                copyEntries.add(index, entry);
+            }
+            foodName.setAlpha(1f);
+            trashcan.setImageResource(R.drawable.ic_trashcan);
+            foodSpinner.setVisibility(View.VISIBLE);
+            foodAmount.setVisibility(View.VISIBLE);
+        } else {
+            copyEntries.remove(entry);
+            foodName.setAlpha(0.4f);
+            trashcan.setImageResource(R.drawable.ic_replay);
+            foodSpinner.setVisibility(View.GONE);
+            foodAmount.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    private void saveLogEntries() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        List<LogEntryRequest> newEntries = new ArrayList<>();
+        for (LogEntryResponse entry : logEntries) {
+            if (copyEntries.indexOf(entry) == -1) {
+                diaryLogService.deleteLogEntry(entry.getId()).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(res -> {
+
+                                },
+                                err -> {
+
+                                });
+            } else {
+                int index = logEntries.indexOf(entry);
+                ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
+                Spinner foodSpinner = (Spinner) logEntryLayout.getChildAt(2);
+                String item = (String) foodSpinner.getSelectedItem();
+
+                EditText foodAmount = ((TextInputLayout) logEntryLayout.getChildAt(3)).getEditText();
+                double multiplier = Double.valueOf(foodAmount.getText().toString());
+
+                Long portionId = null;
+                if (!item.equals("gram")) {
+                    for (PortionResponse portion : entry.getFood().getPortions()) {
+                        if (portion.getDescription().equals(item)) {
+                            portionId = (long) portion.getId();
+                            break;
+                        }
+                    }
+                } else {
+                    multiplier = multiplier / 100;
+                }
+
+                LogEntryRequest request = new LogEntryRequest(
+                        (long) entry.getId(),
+                        (long) entry.getFood().getId(),
+                        portionId,
+                        multiplier,
+                        format.format(entry.getDay()),
+                        entry.getMeal().toString()
+                );
+                newEntries.add(request);
+            }
+        }
+
+        diaryLogService.postLogEntry(newEntries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("RELOAD", true);
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish();
+                });
+    }
+
+    private void setupSpinner(Spinner foodPortion, LogEntryResponse entry, EditText foodAmount) {
         List<String> list = new ArrayList<>();
         List<PortionResponse> allPortions = entry.getFood().getPortions();
         for (PortionResponse portion : allPortions) {
@@ -98,26 +194,27 @@ public class EditLogEntryActivity extends AppCompatActivity {
         foodPortion.setAdapter(dataAdapter);
         PortionResponse selectedPortion = entry.getPortion();
         if (selectedPortion != null) {
-             foodPortion.setSelection(list.indexOf(selectedPortion.getDescription()));
+            foodPortion.setSelection(list.indexOf(selectedPortion.getDescription()));
         } else {
             foodPortion.setSelection(list.size() - 1);
         }
 
-//        foodPortion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (((AppCompatTextView)view).getText().toString().equals("gram")) {
-//                    foodAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
-//                    foodAmount.setText(String.valueOf(entry.getMultiplier() * 100));
-//                } else {
-//                    foodAmount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-//                    foodAmount.setText(String.valueOf(entry.getMultiplier()));
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) { }
-//        });
+        foodPortion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (((AppCompatTextView) view).getText().toString().equals("gram")) {
+                    foodAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    foodAmount.setText(String.valueOf(Math.round(entry.getMultiplier() * 100)));
+                } else {
+                    foodAmount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    foodAmount.setText(String.valueOf(entry.getMultiplier()));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
 }
