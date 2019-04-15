@@ -9,23 +9,20 @@ import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.macrologandroid.DTO.FoodResponse;
 import com.example.macrologandroid.DTO.LogEntryRequest;
 import com.example.macrologandroid.DTO.PortionResponse;
 import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Models.Meal;
-import com.example.macrologandroid.Services.DiaryLogService;
+import com.example.macrologandroid.Services.LogEntryService;
 import com.example.macrologandroid.Services.FoodService;
 
 import java.time.LocalDate;
@@ -45,7 +42,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private EditText editGramsOrAmount;
     private Button saveButton;
     private FoodService foodService;
-    private DiaryLogService logService;
+    private LogEntryService logService;
     private List<FoodResponse> allFood;
     private List<String> foodNames = new ArrayList<>();
     private ArrayAdapter<String> autocompleteAdapter;
@@ -63,7 +60,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         selectedDate = (LocalDate) intent.getSerializableExtra("date");
 
         foodService = new FoodService();
-        logService = new DiaryLogService();
+        logService = new LogEntryService();
         foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     allFood = res;

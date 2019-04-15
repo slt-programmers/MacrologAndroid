@@ -2,9 +2,7 @@ package com.example.macrologandroid.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,16 +15,12 @@ import android.widget.TextView;
 
 import com.example.macrologandroid.Cache.DiaryLogCache;
 import com.example.macrologandroid.DTO.LogEntryResponse;
-import com.example.macrologandroid.EditLogEntryActivity;
 import com.example.macrologandroid.Fragments.DiaryFragment;
-import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.R;
-import com.example.macrologandroid.Services.DiaryLogService;
+import com.example.macrologandroid.Services.LogEntryService;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,7 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 public class DiaryPagerAdaper extends PagerAdapter {
 
     private Context context;
-    private DiaryLogService service;
+    private LogEntryService service;
     private DiaryLogCache cache;
     private LocalDate selectedDate;
     private DiaryFragment diaryFragmentReference;
@@ -53,7 +47,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     public DiaryPagerAdaper(Context context, DiaryLogCache cache, DiaryFragment diaryFragment) {
         this.context = context;
         this.cache = cache;
-        this.service = new DiaryLogService();
+        this.service = new LogEntryService();
         this.diaryFragmentReference = diaryFragment;
     }
 

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,7 +23,7 @@ import com.example.macrologandroid.DTO.LogEntryRequest;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.DTO.PortionResponse;
 import com.example.macrologandroid.Lifecycle.Session;
-import com.example.macrologandroid.Services.DiaryLogService;
+import com.example.macrologandroid.Services.LogEntryService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EditLogEntryActivity extends AppCompatActivity {
 
-    private DiaryLogService diaryLogService;
+    private LogEntryService logEntryService;
     private LinearLayout logentryLayout;
     private List<LogEntryResponse> logEntries;
     private List<LogEntryResponse> copyEntries;
@@ -46,7 +45,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_log_entry);
 
-        diaryLogService = new DiaryLogService();
+        logEntryService = new LogEntryService();
 
         logentryLayout = findViewById(R.id.logentry_layout);
         logEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("logentries");
@@ -146,7 +145,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         List<LogEntryRequest> newEntries = new ArrayList<>();
         for (LogEntryResponse entry : logEntries) {
             if (copyEntries.indexOf(entry) == -1) {
-                diaryLogService.deleteLogEntry(entry.getId()).subscribeOn(Schedulers.io())
+                logEntryService.deleteLogEntry(entry.getId()).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(res -> {
 
@@ -187,7 +186,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
             }
         }
 
-        diaryLogService.postLogEntry(newEntries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        logEntryService.postLogEntry(newEntries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("RELOAD", true);

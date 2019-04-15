@@ -28,13 +28,13 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public class DiaryLogService extends Service {
+public class LogEntryService extends Service {
 
     private ApiService apiService;
 
     private String token = "";
 
-    public DiaryLogService() {
+    public LogEntryService() {
         token = MainActivity.getPreferences().getString("TOKEN", "");
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
