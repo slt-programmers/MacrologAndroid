@@ -82,15 +82,15 @@ public class AddLogEntryActivity extends AppCompatActivity {
         setupMealSpinner();
         setupAutoCompleteTextView();
         editPortionOrUnitSpinner = findViewById(R.id.edit_portion_unit);
-        editPortionOrUnitSpinner.setVisibility(View.GONE);
+        editPortionOrUnitSpinner.setVisibility(View.INVISIBLE);
         editGramsOrAmount = findViewById(R.id.edit_grams_amount);
-        editGramsOrAmount.setVisibility(View.GONE);
+        editGramsOrAmount.setVisibility(View.INVISIBLE);
 
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(v -> {
             addLogEntry();
         });
-        saveButton.setVisibility(View.GONE);
+        saveButton.setVisibility(View.INVISIBLE);
     }
 
     @Override

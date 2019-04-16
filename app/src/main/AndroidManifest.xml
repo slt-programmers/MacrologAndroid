@@ -11,8 +11,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditLogEntryActivity"></activity>
-        <activity android:name=".AddLogEntryActivity" />
+        <activity
+            android:name=".SplashscreenActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".EditPersonalDetailsActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/title_edit_details" />
+        <activity
+            android:name=".AdjustIntakeActivity"
+            android:label="@string/title_adjust_intake" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
+            android:name=".EditLogEntryActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
+            android:name=".AddLogEntryActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
 
         <service
             android:name=".Services.HealthcheckService"
@@ -23,28 +55,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity
-            android:name=".SplashscreenActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
 
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" />
-        <activity
-            android:name=".EditPersonalDetailsActivity"
-            android:label="@string/title_edit_details" />
-        <activity
-            android:name=".AdjustIntakeActivity"
-            android:label="@string/title_adjust_intake" />
-        <activity android:name=".ChangePasswordActivity" />
     </application>
 
 </manifest>

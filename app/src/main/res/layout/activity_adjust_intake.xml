@@ -5,15 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     tools:context=".LoginActivity">
 
     <Button
         android:id="@+id/backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         style="@style/buttonBack"
@@ -33,7 +30,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
 
             <Button
                 android:id="@+id/button_macros"
