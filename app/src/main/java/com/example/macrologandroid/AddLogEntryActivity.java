@@ -8,14 +8,18 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
+import android.text.method.Touch;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.macrologandroid.DTO.FoodResponse;
 import com.example.macrologandroid.DTO.LogEntryRequest;
@@ -150,29 +154,45 @@ public class AddLogEntryActivity extends AppCompatActivity {
         foodTextView.setAdapter(autocompleteAdapter);
         foodTextView.setThreshold(1);
         foodTextView.setOnItemClickListener((parent, view, position, id) -> {
-                editPortionOrUnitSpinner.setVisibility(View.VISIBLE);
                 setupPortionUnitSpinner(((AppCompatCheckedTextView) view).getText().toString());
-                saveButton.setVisibility(View.VISIBLE);
+                toggleFields(true);
+                editGramsOrAmount.requestFocus();
         });
 
-//        foodTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_NEXT) {
-//                    if (autocompleteAdapter.getCount() != 0) {
-//                        foodTextView.setSelection(0);
-//                        foodTextView.performCompletion();
-//                    }
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+        foodTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT
+                        && foodTextView.isPopupShowing()
+                        && autocompleteAdapter.getCount() != 0) {
+                    String selectedOption = autocompleteAdapter.getItem(0);
+                    if (selectedOption != null) {
+                        foodTextView.setText(selectedOption);
+                        foodTextView.dismissDropDown();
+                        setupPortionUnitSpinner(selectedOption);
+                        toggleFields(true);
+                        editGramsOrAmount.requestFocus();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
 
+    private void toggleFields(boolean visible) {
+        if (visible) {
+            editPortionOrUnitSpinner.setVisibility(View.VISIBLE);
+            saveButton.setVisibility(View.VISIBLE);
+        } else {
+            editPortionOrUnitSpinner.setVisibility(View.GONE);
+            saveButton.setVisibility(View.GONE);
+        }
+    }
+
     private void setupPortionUnitSpinner(String foodname) {
-        selectedFood = allFood.stream().filter(f -> f.getName().equals(foodname)).findFirst().orElse(null);
+        selectedFood = allFood.stream().filter(f -> f.getName().trim().equals(foodname.trim())).findFirst().orElse(null);
         List<String> list = new ArrayList<>();
 
         for (PortionResponse portion : selectedFood.getPortions()) {
@@ -193,9 +213,11 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 if (((AppCompatTextView)view).getText().toString().equals("gram")) {
                     editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
                     editGramsOrAmount.setText("100");
+                    editGramsOrAmount.setSelection(3);
                 } else {
-                    editGramsOrAmount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                     editGramsOrAmount.setText("1");
+                    editGramsOrAmount.setSelection(1);
                 }
             }
 
@@ -238,6 +260,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     default:
                         selectedMeal = Meal.BREAKFAST;
                 }
+                foodTextView.requestFocus();
             }
 
             @Override
