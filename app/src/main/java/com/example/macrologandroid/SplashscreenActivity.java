@@ -7,12 +7,15 @@ import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.macrologandroid.Lifecycle.Session;
 import com.example.macrologandroid.Services.HealthcheckService;
@@ -29,6 +32,7 @@ public class SplashscreenActivity extends AppCompatActivity {
     private String token;
     private int callCounter = 0;
     private Boolean expired;
+    private Handler handler;
 
     @SuppressLint("CheckResult")
     @Override
@@ -40,9 +44,18 @@ public class SplashscreenActivity extends AppCompatActivity {
         token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", null);
 
         ImageView image = findViewById(R.id.animated_image);
-        image.setBackgroundResource(R.drawable.hamster_wheel);
-        AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
-        animation.start();
+        TextView waitMessage = findViewById(R.id.wait_message);
+
+        handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                image.setBackgroundResource(R.drawable.hamster_wheel);
+                AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
+                animation.start();
+                waitMessage.setVisibility(View.VISIBLE);
+            }
+        }, 2000);
 
         Intent intent = getIntent();
         expired = (Boolean) intent.getSerializableExtra("SESSION_EXPIRED");
