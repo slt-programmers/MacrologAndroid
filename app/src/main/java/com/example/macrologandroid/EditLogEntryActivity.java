@@ -70,6 +70,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> {
             saveLogEntries();
         });
+        if (logEntries.size() == 0) {
+            saveButton.setEnabled(false);
+        }
 
         FloatingActionButton button = findViewById(R.id.floating_button);
         button.setOnClickListener(v -> {
@@ -90,8 +93,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            startActivity(new Intent(EditLogEntryActivity.this, SplashscreenActivity.class));
-        }
+            Intent intent = new Intent(EditLogEntryActivity.this, SplashscreenActivity.class);
+            intent.putExtra("SESSION_EXPIRED", true);
+            startActivity(intent);        }
     }
 
     private void fillLogEntrylayout() {

@@ -96,8 +96,9 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            startActivity(new Intent(EditPersonalDetailsActivity.this, SplashscreenActivity.class));
-        }
+            Intent intent = new Intent(EditPersonalDetailsActivity.this, SplashscreenActivity.class);
+            intent.putExtra("SESSION_EXPIRED", true);
+            startActivity(intent);        }
     }
 
     private void setupSpinner() {

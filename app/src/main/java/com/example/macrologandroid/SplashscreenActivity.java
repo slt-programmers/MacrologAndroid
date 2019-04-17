@@ -1,6 +1,7 @@
 package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
@@ -27,6 +28,7 @@ public class SplashscreenActivity extends AppCompatActivity {
     private HealthcheckService service;
     private String token;
     private int callCounter = 0;
+    private Boolean expired;
 
     @SuppressLint("CheckResult")
     @Override
@@ -42,6 +44,9 @@ public class SplashscreenActivity extends AppCompatActivity {
         AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
         animation.start();
 
+        Intent intent = getIntent();
+        expired = (Boolean) intent.getSerializableExtra("SESSION_EXPIRED");
+
         Session.getInstance().resetTimestamp();
 
         doHealthCheck();
@@ -54,8 +59,12 @@ public class SplashscreenActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         res -> {
-                            startActivity(new Intent(SplashscreenActivity.this, MainActivity.class));
-                            finish();
+                            if (expired) {
+                                finish();
+                            } else {
+                                startActivity(new Intent(SplashscreenActivity.this, MainActivity.class));
+                                finish();
+                            }
                         },
                         err -> {
                             if (err instanceof SocketTimeoutException && callCounter < 3) {

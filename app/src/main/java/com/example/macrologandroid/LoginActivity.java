@@ -85,8 +85,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            startActivity(new Intent(LoginActivity.this, SplashscreenActivity.class));
-        }
+            Intent intent = new Intent(LoginActivity.this, SplashscreenActivity.class);
+            intent.putExtra("SESSION_EXPIRED", true);
+            startActivity(intent);        }
     }
 
     @Override

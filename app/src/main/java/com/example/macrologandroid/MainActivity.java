@@ -86,7 +86,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            startActivity(new Intent(MainActivity.this, SplashscreenActivity.class));
+            Intent intent = new Intent(MainActivity.this, SplashscreenActivity.class);
+            intent.putExtra("SESSION_EXPIRED", true);
+            startActivity(intent);
         }
     }
 

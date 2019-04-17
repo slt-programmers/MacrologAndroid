@@ -64,8 +64,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            startActivity(new Intent(ChangePasswordActivity.this, SplashscreenActivity.class));
-        }
+            Intent intent = new Intent(ChangePasswordActivity.this, SplashscreenActivity.class);
+            intent.putExtra("SESSION_EXPIRED", true);
+            startActivity(intent);        }
     }
 
     @SuppressLint("CheckResult")

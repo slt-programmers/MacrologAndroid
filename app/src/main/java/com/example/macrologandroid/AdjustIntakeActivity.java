@@ -80,8 +80,9 @@ public class AdjustIntakeActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            startActivity(new Intent(AdjustIntakeActivity.this, SplashscreenActivity.class));
-        }
+            Intent intent = new Intent(AdjustIntakeActivity.this, SplashscreenActivity.class);
+            intent.putExtra("SESSION_EXPIRED", true);
+            startActivity(intent);        }
     }
 
     private void setFragment(Fragment fragment) {
