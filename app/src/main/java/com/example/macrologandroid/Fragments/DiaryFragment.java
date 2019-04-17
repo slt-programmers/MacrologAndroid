@@ -125,8 +125,11 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         Intent intent = new Intent(getActivity(), EditLogEntryActivity.class);
         List<LogEntryResponse> entries = cache.getFromCache(selectedDate);
         entries = entries.stream().filter(entry -> entry.getMeal().equals(meal)).collect(Collectors.toList());
-        intent.putExtra("logentries", (Serializable) entries);
-        startActivityForResult(intent, EDIT_LOG_ENTRY_ID);
+        if (entries.size() != 0) {
+            intent.putExtra("date", selectedDate);
+            intent.putExtra("logentries", (Serializable) entries);
+            startActivityForResult(intent, EDIT_LOG_ENTRY_ID);
+        }
     }
 
     private void invalidateCache() {

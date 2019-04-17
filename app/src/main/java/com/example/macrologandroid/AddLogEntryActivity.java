@@ -53,6 +53,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private FoodResponse selectedFood;
     private Meal selectedMeal;
     private LocalDate selectedDate;
+    private Meal meal;
 
     @SuppressLint("CheckResult")
     @Override
@@ -62,6 +63,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         selectedDate = (LocalDate) intent.getSerializableExtra("date");
+        meal = (Meal) intent.getSerializableExtra("meal");
 
         foodService = new FoodService();
         logService = new LogEntryService();
@@ -240,34 +242,43 @@ public class AddLogEntryActivity extends AppCompatActivity {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mealtypeSpinner.setAdapter(dataAdapter);
-        setMealBasedOnTime(mealtypeSpinner);
-        mealtypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch(((AppCompatTextView)view).getText().toString()) {
-                    case "Breakfast":
-                        selectedMeal = Meal.BREAKFAST;
-                        break;
-                    case "Lunch":
-                        selectedMeal = Meal.LUNCH;
-                        break;
-                    case "Dinner":
-                        selectedMeal = Meal.DINNER;
-                        break;
-                    case "Snacks":
-                        selectedMeal = Meal.SNACKS;
-                        break;
-                    default:
-                        selectedMeal = Meal.BREAKFAST;
+
+        if (meal == null) {
+            setMealBasedOnTime(mealtypeSpinner);
+            mealtypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    switch (((AppCompatTextView) view).getText().toString()) {
+                        case "Breakfast":
+                            selectedMeal = Meal.BREAKFAST;
+                            break;
+                        case "Lunch":
+                            selectedMeal = Meal.LUNCH;
+                            break;
+                        case "Dinner":
+                            selectedMeal = Meal.DINNER;
+                            break;
+                        case "Snacks":
+                            selectedMeal = Meal.SNACKS;
+                            break;
+                        default:
+                            selectedMeal = Meal.BREAKFAST;
+                    }
+                    foodTextView.requestFocus();
                 }
-                foodTextView.requestFocus();
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+        } else {
+            selectedMeal = meal;
+            String capitalizedString = meal.toString().substring(0, 1).toUpperCase() + meal.toString().substring(1).toLowerCase();
+            mealtypeSpinner.setSelection(list.indexOf(capitalizedString));
+            mealtypeSpinner.setEnabled(false);
+            mealtypeSpinner.setClickable(false);
+        }
     }
 
     private void setMealBasedOnTime(Spinner spinner) {

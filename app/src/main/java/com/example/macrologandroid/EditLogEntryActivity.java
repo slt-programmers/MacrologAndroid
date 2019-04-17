@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,9 +24,11 @@ import com.example.macrologandroid.DTO.LogEntryRequest;
 import com.example.macrologandroid.DTO.LogEntryResponse;
 import com.example.macrologandroid.DTO.PortionResponse;
 import com.example.macrologandroid.Lifecycle.Session;
+import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.Services.LogEntryService;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -35,20 +38,25 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EditLogEntryActivity extends AppCompatActivity {
 
+    private static final int ADD_LOG_ENTRY_ID = 345;
+
     private LogEntryService logEntryService;
     private LinearLayout logentryLayout;
     private List<LogEntryResponse> logEntries;
     private List<LogEntryResponse> copyEntries;
+    private Meal meal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_log_entry);
 
+        LocalDate selectedDate = (LocalDate) getIntent().getSerializableExtra("date");
         logEntryService = new LogEntryService();
 
         logentryLayout = findViewById(R.id.logentry_layout);
         logEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("logentries");
+        meal = logEntries.get(0).getMeal();
         copyEntries = new ArrayList<>(logEntries);
 
         fillLogEntrylayout();
@@ -61,6 +69,14 @@ public class EditLogEntryActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(v -> {
             saveLogEntries();
+        });
+
+        FloatingActionButton button = findViewById(R.id.floating_button);
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(EditLogEntryActivity.this, AddLogEntryActivity.class);
+            intent.putExtra("date", selectedDate);
+            intent.putExtra("meal", meal);
+            startActivityForResult(intent, ADD_LOG_ENTRY_ID);
         });
     }
 
