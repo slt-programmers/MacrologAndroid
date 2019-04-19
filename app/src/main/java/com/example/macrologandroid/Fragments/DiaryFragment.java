@@ -99,7 +99,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         FloatingActionButton button = view.findViewById(R.id.floating_button);
         button.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddLogEntryActivity.class);
-            intent.putExtra("date", selectedDate);
+            intent.putExtra("DATE", selectedDate);
             startActivityForResult(intent, ADD_LOG_ENTRY_ID);
         });
 
@@ -125,8 +125,9 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         Intent intent = new Intent(getActivity(), EditLogEntryActivity.class);
         List<LogEntryResponse> entries = cache.getFromCache(selectedDate);
         entries = entries.stream().filter(entry -> entry.getMeal().equals(meal)).collect(Collectors.toList());
-        intent.putExtra("date", selectedDate);
-        intent.putExtra("logentries", (Serializable) entries);
+        intent.putExtra("DATE", selectedDate);
+        intent.putExtra("MEAL", meal);
+        intent.putExtra("LOGENTRIES", (Serializable) entries);
         startActivityForResult(intent, EDIT_LOG_ENTRY_ID);
     }
 

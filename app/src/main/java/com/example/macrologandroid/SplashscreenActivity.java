@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,7 +33,6 @@ public class SplashscreenActivity extends AppCompatActivity {
     private String token;
     private int callCounter = 0;
     private Boolean expired;
-    private Handler handler;
 
     @SuppressLint("CheckResult")
     @Override
@@ -46,15 +46,17 @@ public class SplashscreenActivity extends AppCompatActivity {
         ImageView image = findViewById(R.id.animated_image);
         TextView waitMessage = findViewById(R.id.wait_message);
 
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                image.setBackgroundResource(R.drawable.hamster_wheel);
-                AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
-                animation.start();
-                waitMessage.setVisibility(View.VISIBLE);
-            }
+        Handler handler = new Handler();
+        Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+        fadeIn.setDuration(1000);
+        handler.postDelayed(() -> {
+            image.setBackgroundResource(R.drawable.hamster_wheel);
+            AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
+            animation.start();
+
+            image.startAnimation(fadeIn);
+            waitMessage.setVisibility(View.VISIBLE);
+            waitMessage.startAnimation(fadeIn);
         }, 2000);
 
         Intent intent = getIntent();
@@ -72,7 +74,7 @@ public class SplashscreenActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         res -> {
-                            if (expired) {
+                            if (expired != null) {
                                 finish();
                             } else {
                                 startActivity(new Intent(SplashscreenActivity.this, MainActivity.class));

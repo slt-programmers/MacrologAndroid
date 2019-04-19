@@ -29,6 +29,7 @@ import com.example.macrologandroid.Models.Meal;
 import com.example.macrologandroid.Services.LogEntryService;
 import com.example.macrologandroid.Services.FoodService;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -62,8 +63,8 @@ public class AddLogEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_log_entry);
 
         Intent intent = getIntent();
-        selectedDate = (LocalDate) intent.getSerializableExtra("date");
-        meal = (Meal) intent.getSerializableExtra("meal");
+        selectedDate = (LocalDate) intent.getSerializableExtra("DATE");
+        meal = (Meal) intent.getSerializableExtra("MEAL");
 
         foodService = new FoodService();
         logService = new LogEntryService();
@@ -107,7 +108,8 @@ public class AddLogEntryActivity extends AppCompatActivity {
         if (Session.getInstance().isExpired()) {
             Intent intent = new Intent(AddLogEntryActivity.this, SplashscreenActivity.class);
             intent.putExtra("SESSION_EXPIRED", true);
-            startActivity(intent);        }
+            startActivity(intent);
+        }
     }
 
     @SuppressLint("CheckResult")
@@ -136,6 +138,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("RELOAD", true);
+                    resultIntent.putExtra("NEW_ENTRIES", (Serializable) entryList);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                         },

@@ -3,7 +3,9 @@ package com.example.macrologandroid.DTO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LogEntryRequest {
+import java.io.Serializable;
+
+public class LogEntryRequest implements Serializable {
 
     @Expose
     @SerializedName("id")

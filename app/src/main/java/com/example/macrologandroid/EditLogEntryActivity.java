@@ -44,19 +44,37 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private LinearLayout logentryLayout;
     private List<LogEntryResponse> logEntries;
     private List<LogEntryResponse> copyEntries;
+    private List<LogEntryRequest> newEntries;
     private Meal meal;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (ADD_LOG_ENTRY_ID) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    newEntries = (List<LogEntryRequest>) data.getSerializableExtra("NEW_ENTRIES");
+                }
+                break;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_log_entry);
 
-        LocalDate selectedDate = (LocalDate) getIntent().getSerializableExtra("date");
+        LocalDate selectedDate = (LocalDate) getIntent().getSerializableExtra("DATE");
         logEntryService = new LogEntryService();
 
         logentryLayout = findViewById(R.id.logentry_layout);
-        logEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("logentries");
-        meal = logEntries.get(0).getMeal();
+        logEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("LOGENTRIES");
+        if (logEntries.size() == 0) {
+            meal = (Meal) getIntent().getSerializableExtra("MEAL");
+        } else {
+            meal = logEntries.get(0).getMeal();
+        }
         copyEntries = new ArrayList<>(logEntries);
 
         fillLogEntrylayout();
