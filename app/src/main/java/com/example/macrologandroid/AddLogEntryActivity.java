@@ -38,6 +38,7 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class AddLogEntryActivity extends AppCompatActivity {
 
@@ -138,7 +139,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("RELOAD", true);
-                    resultIntent.putExtra("NEW_ENTRIES", (Serializable) entryList);
+                    resultIntent.putExtra("NEW_ENTRIES", (Serializable) res);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                         },

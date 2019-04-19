@@ -70,7 +70,7 @@ public class LogEntryService extends Service {
         return apiService.getLogsForDay(localDate);
     }
 
-    public Observable<ResponseBody> postLogEntry(List<LogEntryRequest> entries) {
+    public Observable<List<LogEntryResponse>> postLogEntry(List<LogEntryRequest> entries) {
         return apiService.postLogEntry(entries);
     }
 
@@ -84,7 +84,7 @@ public class LogEntryService extends Service {
         Observable<List<LogEntryResponse>> getLogsForDay(@Path("date") LocalDate date);
 
         @POST("logs")
-        Observable<ResponseBody> postLogEntry(@Body List<LogEntryRequest> entries);
+        Observable<List<LogEntryResponse>> postLogEntry(@Body List<LogEntryRequest> entries);
 
         @DELETE("logs/{id}")
         Observable<ResponseBody> deleteLogEntry(@Path("id") int id);

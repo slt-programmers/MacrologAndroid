@@ -44,8 +44,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private LinearLayout logentryLayout;
     private List<LogEntryResponse> logEntries;
     private List<LogEntryResponse> copyEntries;
-    private List<LogEntryRequest> newEntries;
+    private List<LogEntryResponse> newEntries;
     private Meal meal;
+    private Button saveButton;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -53,11 +54,19 @@ public class EditLogEntryActivity extends AppCompatActivity {
         switch(requestCode) {
             case (ADD_LOG_ENTRY_ID) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    newEntries = (List<LogEntryRequest>) data.getSerializableExtra("NEW_ENTRIES");
+                    newEntries = (List<LogEntryResponse>) data.getSerializableExtra("NEW_ENTRIES");
+                    appendNewEntry();
                 }
                 break;
             }
         }
+    }
+
+    private void appendNewEntry() {
+        logEntries.addAll(newEntries);
+        copyEntries.addAll(newEntries);
+        addLogEntryToLayout(newEntries.get(0));
+        saveButton.setEnabled(true);
     }
 
     @Override
@@ -84,10 +93,11 @@ public class EditLogEntryActivity extends AppCompatActivity {
             finish();
         });
 
-        Button saveButton = findViewById(R.id.save_button);
+        saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(v -> {
             saveLogEntries();
         });
+
         if (logEntries.size() == 0) {
             saveButton.setEnabled(false);
         }
@@ -95,8 +105,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
         FloatingActionButton button = findViewById(R.id.floating_button);
         button.setOnClickListener(v -> {
             Intent intent = new Intent(EditLogEntryActivity.this, AddLogEntryActivity.class);
-            intent.putExtra("date", selectedDate);
-            intent.putExtra("meal", meal);
+            intent.putExtra("DATE", selectedDate);
+            intent.putExtra("MEAL", meal);
             startActivityForResult(intent, ADD_LOG_ENTRY_ID);
         });
     }
@@ -118,32 +128,36 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void fillLogEntrylayout() {
         for (LogEntryResponse entry : logEntries) {
-            ConstraintLayout logentry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
-
-            TextView foodNameTextView = logentry.findViewById(R.id.food_name);
-            foodNameTextView.setText(entry.getFood().getName());
-
-            ImageView trashImageView = logentry.findViewById(R.id.trash_icon);
-            trashImageView.setOnClickListener((v) -> {
-                toggleToRemoveEntry(entry);
-            });
-
-            EditText foodAmount = logentry.findViewById(R.id.food_amount);
-            foodAmount.setId(R.id.food_amount);
-
-            if (entry.getPortion() == null) {
-                foodAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
-                foodAmount.setText(String.valueOf(Math.round(entry.getMultiplier() * 100)));
-            } else {
-                foodAmount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                foodAmount.setText(String.valueOf(entry.getMultiplier()));
-            }
-
-            Spinner foodPortion = logentry.findViewById(R.id.portion_spinner);
-            setupSpinner(foodPortion, entry, foodAmount);
-
-            logentryLayout.addView(logentry);
+            addLogEntryToLayout(entry);
         }
+    }
+
+    private void addLogEntryToLayout(LogEntryResponse entry) {
+        ConstraintLayout logentry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
+
+        TextView foodNameTextView = logentry.findViewById(R.id.food_name);
+        foodNameTextView.setText(entry.getFood().getName());
+
+        ImageView trashImageView = logentry.findViewById(R.id.trash_icon);
+        trashImageView.setOnClickListener((v) -> {
+            toggleToRemoveEntry(entry);
+        });
+
+        EditText foodAmount = logentry.findViewById(R.id.food_amount);
+        foodAmount.setId(R.id.food_amount);
+
+        if (entry.getPortion() == null) {
+            foodAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
+            foodAmount.setText(String.valueOf(Math.round(entry.getMultiplier() * 100)));
+        } else {
+            foodAmount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            foodAmount.setText(String.valueOf(entry.getMultiplier()));
+        }
+
+        Spinner foodPortion = logentry.findViewById(R.id.portion_spinner);
+        setupSpinner(foodPortion, entry, foodAmount);
+
+        logentryLayout.addView(logentry);
     }
 
     @SuppressLint("CheckResult")
