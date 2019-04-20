@@ -92,6 +92,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(v -> {
+            saveButton.setEnabled(false);
             addLogEntry();
         });
         saveButton.setVisibility(View.INVISIBLE);
@@ -144,7 +145,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     finish();
                         },
                         err -> {
-                    Log.d("LogService", err.getMessage());
+                            Log.d("LogService", err.getMessage());
                         });
     }
 

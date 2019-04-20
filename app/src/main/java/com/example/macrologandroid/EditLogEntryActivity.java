@@ -95,6 +95,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(v -> {
+            saveButton.setEnabled(false);
             saveLogEntries();
         });
 
