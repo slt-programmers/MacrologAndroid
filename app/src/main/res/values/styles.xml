@@ -1,17 +1,17 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Customize your theme here -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/assistant_light</item>
 
-        <!--All buttons unless style is defined on xml-->
+        <!-- All buttons, unless style is defined on xml -->
         <item name="buttonStyle">@style/buttonRound</item>
 
-        <!--color selected item-->
+        <!-- Color selected item -->
         <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
     </style>
 
@@ -21,7 +21,7 @@
     </style>
 
     <style name="EditTextTheme" parent="TextAppearance.AppCompat">
-        <!--color of hint when field focussed-->
+        <!-- Color of hint when field focussed -->
         <item name="android:textColor">@color/white</item>
     </style>
 
@@ -49,8 +49,5 @@
         <item name="android:textSize">18sp</item>
         <item name="android:paddingLeft">8dp</item>
     </style>
-
-
-
 
 </resources>

@@ -21,10 +21,11 @@
 
     <ScrollView
         app:layout_constraintTop_toBottomOf="@+id/back_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="match_parent"
         android:padding="16dp"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
