@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.macrologandroid.Adapters.DiaryPager;
 import com.example.macrologandroid.Adapters.DiaryPagerAdaper;
 import com.example.macrologandroid.AddLogEntryActivity;
 import com.example.macrologandroid.Cache.DiaryLogCache;
@@ -45,7 +47,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     private static final int EDIT_LOG_ENTRY_ID = 456;
 
     private View view;
-    private ViewPager viewPager;
+    private DiaryPager viewPager;
     private DiaryLogCache cache;
     private UserService userService;
     private int goalProtein, goalFat, goalCarbs, goalCalories;

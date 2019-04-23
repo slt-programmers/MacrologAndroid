@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private DiaryLogCache cache;
     private LocalDate selectedDate;
     private DiaryFragment diaryFragmentReference;
+    private int mCurrentPosition = -1;
 
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
@@ -97,6 +99,19 @@ public class DiaryPagerAdaper extends PagerAdapter {
     }
 
     @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        super.setPrimaryItem(container, position, object);
+        if (position != mCurrentPosition) {
+            LinearLayout diaryPage = (LinearLayout) object;
+            DiaryPager pager = (DiaryPager) container;
+            if (diaryPage != null) {
+                mCurrentPosition = position;
+                pager.measureCurrentView(diaryPage);
+            }
+        }
+    }
+
+    @Override
     public void destroyItem(@NonNull ViewGroup container, int position,@NonNull Object object) {
         container.removeView((View) object);
     }
@@ -144,7 +159,6 @@ public class DiaryPagerAdaper extends PagerAdapter {
         snacksTable.setOnClickListener((v) -> {
             diaryFragmentReference.startEditActivity(Meal.SNACKS);
         });
-
     }
 
     private void addEntryToTable(TableLayout table, LogEntryResponse entry) {
