@@ -10,7 +10,6 @@ import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -19,7 +18,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.macrologandroid.DTO.FoodResponse;
 import com.example.macrologandroid.DTO.LogEntryRequest;
@@ -43,7 +41,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
     private static final int ADD_FOOD_ID = 567;
 
-    private Spinner mealtypeSpinner;
     private AutoCompleteTextView foodTextView;
     private Spinner editPortionOrUnitSpinner;
     private EditText editGramsOrAmount;
@@ -66,6 +63,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
             case (ADD_FOOD_ID) : {
                 if (resultCode == Activity.RESULT_OK) {
                     String foodName = (String) data.getSerializableExtra("FOOD_NAME");
+                    foodTextView.setText(foodName);
                     setNewlyAddedFood(foodName);
                 }
                 break;
@@ -140,6 +138,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     private void setNewlyAddedFood(String foodName) {
+        addButton.setVisibility(View.GONE);
         foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     allFood = res;
@@ -288,7 +287,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     }
 
     private void setupMealSpinner() {
-        mealtypeSpinner = findViewById(R.id.edit_meal_type);
+        Spinner mealtypeSpinner = findViewById(R.id.edit_meal_type);
 
         List<String> list = new ArrayList<>();
         list.add("Breakfast");
