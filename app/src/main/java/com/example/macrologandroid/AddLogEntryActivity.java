@@ -171,7 +171,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
         foodTextView.setOnItemClickListener((parent, view, position, id) -> {
             setupPortionUnitSpinner(((AppCompatCheckedTextView) view).getText().toString());
             toggleFields(true);
-            editGramsOrAmount.requestFocus();
         });
 
         autocompleteAdapter.registerDataSetObserver(
@@ -196,7 +195,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     foodTextView.dismissDropDown();
                     setupPortionUnitSpinner(selectedOption);
                     toggleFields(true);
-                    editGramsOrAmount.requestFocus();
                 }
                 return true;
             }
@@ -208,10 +206,12 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private void toggleFields(boolean visible) {
         if (visible) {
             editPortionOrUnitSpinner.setVisibility(View.VISIBLE);
+            editGramsOrAmount.requestFocus();
             saveButton.setVisibility(View.VISIBLE);
             addButton.setVisibility(View.GONE);
         } else {
             editPortionOrUnitSpinner.setVisibility(View.GONE);
+            editGramsOrAmount.setVisibility(View.GONE);
             saveButton.setVisibility(View.GONE);
             addButton.setVisibility(View.VISIBLE);
         }

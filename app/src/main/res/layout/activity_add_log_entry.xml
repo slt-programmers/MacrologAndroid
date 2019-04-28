@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/add_new_food"
-                app:layout_constraintTop_toBottomOf="@+id/edit_grams_amount_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_food_layout" />
 
             <Button
                 android:id="@+id/save_button"

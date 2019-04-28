@@ -13,7 +13,6 @@
     <string name="title_edit_details">Edit personal details</string>
     <string name="title_adjust_intake">Adjust intake goal</string>
 
-
     <!-- Strings related to login -->
     <string name="login_username_email">Username or Email</string>
     <string name="login_password">Password</string>
@@ -79,10 +78,15 @@
     <string name="p">P</string>
     <string name="f">F</string>
     <string name="c">C</string>
+    <string name="kcal">kcal</string>
 
     <string name="change_macros">Change macros</string>
     <string name="change_calories">Change calories</string>
     <string name="header_curved">Header curved</string>
     <string name="eaten">What did you eat?</string>
+
     <string name="add_new_food">Add new food</string>
+    <string name="add_portions">Add frequently used portion</string>
+    <string name="description">Description</string>
+    <string name="grams">Gram</string>
 </resources>

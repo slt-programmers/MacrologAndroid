@@ -163,7 +163,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     private void addEntryToTable(TableLayout table, LogEntryResponse entry) {
         TableRow row = new TableRow(context);
-        TextView name = getCustomizedTextView();
+        TextView name = getCustomizedTextView(new TextView(context));
         TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, 8.0f);
         name.setText(entry.getFood().getName());
@@ -172,37 +172,48 @@ public class DiaryPagerAdaper extends PagerAdapter {
         TextView protein = getCustomizedMacroTextView(entry.getMacrosCalculated().getProtein());
         TextView fat = getCustomizedMacroTextView(entry.getMacrosCalculated().getFat());
         TextView carbs = getCustomizedMacroTextView(entry.getMacrosCalculated().getCarbs());
+        TextView kcal = getCustomizedCalorieTextView(entry.getMacrosCalculated().getCalories());
 
         row.addView(name);
         row.addView(protein);
         row.addView(fat);
         row.addView(carbs);
+        row.addView(kcal);
         table.addView(row);
+    }
+
+    private TextView getCustomizedCalorieTextView(double text) {
+        TextView view = new TextView(context);
+        view.setText(String.format(Locale.ENGLISH, "%1.0f", text));
+        setTextViewLayout(view);
+        return getCustomizedTextView(view);
     }
 
     private TextView getCustomizedMacroTextView(double text) {
         TextView view = new TextView(context);
         view.setText(String.format(Locale.ENGLISH, "%.1f", text));
+        setTextViewLayout(view);
+        return getCustomizedTextView(view);
+    }
+
+    private TextView getCustomizedTextView(TextView view) {
+        view.setTextSize(16);
+        return view;
+    }
+
+    private void setTextViewLayout(TextView view) {
         TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f);
         view.setLayoutParams(lp);
         view.setGravity(Gravity.END);
 
-        if (context != null) {
-            final float scale = context.getResources().getDisplayMetrics().density;
-            int pixels = (int) (48 * scale + 0.5f);
-            view.setWidth(pixels);
-        } else {
-            view.setWidth(120);
-        }
-        view.setTextSize(16);
-        return view;
-    }
-
-    private TextView getCustomizedTextView() {
-        TextView view = new TextView(context);
-        view.setTextSize(16);
-        return view;
+//        if (context != null) {
+//            final float scale = context.getResources().getDisplayMetrics().density;
+//            int pixels = (int) (20 * scale + 0.5f);
+//            view.setWidth(pixels);
+//        } else {
+//            view.setWidth(100);
+//        }
     }
 
     public interface OnTotalUpdateListener {
