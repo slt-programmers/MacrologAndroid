@@ -5,14 +5,14 @@ import java.util.List;
 
 public class FoodResponse implements Serializable {
 
-    private int id;
+    private Long id;
     private String name;
     private double protein;
     private double fat;
     private double carbs;
     private List<PortionResponse> portions;
 
-    public FoodResponse(int id, String name, double protein, double fat, double carbs, List<PortionResponse> portions) {
+    public FoodResponse(Long id, String name, double protein, double fat, double carbs, List<PortionResponse> portions) {
         this.id = id;
         this.name = name;
         this.protein = protein;
@@ -21,11 +21,11 @@ public class FoodResponse implements Serializable {
         this.portions = portions;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

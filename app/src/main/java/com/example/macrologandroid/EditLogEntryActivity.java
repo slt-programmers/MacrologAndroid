@@ -169,7 +169,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         TextView foodName = (TextView) logEntryLayout.getChildAt(0);
         ImageView trashcan = (ImageView) logEntryLayout.getChildAt(1);
         View foodSpinner = logEntryLayout.getChildAt(2);
-        View foodAmount = logEntryLayout.getChildAt(3);
+        View foodAmount = logEntryLayout.getChildAt(4);
 
         if (copyEntries.indexOf(entry) == -1) {
             // item was removed, so add it again
@@ -212,7 +212,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 Spinner foodSpinner = (Spinner) logEntryLayout.getChildAt(2);
                 String item = (String) foodSpinner.getSelectedItem();
 
-                EditText foodAmount = ((TextInputLayout) logEntryLayout.getChildAt(3)).getEditText();
+                EditText foodAmount = ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
                 double multiplier = Double.valueOf(foodAmount.getText().toString());
 
                 Long portionId = null;

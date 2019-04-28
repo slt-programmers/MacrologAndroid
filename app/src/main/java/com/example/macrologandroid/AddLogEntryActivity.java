@@ -41,6 +41,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AddLogEntryActivity extends AppCompatActivity {
 
+    private static final int ADD_FOOD_ID = 567;
+
     private Spinner mealtypeSpinner;
     private AutoCompleteTextView foodTextView;
     private Spinner editPortionOrUnitSpinner;
@@ -56,6 +58,20 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private Meal selectedMeal;
     private LocalDate selectedDate;
     private Meal meal;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (ADD_FOOD_ID) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    String foodName = (String) data.getSerializableExtra("FOOD_NAME");
+                    setNewlyAddedFood(foodName);
+                }
+                break;
+            }
+        }
+    }
 
     @SuppressLint("CheckResult")
     @Override
@@ -101,7 +117,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         addButton.setOnClickListener(v -> {
             Intent addFoodIntent = new Intent(this, AddFoodActivity.class);
             addFoodIntent.putExtra("FOOD_NAME", foodTextView.getText().toString());
-            startActivity(addFoodIntent);
+            startActivityForResult(addFoodIntent, ADD_FOOD_ID);
         });
     }
 
@@ -111,6 +127,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         Session.getInstance().resetTimestamp();
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onResume() {
         super.onResume();
@@ -119,6 +136,21 @@ public class AddLogEntryActivity extends AppCompatActivity {
             intent.putExtra("SESSION_EXPIRED", true);
             startActivity(intent);
         }
+    }
+
+    @SuppressLint("CheckResult")
+    private void setNewlyAddedFood(String foodName) {
+        foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+                    allFood = res;
+                    fillFoodNameList();
+                    setupAutoCompleteTextView();
+                    foodTextView.setText(foodName);
+                    setupPortionUnitSpinner(foodName);
+                    toggleFields(true);
+                }, err -> {
+                    Log.d("FoodService", err.getMessage());
+                });
     }
 
     @SuppressLint("CheckResult")
@@ -137,7 +169,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
             multiplier = multiplier / 100;
         }
 
-        Long foodId = (long) selectedFood.getId();
+        Long foodId = selectedFood.getId();
         LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
                 multiplier, selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 selectedMeal.toString());

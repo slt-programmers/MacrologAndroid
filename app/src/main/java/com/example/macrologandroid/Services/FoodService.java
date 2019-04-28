@@ -14,9 +14,11 @@ import java.util.List;
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -62,10 +64,17 @@ public class FoodService extends Service {
         return apiService.getAlFood();
     }
 
+    public Observable<ResponseBody> postFood(FoodResponse food) {
+        return apiService.postFood(food);
+    }
+
     private interface ApiService {
 
         @GET("food")
         Observable<List<FoodResponse>> getAlFood();
+
+        @POST("food")
+        Observable<ResponseBody> postFood(@Body FoodResponse food);
 
     }
 }

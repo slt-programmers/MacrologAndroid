@@ -86,6 +86,8 @@
     <string name="eaten">What did you eat?</string>
 
     <string name="add_new_food">Add new food</string>
+    <string name="add_food_explanation">Fill in the macro\'s per 100 grams</string>
+    <string name="food_name">Food name</string>
     <string name="add_portions">Add frequently used portion</string>
     <string name="description">Description</string>
     <string name="grams">Gram</string>
