@@ -2,9 +2,11 @@
     <string name="app_name">Macrolog</string>
     <string name="title_home">Home</string>
     <string name="diary_title">Diary fragment</string>
+    <string name="food_title">Food fragment</string>
     <string name="meals_title">Meals fragment</string>
     <string name="user_title">User fragment</string>
     <string name="botnav_diary">Diary</string>
+    <string name="botnav_food">Food</string>
     <string name="botnav_meals">Meals</string>
     <string name="botnav_user">User</string>
     <string name="title_activity_login">Log in</string>
@@ -82,4 +84,5 @@
     <string name="change_calories">Change calories</string>
     <string name="header_curved">Header curved</string>
     <string name="eaten">What did you eat?</string>
+    <string name="add_new_food">Add new food</string>
 </resources>

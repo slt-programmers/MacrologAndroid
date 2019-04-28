@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.macrologandroid.Fragments.DiaryFragment;
+import com.example.macrologandroid.Fragments.FoodFragment;
 import com.example.macrologandroid.Fragments.MealsFragment;
 import com.example.macrologandroid.Fragments.UserFragment;
 import com.example.macrologandroid.Lifecycle.Session;
@@ -37,9 +38,12 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
             case R.id.navigation_diary:
                 setFragment(diaryFragment);
                 return true;
-            case R.id.navigation_meals:
-                setFragment(new MealsFragment());
+            case R.id.navigation_food:
+                setFragment(new FoodFragment());
                 return true;
+//            case R.id.navigation_meals:
+//                setFragment(new MealsFragment());
+//                return true;
             case R.id.navigation_user:
                 userFragment.setOnLogoutPressedListener(this);
                 setFragment(userFragment);

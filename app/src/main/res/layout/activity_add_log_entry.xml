@@ -102,6 +102,15 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:id="@+id/add_button"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/add_new_food"
+                app:layout_constraintTop_toBottomOf="@+id/edit_grams_amount_layout" />
+
+            <Button
                 android:id="@+id/save_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

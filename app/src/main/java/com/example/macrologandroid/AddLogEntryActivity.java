@@ -3,12 +3,12 @@ package com.example.macrologandroid;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
-import android.text.method.Touch;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -38,7 +38,6 @@ import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
 
 public class AddLogEntryActivity extends AppCompatActivity {
 
@@ -47,6 +46,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private Spinner editPortionOrUnitSpinner;
     private EditText editGramsOrAmount;
     private Button saveButton;
+    private Button addButton;
     private FoodService foodService;
     private LogEntryService logService;
     private List<FoodResponse> allFood;
@@ -75,7 +75,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     fillFoodNameList();
                     setupAutoCompleteTextView();
                 }, err -> {
-                    Log.d("FoodService",  err.getMessage());
+                    Log.d("FoodService", err.getMessage());
                 });
 
         Button backbutton = findViewById(R.id.backbutton);
@@ -96,6 +96,13 @@ public class AddLogEntryActivity extends AppCompatActivity {
             addLogEntry();
         });
         saveButton.setVisibility(View.INVISIBLE);
+
+        addButton = findViewById(R.id.add_button);
+        addButton.setOnClickListener(v -> {
+            Intent addFoodIntent = new Intent(this, AddFoodActivity.class);
+            addFoodIntent.putExtra("FOOD_NAME", foodTextView.getText().toString());
+            startActivity(addFoodIntent);
+        });
     }
 
     @Override
@@ -117,7 +124,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     @SuppressLint("CheckResult")
     private void addLogEntry() {
         Long portionId = null;
-        for (PortionResponse portion: selectedFood.getPortions()) {
+        for (PortionResponse portion : selectedFood.getPortions()) {
             String portionDescription = (String) editPortionOrUnitSpinner.getSelectedItem();
             if (portionDescription.equals(portion.getDescription())) {
                 portionId = (long) portion.getId();
@@ -127,7 +134,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
         double multiplier = Double.valueOf(editGramsOrAmount.getText().toString());
         if (portionId == null) {
-            multiplier = multiplier/100;
+            multiplier = multiplier / 100;
         }
 
         Long foodId = (long) selectedFood.getId();
@@ -138,11 +145,11 @@ public class AddLogEntryActivity extends AppCompatActivity {
         entryList.add(entry);
         logService.postLogEntry(entryList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("RELOAD", true);
-                    resultIntent.putExtra("NEW_ENTRIES", (Serializable) res);
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish();
+                            Intent resultIntent = new Intent();
+                            resultIntent.putExtra("RELOAD", true);
+                            resultIntent.putExtra("NEW_ENTRIES", (Serializable) res);
+                            setResult(Activity.RESULT_OK, resultIntent);
+                            finish();
                         },
                         err -> {
                             Log.d("LogService", err.getMessage());
@@ -162,29 +169,38 @@ public class AddLogEntryActivity extends AppCompatActivity {
         foodTextView.setAdapter(autocompleteAdapter);
         foodTextView.setThreshold(1);
         foodTextView.setOnItemClickListener((parent, view, position, id) -> {
-                setupPortionUnitSpinner(((AppCompatCheckedTextView) view).getText().toString());
-                toggleFields(true);
-                editGramsOrAmount.requestFocus();
+            setupPortionUnitSpinner(((AppCompatCheckedTextView) view).getText().toString());
+            toggleFields(true);
+            editGramsOrAmount.requestFocus();
         });
 
-        foodTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_NEXT
-                        && foodTextView.isPopupShowing()
-                        && autocompleteAdapter.getCount() != 0) {
-                    String selectedOption = autocompleteAdapter.getItem(0);
-                    if (selectedOption != null) {
-                        foodTextView.setText(selectedOption);
-                        foodTextView.dismissDropDown();
-                        setupPortionUnitSpinner(selectedOption);
-                        toggleFields(true);
-                        editGramsOrAmount.requestFocus();
+        autocompleteAdapter.registerDataSetObserver(
+                new DataSetObserver() {
+                    @Override
+                    public void onInvalidated() {
+                        super.onInvalidated();
+                        if (foodTextView.getText().toString().length() > 2) {
+                            toggleFields(false);
+                        }
                     }
-                    return true;
                 }
-                return false;
+        );
+
+        foodTextView.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT
+                    && foodTextView.isPopupShowing()
+                    && autocompleteAdapter.getCount() != 0) {
+                String selectedOption = autocompleteAdapter.getItem(0);
+                if (selectedOption != null) {
+                    foodTextView.setText(selectedOption);
+                    foodTextView.dismissDropDown();
+                    setupPortionUnitSpinner(selectedOption);
+                    toggleFields(true);
+                    editGramsOrAmount.requestFocus();
+                }
+                return true;
             }
+            return false;
         });
 
     }
@@ -193,9 +209,11 @@ public class AddLogEntryActivity extends AppCompatActivity {
         if (visible) {
             editPortionOrUnitSpinner.setVisibility(View.VISIBLE);
             saveButton.setVisibility(View.VISIBLE);
+            addButton.setVisibility(View.GONE);
         } else {
             editPortionOrUnitSpinner.setVisibility(View.GONE);
             saveButton.setVisibility(View.GONE);
+            addButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -218,7 +236,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         editPortionOrUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((AppCompatTextView)view).getText().toString().equals("gram")) {
+                if (((AppCompatTextView) view).getText().toString().equals("gram")) {
                     editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
                     editGramsOrAmount.setText("100");
                     editGramsOrAmount.setSelection(3);
@@ -230,7 +248,8 @@ public class AddLogEntryActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         editGramsOrAmount.setVisibility(View.VISIBLE);
@@ -290,7 +309,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private void setMealBasedOnTime(Spinner spinner) {
         LocalDateTime time = LocalDateTime.now();
         int hour = time.getHour();
-        switch(hour) {
+        switch (hour) {
             case 7:
             case 8:
             case 9:

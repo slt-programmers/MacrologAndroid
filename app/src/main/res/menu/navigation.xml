@@ -8,8 +8,13 @@
 
     <item
         android:icon="@drawable/ic_restaurant_menu_black_24dp"
-        android:id="@+id/navigation_meals"
-        android:title="@string/botnav_meals" />
+        android:id="@+id/navigation_food"
+        android:title="@string/botnav_food" />
+
+    <!--<item-->
+        <!--android:icon="@drawable/ic_restaurant_menu_black_24dp"-->
+        <!--android:id="@+id/navigation_meals"-->
+        <!--android:title="@string/botnav_meals" />-->
 
     <item
         android:icon="@drawable/ic_account_circle_black_24dp"

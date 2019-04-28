@@ -252,7 +252,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
         List<String> list = new ArrayList<>();
         List<PortionResponse> allPortions = entry.getFood().getPortions();
         for (PortionResponse portion : allPortions) {
-            list.add(portion.getDescription());
+            String portionText = portion.getDescription() + " (" + String.valueOf(portion.getGrams()) + " gr)";
+            list.add(portionText);
         }
         list.add("gram");
 
@@ -261,7 +262,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
         foodPortion.setAdapter(dataAdapter);
         PortionResponse selectedPortion = entry.getPortion();
         if (selectedPortion != null) {
-            foodPortion.setSelection(list.indexOf(selectedPortion.getDescription()));
+            foodPortion.setSelection(list.indexOf(selectedPortion.getDescription() + " (" +
+                    String.valueOf(selectedPortion.getGrams()) + " gr)"));
         } else {
             foodPortion.setSelection(list.size() - 1);
         }
