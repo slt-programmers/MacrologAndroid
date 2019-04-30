@@ -1,12 +1,19 @@
 package com.example.macrologandroid;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +23,9 @@ import com.example.macrologandroid.Fragments.FoodFragment;
 import com.example.macrologandroid.Fragments.MealsFragment;
 import com.example.macrologandroid.Fragments.UserFragment;
 import com.example.macrologandroid.Lifecycle.Session;
+import com.example.macrologandroid.Notifications.NotificationSender;
+
+import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener, LoginActivity.OnLoggedInListener {
@@ -57,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         instance = this;
+
+        NotificationSender.initNotificationSending(this);
+
         diaryFragment = new DiaryFragment();
         userFragment = new UserFragment();
 
@@ -70,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

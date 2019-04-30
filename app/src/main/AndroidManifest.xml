@@ -3,6 +3,7 @@
     package="com.example.macrologandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <application
         android:allowBackup="true"
@@ -46,6 +47,12 @@
         <activity
             android:name=".AddLogEntryActivity"
             android:windowSoftInputMode="adjustResize" />
+
+        <receiver android:name=".Notifications.NotificationReceiver">
+            <intent-filter>
+                <action android:name="NOTIFICATION_RECEIVED"/>
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".Services.HealthcheckService"

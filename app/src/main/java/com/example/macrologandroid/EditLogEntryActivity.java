@@ -218,7 +218,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 Long portionId = null;
                 if (!item.equals("gram")) {
                     for (PortionResponse portion : entry.getFood().getPortions()) {
-                        if (portion.getDescription().equals(item)) {
+                        if (item.contains(portion.getDescription())) {
                             portionId = (long) portion.getId();
                             break;
                         }
@@ -229,7 +229,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
                 LogEntryRequest request = new LogEntryRequest(
                         (long) entry.getId(),
-                        (long) entry.getFood().getId(),
+                        entry.getFood().getId(),
                         portionId,
                         multiplier,
                         format.format(entry.getDay()),
