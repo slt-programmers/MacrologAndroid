@@ -20,12 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.macrologandroid.DTO.LogEntryRequest;
-import com.example.macrologandroid.DTO.LogEntryResponse;
-import com.example.macrologandroid.DTO.PortionResponse;
-import com.example.macrologandroid.Lifecycle.Session;
-import com.example.macrologandroid.Models.Meal;
-import com.example.macrologandroid.Services.LogEntryService;
+import com.example.macrologandroid.dtos.LogEntryRequest;
+import com.example.macrologandroid.dtos.LogEntryResponse;
+import com.example.macrologandroid.dtos.PortionResponse;
+import com.example.macrologandroid.lifecycle.Session;
+import com.example.macrologandroid.models.Meal;
+import com.example.macrologandroid.services.LogEntryService;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;

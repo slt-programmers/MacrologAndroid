@@ -13,7 +13,7 @@
     <string name="title_edit_details">Edit personal details</string>
     <string name="title_adjust_intake">Adjust intake goal</string>
 
-    <string name="notification_channel_name">Reminder to log</string>
+    <string name="notification_channel_name">Reminders</string>
     <string name="notification_channel_id">REMINDERS</string>
 
     <!-- Strings related to login -->

@@ -19,13 +19,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.macrologandroid.DTO.FoodResponse;
-import com.example.macrologandroid.DTO.LogEntryRequest;
-import com.example.macrologandroid.DTO.PortionResponse;
-import com.example.macrologandroid.Lifecycle.Session;
-import com.example.macrologandroid.Models.Meal;
-import com.example.macrologandroid.Services.LogEntryService;
-import com.example.macrologandroid.Services.FoodService;
+import com.example.macrologandroid.dtos.FoodResponse;
+import com.example.macrologandroid.dtos.LogEntryRequest;
+import com.example.macrologandroid.dtos.PortionResponse;
+import com.example.macrologandroid.lifecycle.Session;
+import com.example.macrologandroid.models.Meal;
+import com.example.macrologandroid.services.LogEntryService;
+import com.example.macrologandroid.services.FoodService;
 
 import java.io.Serializable;
 import java.time.LocalDate;

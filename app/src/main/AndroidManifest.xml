@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.macrologandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -11,8 +13,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".AddFoodActivity"></activity>
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".AddFoodActivity" />
         <activity
             android:name=".SplashscreenActivity"
             android:label="@string/app_name">
@@ -48,20 +51,28 @@
             android:name=".AddLogEntryActivity"
             android:windowSoftInputMode="adjustResize" />
 
-        <receiver android:name=".Notifications.NotificationReceiver">
+        <receiver
+            android:name=".notifications.NotificationReceiver"
+            android:exported="false">
             <intent-filter>
-                <action android:name="NOTIFICATION_RECEIVED"/>
+                <action android:name="NOTIFICATION_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notifications.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".Services.HealthcheckService"
+            android:name=".services.HealthcheckService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <service
-            android:name=".Services.AuthenticationService"
+            android:name=".services.AuthenticationService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>

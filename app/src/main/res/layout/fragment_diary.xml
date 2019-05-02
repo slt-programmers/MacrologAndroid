@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="84dp"
-                tools:context=".Fragments.DiaryFragment">
+                tools:context=".fragments.DiaryFragment">
 
                 <ImageView
                     android:id="@+id/header"
@@ -230,7 +230,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/header" />
 
-                <com.example.macrologandroid.Adapters.DiaryPager
+                <com.example.macrologandroid.adapters.DiaryPager
                     android:id="@+id/day_view_pager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

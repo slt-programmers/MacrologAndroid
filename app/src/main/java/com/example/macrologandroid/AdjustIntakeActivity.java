@@ -11,13 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 
-import com.example.macrologandroid.DTO.UserSettingResponse;
-import com.example.macrologandroid.Fragments.ChangeCaloriesFragment;
-import com.example.macrologandroid.Lifecycle.Session;
-import com.example.macrologandroid.Models.ChangeGoalMacros;
-import com.example.macrologandroid.Fragments.ChangeMacrosFragment;
-import com.example.macrologandroid.Models.UserSettings;
-import com.example.macrologandroid.Services.UserService;
+import com.example.macrologandroid.dtos.UserSettingResponse;
+import com.example.macrologandroid.fragments.ChangeCaloriesFragment;
+import com.example.macrologandroid.lifecycle.Session;
+import com.example.macrologandroid.models.ChangeGoalMacros;
+import com.example.macrologandroid.fragments.ChangeMacrosFragment;
+import com.example.macrologandroid.models.UserSettings;
+import com.example.macrologandroid.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

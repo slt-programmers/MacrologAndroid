@@ -3,9 +3,7 @@ package com.example.macrologandroid;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,16 +13,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.macrologandroid.DTO.FoodResponse;
-import com.example.macrologandroid.DTO.PortionResponse;
-import com.example.macrologandroid.Lifecycle.Session;
-import com.example.macrologandroid.Services.FoodService;
+import com.example.macrologandroid.dtos.FoodResponse;
+import com.example.macrologandroid.dtos.PortionResponse;
+import com.example.macrologandroid.lifecycle.Session;
+import com.example.macrologandroid.services.FoodService;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

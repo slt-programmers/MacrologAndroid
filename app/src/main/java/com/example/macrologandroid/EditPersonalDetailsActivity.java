@@ -13,10 +13,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import com.example.macrologandroid.DTO.UserSettingResponse;
-import com.example.macrologandroid.Lifecycle.Session;
-import com.example.macrologandroid.Models.Gender;
-import com.example.macrologandroid.Services.UserService;
+import com.example.macrologandroid.dtos.UserSettingResponse;
+import com.example.macrologandroid.lifecycle.Session;
+import com.example.macrologandroid.models.Gender;
+import com.example.macrologandroid.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

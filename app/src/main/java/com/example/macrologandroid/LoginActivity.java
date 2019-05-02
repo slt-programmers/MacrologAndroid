@@ -13,10 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.macrologandroid.DTO.AuthenticationResponse;
-import com.example.macrologandroid.Fragments.DiaryFragment;
-import com.example.macrologandroid.Lifecycle.Session;
-import com.example.macrologandroid.Services.AuthenticationService;
+import com.example.macrologandroid.dtos.AuthenticationResponse;
+import com.example.macrologandroid.lifecycle.Session;
+import com.example.macrologandroid.services.AuthenticationService;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
