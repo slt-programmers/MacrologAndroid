@@ -13,13 +13,16 @@ import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.R;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class NotificationSender {
 
     public static void initNotificationSending(Context context) {
         NotificationManager manager = context.getSystemService(NotificationManager.class);
-        manager.getNotificationChannels();
-        createNotificationChannel(context);
+        List<NotificationChannel> channelList = manager.getNotificationChannels();
+        if (channelList.isEmpty()) {
+            createNotificationChannel(context);
+        }
 
         // Intent to open MainActivity on tapping on navigation
         Intent intent = new Intent(context, MainActivity.class);

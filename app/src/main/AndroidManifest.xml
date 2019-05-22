@@ -70,6 +70,18 @@
             android:enabled="true"
             android:exported="false" />
         <service
+            android:name=".services.UserService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".services.LogEntryService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".services.FoodService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
             android:name=".services.AuthenticationService"
             android:enabled="true"
             android:exported="false" />

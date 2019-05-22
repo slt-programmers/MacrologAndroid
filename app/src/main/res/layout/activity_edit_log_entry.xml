@@ -16,7 +16,7 @@
          style="@style/buttonBack"
          android:layout_marginTop="8dp"
          android:layout_marginStart="16dp"
-         android:drawableStart="@drawable/ic_arrow_back_24dp"
+         android:drawableStart="@drawable/arrow_back"
          />
 
     <ScrollView

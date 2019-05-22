@@ -51,7 +51,6 @@ public class UserService extends Service {
         return null;
     }
 
-
     public Observable<List<UserSettingResponse>> getSettings() {
         return apiService.getSettings();
     }

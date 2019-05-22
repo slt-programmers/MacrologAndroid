@@ -23,10 +23,12 @@
     <style name="EditTextTheme" parent="TextAppearance.AppCompat">
         <!-- Color of hint when field focussed -->
         <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
     </style>
 
     <style name="EditTextHintTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlActivated">@color/white</item>
+        <item name="android:backgroundTint">@color/white</item>
     </style>
 
     <style name="buttonRound" parent="Base.Widget.AppCompat.Button">

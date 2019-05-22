@@ -94,4 +94,6 @@
     <string name="add_portions">Add frequently used portion</string>
     <string name="description">Description</string>
     <string name="grams">Gram</string>
+
+    <string name="search">Zoeken</string>
 </resources>

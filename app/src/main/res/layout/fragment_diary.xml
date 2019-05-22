@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/arrow_left"
                     android:padding="8dp"
-                    android:src="@drawable/ic_chevron_left_black_24dp"
+                    android:src="@drawable/arrow_left"
                     android:tint="@color/colorPrimary"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/header" />
@@ -224,7 +224,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/arrow_right"
                     android:padding="8dp"
-                    android:src="@drawable/ic_chevron_right_black_24dp"
+                    android:src="@drawable/arrow_right"
                     android:textAlignment="viewEnd"
                     android:tint="@color/colorPrimary"
                     app:layout_constraintRight_toRightOf="parent"

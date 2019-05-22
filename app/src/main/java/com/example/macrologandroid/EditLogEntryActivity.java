@@ -179,13 +179,13 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 copyEntries.add(index, entry);
             }
             foodName.setAlpha(1f);
-            trashcan.setImageResource(R.drawable.ic_trashcan);
+            trashcan.setImageResource(R.drawable.trashcan);
             foodSpinner.setVisibility(View.VISIBLE);
             foodAmount.setVisibility(View.VISIBLE);
         } else {
             copyEntries.remove(entry);
             foodName.setAlpha(0.4f);
-            trashcan.setImageResource(R.drawable.ic_replay);
+            trashcan.setImageResource(R.drawable.replay);
             foodSpinner.setVisibility(View.GONE);
             foodAmount.setVisibility(View.GONE);
         }
