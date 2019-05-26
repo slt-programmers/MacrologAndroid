@@ -60,7 +60,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
         genderRadios = findViewById(R.id.radiogroup_gender);
         originalGender = (Gender) intent.getSerializableExtra("gender");
-        if (originalGender.equals(Gender.MALE)) {
+        if (Gender.MALE.equals(originalGender)) {
             genderRadios.check(R.id.check_male);
         } else {
             genderRadios.check(R.id.check_female);
@@ -74,7 +74,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         originalWeight = intent.getDoubleExtra("weight", 0.0);
         editWeight.setText(String.valueOf(originalWeight));
 
-        originalActivity = intent.getDoubleExtra("activity", 1.1);
+        originalActivity = intent.getDoubleExtra("activity", 1.2);
         setupSpinner();
 
         Button backButton = findViewById(R.id.backbutton);
@@ -121,7 +121,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             case "1.55": editActivity.setSelection(2); break;
             case "1.725": editActivity.setSelection(3); break;
             case "1.9": editActivity.setSelection(4); break;
-            default: editActivity.setSelection(1);
+            default: editActivity.setSelection(0);
         }
     }
 
@@ -141,7 +141,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
         RadioButton selected = findViewById(genderRadios.getCheckedRadioButtonId());
         String newGender = selected.getText().toString().toUpperCase();
-        if (!newGender.equals(originalGender.toString())) {
+        if (originalGender == null || !newGender.equals(originalGender.toString())) {
             obsList.add(userService.putSetting(new UserSettingResponse(1, "gender", newGender)));
         }
 
@@ -151,7 +151,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
 
         String newWeight = editWeight.getText().toString();
-        if (!String.valueOf(originalWeight).equals(String.valueOf(newWeight))) {
+        if (!String.valueOf(originalWeight).equals(newWeight)) {
             obsList.add(userService.putSetting(new UserSettingResponse(1, "weight", newWeight)));
         }
 

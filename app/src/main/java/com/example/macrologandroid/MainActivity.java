@@ -8,14 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.macrologandroid.fragments.DiaryFragment;
 import com.example.macrologandroid.fragments.FoodFragment;
 import com.example.macrologandroid.fragments.UserFragment;
 import com.example.macrologandroid.lifecycle.Session;
-import com.example.macrologandroid.notifications.NotificationSender;
 
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener, LoginActivity.OnLoggedInListener {
@@ -115,8 +112,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     }
 
     @Override
-    public void updatePage() {
-        diaryFragment.updatePage();
+    public void refreshActivity() {
+        diaryFragment.refreshFragment();
+        userFragment.refreshFragment();
     }
 
 }

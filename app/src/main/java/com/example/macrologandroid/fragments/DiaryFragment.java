@@ -59,7 +59,6 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cache = DiaryLogCache.getInstance();
-        userService = new UserService();
     }
 
     @Override
@@ -90,6 +89,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
             pullToRefresh.setRefreshing(false);
         });
 
+        userService = new UserService();
         userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe((result) -> {
                     setGoalIntake(new UserSettings(result));
@@ -232,7 +232,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     }
 
     @SuppressLint("CheckResult")
-    public void updatePage() {
+    public void refreshFragment() {
         userService = new UserService();
         userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe((result) -> {

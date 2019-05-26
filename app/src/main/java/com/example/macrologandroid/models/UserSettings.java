@@ -22,16 +22,20 @@ public class UserSettings implements Serializable {
     }
 
     public UserSettings(List<UserSettingResponse> response) {
-        this.name = mapSetting(response, "name");
-        this.age = Integer.parseInt(mapSetting(response, "age"));
-        this.gender = Gender.valueOf(mapSetting(response, "gender"));
-        this.height = Integer.parseInt(mapSetting(response, "height"));
-        this.weight = Double.parseDouble(mapSetting(response, "weight"));
-        this.activity = Double.parseDouble(mapSetting(response, "activity"));
+        try {
+            this.name = mapSetting(response, "name");
+            this.age = Integer.parseInt(mapSetting(response, "age"));
+            this.gender = Gender.valueOf(mapSetting(response, "gender"));
+            this.height = Integer.parseInt(mapSetting(response, "height"));
+            this.weight = Double.parseDouble(mapSetting(response, "weight"));
+            this.activity = Double.parseDouble(mapSetting(response, "activity"));
 
-        this.protein = Integer.parseInt(mapSetting(response, "goalProtein"));
-        this.fat = Integer.parseInt(mapSetting(response, "goalFat"));
-        this.carbs = Integer.parseInt(mapSetting(response, "goalCarbs"));
+            this.protein = Integer.parseInt(mapSetting(response, "goalProtein"));
+            this.fat = Integer.parseInt(mapSetting(response, "goalFat"));
+            this.carbs = Integer.parseInt(mapSetting(response, "goalCarbs"));
+        } catch (Exception e) {
+            new UserSettings();
+        }
     }
 
     public String getName() {

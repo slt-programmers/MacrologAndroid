@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.macrologandroid.dtos.AuthenticationResponse;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.services.AuthenticationService;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
@@ -86,7 +87,8 @@ public class LoginActivity extends AppCompatActivity {
         if (Session.getInstance().isExpired()) {
             Intent intent = new Intent(LoginActivity.this, SplashscreenActivity.class);
             intent.putExtra("SESSION_EXPIRED", true);
-            startActivity(intent);        }
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -194,17 +196,20 @@ public class LoginActivity extends AppCompatActivity {
         authService.authenticate(username, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(res -> {saveCredentials(res); notifyDiaryFragment(); finish();},
-                        err -> {
-                    mLoginResultView.setText(R.string.login_failed);
-                    mLoginResultView.setVisibility(View.VISIBLE);
-                }
+                .subscribe(res -> {
+                            saveCredentials(res);
+                            refreshMainActivity();
+                            finish();
+                        }, err -> {
+                            mLoginResultView.setText(R.string.login_failed);
+                            mLoginResultView.setVisibility(View.VISIBLE);
+                        }
                 );
 
     }
 
-    private void notifyDiaryFragment() {
-        callback.updatePage();
+    private void refreshMainActivity() {
+        callback.refreshActivity();
     }
 
     @SuppressLint("CheckResult")
@@ -212,7 +217,10 @@ public class LoginActivity extends AppCompatActivity {
         authService.register(username, email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(res -> {saveCredentials(res); finish();},
+                .subscribe(res -> {
+                            saveCredentials(res);
+                            finish();
+                        },
                         err -> {
                             mRegisterResultView.setText(((HttpException) err).response().errorBody().string());
                             mRegisterResultView.setVisibility(View.VISIBLE);
@@ -228,7 +236,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public interface OnLoggedInListener {
-        void updatePage();
+        void refreshActivity();
     }
 
 }

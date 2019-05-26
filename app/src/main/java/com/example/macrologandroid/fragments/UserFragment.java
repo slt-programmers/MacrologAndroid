@@ -17,6 +17,7 @@ import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.MainActivity;
+import com.example.macrologandroid.models.Gender;
 import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.services.UserService;
@@ -29,7 +30,6 @@ public class UserFragment extends Fragment {
     private static final int EDIT_DETAILS_ID = 123;
     private static final int ADJUST_INTAKE_ID = 234;
 
-    private UserService userService;
     private View view;
     private UserSettings userSettings;
 
@@ -59,9 +59,6 @@ public class UserFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        this.userService = new UserService();
-
     }
 
     @SuppressLint("CheckResult")
@@ -78,7 +75,8 @@ public class UserFragment extends Fragment {
 
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(v -> {
-            this.userSettings = null;
+            this.userSettings = new UserSettings();
+            setUserData();
             callback.onLogoutPressed();
         });
 
@@ -120,8 +118,13 @@ public class UserFragment extends Fragment {
         super.onDetach();
     }
 
+    public void refreshFragment() {
+        fetchUserSettings();
+    }
+
     @SuppressLint("CheckResult")
     protected void fetchUserSettings() {
+        UserService userService = new UserService();
         userService.getSettings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -145,17 +148,21 @@ public class UserFragment extends Fragment {
         userAge.setText(String.valueOf(userSettings.getAge()));
 
         TextView userGender = view.findViewById(R.id.user_gender);
-
-        String gender = userSettings.getGender().toString();
-        gender = gender.substring(0, 1) + gender.substring(1).toLowerCase();
-        userGender.setText(gender);
+        Gender gender = userSettings.getGender();
+        if (gender != null) {
+            String genderStr = gender.toString();
+            genderStr = genderStr.substring(0, 1) + genderStr.substring(1).toLowerCase();
+            userGender.setText(genderStr);
+        } else {
+            userGender.setText("unknown");
+        }
 
         TextView userHeight = view.findViewById(R.id.user_height);
-        String height = String.valueOf(userSettings.getHeight()) + " cm";
+        String height = userSettings.getHeight() + " cm";
         userHeight.setText(height);
 
         TextView userWeight = view.findViewById(R.id.user_weight);
-        String weight = String.valueOf(userSettings.getWeight()) + " kg";
+        String weight = userSettings.getWeight() + " kg";
         userWeight.setText(weight);
 
         TextView userActivity = view.findViewById(R.id.user_activity);
@@ -177,20 +184,20 @@ public class UserFragment extends Fragment {
                 activity = "Extremely active";
                 break;
             default:
-                activity = "Lightly active";
+                activity = "Sedentary";
         }
-        userActivity.setText(String.valueOf(activity));
+        userActivity.setText(activity);
 
         TextView userProtein = view.findViewById(R.id.user_protein);
-        String protein = String.valueOf(userSettings.getProtein()) + " gr";
+        String protein = userSettings.getProtein() + " gr";
         userProtein.setText(protein);
 
         TextView userFat = view.findViewById(R.id.user_fat);
-        String fat = String.valueOf(userSettings.getFat()) + " gr";
+        String fat = userSettings.getFat() + " gr";
         userFat.setText(fat);
 
         TextView userCarbs = view.findViewById(R.id.user_carbs);
-        String carbs = String.valueOf(userSettings.getCarbs()) + " gr";
+        String carbs = userSettings.getCarbs() + " gr";
         userCarbs.setText(carbs);
     }
 
