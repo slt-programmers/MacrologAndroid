@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.macrologandroid.AboutActivity;
 import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
@@ -103,6 +104,12 @@ public class UserFragment extends Fragment {
         Button changePassword = view.findViewById(R.id.change_password);
         changePassword.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            startActivity(intent);
+        });
+
+        Button aboutButton = view.findViewById(R.id.about_button);
+        aboutButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AboutActivity.class);
             startActivity(intent);
         });
 
