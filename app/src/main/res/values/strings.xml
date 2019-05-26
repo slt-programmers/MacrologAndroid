@@ -96,5 +96,6 @@
     <string name="description">Description</string>
     <string name="grams">Gram</string>
 
-    <string name="search">Zoeken</string>
+    <string name="search">Search</string>
+    <string name="intake">Tell us about yourself</string>
 </resources>

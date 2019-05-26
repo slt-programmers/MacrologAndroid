@@ -27,8 +27,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserFragment extends Fragment {
 
-    private static final int EDIT_DETAILS_ID = 123;
+    public static final int EDIT_DETAILS_ID = 123;
     private static final int ADJUST_INTAKE_ID = 234;
+
+    private UserService userService;
 
     private View view;
     private UserSettings userSettings;
@@ -76,8 +78,8 @@ public class UserFragment extends Fragment {
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(v -> {
             this.userSettings = new UserSettings();
-            setUserData();
             callback.onLogoutPressed();
+            setUserData();
         });
 
         Button editDetails = view.findViewById(R.id.edit_details);
@@ -124,7 +126,7 @@ public class UserFragment extends Fragment {
 
     @SuppressLint("CheckResult")
     protected void fetchUserSettings() {
-        UserService userService = new UserService();
+        userService = new UserService();
         userService.getSettings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

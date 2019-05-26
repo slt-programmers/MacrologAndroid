@@ -31,6 +31,19 @@
             android:padding="16dp"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/intake_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:paddingLeft="4dp"
+                android:paddingBottom="8dp"
+                android:visibility="gone"
+                android:paddingRight="4dp"
+                android:text="@string/intake" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

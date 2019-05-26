@@ -1,8 +1,10 @@
 package com.example.macrologandroid;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,19 +17,18 @@ import com.example.macrologandroid.fragments.UserFragment;
 import com.example.macrologandroid.lifecycle.Session;
 
 
-public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener, LoginActivity.OnLoggedInListener {
+public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener {
+
+    private static final int SUCCESSFUL_LOGIN = 789;
+    private static final int SUCCESFULL_REGISTER = 890;
 
     private static SharedPreferences preferences;
-
-    private static MainActivity instance;
-
-    public static MainActivity getInstance() {
-        return instance;
-    }
 
     private DiaryFragment diaryFragment;
 
     private UserFragment userFragment;
+
+    private BottomNavigationView navigation;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -42,15 +43,31 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
                 userFragment.setOnLogoutPressedListener(this);
                 setFragment(userFragment);
                 return true;
+            default:
+                setFragment(diaryFragment);
         }
         return false;
     };
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (SUCCESSFUL_LOGIN):
+            case (SUCCESFULL_REGISTER): {
+                if (resultCode == Activity.RESULT_OK) {
+                    refreshActivity();
+                }
+                break;
+            }
+        }
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        instance = this;
 
 //        NotificationSender.initNotificationSending(this);
 
@@ -60,11 +77,12 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         preferences = getSharedPreferences("AUTH", MODE_PRIVATE);
 
         setFragment(diaryFragment);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if (!isLoggedIn()) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivityForResult(intent, SUCCESSFUL_LOGIN);
         }
     }
 
@@ -90,7 +108,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
 
     private void logout() {
         getSharedPreferences("AUTH", MODE_PRIVATE).edit().remove("TOKEN").remove("USER").apply();
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivityForResult(intent, SUCCESFULL_REGISTER);
+        navigation.callOnClick();
     }
 
     private void setFragment(Fragment fragment) {
@@ -111,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         logout();
     }
 
-    @Override
     public void refreshActivity() {
         diaryFragment.refreshFragment();
         userFragment.refreshFragment();

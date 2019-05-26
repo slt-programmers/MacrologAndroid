@@ -2,16 +2,21 @@ package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.macrologandroid.dtos.UserSettingResponse;
 import com.example.macrologandroid.lifecycle.Session;
@@ -42,6 +47,8 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     private EditText editWeight;
     private Spinner editActivity;
 
+    private Button saveButton;
+
     private UserService userService = new UserService();
 
     @Override
@@ -49,38 +56,58 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_details);
 
-        Intent intent = getIntent();
         editName = findViewById(R.id.edit_name);
-        originalName = intent.getStringExtra("name");
-        editName.setText(originalName);
-
+        editName.addTextChangedListener(textChangedListener);
         editAge = findViewById(R.id.edit_age);
-        originalAge = intent.getIntExtra("age", 0);
-        editAge.setText(String.valueOf(originalAge));
+        editAge.addTextChangedListener(textChangedListener);
 
         genderRadios = findViewById(R.id.radiogroup_gender);
-        originalGender = (Gender) intent.getSerializableExtra("gender");
-        if (Gender.MALE.equals(originalGender)) {
-            genderRadios.check(R.id.check_male);
-        } else {
-            genderRadios.check(R.id.check_female);
-        }
-
         editHeight = findViewById(R.id.edit_height);
-        originalHeight = intent.getIntExtra("height", 0);
-        editHeight.setText(String.valueOf(originalHeight));
+        editHeight.addTextChangedListener(textChangedListener);
 
         editWeight = findViewById(R.id.edit_weight);
-        originalWeight = intent.getDoubleExtra("weight", 0.0);
-        editWeight.setText(String.valueOf(originalWeight));
-
-        originalActivity = intent.getDoubleExtra("activity", 1.2);
-        setupSpinner();
+        editWeight.addTextChangedListener(textChangedListener);
 
         Button backButton = findViewById(R.id.backbutton);
-        backButton.setOnClickListener(v -> finish());
+        saveButton = findViewById(R.id.savebutton);
 
-        Button saveButton = findViewById(R.id.savebutton);
+        Intent intent = getIntent();
+        boolean intake = intent.getBooleanExtra("INTAKE", false);
+        if (intake) {
+            genderRadios.check(R.id.check_male);
+//            originalGender = Gender.MALE;
+//            originalActivity = 1.2;
+            backButton = findViewById(R.id.backbutton);
+            backButton.setVisibility(View.GONE);
+            TextView intakeTitle = findViewById(R.id.intake_title);
+            intakeTitle.setVisibility(View.VISIBLE);
+            saveButton.setEnabled(false);
+        } else {
+            originalName = intent.getStringExtra("name");
+            editName.setText(originalName);
+
+            originalAge = intent.getIntExtra("age", 0);
+            editAge.setText(String.valueOf(originalAge));
+
+            originalGender = (Gender) intent.getSerializableExtra("gender");
+            if (Gender.FEMALE.equals(originalGender)) {
+                genderRadios.check(R.id.check_female);
+            } else {
+                genderRadios.check(R.id.check_male);
+            }
+
+            originalHeight = intent.getIntExtra("height", 0);
+            editHeight.setText(String.valueOf(originalHeight));
+
+            originalWeight = intent.getDoubleExtra("weight", 0.0);
+            editWeight.setText(String.valueOf(originalWeight));
+
+            originalActivity = intent.getDoubleExtra("activity", 1.2);
+
+            backButton.setOnClickListener(v -> finish());
+        }
+        setupSpinner();
+
         saveButton.setOnClickListener(v -> {
             saveSettings();
         });
@@ -130,12 +157,12 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         List<Observable<ResponseBody>> obsList = new ArrayList<>();
 
         String newName = editName.getText().toString();
-        if (!originalName.equals(newName)) {
+        if (!newName.isEmpty() && !newName.equals(originalName)) {
             obsList.add(userService.putSetting(new UserSettingResponse(1, "name", newName)));
         }
 
         String newAge = editAge.getText().toString();
-        if (originalAge != (Integer.valueOf(newAge))) {
+        if (!newAge.isEmpty() && originalAge != (Integer.valueOf(newAge))) {
             obsList.add(userService.putSetting(new UserSettingResponse(1, "age", newAge)));
         }
 
@@ -146,12 +173,12 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
 
         String newHeight = editHeight.getText().toString();
-        if (originalHeight != Integer.valueOf(newHeight)) {
+        if (!newHeight.isEmpty() && originalHeight != Integer.valueOf(newHeight)) {
             obsList.add(userService.putSetting(new UserSettingResponse(1, "height", newHeight)));
         }
 
         String newWeight = editWeight.getText().toString();
-        if (!String.valueOf(originalWeight).equals(newWeight)) {
+        if (!newWeight.isEmpty() && !String.valueOf(originalWeight).equals(newWeight)) {
             obsList.add(userService.putSetting(new UserSettingResponse(1, "weight", newWeight)));
         }
 
@@ -180,4 +207,33 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
                     }, err -> Log.d("Macrolog", err.getMessage()));
     }
 
+    private void checkEmptyTextViews() {
+        boolean nameIsEmpty = editName.getText().toString().isEmpty();
+        boolean ageIsEmpty = editAge.getText().toString().isEmpty();
+        boolean heightIsEmpty = editHeight.getText().toString().isEmpty();
+        boolean weightIsEmpty = editWeight.getText().toString().isEmpty();
+
+        if (!nameIsEmpty && !ageIsEmpty && !heightIsEmpty && !weightIsEmpty) {
+            saveButton.setEnabled(true);
+        } else {
+            saveButton.setEnabled(false);
+        }
+    }
+
+    private TextWatcher textChangedListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            checkEmptyTextViews();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 }

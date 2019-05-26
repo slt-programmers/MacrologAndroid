@@ -1,9 +1,12 @@
 package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -14,12 +17,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.macrologandroid.dtos.AuthenticationResponse;
+import com.example.macrologandroid.fragments.UserFragment;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.services.AuthenticationService;
+import com.example.macrologandroid.services.UserService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
+
+import static com.example.macrologandroid.fragments.UserFragment.EDIT_DETAILS_ID;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,18 +43,25 @@ public class LoginActivity extends AppCompatActivity {
 
     private AuthenticationService authService;
 
-    private OnLoggedInListener callback;
+    private static final int INTAKE_SUCCESSFUL = 678;
 
-    public void setOnLoggedInListener(MainActivity activity) {
-        callback = activity;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (INTAKE_SUCCESSFUL): {
+                if (resultCode == Activity.RESULT_OK) {
+                    finishWithResult();
+                }
+                break;
+            }
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        setOnLoggedInListener(MainActivity.getInstance());
 
         ActionBar actionbar = getSupportActionBar();
         if (actionbar != null) {
@@ -198,8 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                             saveCredentials(res);
-                            refreshMainActivity();
-                            finish();
+                            finishWithResult();
                         }, err -> {
                             mLoginResultView.setText(R.string.login_failed);
                             mLoginResultView.setVisibility(View.VISIBLE);
@@ -208,8 +221,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void refreshMainActivity() {
-        callback.refreshActivity();
+    private void finishWithResult() {
+        Intent intent = new Intent();
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 
     @SuppressLint("CheckResult")
@@ -219,7 +234,9 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                             saveCredentials(res);
-                            finish();
+                            Intent intent = new Intent(this, EditPersonalDetailsActivity.class);
+                            intent.putExtra("INTAKE", true);
+                            startActivityForResult(intent, INTAKE_SUCCESSFUL);
                         },
                         err -> {
                             mRegisterResultView.setText(((HttpException) err).response().errorBody().string());
@@ -233,10 +250,6 @@ public class LoginActivity extends AppCompatActivity {
                 .putString("USER", result.getName())
                 .putString("TOKEN", result.getToken())
                 .apply();
-    }
-
-    public interface OnLoggedInListener {
-        void refreshActivity();
     }
 
 }
