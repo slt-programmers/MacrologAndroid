@@ -60,13 +60,11 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case ADJUST_INTAKE_INTAKE: {
-                if (resultCode == Activity.RESULT_OK) {
-                    Intent resultIntent = new Intent();
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish();
-                }
+        if (requestCode == ADJUST_INTAKE_INTAKE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Intent resultIntent = new Intent();
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
             }
         }
     }
@@ -126,9 +124,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
         setupSpinner();
 
-        saveButton.setOnClickListener(v -> {
-            saveSettings();
-        });
+        saveButton.setOnClickListener(v -> saveSettings());
     }
 
     @Override
@@ -258,7 +254,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
                         setResult(Activity.RESULT_OK, resultIntent);
                         finish();
                     }
-                }, err -> Log.d("Macrolog", err.getMessage()));
+                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
     }
 
     private void checkEmptyTextViews() {

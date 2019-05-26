@@ -13,15 +13,14 @@ import android.widget.TextView;
 import com.example.macrologandroid.models.ChangeGoalMacros;
 import com.example.macrologandroid.R;
 
-public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
+import org.jetbrains.annotations.NotNull;
 
-    private View view;
+public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
 
     private EditText proteinView;
     private EditText fatView;
     private EditText carbsView;
     private TextView caloriesView;
-
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -29,17 +28,20 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        view = inflater.inflate(R.layout.layout_change_macros, container, false);
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+        View view = inflater.inflate(R.layout.layout_change_macros, container, false);
 
         proteinView = view.findViewById(R.id.edit_protein);
         fatView = view.findViewById(R.id.edit_fat);
         carbsView = view.findViewById(R.id.edit_carbs);
         caloriesView = view.findViewById(R.id.calories_result);
 
-        proteinView.setText(String.valueOf(getArguments().getInt("goalProtein")));
-        fatView.setText(String.valueOf(getArguments().getInt("goalFat")));
-        carbsView.setText(String.valueOf(getArguments().getInt("goalCarbs")));
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            proteinView.setText(String.valueOf(arguments.getInt("goalProtein")));
+            fatView.setText(String.valueOf(arguments.getInt("goalFat")));
+            carbsView.setText(String.valueOf(arguments.getInt("goalCarbs")));
+        }
         caloriesView.setText(String.valueOf(calculateCalories()));
 
         proteinView.addTextChangedListener(textwatcher);
@@ -50,13 +52,11 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
     }
 
     private long calculateCalories() {
-
         double protein = Double.valueOf(handleEmptyString(proteinView.getText().toString()));
         double fat = Double.valueOf(handleEmptyString(fatView.getText().toString()));
         double carbs = Double.valueOf(handleEmptyString(carbsView.getText().toString()));
 
         return Math.round((protein * 4.0) + (fat * 9.0) + (carbs * 4.0));
-
     }
 
     private String handleEmptyString(String string) {

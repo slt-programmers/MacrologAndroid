@@ -49,9 +49,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> finish());
 
         Button changeButton = findViewById(R.id.change_button);
-        changeButton.setOnClickListener(v -> {
-            changePassword();
-        });
+        changeButton.setOnClickListener(v -> changePassword());
     }
 
     @Override

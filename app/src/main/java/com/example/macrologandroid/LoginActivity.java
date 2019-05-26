@@ -24,6 +24,7 @@ import com.example.macrologandroid.services.UserService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 
 import static com.example.macrologandroid.fragments.UserFragment.EDIT_DETAILS_ID;
@@ -48,12 +49,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case (INTAKE_SUCCESSFUL): {
-                if (resultCode == Activity.RESULT_OK) {
-                    finishWithResult();
-                }
-                break;
+        if (requestCode == INTAKE_SUCCESSFUL) {
+            if (resultCode == Activity.RESULT_OK) {
+                finishWithResult();
             }
         }
     }
@@ -127,13 +125,13 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (!isUsernameValid(username)) {
+        if (isUsernameInvalid(username)) {
             mUserOrEmailView.setError(getString(R.string.error_field_required));
             focusView = mUserOrEmailView;
             cancel = true;
         }
 
-        if (!isPasswordValid(password)) {
+        if (!isPasswordInvalid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             if (focusView == null) {
                 focusView = mPasswordView;
@@ -162,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (!isUsernameValid(username)) {
+        if (!isUsernameInvalid(username)) {
             mNewUsernameView.setError(getString(R.string.error_field_required));
             focusView = mNewUsernameView;
             cancel = true;
@@ -174,7 +172,7 @@ public class LoginActivity extends AppCompatActivity {
             cancel = true;
         }
 
-        if (!isPasswordValid(password)) {
+        if (isPasswordInvalid(password)) {
             mNewPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mNewPasswordView;
             cancel = true;
@@ -192,17 +190,16 @@ public class LoginActivity extends AppCompatActivity {
         mRegisterResultView.setVisibility(View.GONE);
     }
 
-    private boolean isUsernameValid(String username) {
-        return !TextUtils.isEmpty(username);
+    private boolean isUsernameInvalid(String username) {
+        return TextUtils.isEmpty(username);
     }
 
     private boolean isEmailValid(String email) {
         return email.contains("@");
     }
 
-    private boolean isPasswordValid(String password) {
-
-        return !TextUtils.isEmpty(password) && password.length() >= 6;
+    private boolean isPasswordInvalid(String password) {
+        return TextUtils.isEmpty(password) && password.length() >= 6;
     }
 
     @SuppressLint("CheckResult")
@@ -212,10 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                             saveCredentials(res);
-                    Intent intent = new Intent(this, EditPersonalDetailsActivity.class);
-                    intent.putExtra("INTAKE", true);
-                    startActivityForResult(intent, INTAKE_SUCCESSFUL);
-//                            finishWithResult();
+                            finishWithResult();
                         }, err -> {
                             mLoginResultView.setText(R.string.login_failed);
                             mLoginResultView.setVisibility(View.VISIBLE);
@@ -242,8 +236,14 @@ public class LoginActivity extends AppCompatActivity {
                             startActivityForResult(intent, INTAKE_SUCCESSFUL);
                         },
                         err -> {
-                            mRegisterResultView.setText(((HttpException) err).response().errorBody().string());
-                            mRegisterResultView.setVisibility(View.VISIBLE);
+                            ResponseBody body = ((HttpException) err).response().errorBody();
+                            if (body != null) {
+                                mRegisterResultView.setText(body.string());
+                                mRegisterResultView.setVisibility(View.VISIBLE);
+                            } else {
+                                mRegisterResultView.setText(R.string.general_error);
+                                mRegisterResultView.setVisibility(View.VISIBLE);
+                            }
                         });
     }
 

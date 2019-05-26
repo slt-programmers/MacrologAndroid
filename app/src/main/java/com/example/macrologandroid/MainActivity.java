@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.macrologandroid.cache.DiaryLogCache;
 import com.example.macrologandroid.fragments.DiaryFragment;
 import com.example.macrologandroid.fragments.FoodFragment;
 import com.example.macrologandroid.fragments.UserFragment;
@@ -56,12 +57,12 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
             case (SUCCESSFUL_LOGIN):
             case (SUCCESFULL_REGISTER): {
                 if (resultCode == Activity.RESULT_OK) {
-                    refreshActivity();
+                    DiaryLogCache.getInstance().clearCache();
+                    navigation.setSelectedItemId(R.id.navigation_diary);
                 }
                 break;
             }
         }
-
     }
 
     @Override
@@ -129,11 +130,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     @Override
     public void onLogoutPressed() {
         logout();
-    }
-
-    public void refreshActivity() {
-        diaryFragment.refreshFragment();
-        userFragment.refreshFragment();
     }
 
 }

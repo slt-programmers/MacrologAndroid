@@ -59,14 +59,11 @@ public class AddLogEntryActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (ADD_FOOD_ID) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    String foodName = (String) data.getSerializableExtra("FOOD_NAME");
-                    foodTextView.setText(foodName);
-                    setNewlyAddedFood(foodName);
-                }
-                break;
+        if (requestCode == ADD_FOOD_ID) {
+            if (resultCode == Activity.RESULT_OK) {
+                String foodName = (String) data.getSerializableExtra("FOOD_NAME");
+                foodTextView.setText(foodName);
+                setNewlyAddedFood(foodName);
             }
         }
     }
@@ -88,14 +85,10 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     allFood = res;
                     fillFoodNameList();
                     setupAutoCompleteTextView();
-                }, err -> {
-                    Log.d("FoodService", err.getMessage());
-                });
+                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
 
         Button backbutton = findViewById(R.id.backbutton);
-        backbutton.setOnClickListener(v -> {
-            finish();
-        });
+        backbutton.setOnClickListener(v -> finish());
 
         setupMealSpinner();
         setupAutoCompleteTextView();
@@ -147,9 +140,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     foodTextView.setText(foodName);
                     setupPortionUnitSpinner(foodName);
                     toggleFields(true);
-                }, err -> {
-                    Log.d("FoodService", err.getMessage());
-                });
+                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
     }
 
     @SuppressLint("CheckResult")
@@ -182,9 +173,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                             setResult(Activity.RESULT_OK, resultIntent);
                             finish();
                         },
-                        err -> {
-                            Log.d("LogService", err.getMessage());
-                        });
+                        err -> Log.d(this.getLocalClassName(), err.getMessage()));
     }
 
     private void fillFoodNameList() {
@@ -269,11 +258,11 @@ public class AddLogEntryActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (((AppCompatTextView) view).getText().toString().equals("gram")) {
                     editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    editGramsOrAmount.setText("100");
+                    editGramsOrAmount.setText(String.valueOf(100));
                     editGramsOrAmount.setSelection(3);
                 } else {
                     editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    editGramsOrAmount.setText("1");
+                    editGramsOrAmount.setText(String.valueOf(1));
                     editGramsOrAmount.setSelection(1);
                 }
             }

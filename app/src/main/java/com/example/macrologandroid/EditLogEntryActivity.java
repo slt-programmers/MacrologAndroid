@@ -33,7 +33,6 @@ import com.example.macrologandroid.models.Meal;
 import com.example.macrologandroid.services.FoodService;
 import com.example.macrologandroid.services.LogEntryService;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,7 +46,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EditLogEntryActivity extends AppCompatActivity {
 
-    private static final int ADD_LOG_ENTRY_ID = 345;
     private static final int ADD_FOOD_ID = 567;
 
     private LocalDate selectedDate;
@@ -79,15 +77,12 @@ public class EditLogEntryActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case (ADD_FOOD_ID): {
-                if (resultCode == Activity.RESULT_OK) {
-                    String foodName = (String) data.getSerializableExtra("FOOD_NAME");
-                    foodTextView.setText(foodName);
-                    setNewlyAddedFood(foodName);
-                    addNewFoodButton.setVisibility(View.GONE);
-                }
-                break;
+        if (requestCode == ADD_FOOD_ID) {
+            if (resultCode == Activity.RESULT_OK) {
+                String foodName = (String) data.getSerializableExtra("FOOD_NAME");
+                foodTextView.setText(foodName);
+                setNewlyAddedFood(foodName);
+                addNewFoodButton.setVisibility(View.GONE);
             }
         }
     }
@@ -107,11 +102,13 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     allFood = res;
                     fillFoodNameList();
                     setupAutoCompleteTextView();
-                }, err -> {
-                    Log.d("FoodService", err.getMessage());
-                });
+                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
 
-        logEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("LOGENTRIES");
+        try {
+            logEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("LOGENTRIES");
+        } catch (Exception ex) {
+            logEntries = new ArrayList<>();
+        }
         if (logEntries.size() == 0) {
             meal = (Meal) getIntent().getSerializableExtra("MEAL");
         } else {
@@ -138,9 +135,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         fillLogEntrylayout();
 
         Button backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
 
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(v -> {
@@ -247,20 +242,18 @@ public class EditLogEntryActivity extends AppCompatActivity {
                             appendNewEntry();
                         },
                         err -> {
-                            Log.d("LogEntryService", err.getMessage());
+                            Log.d(this.getLocalClassName(), err.getMessage());
                         });
     }
 
     private void addLogEntryToLayout(LogEntryResponse entry) {
-        ConstraintLayout logEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
+        ConstraintLayout logEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, findViewById(R.id.logentry_layout));
 
         TextView foodNameTextView = logEntry.findViewById(R.id.food_name);
         foodNameTextView.setText(entry.getFood().getName());
 
         ImageView trashImageView = logEntry.findViewById(R.id.trash_icon);
-        trashImageView.setOnClickListener((v) -> {
-            toggleToRemoveEntry(entry);
-        });
+        trashImageView.setOnClickListener((v) -> toggleToRemoveEntry(entry));
 
         EditText foodAmount = logEntry.findViewById(R.id.food_amount);
         foodAmount.setId(R.id.food_amount);
@@ -290,9 +283,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     foodTextView.setText(foodName);
                     setupPortionUnitSpinner(foodName);
                     toggleFields(true);
-                }, err -> {
-                    Log.d("FoodService", err.getMessage());
-                });
+                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
     }
 
     @SuppressLint("CheckResult")
@@ -334,20 +325,19 @@ public class EditLogEntryActivity extends AppCompatActivity {
             if (copyEntries.indexOf(entry) == -1) {
                 logEntryService.deleteLogEntry(entry.getId()).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(res -> {
-
-                                },
-                                err -> {
-
-                                });
+                        .subscribe(res -> Log.d(this.getLocalClassName(), res.string()),
+                                err -> Log.d(this.getLocalClassName(), err.getMessage()));
             } else {
                 int index = logEntries.indexOf(entry);
                 ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
                 Spinner foodSpinner = (Spinner) logEntryLayout.getChildAt(2);
                 String item = (String) foodSpinner.getSelectedItem();
 
+                double multiplier = 1;
                 EditText foodAmount = ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
-                double multiplier = Double.valueOf(foodAmount.getText().toString());
+                if (foodAmount!= null) {
+                    multiplier = Double.valueOf(foodAmount.getText().toString());
+                }
 
                 Long portionId = null;
                 if (!item.equals("gram")) {
@@ -535,11 +525,11 @@ public class EditLogEntryActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (((AppCompatTextView) view).getText().toString().equals("gram")) {
                     editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    editGramsOrAmount.setText("100");
+                    editGramsOrAmount.setText(String.valueOf(100));
                     editGramsOrAmount.setSelection(3);
                 } else {
                     editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                    editGramsOrAmount.setText("1");
+                    editGramsOrAmount.setText(String.valueOf(1));
                     editGramsOrAmount.setSelection(1);
                 }
             }

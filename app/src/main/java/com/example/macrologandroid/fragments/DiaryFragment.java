@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,6 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     private View view;
     private DiaryPager viewPager;
     private DiaryLogCache cache;
-    private UserService userService;
     private int goalProtein, goalFat, goalCarbs, goalCalories;
     private LocalDate selectedDate;
 
@@ -89,13 +89,11 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
             pullToRefresh.setRefreshing(false);
         });
 
-        userService = new UserService();
+        UserService userService = new UserService();
         userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe((result) -> {
-                    setGoalIntake(new UserSettings(result));
-                }, (error) -> {
-                    System.out.print(error.getMessage());
-                });
+                .subscribe(
+                        (result) -> setGoalIntake(new UserSettings(result)),
+                        (error) -> Log.d(this.getClass().getName(),error.getMessage()));
 
         FloatingActionButton button = view.findViewById(R.id.floating_button);
         button.setOnClickListener(v -> {
@@ -113,13 +111,9 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
 
         ImageView arrowLeft = view.findViewById(R.id.arrow_left);
         ImageView arrowRight = view.findViewById(R.id.arrow_right);
-        arrowLeft.setOnClickListener((args) -> {
-            viewPager.arrowScroll(View.FOCUS_LEFT);
-        });
+        arrowLeft.setOnClickListener((args) -> viewPager.arrowScroll(View.FOCUS_LEFT));
 
-        arrowRight.setOnClickListener((args) -> {
-            viewPager.arrowScroll(View.FOCUS_RIGHT);
-        });
+        arrowRight.setOnClickListener((args) -> viewPager.arrowScroll(View.FOCUS_RIGHT));
     }
 
     public void startEditActivity(Meal meal) {
@@ -229,17 +223,5 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
 
     private int getPositionFromDate(LocalDate date) {
         return 501 + (int) ChronoUnit.DAYS.between(LocalDate.now(), date);
-    }
-
-    @SuppressLint("CheckResult")
-    public void refreshFragment() {
-        userService = new UserService();
-        userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe((result) -> {
-                    setGoalIntake(new UserSettings(result));
-                    setupViewPager(view);
-                }, (error) -> {
-                    System.out.print(error.getMessage());
-                });
     }
 }

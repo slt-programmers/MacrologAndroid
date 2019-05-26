@@ -81,7 +81,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
                                 fillDiaryPage(res, layout);
                                 container.addView(layout);
                             }, err -> {
-                                Log.d("Macrolog", err.getMessage());
+                                Log.d(this.getClass().getName(), err.getMessage());
                             }
                     );
         } else {

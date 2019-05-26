@@ -22,6 +22,8 @@ import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.services.UserService;
 
+import org.jetbrains.annotations.NotNull;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -29,8 +31,6 @@ public class UserFragment extends Fragment {
 
     public static final int EDIT_DETAILS_ID = 123;
     private static final int ADJUST_INTAKE_ID = 234;
-
-    private UserService userService;
 
     private View view;
     private UserSettings userSettings;
@@ -65,7 +65,7 @@ public class UserFragment extends Fragment {
 
     @SuppressLint("CheckResult")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user, container, false);
 
@@ -77,9 +77,8 @@ public class UserFragment extends Fragment {
 
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(v -> {
-            this.userSettings = new UserSettings();
+            this.userSettings = null;
             callback.onLogoutPressed();
-            setUserData();
         });
 
         Button editDetails = view.findViewById(R.id.edit_details);
@@ -120,13 +119,9 @@ public class UserFragment extends Fragment {
         super.onDetach();
     }
 
-    public void refreshFragment() {
-        fetchUserSettings();
-    }
-
     @SuppressLint("CheckResult")
     protected void fetchUserSettings() {
-        userService = new UserService();
+        UserService userService = new UserService();
         userService.getSettings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -135,9 +130,7 @@ public class UserFragment extends Fragment {
                             this.userSettings = new UserSettings(res);
                             setUserData();
                         },
-                        err -> {
-                            Log.d("Macrolog", err.getMessage());
-                        }
+                        err -> Log.d(this.getClass().getName(), err.getMessage())
 
                 );
     }
@@ -156,7 +149,7 @@ public class UserFragment extends Fragment {
             genderStr = genderStr.substring(0, 1) + genderStr.substring(1).toLowerCase();
             userGender.setText(genderStr);
         } else {
-            userGender.setText("unknown");
+            userGender.setText(R.string.gender_unknown);
         }
 
         TextView userHeight = view.findViewById(R.id.user_height);

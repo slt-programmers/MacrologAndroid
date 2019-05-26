@@ -13,11 +13,11 @@ import com.example.macrologandroid.models.Gender;
 import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.R;
 
+import org.jetbrains.annotations.NotNull;
+
 public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros {
 
     private TextView caloriesView;
-    private TextView proteinView;
-    private TextView fatView;
     private TextView carbsView;
 
     private UserSettings userSettings;
@@ -28,10 +28,12 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
     private double goalCarbs;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         View view = inflater.inflate(R.layout.layout_change_calories, container, false);
 
-        userSettings = (UserSettings) getArguments().getSerializable("userSettings");
+        if (getArguments() != null) {
+            userSettings = (UserSettings) getArguments().getSerializable("userSettings");
+        }
         goalCalories = calculateCalories();
         goalProtein = userSettings.getWeight() * 1.8;
         goalFat = userSettings.getWeight() * 0.8;
@@ -40,10 +42,10 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
         caloriesView = view.findViewById(R.id.calories_output);
         caloriesView.setText(String.valueOf(Math.round(goalCalories)));
 
-        proteinView = view.findViewById(R.id.protein_output);
+        TextView proteinView = view.findViewById(R.id.protein_output);
         proteinView.setText(String.valueOf(Math.round(goalProtein)));
 
-        fatView = view.findViewById(R.id.fat_output);
+        TextView fatView = view.findViewById(R.id.fat_output);
         fatView.setText(String.valueOf(Math.round(goalFat)));
 
         carbsView = view.findViewById(R.id.carbs_output);

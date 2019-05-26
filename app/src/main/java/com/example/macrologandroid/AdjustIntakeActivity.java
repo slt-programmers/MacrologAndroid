@@ -21,8 +21,6 @@ import com.example.macrologandroid.fragments.ChangeMacrosFragment;
 import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.services.UserService;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,9 +77,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
         });
 
         Button saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(v -> {
-            saveGoalMacros();
-        });
+        saveButton.setOnClickListener(v -> saveGoalMacros());
 
     }
 
@@ -132,7 +128,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
                             resultIntent.putExtra("RELOAD", true);
                             setResult(Activity.RESULT_OK, resultIntent);
                             finish();
-                        }, err -> Log.d("Macrolog", err.getMessage()));
+                        }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
 
             }
         }

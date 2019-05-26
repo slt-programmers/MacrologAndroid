@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,9 +63,7 @@ public class AddFoodActivity extends AppCompatActivity {
         foodService = new FoodService();
 
         Button backButton = findViewById(R.id.backbutton);
-        backButton.setOnClickListener(v -> {
-            finish();
-        });
+        backButton.setOnClickListener(v -> finish());
 
         editFoodName = findViewById(R.id.food_name);
         editFoodName.setText(foodName);
@@ -85,9 +84,7 @@ public class AddFoodActivity extends AppCompatActivity {
         });
 
         saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(v -> {
-            saveFood();
-        });
+        saveButton.setOnClickListener(v -> saveFood());
         saveButton.setEnabled(false);
     }
 
@@ -143,9 +140,7 @@ public class AddFoodActivity extends AppCompatActivity {
         portionGrams.addTextChangedListener(textWatcher);
 
         ImageView trashcan = newPortionLayout.findViewById(R.id.trash_icon);
-        trashcan.setOnClickListener(v -> {
-            removePortion(newPortionLayout);
-        });
+        trashcan.setOnClickListener(v -> removePortion(newPortionLayout));
 
         container.addView(newPortionLayout);
     }
@@ -181,9 +176,7 @@ public class AddFoodActivity extends AppCompatActivity {
                     resultIntent.putExtra("FOOD_NAME", editFoodName.getText().toString());
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
-                }, err -> {
-                    System.out.println(err.getMessage());
-                });
+                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
 
     }
 }

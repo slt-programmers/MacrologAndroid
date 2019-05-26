@@ -50,6 +50,7 @@
 
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="gender_unknown">Unknown</string>
     <string name="activity_level">Activity level</string>
 
     <string name="adjust_user">Edit details</string>
@@ -100,4 +101,5 @@
     <string name="intake">Tell us about yourself</string>
     <string name="adjust_intake_title">Set your goal intake</string>
     <string name="adjust_intake_explanation">Fill in your desired amount of macro nutrients, or choose the desired amount of calories.</string>
+    <string name="general_error">Something went wrong, try again later</string>
 </resources>
