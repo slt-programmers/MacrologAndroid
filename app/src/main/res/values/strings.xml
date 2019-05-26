@@ -98,4 +98,6 @@
 
     <string name="search">Search</string>
     <string name="intake">Tell us about yourself</string>
+    <string name="adjust_intake_title">Set your goal intake</string>
+    <string name="adjust_intake_explanation">Fill in your desired amount of macro nutrients, or choose the desired amount of calories.</string>
 </resources>

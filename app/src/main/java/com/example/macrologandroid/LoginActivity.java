@@ -212,7 +212,10 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                             saveCredentials(res);
-                            finishWithResult();
+                    Intent intent = new Intent(this, EditPersonalDetailsActivity.class);
+                    intent.putExtra("INTAKE", true);
+                    startActivityForResult(intent, INTAKE_SUCCESSFUL);
+//                            finishWithResult();
                         }, err -> {
                             mLoginResultView.setText(R.string.login_failed);
                             mLoginResultView.setVisibility(View.VISIBLE);

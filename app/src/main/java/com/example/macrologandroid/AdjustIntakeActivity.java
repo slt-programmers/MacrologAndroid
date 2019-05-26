@@ -9,7 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.macrologandroid.dtos.UserSettingResponse;
 import com.example.macrologandroid.fragments.ChangeCaloriesFragment;
@@ -18,6 +20,8 @@ import com.example.macrologandroid.models.ChangeGoalMacros;
 import com.example.macrologandroid.fragments.ChangeMacrosFragment;
 import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.services.UserService;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,19 @@ public class AdjustIntakeActivity extends AppCompatActivity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_adjust_intake);
         Intent intent = getIntent();
+        boolean intake = intent.getBooleanExtra("INTAKE", false);
+
+
+        Button backButton = findViewById(R.id.backbutton);
+        backButton.setOnClickListener(v -> finish());
+
+        if (intake) {
+            backButton.setVisibility(View.INVISIBLE);
+            TextView title = findViewById(R.id.adjust_intake_title);
+            title.setVisibility(View.VISIBLE);
+            TextView explanation = findViewById(R.id.adjust_intake_explanation);
+            explanation.setVisibility(View.VISIBLE);
+        }
 
         service = new UserService();
 
@@ -66,8 +83,6 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             saveGoalMacros();
         });
 
-        Button backButton = findViewById(R.id.backbutton);
-        backButton.setOnClickListener(v -> finish());
     }
 
     @Override
