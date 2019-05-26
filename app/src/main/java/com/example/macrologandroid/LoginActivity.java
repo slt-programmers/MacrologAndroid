@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
             cancel = true;
         }
 
-        if (!isPasswordInvalid(password)) {
+        if (isPasswordInvalid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             if (focusView == null) {
                 focusView = mPasswordView;
@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (!isUsernameInvalid(username)) {
+        if (isUsernameInvalid(username)) {
             mNewUsernameView.setError(getString(R.string.error_field_required));
             focusView = mNewUsernameView;
             cancel = true;
@@ -199,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordInvalid(String password) {
-        return TextUtils.isEmpty(password) && password.length() >= 6;
+        return TextUtils.isEmpty(password) || password.length() < 6;
     }
 
     @SuppressLint("CheckResult")

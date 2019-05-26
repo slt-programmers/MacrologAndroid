@@ -30,7 +30,7 @@ public class NotificationSender {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, context.getString(R.string.notification_channel_id))
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.app_icon_foreground)
                 .setAutoCancel(true)
                 .setContentTitle("Macrolog")
                 .setContentText("Have you logged your meals today?")
