@@ -45,8 +45,8 @@ public class UserFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (EDIT_DETAILS_ID) :
+        switch (requestCode) {
+            case (EDIT_DETAILS_ID):
             case (ADJUST_INTAKE_ID): {
                 if (resultCode == Activity.RESULT_OK) {
                     fetchUserSettings();
@@ -77,7 +77,10 @@ public class UserFragment extends Fragment {
         }
 
         Button logoutButton = view.findViewById(R.id.logout_button);
-        logoutButton.setOnClickListener(v -> callback.onLogoutPressed());
+        logoutButton.setOnClickListener(v -> {
+            this.userSettings = null;
+            callback.onLogoutPressed();
+        });
 
         Button editDetails = view.findViewById(R.id.edit_details);
         editDetails.setOnClickListener(v -> {
@@ -144,7 +147,7 @@ public class UserFragment extends Fragment {
         TextView userGender = view.findViewById(R.id.user_gender);
 
         String gender = userSettings.getGender().toString();
-        gender = gender.substring(0,1) + gender.substring(1).toLowerCase();
+        gender = gender.substring(0, 1) + gender.substring(1).toLowerCase();
         userGender.setText(gender);
 
         TextView userHeight = view.findViewById(R.id.user_height);
@@ -158,12 +161,23 @@ public class UserFragment extends Fragment {
         TextView userActivity = view.findViewById(R.id.user_activity);
         String activity;
         switch (String.valueOf(userSettings.getActivity())) {
-            case "1.2": activity = "Sedentary"; break;
-            case "1.375": activity = "Lightly active"; break;
-            case "1.55": activity = "Moderately active"; break;
-            case "1.725": activity = "Very active"; break;
-            case "1.9": activity = "Extremely active"; break;
-            default: activity = "Lightly active";
+            case "1.2":
+                activity = "Sedentary";
+                break;
+            case "1.375":
+                activity = "Lightly active";
+                break;
+            case "1.55":
+                activity = "Moderately active";
+                break;
+            case "1.725":
+                activity = "Very active";
+                break;
+            case "1.9":
+                activity = "Extremely active";
+                break;
+            default:
+                activity = "Lightly active";
         }
         userActivity.setText(String.valueOf(activity));
 

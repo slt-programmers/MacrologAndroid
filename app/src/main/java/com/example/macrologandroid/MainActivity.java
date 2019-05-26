@@ -41,9 +41,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
             case R.id.navigation_food:
                 setFragment(new FoodFragment());
                 return true;
-//            case R.id.navigation_meals:
-//                setFragment(new MealsFragment());
-//                return true;
             case R.id.navigation_user:
                 userFragment.setOnLogoutPressedListener(this);
                 setFragment(userFragment);
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         setContentView(R.layout.activity_main);
         instance = this;
 
-        NotificationSender.initNotificationSending(this);
+//        NotificationSender.initNotificationSending(this);
 
         diaryFragment = new DiaryFragment();
         userFragment = new UserFragment();
@@ -72,22 +69,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         if (!isLoggedIn()) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getTitle().equals(getResources().getString(R.string.logout))) {
-            logout();
-        }
-        return true;
     }
 
     @Override
