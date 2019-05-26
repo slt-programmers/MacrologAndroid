@@ -247,7 +247,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void addLogEntryToLayout(LogEntryResponse entry) {
-        ConstraintLayout logEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, findViewById(R.id.logentry_layout));
+        ConstraintLayout logEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
 
         TextView foodNameTextView = logEntry.findViewById(R.id.food_name);
         foodNameTextView.setText(entry.getFood().getName());
