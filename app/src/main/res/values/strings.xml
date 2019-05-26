@@ -114,4 +114,6 @@
         not work for another. We won\'t pretend to know much about dieting so in the goal intake
         edit section a few calculations and suggestions based on mainstream theory will be done,
         which you are entirely free to ignore.\n\nIn the end, we just want to help you measure.</string>
+    <string name="disclaimer">For this beta version we are using free hosting.
+        This may cause some initial slowness on starting the application.</string>
 </resources>
