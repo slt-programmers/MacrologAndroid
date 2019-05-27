@@ -2,7 +2,6 @@ package com.example.macrologandroid;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

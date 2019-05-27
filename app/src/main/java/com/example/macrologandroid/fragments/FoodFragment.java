@@ -5,12 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -23,6 +28,7 @@ import com.example.macrologandroid.services.FoodService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -33,15 +39,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.view.KeyEvent.KEYCODE_ENTER;
+
 public class FoodFragment extends Fragment {
 
     private static final int ADD_FOOD_ID = 123;
     private List<FoodResponse> allFood;
+    private List<FoodResponse> searchedFood;
 
     private TableLayout foodTable;
     private TableRow foodTableHeader;
     private ProgressBar loader;
     private SortHeader currentSortHeader = SortHeader.FOOD;
+    private int selectedRadioId;
 
     private Disposable disposable;
 
@@ -71,6 +81,19 @@ public class FoodFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_food, container, false);
+
+        TextView search = view.findViewById(R.id.search);
+        search.addTextChangedListener(watcher);
+        search.setOnEditorActionListener(actionListener);
+        search.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener((v, id) -> {
+            selectedRadioId = id;
+            determineGramsOrPercentage();
+        });
+        selectedRadioId = R.id.grams_radio;
+
         loader = view.findViewById(R.id.loader);
         foodTable = view.findViewById(R.id.food_table_layout);
         foodTableHeader = view.findViewById(R.id.food_table_header);
@@ -85,12 +108,11 @@ public class FoodFragment extends Fragment {
         carbsHeader.setOnClickListener(v -> sortTable(SortHeader.CARBS));
 
         allFood = FoodCache.getInstance().getCache();
+        searchedFood = allFood;
         if (allFood.isEmpty()) {
             refreshAllFood();
         } else {
-            fillTable();
-            loader.setVisibility(View.GONE);
-            foodTableHeader.setVisibility(View.VISIBLE);
+            determineGramsOrPercentage();
         }
         return view;
     }
@@ -121,9 +143,8 @@ public class FoodFragment extends Fragment {
                 {
                     FoodCache.getInstance().addToCache(res);
                     allFood = res;
-                    fillTable();
-                    loader.setVisibility(View.GONE);
-                    foodTableHeader.setVisibility(View.VISIBLE);
+                    searchedFood = allFood;
+                    determineGramsOrPercentage();
                 }, (err) -> Log.d(this.getClass().getName(), err.toString()));
     }
 
@@ -133,8 +154,37 @@ public class FoodFragment extends Fragment {
         startActivityForResult(intent, ADD_FOOD_ID);
     }
 
-    private void fillTable() {
-        for (FoodResponse foodResponse : allFood) {
+    private void determineGramsOrPercentage() {
+        if (selectedRadioId == R.id.grams_radio) {
+            fillTable(searchedFood);
+            // use grams list
+        } else {
+            fillTable(convertGramsToPercentage(searchedFood));
+        }
+    }
+
+    private List<FoodResponse> convertGramsToPercentage(List<FoodResponse> foodResponses) {
+        List<FoodResponse> result = new ArrayList<>();
+        for (FoodResponse food: foodResponses) {
+            double total = food.getProtein() + food.getFat() + food.getCarbs();
+            FoodResponse foodPercentage = new FoodResponse(
+                    food.getId(),
+                    food.getName(),
+                    (food.getProtein() / total * 100),
+                    (food.getFat() / total * 100),
+                    (food.getCarbs() / total * 100),
+                    null
+            );
+            result.add(foodPercentage);
+        }
+        return result;
+    }
+
+    private void fillTable(List<FoodResponse> selection) {
+        foodTable.removeAllViews();
+        foodTable.addView(foodTableHeader);
+
+        for (FoodResponse foodResponse : selection) {
             TableRow row = new TableRow(getContext());
             TextView food = getCustomizedTextView(new TextView(getContext()));
             TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -155,53 +205,47 @@ public class FoodFragment extends Fragment {
             row.addView(carbs);
             foodTable.addView(row);
         }
+
+        loader.setVisibility(View.GONE);
+        foodTableHeader.setVisibility(View.VISIBLE);
     }
 
     private void sortTable(SortHeader sortHeader) {
-//        for (int i = foodTable.getChildCount() -1; i <= 0; i--) {
-//            foodTable.removeViewAt(i);
-//        }
-//        TableLayout copy = foodTable;
-
         foodTableHeader.setVisibility(View.INVISIBLE);
         loader.setVisibility(View.VISIBLE);
-        foodTable.removeAllViews();
-        foodTable.addView(foodTableHeader);
 
         if (sortHeader == currentSortHeader) {
-            Collections.reverse(allFood);
+            Collections.reverse(searchedFood);
         } else {
             switch (sortHeader) {
                 case FOOD: {
                     Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> f1.getName().compareTo(f2.getName());
-                    allFood = allFood.stream().sorted(comparator).collect(Collectors.toList());
+                    searchedFood = searchedFood.stream().sorted(comparator).collect(Collectors.toList());
                     break;
                 }
                 case PROTEIN: {
                     Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> Double.compare(f2.getProtein(), f1.getProtein());
-                    allFood = allFood.stream().sorted(comparator).collect(Collectors.toList());
+                    searchedFood = searchedFood.stream().sorted(comparator).collect(Collectors.toList());
                     break;
                 }
                 case FAT: {
                     Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> Double.compare(f2.getFat(), f1.getFat());
-                    allFood = allFood.stream().sorted(comparator).collect(Collectors.toList());
+                    searchedFood = searchedFood.stream().sorted(comparator).collect(Collectors.toList());
                     break;
                 }
                 case CARBS: {
                     Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> Double.compare(f2.getCarbs(), f1.getCarbs());
-                    allFood = allFood.stream().sorted(comparator).collect(Collectors.toList());
+                    searchedFood = searchedFood.stream().sorted(comparator).collect(Collectors.toList());
                     break;
                 }
                 default: {
                     Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> f1.getName().compareTo(f2.getName());
-                    allFood = allFood.stream().sorted(comparator).collect(Collectors.toList());
+                    searchedFood = searchedFood.stream().sorted(comparator).collect(Collectors.toList());
                 }
             }
         }
         currentSortHeader = sortHeader;
-        fillTable();
-        loader.setVisibility(View.GONE);
-        foodTableHeader.setVisibility(View.VISIBLE);
+        determineGramsOrPercentage();
     }
 
     private TextView getDecimalNumberTextView(double text) {
@@ -223,6 +267,43 @@ public class FoodFragment extends Fragment {
         view.setLayoutParams(lp);
         view.setGravity(Gravity.END);
     }
+
+    TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            searchedFood = new ArrayList<>();
+            if (s == null || s.toString().isEmpty()) {
+                searchedFood = allFood;
+            } else {
+                for (FoodResponse food : allFood) {
+                    if (food.getName().contains(s)) {
+                        searchedFood.add(food);
+                    }
+                }
+            }
+            determineGramsOrPercentage();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    TextView.OnEditorActionListener actionListener = (v, actionId, event) -> {
+        if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KEYCODE_ENTER) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            v.clearFocus();
+            return true;
+        }
+        return false;
+    };
 
     enum SortHeader {
         FOOD, PROTEIN, FAT, CARBS
