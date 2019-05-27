@@ -78,7 +78,7 @@ public class SplashscreenActivity extends AppCompatActivity {
                             }
                         },
                         err -> {
-                            if (err instanceof SocketTimeoutException && callCounter < 3) {
+                            if (err instanceof SocketTimeoutException && callCounter < 4) {
                                 doHealthCheck();
                             }
                             else {

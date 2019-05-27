@@ -206,14 +206,6 @@ public class DiaryPagerAdaper extends PagerAdapter {
                 ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f);
         view.setLayoutParams(lp);
         view.setGravity(Gravity.END);
-
-//        if (context != null) {
-//            final float scale = context.getResources().getDisplayMetrics().density;
-//            int pixels = (int) (20 * scale + 0.5f);
-//            view.setWidth(pixels);
-//        } else {
-//            view.setWidth(100);
-//        }
     }
 
     public interface OnTotalUpdateListener {

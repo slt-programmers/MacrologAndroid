@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -51,6 +52,8 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     private DiaryLogCache cache;
     private int goalProtein, goalFat, goalCarbs, goalCalories;
     private LocalDate selectedDate;
+
+    private Disposable disposable;
 
     public DiaryFragment() {
     }
@@ -90,7 +93,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         });
 
         UserService userService = new UserService();
-        userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        disposable = userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (result) -> setGoalIntake(new UserSettings(result)),
                         (error) -> Log.d(this.getClass().getName(),error.getMessage()));
@@ -114,6 +117,14 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         arrowLeft.setOnClickListener((args) -> viewPager.arrowScroll(View.FOCUS_LEFT));
 
         arrowRight.setOnClickListener((args) -> viewPager.arrowScroll(View.FOCUS_RIGHT));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     public void startEditActivity(Meal meal) {

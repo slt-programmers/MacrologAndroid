@@ -116,4 +116,8 @@
         which you are entirely free to ignore.\n\nIn the end, we just want to help you measure.</string>
     <string name="disclaimer">For this beta version we are using free hosting.
         This may cause some initial slowness on starting the application.</string>
+    <string name="gr">gr</string>
+    <string name="food">Food</string>
+    <string name="percentage">Percentage</string>
+
 </resources>
