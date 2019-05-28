@@ -38,7 +38,7 @@
                 android:id="@+id/search"
                 android:maxLines="1"
                 android:imeOptions="actionDone|actionNext"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/search"
@@ -48,36 +48,49 @@
 
         <RadioGroup
             android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/header"
+            app:layout_constraintEnd_toEndOf="@+id/search_layout"
+            app:layout_constraintStart_toStartOf="@+id/search_layout"
             app:layout_constraintTop_toBottomOf="@+id/search_layout">
 
             <RadioButton
                 android:id="@+id/grams_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:buttonTint="@color/white"
                 android:checked="true"
-                android:paddingEnd="104dp"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/grams_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
                 android:text="@string/grams"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/percent_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center_vertical|end"
+                android:text="@string/percentage"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <RadioButton
                 android:id="@+id/percentage_radio"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:buttonTint="@color/white"
                 android:gravity="center_vertical"
-                android:text="@string/percentage"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
         </RadioGroup>

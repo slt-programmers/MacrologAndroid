@@ -38,7 +38,6 @@ public class SplashscreenActivity extends AppCompatActivity {
 
         ImageView image = findViewById(R.id.animated_image);
         TextView waitMessage = findViewById(R.id.wait_message);
-        TextView disclaimer = findViewById(R.id.disclaimer);
 
         Handler handler = new Handler();
         Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
@@ -51,8 +50,6 @@ public class SplashscreenActivity extends AppCompatActivity {
             image.startAnimation(fadeIn);
             waitMessage.setVisibility(View.VISIBLE);
             waitMessage.startAnimation(fadeIn);
-            disclaimer.setVisibility(View.VISIBLE);
-            disclaimer.startAnimation(fadeIn);
         }, 2000);
 
         Intent intent = getIntent();

@@ -119,5 +119,6 @@
     <string name="gr">gr</string>
     <string name="food">Food</string>
     <string name="percentage">Percentage</string>
+    <string name="beta">(beta)\n(may be slow on initial startup because of free hosting)</string>
 
 </resources>
