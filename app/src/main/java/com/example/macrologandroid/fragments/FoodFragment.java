@@ -57,6 +57,10 @@ public class FoodFragment extends Fragment {
     private int selectedRadioId;
 
     private Disposable disposable;
+    private TextView foodHeader;
+    private TextView proteinHeader;
+    private TextView fatHeader;
+    private TextView carbsHeader;
 
     public FoodFragment() {
         // Required empty public constructor
@@ -103,24 +107,28 @@ public class FoodFragment extends Fragment {
         foodTable = view.findViewById(R.id.food_table_layout);
         foodTableHeader = view.findViewById(R.id.food_table_header);
 
-        TextView foodHeader = view.findViewById(R.id.food_header);
+        foodHeader = view.findViewById(R.id.food_header);
         foodHeader.setOnClickListener(v -> {
             sortTable(SortHeader.FOOD, true);
+            setSortHeaderColor(foodHeader);
             fillTable(convertedFood);
         });
-        TextView proteinHeader = view.findViewById(R.id.protein_header);
+        proteinHeader = view.findViewById(R.id.protein_header);
         proteinHeader.setOnClickListener(v -> {
             sortTable(SortHeader.PROTEIN, true);
+            setSortHeaderColor(proteinHeader);
             fillTable(convertedFood);
         });
-        TextView fatHeader = view.findViewById(R.id.fat_header);
+        fatHeader = view.findViewById(R.id.fat_header);
         fatHeader.setOnClickListener(v -> {
             sortTable(SortHeader.FAT, true);
+            setSortHeaderColor(fatHeader);
             fillTable(convertedFood);
         });
-        TextView carbsHeader = view.findViewById(R.id.carbs_header);
+        carbsHeader = view.findViewById(R.id.carbs_header);
         carbsHeader.setOnClickListener(v -> {
             sortTable(SortHeader.CARBS, true);
+            setSortHeaderColor(carbsHeader);
             fillTable(convertedFood);
         });
 
@@ -151,6 +159,14 @@ public class FoodFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+    }
+
+    private void setSortHeaderColor(TextView header) {
+        foodHeader.setTextColor(getResources().getColor(R.color.text, null));
+        proteinHeader.setTextColor(getResources().getColor(R.color.text, null));
+        fatHeader.setTextColor(getResources().getColor(R.color.text, null));
+        carbsHeader.setTextColor(getResources().getColor(R.color.text, null));
+        header.setTextColor(getResources().getColor(R.color.colorPrimary, null));
     }
 
     private void selectFood(FoodResponse foodResponse) {
