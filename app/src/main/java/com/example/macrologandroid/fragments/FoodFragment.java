@@ -61,6 +61,8 @@ public class FoodFragment extends Fragment {
     private TextView proteinHeader;
     private TextView fatHeader;
     private TextView carbsHeader;
+    private TextView search;
+    private RadioGroup radioGroup;
 
     public FoodFragment() {
         // Required empty public constructor
@@ -71,8 +73,13 @@ public class FoodFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_FOOD_ID) {
             if (resultCode == Activity.RESULT_OK) {
+                search.setText("");
+                radioGroup.check(R.id.grams_radio);
+                currentSortHeader = SortHeader.FOOD;
+                sortDirectionReversed = false;
+
                 loader.setVisibility(View.VISIBLE);
-                foodTableHeader.setVisibility(View.INVISIBLE);
+                foodTable.setVisibility(View.INVISIBLE);
                 refreshAllFood();
             }
         }
@@ -89,12 +96,12 @@ public class FoodFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_food, container, false);
 
-        TextView search = view.findViewById(R.id.search);
+        search = view.findViewById(R.id.search);
         search.addTextChangedListener(watcher);
         search.setOnEditorActionListener(actionListener);
         search.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
+        radioGroup = view.findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener((v, id) -> {
             selectedRadioId = id;
             determineGramsOrPercentage();
@@ -171,7 +178,8 @@ public class FoodFragment extends Fragment {
 
     private void selectFood(FoodResponse foodResponse) {
         Intent intent = new Intent(getContext(), AddFoodActivity.class);
-        intent.putExtra("foodResponse", foodResponse);
+        FoodResponse food = allFood.stream().filter(f -> f.getName().equals(foodResponse.getName())).findFirst().orElse(null);
+        intent.putExtra("FOOD_RESPONSE", food);
         startActivityForResult(intent, ADD_FOOD_ID);
     }
 
@@ -254,11 +262,11 @@ public class FoodFragment extends Fragment {
         }
 
         loader.setVisibility(View.GONE);
-        foodTableHeader.setVisibility(View.VISIBLE);
+        foodTable.setVisibility(View.VISIBLE);
     }
 
     private void sortTable(SortHeader sortHeader, boolean flip) {
-        foodTableHeader.setVisibility(View.INVISIBLE);
+        foodTable.setVisibility(View.INVISIBLE);
         loader.setVisibility(View.VISIBLE);
 
         if (sortHeader == currentSortHeader && flip) {
@@ -353,7 +361,4 @@ public class FoodFragment extends Fragment {
         FOOD, PROTEIN, FAT, CARBS
     }
 
-    enum SortDirection {
-        NORMAL, REVERSE
-    }
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class AddFoodActivity extends AppCompatActivity {
@@ -33,7 +35,10 @@ public class AddFoodActivity extends AppCompatActivity {
     private EditText editCarbs;
     private LinearLayout portionsLayout;
     private Button saveButton;
-    private FoodService foodService;
+
+    private FoodResponse foodResponse;
+
+    private Disposable disposable;
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -57,35 +62,45 @@ public class AddFoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
 
-        Intent intent = getIntent();
-        String foodName = intent.getStringExtra("FOOD_NAME");
-
-        foodService = new FoodService();
 
         Button backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(v -> finish());
 
-        editFoodName = findViewById(R.id.food_name);
-        editFoodName.setText(foodName);
-        editFoodName.requestFocus();
+        Intent intent = getIntent();
+        foodResponse = (FoodResponse) intent.getSerializableExtra("FOOD_RESPONSE");
+        String foodName = intent.getStringExtra("FOOD_NAME");
 
+        editFoodName = findViewById(R.id.food_name);
         editProtein = findViewById(R.id.edit_protein);
         editProtein.addTextChangedListener(textWatcher);
         editFat = findViewById(R.id.edit_fat);
         editFat.addTextChangedListener(textWatcher);
         editCarbs = findViewById(R.id.edit_carbs);
         editCarbs.addTextChangedListener(textWatcher);
-
         portionsLayout = findViewById(R.id.portions_layout);
+        saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(v -> saveFood());
+
         ImageView plus = findViewById(R.id.plus);
         plus.setOnClickListener(v -> {
-            addPortion(portionsLayout);
+            addPortion(portionsLayout, null);
             saveButton.setEnabled(false);
         });
 
-        saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(v -> saveFood());
-        saveButton.setEnabled(false);
+        if (foodResponse != null) {
+            editFoodName.setText(foodResponse.getName());
+            editProtein.setText(String.valueOf(foodResponse.getProtein()));
+            editFat.setText(String.valueOf(foodResponse.getFat()));
+            editCarbs.setText(String.valueOf(foodResponse.getCarbs()));
+            for (PortionResponse portion : foodResponse.getPortions()) {
+                addPortion(portionsLayout, portion);
+            }
+            saveButton.setEnabled(false);
+        } else {
+            editFoodName.setText(foodName);
+            editFoodName.requestFocus();
+            saveButton.setEnabled(false);
+        }
     }
 
     private void isSaveButtonEnabled() {
@@ -131,7 +146,15 @@ public class AddFoodActivity extends AppCompatActivity {
         }
     }
 
-    private void addPortion(LinearLayout container) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    private void addPortion(LinearLayout container, PortionResponse portion) {
         ConstraintLayout newPortionLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_add_portion, container, false);
         EditText portionDescription = newPortionLayout.findViewById(R.id.portion_description);
         portionDescription.addTextChangedListener(textWatcher);
@@ -140,7 +163,14 @@ public class AddFoodActivity extends AppCompatActivity {
         portionGrams.addTextChangedListener(textWatcher);
 
         ImageView trashcan = newPortionLayout.findViewById(R.id.trash_icon);
-        trashcan.setOnClickListener(v -> removePortion(newPortionLayout));
+
+        if (portion != null) {
+            portionDescription.setText(portion.getDescription());
+            portionGrams.setText(String.valueOf(portion.getGrams()));
+            trashcan.setVisibility(View.INVISIBLE);
+        } else {
+            trashcan.setOnClickListener(v -> removePortion(newPortionLayout));
+        }
 
         container.addView(newPortionLayout);
     }
@@ -168,9 +198,12 @@ public class AddFoodActivity extends AppCompatActivity {
                     portionDescription.getText().toString(), null);
             portions.add(portion);
         }
-
         FoodResponse newFood = new FoodResponse(null, name, protein, fat, carbs, portions);
-        foodService.postFood(newFood).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        if (foodResponse != null) {
+            newFood.setId(foodResponse.getId());
+        }
+        FoodService foodService = new FoodService();
+        disposable = foodService.postFood(newFood).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("FOOD_NAME", editFoodName.getText().toString());
