@@ -133,7 +133,11 @@ public class EditLogEntryActivity extends AppCompatActivity {
         fillLogEntrylayout();
 
         Button backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(v -> finish());
+        backButton.setOnClickListener(v -> {
+            Intent resultIntent = new Intent();
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        });
 
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(v -> {
@@ -333,7 +337,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
                 double multiplier = 1;
                 EditText foodAmount = ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
-                if (foodAmount!= null) {
+                if (foodAmount != null) {
                     multiplier = Double.valueOf(foodAmount.getText().toString());
                 }
 
@@ -364,7 +368,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
         logEntryService.postLogEntry(newEntries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra("RELOAD", true);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                 });
