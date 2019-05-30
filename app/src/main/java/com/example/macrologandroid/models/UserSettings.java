@@ -3,12 +3,16 @@ package com.example.macrologandroid.models;
 import com.example.macrologandroid.dtos.UserSettingResponse;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class UserSettings implements Serializable {
 
     private String name;
     private int age;
+    private LocalDate birthday;
     private Gender gender;
     private int height;
     private double weight;
@@ -24,7 +28,8 @@ public class UserSettings implements Serializable {
     public UserSettings(List<UserSettingResponse> response) {
         try {
             this.name = mapSetting(response, "name");
-            this.age = Integer.parseInt(mapSetting(response, "age"));
+            this.birthday = LocalDate.parse(mapSetting(response, "birthday"), DateTimeFormatter.ofPattern("d-M-yyyy"));
+            this.age = Period.between(birthday, LocalDate.now()).getYears();
             this.gender = Gender.valueOf(mapSetting(response, "gender"));
             this.height = Integer.parseInt(mapSetting(response, "height"));
             this.weight = Double.parseDouble(mapSetting(response, "weight"));
@@ -52,6 +57,14 @@ public class UserSettings implements Serializable {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 
     public Gender getGender() {
@@ -115,4 +128,5 @@ public class UserSettings implements Serializable {
                 .orElse(new UserSettingResponse(0, "", "")).getValue();
 
     }
+
 }

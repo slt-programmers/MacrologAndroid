@@ -119,5 +119,6 @@
     <string name="food">Food</string>
     <string name="percentage">Percentage</string>
     <string name="beta">(beta)\n(may be slow on initial startup)</string>
+    <string name="user_birthday">Birthday (dd-mm-yyyy)</string>
 
 </resources>

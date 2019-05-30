@@ -70,13 +70,13 @@
                 android:textColorHint="@color/white"
                 app:hintTextAppearance="@style/EditTextTheme">
                 <EditText
-                    android:id="@+id/edit_age"
+                    android:id="@+id/edit_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/user_age"
+                    android:hint="@string/user_birthday"
                     android:layout_marginBottom="8dp"
                     android:theme="@style/EditTextHintTheme"
-                    android:inputType="number"
+                    android:inputType="date"
                     android:maxLines="1"
                     android:backgroundTint="@color/white"
                     android:singleLine="true"

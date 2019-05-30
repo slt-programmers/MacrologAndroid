@@ -25,6 +25,9 @@ import com.example.macrologandroid.services.UserService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -86,7 +89,7 @@ public class UserFragment extends Fragment {
         editDetails.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditPersonalDetailsActivity.class);
             intent.putExtra("name", userSettings.getName());
-            intent.putExtra("age", userSettings.getAge());
+            intent.putExtra("birthday", userSettings.getBirthday());
             intent.putExtra("gender", userSettings.getGender());
             intent.putExtra("height", userSettings.getHeight());
             intent.putExtra("weight", userSettings.getWeight());
