@@ -80,9 +80,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         if (requestCode == ADD_FOOD_ID) {
             if (resultCode == Activity.RESULT_OK) {
                 String foodName = (String) data.getSerializableExtra("FOOD_NAME");
-                foodTextView.setText(foodName);
                 setNewlyAddedFood(foodName);
-                addNewFoodButton.setVisibility(View.GONE);
             }
         }
     }
@@ -388,7 +386,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     @Override
                     public void onInvalidated() {
                         super.onInvalidated();
-                        if (foodTextView.getText().toString().length() > 2) {
+                        String text = foodTextView.getText().toString();
+                        if (text.length() > 2 && !foodNames.contains(text)) {
                             toggleFields(false);
                             addButton.setVisibility(View.INVISIBLE);
                             addNewFoodButton.setVisibility(View.VISIBLE);
