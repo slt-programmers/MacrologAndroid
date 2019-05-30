@@ -4,6 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.example.macrologandroid.BuildConfig;
+
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -17,7 +19,7 @@ public class HealthcheckService extends Service {
 
     public HealthcheckService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://macrolog-backend.herokuapp.com/")
+                .baseUrl(BuildConfig.SERVER_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

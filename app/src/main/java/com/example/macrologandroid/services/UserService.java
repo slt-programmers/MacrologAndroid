@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.example.macrologandroid.BuildConfig;
 import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.dtos.UserSettingResponse;
 
@@ -37,7 +38,7 @@ public class UserService extends Service {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://macrolog-backend.herokuapp.com/")
+                .baseUrl(BuildConfig.SERVER_URL)
                 .client(client.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

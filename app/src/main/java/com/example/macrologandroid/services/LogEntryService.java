@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.example.macrologandroid.BuildConfig;
 import com.example.macrologandroid.dtos.LogEntryRequest;
 import com.example.macrologandroid.dtos.LogEntryResponse;
 import com.example.macrologandroid.MainActivity;
@@ -28,7 +29,7 @@ public class LogEntryService extends Service {
 
     private ApiService apiService;
 
-    private String token = "";
+    private String token;
 
     public LogEntryService() {
         token = MainActivity.getPreferences().getString("TOKEN", "");
@@ -44,7 +45,7 @@ public class LogEntryService extends Service {
         });
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://macrolog-backend.herokuapp.com/")
+                .baseUrl(BuildConfig.SERVER_URL)
                 .client(client.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

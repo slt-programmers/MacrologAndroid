@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.example.macrologandroid.BuildConfig;
 import com.example.macrologandroid.dtos.AuthenticationRequest;
 import com.example.macrologandroid.dtos.AuthenticationResponse;
 import com.example.macrologandroid.dtos.ChangePasswordRequest;
@@ -22,7 +23,7 @@ public class AuthenticationService extends Service {
 
     public AuthenticationService() {
          Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://macrolog-backend.herokuapp.com/api/")
+                .baseUrl(BuildConfig.SERVER_URL + "api/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
