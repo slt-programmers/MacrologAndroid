@@ -315,7 +315,7 @@ public class FoodFragment extends Fragment {
     }
 
     private TextView getCustomizedTextView(TextView view) {
-        view.setTextSize(18);
+        view.setTextSize(16);
         view.setPadding(0, 0, 0, 16);
         return view;
     }

@@ -129,46 +129,46 @@
                         android:id="@+id/food_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
                         android:layout_weight="8.0"
+                        android:paddingBottom="8dp"
                         android:text="@string/food"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/protein_header"
                         android:layout_width="60dp"
-                        android:paddingBottom="8dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"
                         android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
                         android:text="@string/p"
                         android:textAlignment="viewEnd"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/fat_header"
                         android:layout_width="60dp"
-                        android:paddingBottom="8dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"
                         android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
                         android:text="@string/f"
                         android:textAlignment="viewEnd"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/carbs_header"
                         android:layout_width="60dp"
-                        android:paddingBottom="8dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"
                         android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
                         android:text="@string/c"
                         android:textAlignment="viewEnd"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                 </TableRow>
