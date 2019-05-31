@@ -22,13 +22,13 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/search_layout"
-            style="@style/EditTextTheme"
+            style="@style/TextInputLayoutHintTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
-            app:hintTextAppearance="@style/EditTextTheme"
+            app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/search"
-                android:theme="@style/EditTextHintTheme" />
+                android:theme="@style/TextInputEditTextTheme" />
 
         </android.support.design.widget.TextInputLayout>
 

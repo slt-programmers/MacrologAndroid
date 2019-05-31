@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
+                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/add_food_title">
 
@@ -65,7 +65,7 @@
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
-                    android:theme="@style/EditTextHintTheme" />
+                    android:theme="@style/TextInputEditTextTheme" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -73,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
+                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/food_name_layout">
@@ -90,7 +90,7 @@
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
-                    android:theme="@style/EditTextHintTheme" />
+                    android:theme="@style/TextInputEditTextTheme" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
+                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_layout_protein">
@@ -115,7 +115,7 @@
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
-                    android:theme="@style/EditTextHintTheme" />
+                    android:theme="@style/TextInputEditTextTheme" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -123,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme"
+                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edit_layout_fat">
@@ -140,7 +140,7 @@
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorLink="@color/white"
-                    android:theme="@style/EditTextHintTheme" />
+                    android:theme="@style/TextInputEditTextTheme" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView

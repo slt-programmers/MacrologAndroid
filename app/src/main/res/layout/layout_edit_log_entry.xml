@@ -51,7 +51,7 @@
         android:layout_marginStart="8dp"
         android:paddingBottom="16dp"
         android:textColorHint="@color/white"
-        app:hintTextAppearance="@style/EditTextTheme"
+        app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance"
         app:layout_constrainedWidth="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -68,7 +68,7 @@
             android:singleLine="true"
             android:textColor="@color/white"
             android:textColorLink="@color/white"
-            android:theme="@style/EditTextHintTheme" />
+            android:theme="@style/TextInputEditTextTheme" />
     </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>

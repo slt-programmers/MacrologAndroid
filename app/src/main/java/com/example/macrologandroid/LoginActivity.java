@@ -74,6 +74,13 @@ public class LoginActivity extends AppCompatActivity {
 
         mLoginResultView = findViewById(R.id.login_result);
 
+        TextView forgotPassword = findViewById(R.id.forgot_password);
+        forgotPassword.setClickable(true);
+        forgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
+
         Button mLoginButton = findViewById(R.id.login_button);
         mLoginButton.setOnClickListener(view -> attemptLogin());
 

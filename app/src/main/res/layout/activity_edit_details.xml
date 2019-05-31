@@ -48,14 +48,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme">
+                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
                 <EditText
                     android:id="@+id/edit_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_name"
                     android:inputType="text"
-                    android:theme="@style/EditTextHintTheme"
+                    android:theme="@style/TextInputEditTextTheme"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:layout_marginBottom="8dp"
@@ -68,14 +68,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme">
+                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
                 <EditText
                     android:id="@+id/edit_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_birthday"
                     android:layout_marginBottom="8dp"
-                    android:theme="@style/EditTextHintTheme"
+                    android:theme="@style/TextInputEditTextTheme"
                     android:inputType="date"
                     android:maxLines="1"
                     android:backgroundTint="@color/white"
@@ -115,14 +115,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme">
+                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
                 <EditText
                     android:id="@+id/edit_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:hint="@string/user_height"
-                    android:theme="@style/EditTextHintTheme"
+                    android:theme="@style/TextInputEditTextTheme"
                     android:inputType="number"
                     android:maxLines="1"
                     android:backgroundTint="@color/white"
@@ -136,14 +136,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/EditTextTheme">
+                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
                 <EditText
                     android:id="@+id/edit_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/user_weight"
                     android:layout_marginBottom="16dp"
-                    android:theme="@style/EditTextHintTheme"
+                    android:theme="@style/TextInputEditTextTheme"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:backgroundTint="@color/white"
