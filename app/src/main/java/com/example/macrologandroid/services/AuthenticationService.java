@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.example.macrologandroid.BuildConfig;
+import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.dtos.AuthenticationRequest;
 import com.example.macrologandroid.dtos.AuthenticationResponse;
 import com.example.macrologandroid.dtos.ChangePasswordRequest;
 
 import io.reactivex.Observable;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -21,14 +24,27 @@ public class AuthenticationService extends Service {
 
     private ApiService apiService;
 
+    private ApiService apiServiceWithBearer;
+
     public AuthenticationService() {
-         Retrofit retrofit = new Retrofit.Builder()
+        String token = MainActivity.getPreferences().getString("TOKEN", "");
+        OkHttpClient.Builder client = new OkHttpClient.Builder();
+        client.addInterceptor(chain -> {
+            Request original = chain.request();
+            Request request = original.newBuilder()
+                    .header("Authorization", "Bearer " + token)
+                    .method(original.method(), original.body())
+                    .build();
+            return chain.proceed(request);
+        });
+
+        Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(BuildConfig.SERVER_URL + "api/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                .addConverterFactory(GsonConverterFactory.create());
 
-        apiService = retrofit.create(ApiService.class);
+        apiService = builder.build().create(ApiService.class);
+        apiServiceWithBearer = builder.client(client.build()).build().create(ApiService.class);
     }
 
     @Override
@@ -39,7 +55,7 @@ public class AuthenticationService extends Service {
     // The username field is used for both username and email when logging in
     // This is handled properly by the backend
     public Observable<AuthenticationResponse> authenticate(String username, String password) {
-        return apiService.authenticate(new AuthenticationRequest(username, "",password));
+        return apiService.authenticate(new AuthenticationRequest(username, "", password));
     }
 
     public Observable<AuthenticationResponse> register(String username, String email, String password) {
@@ -47,7 +63,7 @@ public class AuthenticationService extends Service {
     }
 
     public Observable<ResponseBody> changePassword(String oldPassword, String newPassword, String confirmNew) {
-        return apiService.changePassword(new ChangePasswordRequest(oldPassword, newPassword, confirmNew));
+        return apiServiceWithBearer.changePassword(new ChangePasswordRequest(oldPassword, newPassword, confirmNew));
     }
 
     public Observable<ResponseBody> resetPassword(String email) {
