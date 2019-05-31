@@ -51,7 +51,7 @@ public class AuthenticationService extends Service {
     }
 
     public Observable<ResponseBody> resetPassword(String email) {
-        return apiService.resetPassword(email);
+        return apiService.resetPassword(new AuthenticationRequest(null, email, null));
     }
 
     private interface ApiService {
@@ -66,7 +66,7 @@ public class AuthenticationService extends Service {
         Observable<ResponseBody> changePassword(@Body ChangePasswordRequest request);
 
         @POST("resetPassword")
-        Observable<ResponseBody> resetPassword(@Body String email);
+        Observable<ResponseBody> resetPassword(@Body AuthenticationRequest email);
 
     }
 }
