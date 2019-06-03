@@ -22,27 +22,24 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/search_layout"
-            style="@style/TextInputLayoutHintTextAppearance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
-            app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance"
+            android:theme="@style/TextInputLayoutTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.design.widget.TextInputEditText
-                android:textColor="@color/white"
                 android:id="@+id/search"
                 android:maxLines="1"
                 android:imeOptions="actionDone|actionNext"
                 android:inputType="textCapSentences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search"
-                android:theme="@style/TextInputEditTextTheme" />
+                android:hint="@string/search"/>
 
         </android.support.design.widget.TextInputLayout>
 

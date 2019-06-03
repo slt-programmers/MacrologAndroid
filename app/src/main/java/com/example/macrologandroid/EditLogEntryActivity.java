@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -33,6 +33,7 @@ import com.example.macrologandroid.models.Meal;
 import com.example.macrologandroid.services.FoodService;
 import com.example.macrologandroid.services.LogEntryService;
 
+import java.security.MessageDigestSpi;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class EditLogEntryActivity extends AppCompatActivity {
@@ -61,7 +63,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private FoodResponse selectedFood;
 
     private Spinner editPortionOrUnitSpinner;
-    private EditText editGramsOrAmount;
+    private TextInputEditText editGramsOrAmount;
     private TextInputLayout editGramsOrAmountLayout;
 
     private Button addButton;
@@ -73,6 +75,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private List<LogEntryResponse> newEntries;
     private Meal meal;
     private Button saveButton;
+    private Disposable postDisposable;
+    private Disposable foodDisposable;
+    private Disposable deleteDisposable;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -85,7 +90,20 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("CheckResult")
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (foodDisposable != null) {
+            foodDisposable.dispose();
+        }
+        if (postDisposable != null) {
+            postDisposable.dispose();
+        }
+        if (deleteDisposable != null) {
+            deleteDisposable.dispose();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +113,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         logEntryService = new LogEntryService();
 
         foodService = new FoodService();
-        foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        foodDisposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     allFood = res;
                     fillFoodNameList();
@@ -216,7 +234,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
         saveButton.setVisibility(View.VISIBLE);
     }
 
-    @SuppressLint("CheckResult")
     private void addLogEntry() {
         Long portionId = null;
         for (PortionResponse portion : selectedFood.getPortions()) {
@@ -238,7 +255,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 selectedMeal.toString());
         List<LogEntryRequest> entryList = new ArrayList<>();
         entryList.add(entry);
-        logEntryService.postLogEntry(entryList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        postDisposable = logEntryService.postLogEntry(entryList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                             newEntries = res;
                             appendNewEntry();
@@ -257,7 +274,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         ImageView trashImageView = logEntry.findViewById(R.id.trash_icon);
         trashImageView.setOnClickListener((v) -> toggleToRemoveEntry(entry));
 
-        EditText foodAmount = logEntry.findViewById(R.id.food_amount);
+        TextInputEditText foodAmount = logEntry.findViewById(R.id.food_amount);
         foodAmount.setId(R.id.food_amount);
 
         if (entry.getPortion() == null) {
@@ -274,10 +291,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
         logentryLayout.addView(logEntry);
     }
 
-    @SuppressLint("CheckResult")
     private void setNewlyAddedFood(String foodName) {
         addNewFoodButton.setVisibility(View.GONE);
-        foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        foodDisposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     allFood = res;
                     fillFoodNameList();
@@ -288,7 +304,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
     }
 
-    @SuppressLint("CheckResult")
     private void toggleToRemoveEntry(LogEntryResponse entry) {
         int index = logEntries.indexOf(entry);
 
@@ -318,14 +333,13 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("CheckResult")
     private void saveLogEntries() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         List<LogEntryRequest> newEntries = new ArrayList<>();
         for (LogEntryResponse entry : logEntries) {
             if (copyEntries.indexOf(entry) == -1) {
-                logEntryService.deleteLogEntry(entry.getId()).subscribeOn(Schedulers.io())
+                deleteDisposable = logEntryService.deleteLogEntry(entry.getId()).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(res -> Log.d(this.getLocalClassName(), res.string()),
                                 err -> Log.d(this.getLocalClassName(), err.getMessage()));
@@ -336,7 +350,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 String item = (String) foodSpinner.getSelectedItem();
 
                 double multiplier = 1;
-                EditText foodAmount = ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
+                TextInputEditText foodAmount = (TextInputEditText) ((TextInputLayout) logEntryLayout.getChildAt(4)).getChildAt(0);
                 if (foodAmount != null) {
                     multiplier = Double.valueOf(foodAmount.getText().toString());
                 }
@@ -365,7 +379,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
             }
         }
 
-        logEntryService.postLogEntry(newEntries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        postDisposable = logEntryService.postLogEntry(newEntries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
                     setResult(Activity.RESULT_OK, resultIntent);
@@ -468,7 +482,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    private void setupPortionSpinner(Spinner foodPortion, LogEntryResponse entry, EditText foodAmount) {
+    private void setupPortionSpinner(Spinner foodPortion, LogEntryResponse entry, TextInputEditText foodAmount) {
         List<String> list = new ArrayList<>();
         List<PortionResponse> allPortions = entry.getFood().getPortions();
         for (PortionResponse portion : allPortions) {

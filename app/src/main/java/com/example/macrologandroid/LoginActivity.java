@@ -1,50 +1,44 @@
 package com.example.macrologandroid;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.macrologandroid.dtos.AuthenticationResponse;
-import com.example.macrologandroid.fragments.UserFragment;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.services.AuthenticationService;
-import com.example.macrologandroid.services.UserService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 
-import static com.example.macrologandroid.fragments.UserFragment.EDIT_DETAILS_ID;
-
-
 public class LoginActivity extends AppCompatActivity {
 
     // UI references.
-    private EditText mUserOrEmailView;
-    private EditText mPasswordView;
+    private TextInputLayout mUserOrEmailLayout;
+    private TextInputLayout mPasswordLayout;
     private TextView mLoginResultView;
 
-    private EditText mNewUsernameView;
-    private EditText mNewEmailView;
-    private EditText mNewPasswordView;
+    private TextInputLayout mNewUsernameView;
+    private TextInputLayout mNewEmailView;
+    private TextInputLayout mNewPasswordView;
     private TextView mRegisterResultView;
 
     private AuthenticationService authService;
 
     private static final int INTAKE_SUCCESSFUL = 678;
+    private Disposable disposable;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -65,12 +59,12 @@ public class LoginActivity extends AppCompatActivity {
         if (actionbar != null) {
             actionbar.hide();
         }
-        // Set up the login form.
-        mUserOrEmailView = findViewById(R.id.user_email);
-        mPasswordView = findViewById(R.id.password);
 
-        mPasswordView.setTypeface(Typeface.DEFAULT);
-        mPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+        mUserOrEmailLayout = findViewById(R.id.user_email);
+        mPasswordLayout = findViewById(R.id.password);
+
+        mPasswordLayout.getEditText().setTypeface(Typeface.DEFAULT);
+        mPasswordLayout.getEditText().setTransformationMethod(new PasswordTransformationMethod());
 
         mLoginResultView = findViewById(R.id.login_result);
 
@@ -88,8 +82,8 @@ public class LoginActivity extends AppCompatActivity {
         mNewEmailView = findViewById(R.id.register_email);
         mNewPasswordView = findViewById(R.id.register_password);
 
-        mNewPasswordView.setTypeface(Typeface.DEFAULT);
-        mNewPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+        mNewPasswordView.getEditText().setTypeface(Typeface.DEFAULT);
+        mNewPasswordView.getEditText().setTransformationMethod(new PasswordTransformationMethod());
 
         mRegisterResultView = findViewById(R.id.register_result);
 
@@ -121,27 +115,35 @@ public class LoginActivity extends AppCompatActivity {
         // Do nothing
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     private void attemptLogin() {
         resetErrors();
-        mUserOrEmailView.setError(null);
-        mPasswordView.setError(null);
+        mUserOrEmailLayout.setError(null);
+        mPasswordLayout.setError(null);
 
-        String username = mUserOrEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String username = mUserOrEmailLayout.getEditText().getText().toString();
+        String password = mPasswordLayout.getEditText().getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         if (isUsernameInvalid(username)) {
-            mUserOrEmailView.setError(getString(R.string.error_field_required));
-            focusView = mUserOrEmailView;
+            mUserOrEmailLayout.setError(getString(R.string.error_field_required));
+            focusView = mUserOrEmailLayout.getEditText();
             cancel = true;
         }
 
         if (isPasswordInvalid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordLayout.setError(getString(R.string.error_invalid_password));
             if (focusView == null) {
-                focusView = mPasswordView;
+                focusView = mPasswordLayout;
             }
             cancel = true;
         }
@@ -160,9 +162,9 @@ public class LoginActivity extends AppCompatActivity {
         mNewEmailView.setError(null);
         mNewPasswordView.setError(null);
 
-        String username = mNewUsernameView.getText().toString();
-        String email = mNewEmailView.getText().toString();
-        String password = mNewPasswordView.getText().toString();
+        String username = mNewUsernameView.getEditText().getText().toString();
+        String email = mNewEmailView.getEditText().getText().toString();
+        String password = mNewPasswordView.getEditText().getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -209,9 +211,8 @@ public class LoginActivity extends AppCompatActivity {
         return TextUtils.isEmpty(password) || password.length() < 6;
     }
 
-    @SuppressLint("CheckResult")
     private void login(String username, String password) {
-        authService.authenticate(username, password)
+        disposable = authService.authenticate(username, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
@@ -231,9 +232,8 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    @SuppressLint("CheckResult")
     private void register(String username, String email, String password) {
-        authService.register(username, email, password)
+        disposable = authService.register(username, email, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {

@@ -126,5 +126,6 @@
         generated password. You can use it within the next half hour to log in and choose a new password
         of your own.</string>
     <string name="send">Send</string>
+    <string name="plus">plus</string>
 
 </resources>

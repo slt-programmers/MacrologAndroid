@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_gradient"
     android:gravity="center_horizontal"
     android:orientation="vertical"
@@ -34,45 +34,35 @@
                 android:text="@string/login_login" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/user_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
+                app:errorTextAppearance="@style/TextInputError"
+                android:theme="@style/TextInputLayoutTheme">
 
-                <EditText
-                    android:id="@+id/user_email"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_username_email"
                     android:inputType="text"
-                    android:theme="@style/TextInputEditTextTheme"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    android:backgroundTint="@color/white"/>
+                    android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
+                app:errorTextAppearance="@style/TextInputError"
+                android:theme="@style/TextInputLayoutTheme">
 
-                <EditText
-                    android:id="@+id/password"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_password"
-                    android:theme="@style/TextInputEditTextTheme"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:backgroundTint="@color/white"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    />
-
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <TextView
@@ -115,67 +105,54 @@
                 android:text="@string/login_register" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/register_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
+                app:errorTextAppearance="@style/TextInputError"
+                android:theme="@style/TextInputLayoutTheme">
 
-                <EditText
-                    android:id="@+id/register_username"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_username"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:theme="@style/TextInputEditTextTheme"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    android:backgroundTint="@color/white"/>
+                    android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/register_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
+                app:errorTextAppearance="@style/TextInputError"
+                android:theme="@style/TextInputLayoutTheme">
 
-                <EditText
-                    android:id="@+id/register_email"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
-                    android:theme="@style/TextInputEditTextTheme"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    android:backgroundTint="@color/white"/>
+                    android:singleLine="true"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
+                app:errorTextAppearance="@style/TextInputError"
+                android:theme="@style/TextInputLayoutTheme">
 
-                <EditText
-                    android:id="@+id/register_password"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_password"
-                    android:theme="@style/TextInputEditTextTheme"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/login_password"
                     android:imeOptions="actionUnspecified"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:backgroundTint="@color/white"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    />
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -195,7 +172,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/login_register" />
-
 
         </LinearLayout>
 

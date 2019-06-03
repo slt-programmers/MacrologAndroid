@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -46,11 +46,11 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     private double originalWeight;
     private double originalActivity;
 
-    private EditText editName;
-    private EditText editBirthday;
+    private TextInputEditText editName;
+    private TextInputEditText editBirthday;
     private RadioGroup genderRadios;
-    private EditText editHeight;
-    private EditText editWeight;
+    private TextInputEditText editHeight;
+    private TextInputEditText editWeight;
     private Spinner editActivity;
 
     private boolean intake;

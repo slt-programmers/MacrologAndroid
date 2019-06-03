@@ -15,22 +15,18 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/white"
-        app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
-        <EditText
+        android:theme="@style/TextInputLayoutTheme">
+
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/edit_protein"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/protein"
-            android:theme="@style/TextInputEditTextTheme"
             android:inputType="number"
             android:layout_marginBottom="8dp"
             android:maxLines="1"
-            android:backgroundTint="@color/white"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:textColorLink="@color/white"
-            />
+            android:singleLine="true" />
+
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -40,21 +36,17 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/white"
-        app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
-        <EditText
+        android:theme="@style/TextInputLayoutTheme">
+
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/edit_fat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/fat"
-            android:theme="@style/TextInputEditTextTheme"
             android:inputType="number"
             android:maxLines="1"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/white"
             android:singleLine="true"
-            android:textColor="@color/white"
-            android:textColorLink="@color/white"
             />
     </android.support.design.widget.TextInputLayout>
 
@@ -65,22 +57,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/white"
-        app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
+        android:theme="@style/TextInputLayoutTheme">
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/edit_carbs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/carbs"
-            android:theme="@style/TextInputEditTextTheme"
             android:inputType="number"
             android:maxLines="1"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/white"
             android:singleLine="true"
-            android:textColor="@color/white"
-            android:textColorLink="@color/white"
             />
     </android.support.design.widget.TextInputLayout>
 

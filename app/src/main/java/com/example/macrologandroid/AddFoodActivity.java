@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,10 +30,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AddFoodActivity extends AppCompatActivity {
 
-    private EditText editFoodName;
-    private EditText editProtein;
-    private EditText editFat;
-    private EditText editCarbs;
+    private TextInputEditText editFoodName;
+    private TextInputEditText editProtein;
+    private TextInputEditText editFat;
+    private TextInputEditText editCarbs;
     private LinearLayout portionsLayout;
     private Button saveButton;
 
@@ -112,8 +113,8 @@ public class AddFoodActivity extends AppCompatActivity {
         boolean portionsCheck = true;
         for (int i = 0; i < portionsLayout.getChildCount(); i++) {
             ConstraintLayout inner = (ConstraintLayout) portionsLayout.getChildAt(i);
-            EditText portionDescription = inner.findViewById(R.id.portion_description);
-            EditText portionGrams = inner.findViewById(R.id.portion_grams);
+            TextInputEditText portionDescription = inner.findViewById(R.id.portion_description);
+            TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
             if (portionDescription.getText() == null || portionDescription.getText().toString().length() == 0) {
                 portionsCheck = false;
             }
@@ -156,10 +157,10 @@ public class AddFoodActivity extends AppCompatActivity {
 
     private void addPortion(LinearLayout container, PortionResponse portion) {
         ConstraintLayout newPortionLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_add_portion, container, false);
-        EditText portionDescription = newPortionLayout.findViewById(R.id.portion_description);
+        TextInputEditText portionDescription = newPortionLayout.findViewById(R.id.portion_description);
         portionDescription.addTextChangedListener(textWatcher);
 
-        EditText portionGrams = newPortionLayout.findViewById(R.id.portion_grams);
+        TextInputEditText portionGrams = newPortionLayout.findViewById(R.id.portion_grams);
         portionGrams.addTextChangedListener(textWatcher);
 
         ImageView trashcan = newPortionLayout.findViewById(R.id.trash_icon);
@@ -191,8 +192,8 @@ public class AddFoodActivity extends AppCompatActivity {
         int childCount = portionsLayout.getChildCount();
         for (int i = 0; i < childCount; i++) {
             ConstraintLayout inner = (ConstraintLayout) portionsLayout.getChildAt(i);
-            EditText portionDescription = inner.findViewById(R.id.portion_description);
-            EditText portionGrams = inner.findViewById(R.id.portion_grams);
+            TextInputEditText portionDescription = inner.findViewById(R.id.portion_description);
+            TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
             PortionResponse portion = new PortionResponse(0,
                     Double.valueOf(portionGrams.getText().toString()),
                     portionDescription.getText().toString(), null);

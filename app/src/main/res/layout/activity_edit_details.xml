@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,15 +9,14 @@
     tools:context=".LoginActivity">
 
     <Button
+        android:id="@+id/backbutton"
         style="@style/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/backbutton"
         android:layout_gravity="start"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
-        android:drawableStart="@drawable/arrow_back"
-        />
+        android:layout_marginTop="8dp"
+        android:drawableStart="@drawable/arrow_back" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -28,147 +26,129 @@
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/intake_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="8dp"
+                android:text="@string/intake"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:paddingLeft="4dp"
-                android:paddingBottom="8dp"
-                android:visibility="gone"
-                android:paddingRight="4dp"
-                android:text="@string/intake" />
+                android:visibility="gone" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
-                <EditText
+                android:theme="@style/TextInputLayoutTheme">
+
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/user_name"
                     android:inputType="text"
-                    android:theme="@style/TextInputEditTextTheme"
                     android:maxLines="1"
-                    android:singleLine="true"
-                    android:layout_marginBottom="8dp"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    android:backgroundTint="@color/white"/>
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
-                <EditText
+                android:theme="@style/TextInputLayoutTheme">
+
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/user_birthday"
                     android:layout_marginBottom="8dp"
-                    android:theme="@style/TextInputEditTextTheme"
+                    android:hint="@string/user_birthday"
                     android:inputType="date"
                     android:maxLines="1"
-                    android:backgroundTint="@color/white"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <RadioGroup
+                android:id="@+id/radiogroup_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/radiogroup_gender"
                 android:layout_marginBottom="16dp"
                 android:orientation="horizontal">
+
                 <RadioButton
                     android:id="@+id/check_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
                     android:buttonTint="@color/white"
-                    android:text="@string/male"/>
+                    android:text="@string/male"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
                 <RadioButton
                     android:id="@+id/check_female"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
                     android:layout_weight="1"
                     android:buttonTint="@color/white"
-                    android:textSize="18sp"
-                    android:text="@string/female"/>
+                    android:text="@string/female"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
             </RadioGroup>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
-                <EditText
+                android:theme="@style/TextInputLayoutTheme">
+
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:hint="@string/user_height"
-                    android:theme="@style/TextInputEditTextTheme"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:backgroundTint="@color/white"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:hintTextAppearance="@style/TextInputLayoutHintTextAppearance">
-                <EditText
+                android:theme="@style/TextInputLayoutTheme">
+
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/user_weight"
                     android:layout_marginBottom="16dp"
-                    android:theme="@style/TextInputEditTextTheme"
+                    android:hint="@string/user_weight"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
-                    android:backgroundTint="@color/white"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorLink="@color/white"
-                    />
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
             <Spinner
                 android:id="@+id/edit_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:prompt="@string/activity_level"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:layout_marginBottom="16dp"
                 android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                android:layout_marginBottom="16dp">
-            </Spinner>
+                android:prompt="@string/activity_level"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
             <Button
                 android:id="@+id/savebutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/save"/>
+                android:text="@string/save" />
 
         </LinearLayout>
     </ScrollView>

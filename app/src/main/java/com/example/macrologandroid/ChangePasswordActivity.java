@@ -3,6 +3,7 @@ package com.example.macrologandroid;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -19,9 +20,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
-    private EditText oldPasswordView;
-    private EditText newPasswordView;
-    private EditText confirmPasswordView;
+    private TextInputEditText oldPasswordView;
+    private TextInputEditText newPasswordView;
+    private TextInputEditText confirmPasswordView;
 
     private TextView errorTextView;
 

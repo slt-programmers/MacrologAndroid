@@ -1,13 +1,13 @@
 package com.example.macrologandroid.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.macrologandroid.models.ChangeGoalMacros;
@@ -17,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
 
-    private EditText proteinView;
-    private EditText fatView;
-    private EditText carbsView;
+    private TextInputEditText proteinView;
+    private TextInputEditText fatView;
+    private TextInputEditText carbsView;
     private TextView caloriesView;
 
     @Override

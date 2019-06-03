@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckedTextView;
@@ -16,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.macrologandroid.dtos.FoodResponse;
@@ -43,7 +43,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
     private AutoCompleteTextView foodTextView;
     private Spinner editPortionOrUnitSpinner;
-    private EditText editGramsOrAmount;
+    private TextInputEditText editGramsOrAmount;
     private Button saveButton;
     private Button addButton;
     private FoodService foodService;
