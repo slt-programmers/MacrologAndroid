@@ -218,16 +218,38 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
 
     private void setProgress(double protein, double fat, double carbs) {
         ProgressBar progressProtein = view.findViewById(R.id.progress_ring_protein);
+        ProgressBar surplusProtein = view.findViewById(R.id.outer_progress_ring_protein);
         progressProtein.setMax(goalProtein);
         progressProtein.setProgress((int) Math.round(protein));
+        surplusProtein.setMax(goalProtein);
+        if (protein < goalProtein) {
+            surplusProtein.setVisibility(View.INVISIBLE);
+        } else {
+            surplusProtein.setVisibility(View.VISIBLE);
+            surplusProtein.setProgress((int) Math.round(protein - goalProtein));
+        }
 
         ProgressBar progressFat = view.findViewById(R.id.progress_ring_fat);
+        ProgressBar surplusFat = view.findViewById(R.id.outer_progress_ring_fat);
         progressFat.setMax(goalFat);
         progressFat.setProgress((int) Math.round(fat));
+        if (fat < goalFat) {
+            surplusFat.setVisibility(View.INVISIBLE);
+        } else {
+            surplusFat.setVisibility(View.VISIBLE);
+            surplusFat.setProgress((int) Math.round(fat - goalFat));
+        }
 
         ProgressBar progressCarbs = view.findViewById(R.id.progress_ring_carbs);
+        ProgressBar surplusCarbs = view.findViewById(R.id.outer_progress_ring_carbs);
         progressCarbs.setMax(goalCarbs);
         progressCarbs.setProgress((int) Math.round(carbs));
+        if (carbs < goalCarbs) {
+            surplusCarbs.setVisibility(View.INVISIBLE);
+        } else {
+            surplusCarbs.setVisibility(View.VISIBLE);
+            surplusCarbs.setProgress((int) Math.round(carbs - goalCarbs));
+        }
     }
 
     private LocalDate getDateFromPosition(int position) {

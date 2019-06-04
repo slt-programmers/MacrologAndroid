@@ -1,6 +1,5 @@
 package com.example.macrologandroid.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,9 +23,6 @@ import com.example.macrologandroid.R;
 import com.example.macrologandroid.services.UserService;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.time.LocalDate;
-import java.time.Period;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
