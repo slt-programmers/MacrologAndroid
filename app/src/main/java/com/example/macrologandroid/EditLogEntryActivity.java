@@ -1,6 +1,5 @@
 package com.example.macrologandroid;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
@@ -33,7 +32,6 @@ import com.example.macrologandroid.models.Meal;
 import com.example.macrologandroid.services.FoodService;
 import com.example.macrologandroid.services.LogEntryService;
 
-import java.security.MessageDigestSpi;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -120,11 +118,14 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     setupAutoCompleteTextView();
                 }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
 
-        try {
-            logEntries = (List<LogEntryResponse>) getIntent().getSerializableExtra("LOGENTRIES");
-        } catch (Exception ex) {
-            logEntries = new ArrayList<>();
+        logEntries = new ArrayList<>();
+        List entries = (List) getIntent().getSerializableExtra("LOGENTRIES");
+        for (Object entry : entries) {
+            if (entry instanceof LogEntryResponse) {
+                logEntries.add((LogEntryResponse) entry);
+            }
         }
+
         if (logEntries.size() == 0) {
             meal = (Meal) getIntent().getSerializableExtra("MEAL");
         } else {
@@ -244,11 +245,13 @@ public class EditLogEntryActivity extends AppCompatActivity {
             }
         }
 
-        double multiplier = Double.valueOf(editGramsOrAmount.getText().toString());
-        if (portionId == null) {
-            multiplier = multiplier / 100;
+        double multiplier = 1.0;
+        if (editGramsOrAmount.getText() != null) {
+            multiplier = Double.valueOf(editGramsOrAmount.getText().toString());
+            if (portionId == null) {
+                multiplier = multiplier / 100;
+            }
         }
-
         Long foodId = selectedFood.getId();
         LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
                 multiplier, selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
@@ -260,9 +263,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                             newEntries = res;
                             appendNewEntry();
                         },
-                        err -> {
-                            Log.d(this.getLocalClassName(), err.getMessage());
-                        });
+                        err -> Log.d(this.getLocalClassName(), err.getMessage()));
     }
 
     private void addLogEntryToLayout(LogEntryResponse entry) {
@@ -351,7 +352,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
                 double multiplier = 1;
                 TextInputEditText foodAmount = (TextInputEditText) ((TextInputLayout) logEntryLayout.getChildAt(4)).getChildAt(0);
-                if (foodAmount != null) {
+                if (foodAmount != null && foodAmount.getText() != null) {
                     multiplier = Double.valueOf(foodAmount.getText().toString());
                 }
 
