@@ -4,23 +4,23 @@ import java.io.Serializable;
 
 public class PortionResponse implements Serializable {
 
-    private int id;
+    private Integer id;
     private double grams;
     private String description;
     private MacrosResponse macros;
 
-    public PortionResponse(int id, double grams, String description, MacrosResponse macros) {
+    public PortionResponse(Integer id, double grams, String description, MacrosResponse macros) {
         this.id = id;
         this.grams = grams;
         this.description = description;
         this.macros = macros;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

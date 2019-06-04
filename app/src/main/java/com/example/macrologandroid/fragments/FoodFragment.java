@@ -120,24 +120,29 @@ public class FoodFragment extends Fragment {
             setSortHeaderColor(foodHeader);
             fillTable(convertedFood);
         });
+
         proteinHeader = view.findViewById(R.id.protein_header);
         proteinHeader.setOnClickListener(v -> {
             sortTable(SortHeader.PROTEIN, true);
             setSortHeaderColor(proteinHeader);
             fillTable(convertedFood);
         });
+
         fatHeader = view.findViewById(R.id.fat_header);
         fatHeader.setOnClickListener(v -> {
             sortTable(SortHeader.FAT, true);
             setSortHeaderColor(fatHeader);
             fillTable(convertedFood);
         });
+
         carbsHeader = view.findViewById(R.id.carbs_header);
         carbsHeader.setOnClickListener(v -> {
             sortTable(SortHeader.CARBS, true);
             setSortHeaderColor(carbsHeader);
             fillTable(convertedFood);
         });
+
+        setSortHeaderColor(foodHeader);
 
         allFood = FoodCache.getInstance().getCache();
         searchedFood = allFood;
@@ -203,7 +208,7 @@ public class FoodFragment extends Fragment {
             searchedFood = allFood;
         } else {
             for (FoodResponse food : allFood) {
-                if (food.getName().contains(chars)) {
+                if (food.getName().toLowerCase().contains(chars.toString().toLowerCase())) {
                     searchedFood.add(food);
                 }
             }

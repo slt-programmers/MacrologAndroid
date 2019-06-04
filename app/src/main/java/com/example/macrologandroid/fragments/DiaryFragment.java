@@ -79,7 +79,6 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         }
     }
 
-    @SuppressLint("CheckResult")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,9 +95,10 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         disposable = userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (result) -> setGoalIntake(new UserSettings(result)),
-                        (error) -> Log.d(this.getClass().getName(),error.getMessage()));
+                        (error) -> Log.d(this.getClass().getName(), error.getMessage()));
 
         FloatingActionButton button = view.findViewById(R.id.floating_button);
+
         button.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddLogEntryActivity.class);
             intent.putExtra("DATE", selectedDate);

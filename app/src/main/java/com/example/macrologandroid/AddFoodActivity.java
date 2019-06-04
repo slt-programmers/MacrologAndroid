@@ -194,9 +194,10 @@ public class AddFoodActivity extends AppCompatActivity {
             ConstraintLayout inner = (ConstraintLayout) portionsLayout.getChildAt(i);
             TextInputEditText portionDescription = inner.findViewById(R.id.portion_description);
             TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
-            PortionResponse portion = new PortionResponse(0,
-                    Double.valueOf(portionGrams.getText().toString()),
-                    portionDescription.getText().toString(), null);
+            String description = portionDescription.getText().toString();
+            PortionResponse portion = new PortionResponse(findIdForPortion(i),
+                    Double.valueOf(portionGrams.getText().toString()), description
+                    , null);
             portions.add(portion);
         }
         FoodResponse newFood = new FoodResponse(null, name, protein, fat, carbs, portions);
@@ -212,5 +213,19 @@ public class AddFoodActivity extends AppCompatActivity {
                     finish();
                 }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
 
+    }
+
+    private Integer findIdForPortion(int index) {
+        List<PortionResponse> portions = foodResponse.getPortions();
+        if (portions != null && !portions.isEmpty()) {
+            try {
+                PortionResponse portion =  portions.get(index);
+                return portion.getId();
+            } catch (Exception ex) {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }
