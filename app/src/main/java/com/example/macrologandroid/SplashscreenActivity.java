@@ -18,6 +18,7 @@ import com.example.macrologandroid.services.HealthcheckService;
 import java.net.SocketTimeoutException;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class SplashscreenActivity extends AppCompatActivity {
@@ -26,8 +27,8 @@ public class SplashscreenActivity extends AppCompatActivity {
     private String token;
     private int callCounter = 0;
     private Boolean expired;
+    private Disposable disposable;
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +61,17 @@ public class SplashscreenActivity extends AppCompatActivity {
         doHealthCheck();
     }
 
-    @SuppressLint("CheckResult")
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     private void doHealthCheck() {
         callCounter++;
-        service.healthcheck(token).subscribeOn(Schedulers.io())
+        disposable = service.healthcheck(token).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         res -> {

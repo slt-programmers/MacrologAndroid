@@ -32,6 +32,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
@@ -58,6 +59,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     private Button saveButton;
 
     private UserService userService = new UserService();
+    private Disposable disposable;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -146,6 +148,14 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     private void setupSpinner() {
         editActivity = findViewById(R.id.edit_activity);
 
@@ -181,7 +191,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("CheckResult")
     private void saveSettings() {
         if (validDateFormat()) {
             List<Observable<ResponseBody>> obsList = new ArrayList<>();
@@ -248,7 +257,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
                 userSettings.setActivity(Double.valueOf(newActivity));
             }
 
-            Observable.zip(obsList, i -> i)
+            disposable = Observable.zip(obsList, i -> i)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(res -> {

@@ -54,6 +54,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     private LocalDate selectedDate;
 
     private Disposable disposable;
+    private DiaryPagerAdaper adapter;
 
     public DiaryFragment() {
     }
@@ -125,6 +126,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         if (disposable != null) {
             disposable.dispose();
         }
+        adapter.disposeServiceCall();
     }
 
     public void startEditActivity(Meal meal) {
@@ -158,7 +160,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         diaryDate.setText(selectedDate.format(formatter));
 
         viewPager = view.findViewById(R.id.day_view_pager);
-        DiaryPagerAdaper adapter = new DiaryPagerAdaper(getContext(), cache, this);
+        adapter = new DiaryPagerAdaper(getContext(), cache, this);
         adapter.setSelectedDate(selectedDate);
         adapter.setOnTotalsUpdateListener(this);
         viewPager.setAdapter(adapter);

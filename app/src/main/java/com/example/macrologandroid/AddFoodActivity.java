@@ -136,7 +136,6 @@ public class AddFoodActivity extends AppCompatActivity {
         Session.getInstance().resetTimestamp();
     }
 
-    @SuppressLint("CheckResult")
     @Override
     public void onResume() {
         super.onResume();
@@ -181,7 +180,6 @@ public class AddFoodActivity extends AppCompatActivity {
         isSaveButtonEnabled();
     }
 
-    @SuppressLint("CheckResult")
     private void saveFood() {
         String name = editFoodName.getText().toString();
         double protein = Double.valueOf(editProtein.getText().toString());

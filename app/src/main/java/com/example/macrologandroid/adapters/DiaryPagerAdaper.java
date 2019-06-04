@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class DiaryPagerAdaper extends PagerAdapter {
@@ -41,6 +42,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private static final int START_COUNT = 500;
 
     private OnTotalUpdateListener callback;
+    private Disposable disposable;
 
     public void setOnTotalsUpdateListener(DiaryFragment fragment) {
         callback = fragment;
@@ -57,7 +59,6 @@ public class DiaryPagerAdaper extends PagerAdapter {
         this.selectedDate = date;
     }
 
-    @SuppressLint("CheckResult")
     @Override
     @NonNull
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -71,7 +72,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
         List<LogEntryResponse> entries = cache.getFromCache(date);
         if (entries == null) {
-            service.getLogsForDay(date)
+            disposable = service.getLogsForDay(date)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
@@ -124,6 +125,12 @@ public class DiaryPagerAdaper extends PagerAdapter {
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
+    }
+
+    public void disposeServiceCall() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     private LocalDate getDateFromPosition(int position) {

@@ -1,6 +1,5 @@
 package com.example.macrologandroid;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -26,12 +26,14 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 public class AdjustIntakeActivity extends AppCompatActivity {
 
     private UserService service;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -96,6 +98,14 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             startActivity(intent);        }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     private void setFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -104,7 +114,6 @@ public class AdjustIntakeActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    @SuppressLint("CheckResult")
     private void saveGoalMacros() {
         FragmentManager fm = getSupportFragmentManager();
         List<Fragment> list = fm.getFragments();
@@ -120,7 +129,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
                 obsList.add(service.putSetting(new UserSettingResponse(1, "goalCarbs",
                         String.valueOf(goal.getInt("goalCarbs")))));
 
-                Observable.zip(obsList, i -> i)
+                disposable = Observable.zip(obsList, i -> i)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(res -> {

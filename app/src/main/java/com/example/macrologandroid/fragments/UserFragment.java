@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class UserFragment extends Fragment {
@@ -40,6 +41,7 @@ public class UserFragment extends Fragment {
     private UserSettings userSettings;
 
     private OnLogoutPressedListener callback;
+    private Disposable disposable;
 
     public UserFragment() {
     }
@@ -67,7 +69,6 @@ public class UserFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @SuppressLint("CheckResult")
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -129,10 +130,17 @@ public class UserFragment extends Fragment {
         super.onDetach();
     }
 
-    @SuppressLint("CheckResult")
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     protected void fetchUserSettings() {
         UserService userService = new UserService();
-        userService.getSettings()
+        disposable = userService.getSettings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

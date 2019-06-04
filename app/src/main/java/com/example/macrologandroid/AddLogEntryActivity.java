@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class AddLogEntryActivity extends AppCompatActivity {
@@ -55,6 +56,8 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private Meal selectedMeal;
     private LocalDate selectedDate;
     private Meal meal;
+    private Disposable foodDisposable;
+    private Disposable logDisposable;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -68,7 +71,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +82,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
         foodService = new FoodService();
         logService = new LogEntryService();
-        foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        foodDisposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     allFood = res;
                     fillFoodNameList();
@@ -118,7 +120,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
         Session.getInstance().resetTimestamp();
     }
 
-    @SuppressLint("CheckResult")
     @Override
     public void onResume() {
         super.onResume();
@@ -129,10 +130,20 @@ public class AddLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("CheckResult")
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (foodDisposable != null) {
+            foodDisposable.dispose();
+        }
+        if (logDisposable != null) {
+            logDisposable.dispose();
+        }
+    }
+
     private void setNewlyAddedFood(String foodName) {
         addButton.setVisibility(View.GONE);
-        foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        foodDisposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     allFood = res;
                     fillFoodNameList();
@@ -143,7 +154,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
     }
 
-    @SuppressLint("CheckResult")
     private void addLogEntry() {
         Long portionId = null;
         for (PortionResponse portion : selectedFood.getPortions()) {
@@ -165,7 +175,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 selectedMeal.toString());
         List<LogEntryRequest> entryList = new ArrayList<>();
         entryList.add(entry);
-        logService.postLogEntry(entryList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        logDisposable = logService.postLogEntry(entryList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                             Intent resultIntent = new Intent();
                             resultIntent.putExtra("RELOAD", true);

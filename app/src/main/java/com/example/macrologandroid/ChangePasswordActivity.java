@@ -16,6 +16,7 @@ import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.services.AuthenticationService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ChangePasswordActivity extends AppCompatActivity {
@@ -25,6 +26,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private TextInputEditText confirmPasswordView;
 
     private TextView errorTextView;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
             startActivity(intent);        }
     }
 
-    @SuppressLint("CheckResult")
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
     private void changePassword() {
         errorTextView.setText("");
         errorTextView.setVisibility(View.GONE);
@@ -80,7 +89,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         if (newPassword.equals(confirmPassword)) {
             if (!oldPassword.equals(newPassword)) {
                 AuthenticationService service = new AuthenticationService();
-                service.changePassword(oldPassword, newPassword, confirmPassword)
+                disposable = service.changePassword(oldPassword, newPassword, confirmPassword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
