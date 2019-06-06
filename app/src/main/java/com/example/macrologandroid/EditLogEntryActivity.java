@@ -351,7 +351,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 String item = (String) foodSpinner.getSelectedItem();
 
                 double multiplier = 1;
-                TextInputEditText foodAmount = (TextInputEditText) ((TextInputLayout) logEntryLayout.getChildAt(4)).getChildAt(0);
+                TextInputEditText foodAmount = (TextInputEditText) ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
                 if (foodAmount != null && foodAmount.getText() != null) {
                     multiplier = Double.valueOf(foodAmount.getText().toString());
                 }
@@ -359,7 +359,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 Long portionId = null;
                 if (!item.equals("gram")) {
                     for (PortionResponse portion : entry.getFood().getPortions()) {
-                        if (item.contains(portion.getDescription())) {
+                        String trimmedItem = item.substring(0, item.indexOf('(')).trim();
+                        if (trimmedItem.equals(portion.getDescription())) {
                             portionId = (long) portion.getId();
                             break;
                         }
