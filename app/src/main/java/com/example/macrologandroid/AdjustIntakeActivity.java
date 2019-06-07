@@ -42,7 +42,6 @@ public class AdjustIntakeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         boolean intake = intent.getBooleanExtra("INTAKE", false);
 
-
         Button backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(v -> finish());
 
@@ -50,8 +49,6 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             backButton.setVisibility(View.INVISIBLE);
             TextView title = findViewById(R.id.adjust_intake_title);
             title.setVisibility(View.VISIBLE);
-            TextView explanation = findViewById(R.id.adjust_intake_explanation);
-            explanation.setVisibility(View.VISIBLE);
         }
 
         service = new UserService();

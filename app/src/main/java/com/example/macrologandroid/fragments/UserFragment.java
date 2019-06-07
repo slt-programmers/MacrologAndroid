@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.macrologandroid.AboutActivity;
@@ -94,8 +95,8 @@ public class UserFragment extends Fragment {
             startActivityForResult(intent, EDIT_DETAILS_ID);
         });
 
-        Button adjustIntake = view.findViewById(R.id.adjust_intake);
-        adjustIntake.setOnClickListener(v -> {
+        ImageView header = view.findViewById(R.id.header);
+        header.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AdjustIntakeActivity.class);
             intent.putExtra("userSettings", userSettings);
             startActivityForResult(intent, ADJUST_INTAKE_ID);
@@ -197,16 +198,16 @@ public class UserFragment extends Fragment {
         }
         userActivity.setText(activity);
 
-        TextView userProtein = view.findViewById(R.id.user_protein);
-        String protein = userSettings.getProtein() + " gr";
+        TextView userProtein = view.findViewById(R.id.goal_protein);
+        String protein = userSettings.getProtein() + "";
         userProtein.setText(protein);
 
-        TextView userFat = view.findViewById(R.id.user_fat);
-        String fat = userSettings.getFat() + " gr";
+        TextView userFat = view.findViewById(R.id.goal_fat);
+        String fat = userSettings.getFat() + "";
         userFat.setText(fat);
 
-        TextView userCarbs = view.findViewById(R.id.user_carbs);
-        String carbs = userSettings.getCarbs() + " gr";
+        TextView userCarbs = view.findViewById(R.id.goal_carbs);
+        String carbs = userSettings.getCarbs() + "";
         userCarbs.setText(carbs);
     }
 
