@@ -1,6 +1,5 @@
 package com.example.macrologandroid;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
@@ -12,7 +11,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -23,6 +21,7 @@ import com.example.macrologandroid.services.FoodService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -181,10 +180,10 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     private void saveFood() {
-        String name = editFoodName.getText().toString();
-        double protein = Double.valueOf(editProtein.getText().toString());
-        double fat = Double.valueOf(editFat.getText().toString());
-        double carbs = Double.valueOf(editCarbs.getText().toString());
+        String name = Objects.requireNonNull(editFoodName.getText()).toString();
+        double protein = Double.valueOf(Objects.requireNonNull(editProtein.getText()).toString());
+        double fat = Double.valueOf(Objects.requireNonNull(editFat.getText()).toString());
+        double carbs = Double.valueOf(Objects.requireNonNull(editCarbs.getText()).toString());
 
         List<PortionResponse> portions = new ArrayList<>();
         int childCount = portionsLayout.getChildCount();
@@ -192,9 +191,9 @@ public class AddFoodActivity extends AppCompatActivity {
             ConstraintLayout inner = (ConstraintLayout) portionsLayout.getChildAt(i);
             TextInputEditText portionDescription = inner.findViewById(R.id.portion_description);
             TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
-            String description = portionDescription.getText().toString();
+            String description = Objects.requireNonNull(portionDescription.getText()).toString();
             PortionResponse portion = new PortionResponse(findIdForPortion(i),
-                    Double.valueOf(portionGrams.getText().toString()), description
+                    Double.valueOf(Objects.requireNonNull(portionGrams.getText()).toString()), description
                     , null);
             portions.add(portion);
         }

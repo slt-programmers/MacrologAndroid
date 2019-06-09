@@ -31,8 +31,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
 
     private BottomNavigationView navigation;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = item -> {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
             case R.id.navigation_diary:
                 setFragment(diaryFragment);

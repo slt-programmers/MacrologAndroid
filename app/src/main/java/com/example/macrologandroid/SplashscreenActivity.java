@@ -1,6 +1,5 @@
 package com.example.macrologandroid;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Handler;
@@ -93,7 +92,6 @@ public class SplashscreenActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
-
 
     }
 }

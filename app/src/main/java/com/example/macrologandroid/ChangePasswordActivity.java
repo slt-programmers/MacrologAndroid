@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.services.AuthenticationService;
 
+import java.util.Objects;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -80,10 +82,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         errorTextView.setText("");
         errorTextView.setVisibility(View.GONE);
 
-        String newPassword = newPasswordView.getText().toString().trim();
-        String confirmPassword = confirmPasswordView.getText().toString().trim();
+        String newPassword = Objects.requireNonNull(newPasswordView.getText()).toString().trim();
+        String confirmPassword = Objects.requireNonNull(confirmPasswordView.getText()).toString().trim();
 
-        String oldPassword = oldPasswordView.getText().toString();
+        String oldPassword = Objects.requireNonNull(oldPasswordView.getText()).toString();
         if (newPassword.equals(confirmPassword)) {
             if (!oldPassword.equals(newPassword)) {
                 AuthenticationService service = new AuthenticationService();

@@ -1,6 +1,5 @@
 package com.example.macrologandroid;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +28,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -196,13 +196,13 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             List<Observable<ResponseBody>> obsList = new ArrayList<>();
             UserSettings userSettings = new UserSettings();
 
-            String newName = editName.getText().toString();
+            String newName = Objects.requireNonNull(editName.getText()).toString();
             if (!newName.isEmpty() && !newName.equals(originalName)) {
                 obsList.add(userService.putSetting(new UserSettingResponse(1, "name", newName)));
                 userSettings.setName(newName);
             }
 
-            String newBirthday = editBirthday.getText().toString();
+            String newBirthday = Objects.requireNonNull(editBirthday.getText()).toString();
             LocalDate newDate = LocalDate.parse(newBirthday, DateTimeFormatter.ofPattern("d-M-yyyy"));
             if (!newBirthday.isEmpty() && originalBirthday != newDate) {
                 int age = Period.between(newDate, LocalDate.now()).getYears();
@@ -219,13 +219,13 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
                 userSettings.setGender(Gender.valueOf(newGender));
             }
 
-            String newHeight = editHeight.getText().toString();
+            String newHeight = Objects.requireNonNull(editHeight.getText()).toString();
             if (!newHeight.isEmpty() && originalHeight != Integer.valueOf(newHeight)) {
                 obsList.add(userService.putSetting(new UserSettingResponse(1, "height", newHeight)));
                 userSettings.setHeight(Integer.valueOf(newHeight));
             }
 
-            String newWeight = editWeight.getText().toString();
+            String newWeight = Objects.requireNonNull(editWeight.getText()).toString();
             if (!newWeight.isEmpty() && !String.valueOf(originalWeight).equals(newWeight)) {
                 obsList.add(userService.putSetting(new UserSettingResponse(1, "weight", newWeight)));
                 userSettings.setWeight(Integer.valueOf(newWeight));
@@ -276,10 +276,10 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     }
 
     private void checkEmptyTextViews() {
-        boolean nameIsEmpty = editName.getText().toString().isEmpty();
-        boolean birthdayIsEmpty = editBirthday.getText().toString().isEmpty();
-        boolean heightIsEmpty = editHeight.getText().toString().isEmpty();
-        boolean weightIsEmpty = editWeight.getText().toString().isEmpty();
+        boolean nameIsEmpty = Objects.requireNonNull(editName.getText()).toString().isEmpty();
+        boolean birthdayIsEmpty = Objects.requireNonNull(editBirthday.getText()).toString().isEmpty();
+        boolean heightIsEmpty = Objects.requireNonNull(editHeight.getText()).toString().isEmpty();
+        boolean weightIsEmpty = Objects.requireNonNull(editWeight.getText()).toString().isEmpty();
 
         if (!nameIsEmpty && !birthdayIsEmpty && !heightIsEmpty && !weightIsEmpty) {
             saveButton.setEnabled(true);
@@ -290,7 +290,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
     private boolean validDateFormat() {
         try {
-            LocalDate.parse(editBirthday.getText().toString(), DateTimeFormatter.ofPattern("d-M-yyyy"));
+            LocalDate.parse(Objects.requireNonNull(editBirthday.getText()).toString(), DateTimeFormatter.ofPattern("d-M-yyyy"));
         } catch (Exception ex) {
             editBirthday.setError("Incorrect date format");
             return false;

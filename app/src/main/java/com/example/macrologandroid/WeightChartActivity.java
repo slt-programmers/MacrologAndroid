@@ -1,13 +1,10 @@
 package com.example.macrologandroid;
 
-import android.content.Context;
-import android.icu.text.MeasureFormat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -89,7 +86,7 @@ public class WeightChartActivity extends AppCompatActivity {
             TableRow.LayoutParams params = new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             row.setLayoutParams(params);
             row.setGravity(Gravity.FILL_HORIZONTAL);
-            row.setPadding(0, 0, 0, convertDpToPixel(8));
+            row.setPadding(0, 0, 0, (8 * getApplicationContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT));
 
             TextView date = new TextView(getApplicationContext());
             date.setTextAppearance(R.style.AppTheme);
@@ -112,7 +109,6 @@ public class WeightChartActivity extends AppCompatActivity {
             weightTable.addView(row);
         }
     }
-
 
     private double getCurrentWeight() {
         WeightRequest latest = weightRequests.stream().max(Comparator.comparing(WeightRequest::getDay)).orElse(null);
@@ -145,7 +141,4 @@ public class WeightChartActivity extends AppCompatActivity {
         dialog.show(getSupportFragmentManager(), "WeighDialogFragment");
     }
 
-    private int convertDpToPixel(int dp){
-        return dp * getApplicationContext().getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT;
-    }
 }

@@ -17,6 +17,8 @@ import com.example.macrologandroid.dtos.AuthenticationResponse;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.services.AuthenticationService;
 
+import java.util.Objects;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -63,7 +65,8 @@ public class LoginActivity extends AppCompatActivity {
         mUserOrEmailLayout = findViewById(R.id.user_email);
         mPasswordLayout = findViewById(R.id.password);
 
-        mPasswordLayout.getEditText().setTypeface(Typeface.DEFAULT);
+        // For hiding password with dots
+        Objects.requireNonNull(mPasswordLayout.getEditText()).setTypeface(Typeface.DEFAULT);
         mPasswordLayout.getEditText().setTransformationMethod(new PasswordTransformationMethod());
 
         mLoginResultView = findViewById(R.id.login_result);
@@ -82,7 +85,8 @@ public class LoginActivity extends AppCompatActivity {
         mNewEmailView = findViewById(R.id.register_email);
         mNewPasswordView = findViewById(R.id.register_password);
 
-        mNewPasswordView.getEditText().setTypeface(Typeface.DEFAULT);
+        // For hiding password with dots
+        Objects.requireNonNull(mNewPasswordView.getEditText()).setTypeface(Typeface.DEFAULT);
         mNewPasswordView.getEditText().setTransformationMethod(new PasswordTransformationMethod());
 
         mRegisterResultView = findViewById(R.id.register_result);
@@ -128,8 +132,8 @@ public class LoginActivity extends AppCompatActivity {
         mUserOrEmailLayout.setError(null);
         mPasswordLayout.setError(null);
 
-        String username = mUserOrEmailLayout.getEditText().getText().toString();
-        String password = mPasswordLayout.getEditText().getText().toString();
+        String username = Objects.requireNonNull(mUserOrEmailLayout.getEditText()).getText().toString();
+        String password = Objects.requireNonNull(mPasswordLayout.getEditText()).getText().toString();
 
         boolean cancel = false;
         View focusView = null;

@@ -1,6 +1,5 @@
 package com.example.macrologandroid;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
@@ -33,6 +32,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -164,7 +164,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
             }
         }
 
-        double multiplier = Double.valueOf(editGramsOrAmount.getText().toString());
+        double multiplier = Double.valueOf(Objects.requireNonNull(editGramsOrAmount.getText()).toString());
         if (portionId == null) {
             multiplier = multiplier / 100;
         }
