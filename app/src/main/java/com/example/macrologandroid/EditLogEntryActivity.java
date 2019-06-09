@@ -254,7 +254,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
         Long foodId = selectedFood.getId();
         LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
-                multiplier, selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                multiplier, selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
                 selectedMeal.toString());
         List<LogEntryRequest> entryList = new ArrayList<>();
         entryList.add(entry);

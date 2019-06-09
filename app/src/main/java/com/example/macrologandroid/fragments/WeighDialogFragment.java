@@ -23,7 +23,7 @@ public class WeighDialogFragment extends DialogFragment {
 
     private double currentWeight = 0.0;
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
     private OnDialogResult onDialogResult;
 

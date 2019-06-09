@@ -31,7 +31,7 @@ public class WeightChartActivity extends AppCompatActivity {
     private TextView currentWeightTextView;
     private TableLayout weightTable;
     private TableRow weightTableHeader;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
     @Override
     public void onCreate(Bundle bundle) {
