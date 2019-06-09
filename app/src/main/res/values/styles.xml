@@ -11,6 +11,8 @@
         <!-- All buttons, unless style is defined on xml -->
         <item name="buttonStyle">@style/buttonRound</item>
 
+        <item name="alertDialogTheme">@style/alertDialogTheme</item>
+
         <!-- Color selected item -->
         <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
     </style>
@@ -39,6 +41,34 @@
 
     <style name="TextInputError" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/colorSignal</item>
+    </style>
+
+    <style name="TextInputLayoutThemeDark" parent="Widget.Design.TextInputLayout">
+        <!--hint color-->
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <!--input text color-->
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <!--underline unfocussed-->
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <!--everything focussed-->
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+    <style name="alertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:windowTitleStyle">@style/alertDialogTitleStyle</item>
+        <item name="buttonStyle">@style/alertDialogButtonStyle</item>
+    </style>
+
+    <style name="alertDialogTitleStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="alertDialogButtonStyle">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="buttonRound" parent="Base.Widget.AppCompat.Button">

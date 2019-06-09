@@ -1,6 +1,5 @@
 package com.example.macrologandroid.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -20,6 +19,8 @@ import com.example.macrologandroid.fragments.DiaryFragment;
 import com.example.macrologandroid.models.Meal;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.services.LogEntryService;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -81,9 +82,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
                                 notifyForTotalsUpdate(date);
                                 fillDiaryPage(res, layout);
                                 container.addView(layout);
-                            }, err -> {
-                                Log.d(this.getClass().getName(), err.getMessage());
-                            }
+                            }, err -> Log.d(this.getClass().getName(), err.getMessage())
                     );
         } else {
             fillDiaryPage(entries, layout);
@@ -100,20 +99,18 @@ public class DiaryPagerAdaper extends PagerAdapter {
     }
 
     @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+    public void setPrimaryItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
         super.setPrimaryItem(container, position, object);
         if (position != mCurrentPosition) {
             LinearLayout diaryPage = (LinearLayout) object;
             DiaryPager pager = (DiaryPager) container;
-            if (diaryPage != null) {
-                mCurrentPosition = position;
-                pager.measureCurrentView(diaryPage);
-            }
+            mCurrentPosition = position;
+            pager.measureCurrentView(diaryPage);
         }
     }
 
     @Override
-    public void destroyItem(@NonNull ViewGroup container, int position,@NonNull Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
 
@@ -154,18 +151,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
             }
         }
 
-        breakfastTable.setOnClickListener((v) -> {
-            diaryFragmentReference.startEditActivity(Meal.BREAKFAST);
-        });
-        lunchTable.setOnClickListener((v) -> {
-            diaryFragmentReference.startEditActivity(Meal.LUNCH);
-        });
-        dinnerTable.setOnClickListener((v) -> {
-            diaryFragmentReference.startEditActivity(Meal.DINNER);
-        });
-        snacksTable.setOnClickListener((v) -> {
-            diaryFragmentReference.startEditActivity(Meal.SNACKS);
-        });
+        breakfastTable.setOnClickListener((v) -> diaryFragmentReference.startEditActivity(Meal.BREAKFAST));
+        lunchTable.setOnClickListener((v) -> diaryFragmentReference.startEditActivity(Meal.LUNCH));
+        dinnerTable.setOnClickListener((v) -> diaryFragmentReference.startEditActivity(Meal.DINNER));
+        snacksTable.setOnClickListener((v) -> diaryFragmentReference.startEditActivity(Meal.SNACKS));
     }
 
     private void addEntryToTable(TableLayout table, LogEntryResponse entry) {

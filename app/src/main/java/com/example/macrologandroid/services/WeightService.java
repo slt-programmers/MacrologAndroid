@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.example.macrologandroid.BuildConfig;
-import com.example.macrologandroid.dtos.FoodResponse;
 import com.example.macrologandroid.MainActivity;
+import com.example.macrologandroid.dtos.WeightRequest;
 
 import java.util.List;
 
@@ -18,16 +18,18 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
-public class FoodService extends Service {
+public class WeightService extends Service {
 
     private ApiService apiService;
 
     private String token;
 
-    public FoodService() {
+    public WeightService() {
         token = MainActivity.getPreferences().getString("TOKEN", "");
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
@@ -49,26 +51,34 @@ public class FoodService extends Service {
         apiService = retrofit.create(ApiService.class);
     }
 
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    public Observable<List<FoodResponse>> getAlFood() {
-        return apiService.getAlFood();
+    public Observable<List<WeightRequest>> getAllMeasurements() {
+        return apiService.getAllMeasurements();
     }
 
-    public Observable<ResponseBody> postFood(FoodResponse food) {
-        return apiService.postFood(food);
+    public Observable<ResponseBody> postMeasurement(WeightRequest weightRequest) {
+        return apiService.postMeasurement(weightRequest);
+    }
+
+    public Observable<ResponseBody> deleteMeasurement(int id){
+        return apiService.deleteMeasurement(id);
     }
 
     private interface ApiService {
 
-        @GET("food")
-        Observable<List<FoodResponse>> getAlFood();
+        @GET("weight")
+        Observable<List<WeightRequest>> getAllMeasurements();
 
-        @POST("food")
-        Observable<ResponseBody> postFood(@Body FoodResponse food);
+        @POST("weight")
+        Observable<ResponseBody> postMeasurement(@Body WeightRequest weightRequest);
+
+        @DELETE("weight")
+        Observable<ResponseBody> deleteMeasurement(@Path("id") int id);
 
     }
 }

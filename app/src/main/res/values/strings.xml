@@ -39,7 +39,7 @@
     <string name="user_age">Age</string>
     <string name="user_gender">Gender</string>
     <string name="user_height">Height</string>
-    <string name="user_weight">Weight</string>
+    <string name="weight">Weight</string>
     <string name="user_activity">Activity level</string>
 
     <string name="protein">Protein</string>
@@ -127,5 +127,12 @@
         of your own.</string>
     <string name="send">Send</string>
     <string name="plus">plus</string>
+    <string name="weight_chart">Weight chart</string>
+    <string name="current_weight">Current weight</string>
+    <string name="date">Date</string>
+    <string name="measure_weight">Measure weight</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="date_hint">Date (dd-mm-yyyy)</string>
 
 </resources>

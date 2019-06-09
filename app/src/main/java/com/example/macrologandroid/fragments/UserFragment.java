@@ -18,6 +18,7 @@ import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.MainActivity;
+import com.example.macrologandroid.WeightChartActivity;
 import com.example.macrologandroid.models.Gender;
 import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.R;
@@ -100,6 +101,12 @@ public class UserFragment extends Fragment {
             Intent intent = new Intent(getActivity(), AdjustIntakeActivity.class);
             intent.putExtra("userSettings", userSettings);
             startActivityForResult(intent, ADJUST_INTAKE_ID);
+        });
+
+        Button weightButton = view.findViewById(R.id.weight_button);
+        weightButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), WeightChartActivity.class);
+            startActivity(intent);
         });
 
         Button changePassword = view.findViewById(R.id.change_password);

@@ -139,5 +139,4 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             }
         }
     }
-
 }
