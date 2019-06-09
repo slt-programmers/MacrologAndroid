@@ -34,26 +34,27 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     private Context context;
     private LogEntryService service;
-    private DiaryLogCache cache;
     private LocalDate selectedDate;
-    private DiaryFragment diaryFragmentReference;
     private int mCurrentPosition = -1;
 
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
 
-    private OnTotalUpdateListener callback;
     private Disposable disposable;
+    private OnTableClickListener onTableClickListener;
+    private OnTotalUpdateListener onTotalUpdateListener;
 
-    public void setOnTotalsUpdateListener(DiaryFragment fragment) {
-        callback = fragment;
+    public void setOnTotalsUpdateListener(OnTotalUpdateListener listener) {
+        this.onTotalUpdateListener = listener;
     }
 
-    public DiaryPagerAdaper(Context context, DiaryLogCache cache, DiaryFragment diaryFragment) {
+    public void setOnTableClickListener(OnTableClickListener listener) {
+        this.onTableClickListener = listener;
+    }
+
+    public DiaryPagerAdaper(Context context) {
         this.context = context;
-        this.cache = cache;
         this.service = new LogEntryService();
-        this.diaryFragmentReference = diaryFragment;
     }
 
     public void setSelectedDate(LocalDate date) {
@@ -71,18 +72,18 @@ public class DiaryPagerAdaper extends PagerAdapter {
         }
         LocalDate date = getDateFromPosition(position);
 
-        List<LogEntryResponse> entries = cache.getFromCache(date);
+        List<LogEntryResponse> entries = DiaryLogCache.getInstance().getFromCache(date);
         if (entries == null) {
             disposable = service.getLogsForDay(date)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             res -> {
-                                cache.addToCache(date, res);
+                                DiaryLogCache.getInstance().addToCache(date, res);
                                 notifyForTotalsUpdate(date);
                                 fillDiaryPage(res, layout);
                                 container.addView(layout);
-                            }, err -> Log.d(this.getClass().getName(), err.getMessage())
+                            }, err -> Log.e(this.getClass().getName(), err.getMessage())
                     );
         } else {
             fillDiaryPage(entries, layout);
@@ -94,7 +95,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     private void notifyForTotalsUpdate(LocalDate date) {
         if (date.equals(selectedDate)) {
-            callback.updateTotals(date);
+            onTotalUpdateListener.updateTotals(date);
         }
     }
 
@@ -151,10 +152,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
             }
         }
 
-        breakfastTable.setOnClickListener((v) -> diaryFragmentReference.startEditActivity(Meal.BREAKFAST));
-        lunchTable.setOnClickListener((v) -> diaryFragmentReference.startEditActivity(Meal.LUNCH));
-        dinnerTable.setOnClickListener((v) -> diaryFragmentReference.startEditActivity(Meal.DINNER));
-        snacksTable.setOnClickListener((v) -> diaryFragmentReference.startEditActivity(Meal.SNACKS));
+        breakfastTable.setOnClickListener((v) -> onTableClickListener.onTableClick(Meal.BREAKFAST));
+        lunchTable.setOnClickListener((v) -> onTableClickListener.onTableClick(Meal.LUNCH));
+        dinnerTable.setOnClickListener((v) -> onTableClickListener.onTableClick(Meal.DINNER));
+        snacksTable.setOnClickListener((v) -> onTableClickListener.onTableClick(Meal.SNACKS));
     }
 
     private void addEntryToTable(TableLayout table, LogEntryResponse entry) {
@@ -206,6 +207,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     public interface OnTotalUpdateListener {
         void updateTotals(LocalDate date);
+    }
+
+    public interface OnTableClickListener {
+        void onTableClick(Meal meal);
     }
 
 }

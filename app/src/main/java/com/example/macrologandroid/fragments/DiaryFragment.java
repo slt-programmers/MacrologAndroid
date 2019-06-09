@@ -1,6 +1,5 @@
 package com.example.macrologandroid.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,8 +40,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-
-public class DiaryFragment extends Fragment implements Serializable, DiaryPagerAdaper.OnTotalUpdateListener {
+public class DiaryFragment extends Fragment implements Serializable {
 
     private static final int ADD_LOG_ENTRY_ID = 345;
     private static final int EDIT_LOG_ENTRY_ID = 456;
@@ -68,9 +66,9 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (ADD_LOG_ENTRY_ID) :
-            case (EDIT_LOG_ENTRY_ID) : {
+        switch (requestCode) {
+            case (ADD_LOG_ENTRY_ID):
+            case (EDIT_LOG_ENTRY_ID): {
                 if (resultCode == Activity.RESULT_OK) {
                     invalidateCache();
                     setupViewPager(view);
@@ -81,8 +79,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_diary, container, false);
 
         SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefresh);
@@ -96,7 +93,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         disposable = userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (result) -> setGoalIntake(new UserSettings(result)),
-                        (error) -> Log.d(this.getClass().getName(), error.getMessage()));
+                        (error) -> Log.e(this.getClass().getName(), error.getMessage()));
 
         FloatingActionButton button = view.findViewById(R.id.floating_button);
 
@@ -160,9 +157,10 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         diaryDate.setText(selectedDate.format(formatter));
 
         viewPager = view.findViewById(R.id.day_view_pager);
-        adapter = new DiaryPagerAdaper(getContext(), cache, this);
+        adapter = new DiaryPagerAdaper(getContext());
         adapter.setSelectedDate(selectedDate);
-        adapter.setOnTotalsUpdateListener(this);
+        adapter.setOnTotalsUpdateListener(this::updateTotals);
+        adapter.setOnTableClickListener(this::startEditActivity);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(getPositionFromDate(selectedDate));
 
@@ -206,7 +204,7 @@ public class DiaryFragment extends Fragment implements Serializable, DiaryPagerA
         TextView totalProteinView = view.findViewById(R.id.total_protein);
         totalProteinView.setText(String.valueOf(Math.round(totalProtein * 10) / 10f));
         TextView totalFatView = view.findViewById(R.id.total_fat);
-        totalFatView.setText(String.valueOf(Math.round(totalFat * 10) /10f));
+        totalFatView.setText(String.valueOf(Math.round(totalFat * 10) / 10f));
         TextView totalCarbsView = view.findViewById(R.id.total_carbs);
         totalCarbsView.setText(String.valueOf(Math.round(totalCarbs * 10) / 10f));
 
