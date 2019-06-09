@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
                 setFragment(new FoodFragment());
                 return true;
             case R.id.navigation_user:
-                userFragment.setOnLogoutPressedListener(this);
+                userFragment.setOnLogoutPressedListener(this::logout);
                 setFragment(userFragment);
                 return true;
             default:

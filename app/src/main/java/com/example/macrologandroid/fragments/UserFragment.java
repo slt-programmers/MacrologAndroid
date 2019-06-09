@@ -17,7 +17,6 @@ import com.example.macrologandroid.AboutActivity;
 import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
-import com.example.macrologandroid.MainActivity;
 import com.example.macrologandroid.WeightChartActivity;
 import com.example.macrologandroid.models.Gender;
 import com.example.macrologandroid.models.UserSettings;
@@ -38,14 +37,14 @@ public class UserFragment extends Fragment {
     private View view;
     private UserSettings userSettings;
 
-    private OnLogoutPressedListener callback;
     private Disposable disposable;
+    private OnLogoutPressedListener onLogoutPressedListener;
 
     public UserFragment() {
     }
 
-    public void setOnLogoutPressedListener(MainActivity main) {
-        callback = main;
+    public void setOnLogoutPressedListener(OnLogoutPressedListener listener ) {
+        onLogoutPressedListener = listener;
     }
 
     @Override
@@ -81,7 +80,7 @@ public class UserFragment extends Fragment {
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(v -> {
             this.userSettings = null;
-            callback.onLogoutPressed();
+            onLogoutPressedListener.onLogoutPressed();
         });
 
         Button editDetails = view.findViewById(R.id.edit_details);

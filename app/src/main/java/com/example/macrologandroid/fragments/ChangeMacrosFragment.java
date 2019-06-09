@@ -15,6 +15,8 @@ import com.example.macrologandroid.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
 
     private TextInputEditText proteinView;
@@ -52,9 +54,9 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
     }
 
     private long calculateCalories() {
-        double protein = Double.valueOf(handleEmptyString(proteinView.getText().toString()));
-        double fat = Double.valueOf(handleEmptyString(fatView.getText().toString()));
-        double carbs = Double.valueOf(handleEmptyString(carbsView.getText().toString()));
+        double protein = Double.valueOf(handleEmptyString(Objects.requireNonNull(proteinView.getText()).toString()));
+        double fat = Double.valueOf(handleEmptyString(Objects.requireNonNull(fatView.getText()).toString()));
+        double carbs = Double.valueOf(handleEmptyString(Objects.requireNonNull(carbsView.getText()).toString()));
 
         return Math.round((protein * 4.0) + (fat * 9.0) + (carbs * 4.0));
     }
@@ -86,9 +88,9 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
 
     public Bundle getGoalMacros() {
         Bundle bundle = new Bundle();
-        bundle.putInt("goalProtein", Integer.valueOf(proteinView.getText().toString()));
-        bundle.putInt("goalFat", Integer.valueOf(fatView.getText().toString()));
-        bundle.putInt("goalCarbs", Integer.valueOf(carbsView.getText().toString()));
+        bundle.putInt("goalProtein", Integer.valueOf(Objects.requireNonNull(proteinView.getText()).toString()));
+        bundle.putInt("goalFat", Integer.valueOf(Objects.requireNonNull(fatView.getText()).toString()));
+        bundle.putInt("goalCarbs", Integer.valueOf(Objects.requireNonNull(carbsView.getText()).toString()));
         return bundle;
     }
 
