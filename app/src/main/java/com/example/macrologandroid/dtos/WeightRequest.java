@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 public class WeightRequest implements Serializable {
 
@@ -17,9 +18,9 @@ public class WeightRequest implements Serializable {
 
     @Expose
     @SerializedName("day")
-    private String day;
+    private LocalDate day;
 
-    public WeightRequest(Long id, double weight, String day) {
+    public WeightRequest(Long id, double weight, LocalDate day) {
         this.id = id;
         this.weight = weight;
         this.day = day;
@@ -41,11 +42,11 @@ public class WeightRequest implements Serializable {
         this.weight = weight;
     }
 
-    public String getDay() {
+    public LocalDate getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(LocalDate day) {
         this.day = day;
     }
 }

@@ -15,6 +15,7 @@ import com.example.macrologandroid.dtos.WeightRequest;
 import com.example.macrologandroid.fragments.WeighDialogFragment;
 import com.example.macrologandroid.services.WeightService;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class WeightChartActivity extends AppCompatActivity {
     private TextView currentWeightTextView;
     private TableLayout weightTable;
     private TableRow weightTableHeader;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -90,7 +92,7 @@ public class WeightChartActivity extends AppCompatActivity {
 
             TextView date = new TextView(getApplicationContext());
             date.setTextAppearance(R.style.AppTheme);
-            date.setText(weightRequest.getDay());
+            date.setText(weightRequest.getDay().format(formatter));
             date.setTextColor(getResources().getColor(R.color.white, null));
             date.setTextSize(20);
             date.setLayoutParams(new TableRow.LayoutParams(-2, -2, 1.0f));

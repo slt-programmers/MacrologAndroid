@@ -29,10 +29,8 @@ public class LogEntryService extends Service {
 
     private ApiService apiService;
 
-    private String token;
-
     public LogEntryService() {
-        token = MainActivity.getPreferences().getString("TOKEN", "");
+        String token = MainActivity.getPreferences().getString("TOKEN", "");
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -52,10 +50,6 @@ public class LogEntryService extends Service {
                 .build();
 
         apiService = retrofit.create(ApiService.class);
-    }
-
-    public boolean isTokenEmpty() {
-        return token.isEmpty();
     }
 
     @Override

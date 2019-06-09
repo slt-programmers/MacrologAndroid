@@ -18,10 +18,12 @@ import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.WeightChartActivity;
+import com.example.macrologandroid.dtos.WeightRequest;
 import com.example.macrologandroid.models.Gender;
 import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.services.UserService;
+import com.example.macrologandroid.services.WeightService;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,14 +39,11 @@ public class UserFragment extends Fragment {
     private View view;
     private UserSettings userSettings;
 
-    private Disposable disposable;
+    private Disposable settingsDisposable;
     private OnLogoutPressedListener onLogoutPressedListener;
+    private Disposable weightDisposable;
 
     public UserFragment() {
-    }
-
-    public void setOnLogoutPressedListener(OnLogoutPressedListener listener ) {
-        onLogoutPressedListener = listener;
     }
 
     @Override
@@ -59,11 +58,6 @@ public class UserFragment extends Fragment {
                 break;
             }
         }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -136,14 +130,18 @@ public class UserFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (disposable != null) {
-            disposable.dispose();
+        if (settingsDisposable != null) {
+            settingsDisposable.dispose();
         }
     }
 
-    protected void fetchUserSettings() {
+    public void setOnLogoutPressedListener(OnLogoutPressedListener listener ) {
+        onLogoutPressedListener = listener;
+    }
+
+    private void fetchUserSettings() {
         UserService userService = new UserService();
-        disposable = userService.getSettings()
+        settingsDisposable = userService.getSettings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -151,8 +149,7 @@ public class UserFragment extends Fragment {
                             this.userSettings = new UserSettings(res);
                             setUserData();
                         },
-                        err -> Log.d(this.getClass().getName(), err.getMessage())
-
+                        err -> Log.e(this.getClass().getName(), err.getMessage())
                 );
     }
 

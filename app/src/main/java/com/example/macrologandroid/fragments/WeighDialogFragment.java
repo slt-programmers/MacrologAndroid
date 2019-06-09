@@ -48,7 +48,7 @@ public class WeighDialogFragment extends DialogFragment {
         builder.setTitle(R.string.measure_weight)
                 .setView(dialogView)
                 .setPositiveButton(R.string.done, (dialog, id) -> {
-                    String newDate = dateInputLayout.getEditText().getText().toString();
+                    LocalDate newDate = LocalDate.parse(dateInputLayout.getEditText().getText().toString(), formatter);
                     double newWeight = Double.valueOf(weightInputLayout.getEditText().getText().toString());
                     WeightRequest weightRequest = new WeightRequest(null, newWeight, newDate);
                     onDialogResult.finish(weightRequest);

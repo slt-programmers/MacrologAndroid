@@ -31,7 +31,7 @@ public class HealthcheckService extends Service {
         return null;
     }
 
-    public Observable<Boolean>  healthcheck(String token) {
+    public Observable<Boolean> healthcheck(String token) {
         if (token != null) {
             return apiService.healthcheck("Bearer " + token);
         } else {

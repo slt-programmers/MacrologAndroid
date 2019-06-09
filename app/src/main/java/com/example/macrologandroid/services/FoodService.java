@@ -25,10 +25,8 @@ public class FoodService extends Service {
 
     private ApiService apiService;
 
-    private String token;
-
     public FoodService() {
-        token = MainActivity.getPreferences().getString("TOKEN", "");
+        String token = MainActivity.getPreferences().getString("TOKEN", "");
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();

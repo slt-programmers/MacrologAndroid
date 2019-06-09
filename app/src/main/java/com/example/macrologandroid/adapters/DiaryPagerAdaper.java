@@ -67,9 +67,6 @@ public class DiaryPagerAdaper extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.layout_diary_page, container, false);
 
-        if (service.isTokenEmpty()) {
-            return layout;
-        }
         LocalDate date = getDateFromPosition(position);
 
         List<LogEntryResponse> entries = DiaryLogCache.getInstance().getFromCache(date);
