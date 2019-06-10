@@ -54,31 +54,14 @@ public class WeightService extends Service {
             return chain.proceed(request);
         });
 
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                .create();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BuildConfig.SERVER_URL)
                 .client(client.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(CustomGsonConverter.create())
                 .build();
 
         apiService = retrofit.create(ApiService.class);
-    }
-
-    class LocalDateAdapter implements JsonDeserializer<LocalDate>, JsonSerializer<LocalDate> {
-        @Override
-        public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            return LocalDate.parse(json.getAsString());
-        }
-
-        @Override
-        public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE));
-        }
     }
 
     @Override

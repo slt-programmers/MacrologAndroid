@@ -18,12 +18,10 @@ import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.WeightChartActivity;
-import com.example.macrologandroid.dtos.WeightRequest;
+import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.models.Gender;
-import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.services.UserService;
-import com.example.macrologandroid.services.WeightService;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,11 +35,10 @@ public class UserFragment extends Fragment {
     private static final int ADJUST_INTAKE_ID = 234;
 
     private View view;
-    private UserSettings userSettings;
+    private UserSettingsResponse userSettings;
 
     private Disposable settingsDisposable;
     private OnLogoutPressedListener onLogoutPressedListener;
-    private Disposable weightDisposable;
 
     public UserFragment() {
     }
@@ -141,12 +138,12 @@ public class UserFragment extends Fragment {
 
     private void fetchUserSettings() {
         UserService userService = new UserService();
-        settingsDisposable = userService.getSettings()
+        settingsDisposable = userService.getUserSettings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         res -> {
-                            this.userSettings = new UserSettings(res);
+                            this.userSettings = res;
                             setUserData();
                         },
                         err -> Log.e(this.getClass().getName(), err.getMessage())
@@ -202,15 +199,15 @@ public class UserFragment extends Fragment {
         userActivity.setText(activity);
 
         TextView userProtein = view.findViewById(R.id.goal_protein);
-        String protein = userSettings.getProtein() + "";
+        String protein = userSettings.getGoalProtein() + "";
         userProtein.setText(protein);
 
         TextView userFat = view.findViewById(R.id.goal_fat);
-        String fat = userSettings.getFat() + "";
+        String fat = userSettings.getGoalFat() + "";
         userFat.setText(fat);
 
         TextView userCarbs = view.findViewById(R.id.goal_carbs);
-        String carbs = userSettings.getCarbs() + "";
+        String carbs = userSettings.getGoalCarbs() + "";
         userCarbs.setText(carbs);
     }
 

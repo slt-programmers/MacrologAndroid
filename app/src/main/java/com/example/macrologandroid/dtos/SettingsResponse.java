@@ -3,7 +3,9 @@ package com.example.macrologandroid.dtos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserSettingResponse {
+import java.io.Serializable;
+
+public class SettingsResponse implements Serializable {
 
     @Expose
     @SerializedName("id")
@@ -17,7 +19,7 @@ public class UserSettingResponse {
     @SerializedName("value")
     private String value;
 
-    public UserSettingResponse(int id, String name, String value) {
+    public SettingsResponse(int id, String name, String value) {
         this.id = id;
         this.name = name;
         this.value = value;

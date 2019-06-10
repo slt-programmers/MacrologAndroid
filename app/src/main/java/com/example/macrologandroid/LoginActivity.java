@@ -17,6 +17,7 @@ import com.example.macrologandroid.dtos.AuthenticationResponse;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.services.AuthenticationService;
 
+import java.net.ConnectException;
 import java.util.Objects;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -223,8 +224,13 @@ public class LoginActivity extends AppCompatActivity {
                             saveCredentials(res);
                             finishWithResult();
                         }, err -> {
-                            mLoginResultView.setText(R.string.login_failed);
-                            mLoginResultView.setVisibility(View.VISIBLE);
+                            if (err instanceof ConnectException) {
+                                mLoginResultView.setText(R.string.connection_error);
+                                mLoginResultView.setVisibility(View.VISIBLE);
+                            } else {
+                                mLoginResultView.setText(R.string.login_failed);
+                                mLoginResultView.setVisibility(View.VISIBLE);
+                            }
                         }
                 );
 

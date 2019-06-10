@@ -6,7 +6,8 @@ import android.os.IBinder;
 
 import com.example.macrologandroid.BuildConfig;
 import com.example.macrologandroid.MainActivity;
-import com.example.macrologandroid.dtos.UserSettingResponse;
+import com.example.macrologandroid.dtos.SettingsResponse;
+import com.example.macrologandroid.dtos.UserSettingsResponse;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class UserService extends Service {
                 .baseUrl(BuildConfig.SERVER_URL)
                 .client(client.build())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(CustomGsonConverter.create())
                 .build();
 
         apiService = retrofit.create(ApiService.class);
@@ -52,21 +53,29 @@ public class UserService extends Service {
         return null;
     }
 
-    public Observable<List<UserSettingResponse>> getSettings() {
+    public Observable<List<SettingsResponse>> getSettings() {
         return apiService.getSettings();
     }
 
-    public Observable<ResponseBody> putSetting(UserSettingResponse setting) {
+    // Gets current weight from weight repository
+    public Observable<UserSettingsResponse> getUserSettings() {
+        return apiService.getUserSettings();
+    }
+
+    public Observable<ResponseBody> putSetting(SettingsResponse setting) {
         return apiService.putSetting(setting);
     }
 
     private interface ApiService {
 
         @GET("settings")
-        Observable<List<UserSettingResponse>> getSettings();
+        Observable<List<SettingsResponse>> getSettings();
+
+        @GET("settings/user")
+        Observable<UserSettingsResponse> getUserSettings();
 
         @PUT("settings")
-        Observable<ResponseBody> putSetting(@Body UserSettingResponse setting);
+        Observable<ResponseBody> putSetting(@Body SettingsResponse setting);
 
     }
 }

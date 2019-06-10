@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.dtos.WeightRequest;
+import com.example.macrologandroid.util.LocalDateParser;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -48,7 +49,7 @@ public class WeighDialogFragment extends DialogFragment {
         builder.setTitle(R.string.measure_weight)
                 .setView(dialogView)
                 .setPositiveButton(R.string.done, (dialog, id) -> {
-                    LocalDate newDate = LocalDate.parse(dateInputLayout.getEditText().getText().toString(), formatter);
+                    LocalDate newDate = LocalDateParser.parse(dateInputLayout.getEditText().getText().toString());
                     double newWeight = Double.valueOf(weightInputLayout.getEditText().getText().toString());
                     WeightRequest weightRequest = new WeightRequest(null, newWeight, newDate);
                     onDialogResult.finish(weightRequest);

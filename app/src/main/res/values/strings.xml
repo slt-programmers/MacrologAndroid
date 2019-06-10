@@ -133,6 +133,7 @@
     <string name="measure_weight">Measure weight</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
-    <string name="date_hint">Date (dd-mm-yyyy)</string>
+    <string name="date_hint">Date (yyyy-mm-dd)</string>
+    <string name="connection_error">No connection available</string>
 
 </resources>

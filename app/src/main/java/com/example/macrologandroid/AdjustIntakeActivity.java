@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.macrologandroid.dtos.UserSettingResponse;
+import com.example.macrologandroid.dtos.SettingsResponse;
 import com.example.macrologandroid.fragments.ChangeCaloriesFragment;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.models.ChangeGoalMacros;
@@ -118,11 +118,11 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             if (frag instanceof ChangeGoalMacros) {
                 Bundle goal = ((ChangeGoalMacros) frag).getGoalMacros();
                 List<Observable<ResponseBody>> obsList = new ArrayList<>();
-                obsList.add(service.putSetting(new UserSettingResponse(1, "goalProtein",
+                obsList.add(service.putSetting(new SettingsResponse(1, "goalProtein",
                         String.valueOf(goal.getInt("goalProtein")))));
-                obsList.add(service.putSetting(new UserSettingResponse(1, "goalFat",
+                obsList.add(service.putSetting(new SettingsResponse(1, "goalFat",
                         String.valueOf(goal.getInt("goalFat")))));
-                obsList.add(service.putSetting(new UserSettingResponse(1, "goalCarbs",
+                obsList.add(service.putSetting(new SettingsResponse(1, "goalCarbs",
                         String.valueOf(goal.getInt("goalCarbs")))));
 
                 disposable = Observable.zip(obsList, i -> i)

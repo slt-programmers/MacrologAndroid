@@ -1,6 +1,6 @@
 package com.example.macrologandroid.models;
 
-import com.example.macrologandroid.dtos.UserSettingResponse;
+import com.example.macrologandroid.dtos.SettingsResponse;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,7 +25,7 @@ public class UserSettings implements Serializable {
     public UserSettings() {
     }
 
-    public UserSettings(List<UserSettingResponse> response) {
+    public UserSettings(List<SettingsResponse> response) {
         try {
             this.name = mapSetting(response, "name");
             this.birthday = LocalDate.parse(mapSetting(response, "birthday"), DateTimeFormatter.ofPattern("d-M-yyyy"));
@@ -123,9 +123,9 @@ public class UserSettings implements Serializable {
         this.carbs = carbs;
     }
 
-    private String mapSetting(List<UserSettingResponse> response, String identifier) {
+    private String mapSetting(List<SettingsResponse> response, String identifier) {
         return response.stream().filter(s -> s.getName().equals(identifier)).findFirst()
-                .orElse(new UserSettingResponse(0, "", "")).getValue();
+                .orElse(new SettingsResponse(0, "", "")).getValue();
 
     }
 
