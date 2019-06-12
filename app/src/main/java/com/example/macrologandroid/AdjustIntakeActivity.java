@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.macrologandroid.dtos.SettingsResponse;
+import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.fragments.ChangeCaloriesFragment;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.models.ChangeGoalMacros;
@@ -52,15 +53,15 @@ public class AdjustIntakeActivity extends AppCompatActivity {
 
         service = new UserService();
 
-        UserSettings userSettings = (UserSettings) intent.getSerializableExtra("userSettings");
+        UserSettingsResponse userSettings = (UserSettingsResponse) intent.getSerializableExtra("userSettings");
 
         Button changeMacros = findViewById(R.id.button_macros);
         changeMacros.setOnClickListener(v -> {
             ChangeMacrosFragment fragment = new ChangeMacrosFragment();
             Bundle goalMacros = new Bundle();
-            goalMacros.putInt("goalProtein", userSettings.getProtein());
-            goalMacros.putInt("goalFat", userSettings.getFat());
-            goalMacros.putInt("goalCarbs", userSettings.getCarbs());
+            goalMacros.putInt("goalProtein", userSettings.getGoalProtein());
+            goalMacros.putInt("goalFat", userSettings.getGoalFat());
+            goalMacros.putInt("goalCarbs", userSettings.getGoalCarbs());
             fragment.setArguments(goalMacros);
             setFragment(fragment);
         });
