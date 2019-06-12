@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        NotificationSender.initNotificationSending(this);
+        NotificationSender.initNotificationSending(getApplicationContext());
 
         diaryFragment = new DiaryFragment();
         userFragment = new UserFragment();
