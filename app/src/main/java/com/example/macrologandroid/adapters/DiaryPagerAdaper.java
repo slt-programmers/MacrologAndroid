@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.macrologandroid.cache.DiaryLogCache;
 import com.example.macrologandroid.dtos.LogEntryResponse;
-import com.example.macrologandroid.fragments.DiaryFragment;
 import com.example.macrologandroid.models.Meal;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.services.LogEntryService;

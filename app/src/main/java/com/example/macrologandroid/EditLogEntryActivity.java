@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.macrologandroid.adapters.AutocompleteAdapter;
 import com.example.macrologandroid.dtos.FoodResponse;
 import com.example.macrologandroid.dtos.LogEntryRequest;
 import com.example.macrologandroid.dtos.LogEntryResponse;
@@ -391,7 +392,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void setupAutoCompleteTextView() {
         foodTextView = findViewById(R.id.edit_food_textview);
-        autocompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, foodNames);
+        autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, foodNames);
         foodTextView.setAdapter(autocompleteAdapter);
         foodTextView.setThreshold(1);
         foodTextView.setOnItemClickListener((parent, view, position, id) -> {
