@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.models.ChangeGoalMacros;
 import com.example.macrologandroid.models.Gender;
 import com.example.macrologandroid.models.UserSettings;
@@ -20,7 +21,7 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
     private TextView caloriesView;
     private TextView carbsView;
 
-    private UserSettings userSettings;
+    private UserSettingsResponse userSettings;
 
     private double goalCalories;
     private double goalProtein;
@@ -32,7 +33,7 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
         View view = inflater.inflate(R.layout.layout_change_calories, container, false);
 
         if (getArguments() != null) {
-            userSettings = (UserSettings) getArguments().getSerializable("userSettings");
+            userSettings = (UserSettingsResponse) getArguments().getSerializable("userSettings");
         }
         goalCalories = calculateCalories();
         goalProtein = userSettings.getWeight() * 1.8;
