@@ -32,8 +32,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class UserFragment extends Fragment {
 
-    public static final int EDIT_DETAILS_ID = 123;
+    private static final int EDIT_DETAILS_ID = 123;
     private static final int ADJUST_INTAKE_ID = 234;
+    private static final int EDIT_WEIGHT_ID = 345;
 
     private View view;
     private UserSettingsResponse userSettings;
@@ -45,6 +46,7 @@ public class UserFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
+            case (EDIT_WEIGHT_ID):
             case (EDIT_DETAILS_ID):
             case (ADJUST_INTAKE_ID): {
                 if (resultCode == Activity.RESULT_OK) {
@@ -89,7 +91,7 @@ public class UserFragment extends Fragment {
         Button weightButton = view.findViewById(R.id.weight_button);
         weightButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WeightChartActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, EDIT_WEIGHT_ID);
         });
 
         Button changePassword = view.findViewById(R.id.change_password);

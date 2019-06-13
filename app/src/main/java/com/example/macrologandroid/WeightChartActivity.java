@@ -1,5 +1,7 @@
 package com.example.macrologandroid;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -11,6 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.macrologandroid.cache.UserSettingsCache;
 import com.example.macrologandroid.dtos.WeightRequest;
 import com.example.macrologandroid.fragments.WeighDialogFragment;
 import com.example.macrologandroid.services.WeightService;
@@ -32,6 +35,7 @@ public class WeightChartActivity extends AppCompatActivity {
     private TableLayout weightTable;
     private TableRow weightTableHeader;
     private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+    private boolean hasBeenEdited;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -45,7 +49,13 @@ public class WeightChartActivity extends AppCompatActivity {
         loadMeasurements();
 
         Button backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(v -> finish());
+        backButton.setOnClickListener(v -> {
+            if (hasBeenEdited) {
+                Intent intent = new Intent();
+                setResult(Activity.RESULT_OK, intent);
+            }
+            finish();
+        });
 
         Button weighButton = findViewById(R.id.weigh_entry);
         weighButton.setOnClickListener(v -> showWeighDialog());
@@ -128,6 +138,8 @@ public class WeightChartActivity extends AppCompatActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 res -> {
+                                    UserSettingsCache.getInstance().clearCache();
+                                    hasBeenEdited = true;
                                     Log.d(this.getClass().toString(), res.toString());
                                     loadMeasurements();
                                 },
