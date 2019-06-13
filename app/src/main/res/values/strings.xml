@@ -119,7 +119,7 @@
     <string name="food">Food</string>
     <string name="percentage">Percentage</string>
     <string name="beta">(beta)\n(may be slow on initial startup)</string>
-    <string name="user_birthday">Birthday (dd-mm-yyyy)</string>
+    <string name="user_birthday">Birthday (yyyy-mm-dd)</string>
     <string name="forgot_password_link">Forgot your password?</string>
     <string name="forgot_password_title">Forgotten password</string>
     <string name="forgot_password_description">Please fill in your email so we can send you a newly

@@ -1,6 +1,7 @@
 package com.example.macrologandroid;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.support.constraint.ConstraintLayout;
@@ -14,6 +15,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -142,13 +144,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
         editGramsOrAmountLayout = findViewById(R.id.edit_grams_amount_layout);
         editGramsOrAmountLayout.setVisibility(View.GONE);
 
-        addButton = findViewById(R.id.add_button);
-        addButton.setOnClickListener(v -> {
-            addButton.setEnabled(false);
-            addLogEntry();
-        });
-        addButton.setEnabled(false);
-
         logentryLayout = findViewById(R.id.logentry_layout);
         fillLogEntrylayout();
 
@@ -173,9 +168,11 @@ public class EditLogEntryActivity extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(v -> {
             toggleFields(false);
+            hideSoftKeyboard();
             foodTextView.setText("");
             addLogEntry();
         });
+        addButton.setEnabled(false);
 
         addNewFoodButton = findViewById(R.id.add_new_food_button);
         addNewFoodButton.setOnClickListener(v -> {
@@ -559,6 +556,14 @@ public class EditLogEntryActivity extends AppCompatActivity {
         });
 
         editGramsOrAmount.setVisibility(View.VISIBLE);
+    }
+
+    private void hideSoftKeyboard() {
+        View view = findViewById(android.R.id.content);
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void setMealBasedOnTime(Spinner spinner) {

@@ -16,6 +16,7 @@ import com.example.macrologandroid.fragments.DiaryFragment;
 import com.example.macrologandroid.fragments.FoodFragment;
 import com.example.macrologandroid.fragments.UserFragment;
 import com.example.macrologandroid.lifecycle.Session;
+import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.notifications.NotificationSender;
 
 
@@ -26,26 +27,23 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
 
     private static SharedPreferences preferences;
 
-    private DiaryFragment diaryFragment;
-
-    private UserFragment userFragment;
-
     private BottomNavigationView navigation;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
             case R.id.navigation_diary:
-                setFragment(diaryFragment);
+                setFragment(new DiaryFragment());
                 return true;
             case R.id.navigation_food:
                 setFragment(new FoodFragment());
                 return true;
             case R.id.navigation_user:
+                UserFragment userFragment = new UserFragment();
                 userFragment.setOnLogoutPressedListener(this::logout);
                 setFragment(userFragment);
                 return true;
             default:
-                setFragment(diaryFragment);
+                setFragment(new DiaryFragment());
         }
         return false;
     };
@@ -72,12 +70,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
 
         NotificationSender.initNotificationSending(getApplicationContext());
 
-        diaryFragment = new DiaryFragment();
-        userFragment = new UserFragment();
-
         preferences = getSharedPreferences("AUTH", MODE_PRIVATE);
 
-        setFragment(diaryFragment);
+        setFragment(new DiaryFragment());
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 

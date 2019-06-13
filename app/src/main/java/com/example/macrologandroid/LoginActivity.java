@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -224,6 +225,7 @@ public class LoginActivity extends AppCompatActivity {
                             saveCredentials(res);
                             finishWithResult();
                         }, err -> {
+                            Log.d(this.getLocalClassName(), err.getMessage());
                             if (err instanceof ConnectException) {
                                 mLoginResultView.setText(R.string.connection_error);
                                 mLoginResultView.setVisibility(View.VISIBLE);

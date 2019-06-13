@@ -18,10 +18,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.macrologandroid.dtos.SettingsResponse;
+import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.models.Gender;
-import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.services.UserService;
+import com.example.macrologandroid.util.LocalDateParser;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -108,7 +109,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             editName.setText(originalName);
 
             originalBirthday = (LocalDate) intent.getSerializableExtra("birthday");
-            editBirthday.setText(originalBirthday.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            editBirthday.setText(originalBirthday.format(DateTimeFormatter.ISO_LOCAL_DATE));
 
             originalGender = (Gender) intent.getSerializableExtra("gender");
             if (Gender.FEMALE.equals(originalGender)) {
@@ -192,87 +193,86 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     }
 
     private void saveSettings() {
-        if (validDateFormat()) {
-            List<Observable<ResponseBody>> obsList = new ArrayList<>();
-            UserSettings userSettings = new UserSettings();
+        List<Observable<ResponseBody>> obsList = new ArrayList<>();
+        UserSettingsResponse userSettings = new UserSettingsResponse();
 
-            String newName = Objects.requireNonNull(editName.getText()).toString();
-            if (!newName.isEmpty() && !newName.equals(originalName)) {
-                obsList.add(userService.putSetting(new SettingsResponse(1, "name", newName)));
-                userSettings.setName(newName);
-            }
-
-            String newBirthday = Objects.requireNonNull(editBirthday.getText()).toString();
-            LocalDate newDate = LocalDate.parse(newBirthday, DateTimeFormatter.ofPattern("d-M-yyyy"));
-            if (!newBirthday.isEmpty() && originalBirthday != newDate) {
-                int age = Period.between(newDate, LocalDate.now()).getYears();
-                obsList.add(userService.putSetting(new SettingsResponse(1, "birthday", newBirthday)));
-                obsList.add(userService.putSetting(new SettingsResponse(1, "age", String.valueOf(age))));
-                userSettings.setBirthday(newDate);
-                userSettings.setAge(age);
-            }
-
-            RadioButton selected = findViewById(genderRadios.getCheckedRadioButtonId());
-            String newGender = selected.getText().toString().toUpperCase();
-            if (originalGender == null || !newGender.equals(originalGender.toString())) {
-                obsList.add(userService.putSetting(new SettingsResponse(1, "gender", newGender)));
-                userSettings.setGender(Gender.valueOf(newGender));
-            }
-
-            String newHeight = Objects.requireNonNull(editHeight.getText()).toString();
-            if (!newHeight.isEmpty() && originalHeight != Integer.valueOf(newHeight)) {
-                obsList.add(userService.putSetting(new SettingsResponse(1, "height", newHeight)));
-                userSettings.setHeight(Integer.valueOf(newHeight));
-            }
-
-            String newWeight = Objects.requireNonNull(editWeight.getText()).toString();
-            if (!newWeight.isEmpty() && !String.valueOf(originalWeight).equals(newWeight)) {
-                obsList.add(userService.putSetting(new SettingsResponse(1, "weight", newWeight)));
-                userSettings.setWeight(Integer.valueOf(newWeight));
-            }
-
-            String item = (String) editActivity.getSelectedItem();
-            String newActivity;
-            switch (item) {
-                case "Sedentary":
-                    newActivity = "1.2";
-                    break;
-                case "Lightly active":
-                    newActivity = "1.375";
-                    break;
-                case "Moderately active":
-                    newActivity = "1.55";
-                    break;
-                case "Very active":
-                    newActivity = "1.725";
-                    break;
-                case "Extremely active":
-                    newActivity = "1.9";
-                    break;
-                default:
-                    newActivity = "1.375";
-            }
-            if (!String.valueOf(originalActivity).equals(newActivity)) {
-                obsList.add(userService.putSetting(new SettingsResponse(1, "activity", newActivity)));
-                userSettings.setActivity(Double.valueOf(newActivity));
-            }
-
-            disposable = Observable.zip(obsList, i -> i)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(res -> {
-                        if (intake) {
-                            Intent intent = new Intent(this, AdjustIntakeActivity.class);
-                            intent.putExtra("userSettings", userSettings);
-                            intent.putExtra("INTAKE", true);
-                            startActivityForResult(intent, ADJUST_INTAKE_INTAKE);
-                        } else {
-                            Intent resultIntent = new Intent();
-                            setResult(Activity.RESULT_OK, resultIntent);
-                            finish();
-                        }
-                    }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
+        String newName = Objects.requireNonNull(editName.getText()).toString();
+        if (!newName.isEmpty() && !newName.equals(originalName)) {
+            obsList.add(userService.putSetting(new SettingsResponse(1, "name", newName)));
+            userSettings.setName(newName);
         }
+
+        String newBirthday = Objects.requireNonNull(editBirthday.getText()).toString();
+        LocalDate newDate = LocalDateParser.parse(newBirthday);
+        if (!newBirthday.isEmpty() && originalBirthday != newDate) {
+            int age = Period.between(newDate, LocalDate.now()).getYears();
+            obsList.add(userService.putSetting(new SettingsResponse(1, "birthday", newBirthday)));
+            obsList.add(userService.putSetting(new SettingsResponse(1, "age", String.valueOf(age))));
+            userSettings.setBirthday(newDate);
+            userSettings.setAge(age);
+        }
+
+        RadioButton selected = findViewById(genderRadios.getCheckedRadioButtonId());
+        String newGender = selected.getText().toString().toUpperCase();
+        if (originalGender == null || !newGender.equals(originalGender.toString())) {
+            obsList.add(userService.putSetting(new SettingsResponse(1, "gender", newGender)));
+            userSettings.setGender(Gender.valueOf(newGender));
+        }
+
+        String newHeight = Objects.requireNonNull(editHeight.getText()).toString();
+        if (!newHeight.isEmpty() && originalHeight != Integer.valueOf(newHeight)) {
+            obsList.add(userService.putSetting(new SettingsResponse(1, "height", newHeight)));
+            userSettings.setHeight(Integer.valueOf(newHeight));
+        }
+
+        String newWeight = Objects.requireNonNull(editWeight.getText()).toString();
+        if (!newWeight.isEmpty() && !String.valueOf(originalWeight).equals(newWeight)) {
+            obsList.add(userService.putSetting(new SettingsResponse(1, "weight", newWeight)));
+            userSettings.setWeight(Integer.valueOf(newWeight));
+        }
+
+        String item = (String) editActivity.getSelectedItem();
+        String newActivity;
+        switch (item) {
+            case "Sedentary":
+                newActivity = "1.2";
+                break;
+            case "Lightly active":
+                newActivity = "1.375";
+                break;
+            case "Moderately active":
+                newActivity = "1.55";
+                break;
+            case "Very active":
+                newActivity = "1.725";
+                break;
+            case "Extremely active":
+                newActivity = "1.9";
+                break;
+            default:
+                newActivity = "1.375";
+        }
+        if (!String.valueOf(originalActivity).equals(newActivity)) {
+            obsList.add(userService.putSetting(new SettingsResponse(1, "activity", newActivity)));
+            userSettings.setActivity(Double.valueOf(newActivity));
+        }
+
+        disposable = Observable.zip(obsList, i -> i)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(res -> {
+                    if (intake) {
+                        Intent intent = new Intent(this, AdjustIntakeActivity.class);
+                        intent.putExtra("userSettings", userSettings);
+                        intent.putExtra("INTAKE", true);
+                        startActivityForResult(intent, ADJUST_INTAKE_INTAKE);
+                    } else {
+                        Intent resultIntent = new Intent();
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+                    }
+                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
+
     }
 
     private void checkEmptyTextViews() {
@@ -286,16 +286,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         } else {
             saveButton.setEnabled(false);
         }
-    }
-
-    private boolean validDateFormat() {
-        try {
-            LocalDate.parse(Objects.requireNonNull(editBirthday.getText()).toString(), DateTimeFormatter.ofPattern("d-M-yyyy"));
-        } catch (Exception ex) {
-            editBirthday.setError("Incorrect date format");
-            return false;
-        }
-        return true;
     }
 
     private TextWatcher textChangedListener = new TextWatcher() {

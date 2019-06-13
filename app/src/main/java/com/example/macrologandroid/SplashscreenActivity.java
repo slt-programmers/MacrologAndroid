@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -82,12 +83,15 @@ public class SplashscreenActivity extends AppCompatActivity {
                             }
                         },
                         err -> {
+                            Log.d(this.getLocalClassName(), err.getMessage());
                             if (err instanceof SocketTimeoutException && callCounter < 4) {
+                                Log.d(this.getLocalClassName(), "retry: " + callCounter);
                                 doHealthCheck();
                             }
                             else {
                                 Intent intent = new Intent(this, MainActivity.class);
                                 intent.putExtra("TOKEN_EXPIRED", true);
+                                Log.d(this.getLocalClassName(), "token expired");
                                 startActivity(intent);
                                 finish();
                             }
