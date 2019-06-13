@@ -18,6 +18,7 @@ import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.WeightChartActivity;
+import com.example.macrologandroid.cache.UserSettingsCache;
 import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.models.Gender;
 import com.example.macrologandroid.R;
@@ -40,9 +41,6 @@ public class UserFragment extends Fragment {
     private Disposable settingsDisposable;
     private OnLogoutPressedListener onLogoutPressedListener;
 
-    public UserFragment() {
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -62,7 +60,9 @@ public class UserFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user, container, false);
 
-        if (this.userSettings == null) {
+        UserSettingsCache cache = UserSettingsCache.getInstance();
+        userSettings = cache.getCache();
+        if (userSettings == null) {
             fetchUserSettings();
         } else {
             setUserData();
@@ -77,19 +77,12 @@ public class UserFragment extends Fragment {
         Button editDetails = view.findViewById(R.id.edit_details);
         editDetails.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditPersonalDetailsActivity.class);
-            intent.putExtra("name", userSettings.getName());
-            intent.putExtra("birthday", userSettings.getBirthday());
-            intent.putExtra("gender", userSettings.getGender());
-            intent.putExtra("height", userSettings.getHeight());
-            intent.putExtra("weight", userSettings.getWeight());
-            intent.putExtra("activity", userSettings.getActivity());
             startActivityForResult(intent, EDIT_DETAILS_ID);
         });
 
         ImageView header = view.findViewById(R.id.header);
         header.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AdjustIntakeActivity.class);
-            intent.putExtra("userSettings", userSettings);
             startActivityForResult(intent, ADJUST_INTAKE_ID);
         });
 
@@ -143,6 +136,7 @@ public class UserFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         res -> {
+                            UserSettingsCache.getInstance().updateCache(res);
                             this.userSettings = res;
                             setUserData();
                         },

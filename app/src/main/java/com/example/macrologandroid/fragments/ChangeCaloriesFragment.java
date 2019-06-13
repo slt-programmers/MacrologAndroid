@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.models.ChangeGoalMacros;
 import com.example.macrologandroid.models.Gender;
-import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.R;
 
 import org.jetbrains.annotations.NotNull;

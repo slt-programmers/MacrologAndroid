@@ -16,7 +16,6 @@ import com.example.macrologandroid.fragments.DiaryFragment;
 import com.example.macrologandroid.fragments.FoodFragment;
 import com.example.macrologandroid.fragments.UserFragment;
 import com.example.macrologandroid.lifecycle.Session;
-import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.notifications.NotificationSender;
 
 

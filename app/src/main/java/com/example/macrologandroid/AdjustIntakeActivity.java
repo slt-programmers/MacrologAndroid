@@ -12,13 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.macrologandroid.cache.UserSettingsCache;
 import com.example.macrologandroid.dtos.SettingsResponse;
 import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.fragments.ChangeCaloriesFragment;
 import com.example.macrologandroid.lifecycle.Session;
 import com.example.macrologandroid.models.ChangeGoalMacros;
 import com.example.macrologandroid.fragments.ChangeMacrosFragment;
-import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.services.UserService;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
 
         service = new UserService();
 
-        UserSettingsResponse userSettings = (UserSettingsResponse) intent.getSerializableExtra("userSettings");
+        UserSettingsResponse userSettings = UserSettingsCache.getInstance().getCache();
 
         Button changeMacros = findViewById(R.id.button_macros);
         changeMacros.setOnClickListener(v -> {
@@ -130,6 +130,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(res -> {
+                            UserSettingsCache.getInstance().clearCache();
                             Intent resultIntent = new Intent();
                             resultIntent.putExtra("RELOAD", true);
                             setResult(Activity.RESULT_OK, resultIntent);

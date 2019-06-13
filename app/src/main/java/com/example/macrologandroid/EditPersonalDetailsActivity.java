@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.macrologandroid.cache.UserSettingsCache;
 import com.example.macrologandroid.dtos.SettingsResponse;
 import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.lifecycle.Session;
@@ -105,26 +106,27 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             intakeTitle.setVisibility(View.VISIBLE);
             saveButton.setEnabled(false);
         } else {
-            originalName = intent.getStringExtra("name");
+            UserSettingsResponse settings = UserSettingsCache.getInstance().getCache();
+            originalName = settings.getName();
             editName.setText(originalName);
 
-            originalBirthday = (LocalDate) intent.getSerializableExtra("birthday");
+            originalBirthday = settings.getBirthday();
             editBirthday.setText(originalBirthday.format(DateTimeFormatter.ISO_LOCAL_DATE));
 
-            originalGender = (Gender) intent.getSerializableExtra("gender");
+            originalGender = settings.getGender();
             if (Gender.FEMALE.equals(originalGender)) {
                 genderRadios.check(R.id.check_female);
             } else {
                 genderRadios.check(R.id.check_male);
             }
 
-            originalHeight = intent.getIntExtra("height", 0);
+            originalHeight = settings.getHeight();
             editHeight.setText(String.valueOf(originalHeight));
 
-            originalWeight = intent.getDoubleExtra("weight", 0.0);
+            originalWeight = settings.getWeight();
             editWeight.setText(String.valueOf(originalWeight));
 
-            originalActivity = intent.getDoubleExtra("activity", 1.2);
+            originalActivity = settings.getActivity();
 
             backButton.setOnClickListener(v -> finish());
         }
@@ -262,6 +264,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                     if (intake) {
+                        UserSettingsCache.getInstance().clearCache();
                         Intent intent = new Intent(this, AdjustIntakeActivity.class);
                         intent.putExtra("userSettings", userSettings);
                         intent.putExtra("INTAKE", true);

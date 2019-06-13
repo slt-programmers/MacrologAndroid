@@ -20,11 +20,12 @@ import com.example.macrologandroid.adapters.DiaryPager;
 import com.example.macrologandroid.adapters.DiaryPagerAdaper;
 import com.example.macrologandroid.AddLogEntryActivity;
 import com.example.macrologandroid.cache.DiaryLogCache;
+import com.example.macrologandroid.cache.UserSettingsCache;
 import com.example.macrologandroid.dtos.LogEntryResponse;
 import com.example.macrologandroid.dtos.MacrosResponse;
 import com.example.macrologandroid.EditLogEntryActivity;
+import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.models.Meal;
-import com.example.macrologandroid.models.UserSettings;
 import com.example.macrologandroid.R;
 import com.example.macrologandroid.services.UserService;
 
@@ -89,11 +90,18 @@ public class DiaryFragment extends Fragment implements Serializable {
             pullToRefresh.setRefreshing(false);
         });
 
-        UserService userService = new UserService();
-        disposable = userService.getSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        (result) -> setGoalIntake(new UserSettings(result)),
-                        (error) -> Log.e(this.getClass().getName(), error.getMessage()));
+        UserSettingsResponse userSettings = UserSettingsCache.getInstance().getCache();
+        if (userSettings == null) {
+            UserService userService = new UserService();
+            disposable = userService.getUserSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(res -> {
+                                UserSettingsCache.getInstance().updateCache(res);
+                                setGoalIntake(res);
+                            },
+                            (error) -> Log.e(this.getClass().getName(), error.getMessage()));
+        } else {
+            setGoalIntake(userSettings);
+        }
 
         FloatingActionButton button = view.findViewById(R.id.floating_button);
 
@@ -140,20 +148,21 @@ public class DiaryFragment extends Fragment implements Serializable {
         cache.removeFromCache(selectedDate);
     }
 
-    private void setGoalIntake(UserSettings settings) {
-        goalProtein = settings.getProtein();
-        goalFat = settings.getFat();
-        goalCarbs = settings.getCarbs();
+    private void setGoalIntake(UserSettingsResponse settings) {
+        goalProtein = settings.getGoalProtein();
+        goalFat = settings.getGoalFat();
+        goalCarbs = settings.getGoalCarbs();
         goalCalories = (goalProtein * 4) + (goalFat * 9) + (goalCarbs * 4);
     }
 
     private void setupViewPager(View view) {
         TextView diaryDate = view.findViewById(R.id.diary_date);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         if (selectedDate == null) {
             selectedDate = LocalDate.now();
         }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         diaryDate.setText(selectedDate.format(formatter));
 
         viewPager = view.findViewById(R.id.day_view_pager);
