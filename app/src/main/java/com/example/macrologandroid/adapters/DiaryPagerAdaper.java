@@ -71,8 +71,6 @@ public class DiaryPagerAdaper extends PagerAdapter {
         List<LogEntryResponse> entries = DiaryLogCache.getInstance().getFromCache(date);
         if (entries == null) {
             disposable = service.getLogsForDay(date)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             res -> {
                                 DiaryLogCache.getInstance().addToCache(date, res);

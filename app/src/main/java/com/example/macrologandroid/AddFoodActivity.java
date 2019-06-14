@@ -63,7 +63,7 @@ public class AddFoodActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_food);
 
 
-        Button backButton = findViewById(R.id.backbutton);
+        Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
 
         Intent intent = getIntent();
@@ -202,7 +202,7 @@ public class AddFoodActivity extends AppCompatActivity {
             newFood.setId(foodResponse.getId());
         }
         FoodService foodService = new FoodService();
-        disposable = foodService.postFood(newFood).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        disposable = foodService.postFood(newFood)
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("FOOD_NAME", editFoodName.getText().toString());

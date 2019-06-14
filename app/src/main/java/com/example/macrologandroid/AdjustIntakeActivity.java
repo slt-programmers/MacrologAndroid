@@ -43,7 +43,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         boolean intake = intent.getBooleanExtra("INTAKE", false);
 
-        Button backButton = findViewById(R.id.backbutton);
+        Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
 
         userSettings = UserSettingsCache.getInstance().getCache();
@@ -143,8 +143,6 @@ public class AdjustIntakeActivity extends AppCompatActivity {
                         String.valueOf(goal.getInt("goalCarbs")))));
 
                 disposable = Observable.zip(obsList, i -> i)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(res -> {
                             UserSettingsCache.getInstance().clearCache();
                             Intent resultIntent = new Intent();

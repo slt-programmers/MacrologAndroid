@@ -11,11 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.macrologandroid.AboutActivity;
 import com.example.macrologandroid.AdjustIntakeActivity;
 import com.example.macrologandroid.ChangePasswordActivity;
+import com.example.macrologandroid.DeleteAccountActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.WeightChartActivity;
 import com.example.macrologandroid.cache.UserSettingsCache;
@@ -76,8 +78,8 @@ public class UserFragment extends Fragment {
             onLogoutPressedListener.onLogoutPressed();
         });
 
-        Button editDetails = view.findViewById(R.id.edit_details);
-        editDetails.setOnClickListener(v -> {
+        LinearLayout personal = view.findViewById(R.id.personal);
+        personal.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditPersonalDetailsActivity.class);
             startActivityForResult(intent, EDIT_DETAILS_ID);
         });
@@ -103,6 +105,12 @@ public class UserFragment extends Fragment {
         Button aboutButton = view.findViewById(R.id.about_button);
         aboutButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AboutActivity.class);
+            startActivity(intent);
+        });
+
+        Button deleteButton = view.findViewById(R.id.delete_account);
+        deleteButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), DeleteAccountActivity.class);
             startActivity(intent);
         });
 
@@ -134,8 +142,6 @@ public class UserFragment extends Fragment {
     private void fetchUserSettings() {
         UserService userService = new UserService();
         settingsDisposable = userService.getUserSettings()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         res -> {
                             UserSettingsCache.getInstance().updateCache(res);

@@ -48,7 +48,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         errorTextView = findViewById(R.id.error_text);
         errorTextView.setVisibility(View.GONE);
 
-        Button backButton = findViewById(R.id.backbutton);
+        Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
 
         Button changeButton = findViewById(R.id.change_button);
@@ -90,8 +90,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
             if (!oldPassword.equals(newPassword)) {
                 AuthenticationService service = new AuthenticationService();
                 disposable = service.changePassword(oldPassword, newPassword, confirmPassword)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         res -> finish(),
                         err -> {

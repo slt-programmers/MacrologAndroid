@@ -114,7 +114,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         logEntryService = new LogEntryService();
 
         foodService = new FoodService();
-        foodDisposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        foodDisposable = foodService.getAlFood()
                 .subscribe(res -> {
                     allFood = res;
                     fillFoodNameList();
@@ -256,7 +256,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 selectedMeal.toString());
         List<LogEntryRequest> entryList = new ArrayList<>();
         entryList.add(entry);
-        postDisposable = logEntryService.postLogEntry(entryList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        postDisposable = logEntryService.postLogEntry(entryList)
                 .subscribe(res -> {
                             newEntries = res;
                             appendNewEntry();
@@ -292,7 +292,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void setNewlyAddedFood(String foodName) {
         addNewFoodButton.setVisibility(View.GONE);
-        foodDisposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        foodDisposable = foodService.getAlFood()
                 .subscribe(res -> {
                     allFood = res;
                     fillFoodNameList();
@@ -338,8 +338,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         List<LogEntryRequest> newEntries = new ArrayList<>();
         for (LogEntryResponse entry : logEntries) {
             if (copyEntries.indexOf(entry) == -1) {
-                deleteDisposable = logEntryService.deleteLogEntry(entry.getId()).subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+                deleteDisposable = logEntryService.deleteLogEntry(entry.getId())
                         .subscribe(res -> Log.d(this.getLocalClassName(), res.string()),
                                 err -> Log.d(this.getLocalClassName(), err.getMessage()));
             } else {
@@ -379,7 +378,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
             }
         }
 
-        postDisposable = logEntryService.postLogEntry(newEntries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        postDisposable = logEntryService.postLogEntry(newEntries)
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
                     setResult(Activity.RESULT_OK, resultIntent);

@@ -71,8 +71,7 @@ public class SplashscreenActivity extends AppCompatActivity {
 
     private void doHealthCheck() {
         callCounter++;
-        disposable = service.healthcheck(token).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        disposable = service.healthcheck(token)
                 .subscribe(
                         res -> {
                             if (expired != null) {

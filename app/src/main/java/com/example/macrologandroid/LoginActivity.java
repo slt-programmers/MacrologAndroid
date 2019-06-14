@@ -219,8 +219,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(String username, String password) {
         disposable = authService.authenticate(username, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                             saveCredentials(res);
                             finishWithResult();
@@ -246,8 +244,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void register(String username, String email, String password) {
         disposable = authService.register(username, email, password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(res -> {
                             saveCredentials(res);
                             Intent intent = new Intent(this, EditPersonalDetailsActivity.class);

@@ -50,7 +50,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 emailEditText.setError(getResources().getString(R.string.error_invalid_email));
             } else {
                 AuthenticationService authService = new AuthenticationService();
-                disposable = authService.resetPassword(email).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                disposable = authService.resetPassword(email)
                         .subscribe(
                                 res -> finish(),
                                 err -> emailEditText.setError(err.getMessage())

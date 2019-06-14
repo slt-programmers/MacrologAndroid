@@ -16,7 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ForgotPasswordActivity"></activity>
+        <activity
+            android:name=".DeleteAccountActivity"
+            android:label="@string/title_activity_delete_account"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".AddFoodActivity" />
         <activity
             android:name=".SplashscreenActivity"

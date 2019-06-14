@@ -32,10 +32,9 @@
                 android:id="@+id/logout_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
                 android:background="@color/transparent"
                 android:drawableEnd="@drawable/sign_out"
+                android:padding="16dp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -242,13 +241,6 @@
                     </TableRow>
                 </TableLayout>
 
-                <Button
-                    android:id="@+id/edit_details"
-                    style="@style/buttonGradient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:text="@string/adjust_user" />
             </LinearLayout>
 
             <!--Account-->
@@ -283,6 +275,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:text="@string/about_macrolog" />
+
+                <Button
+                    android:id="@+id/delete_account"
+                    style="@style/buttonGradient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/delete_account" />
             </LinearLayout>
 
         </android.support.constraint.ConstraintLayout>

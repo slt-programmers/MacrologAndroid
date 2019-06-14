@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -58,15 +60,15 @@ public class LogEntryService extends Service {
     }
 
     public Observable<List<LogEntryResponse>> getLogsForDay(LocalDate localDate) {
-        return apiService.getLogsForDay(localDate);
+        return apiService.getLogsForDay(localDate).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<List<LogEntryResponse>> postLogEntry(List<LogEntryRequest> entries) {
-        return apiService.postLogEntry(entries);
+        return apiService.postLogEntry(entries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<ResponseBody> deleteLogEntry(long id) {
-        return apiService.deleteLogEntry((int) id);
+        return apiService.deleteLogEntry((int) id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     private interface ApiService {

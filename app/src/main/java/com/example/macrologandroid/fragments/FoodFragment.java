@@ -192,7 +192,7 @@ public class FoodFragment extends Fragment {
     private void refreshAllFood() {
         FoodCache.getInstance().clearCache();
         FoodService foodService = new FoodService();
-        disposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        disposable = foodService.getAlFood()
                 .subscribe((res) ->
                 {
                     FoodCache.getInstance().addToCache(res);

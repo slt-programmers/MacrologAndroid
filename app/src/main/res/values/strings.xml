@@ -136,5 +136,11 @@
     <string name="date_hint">Date (yyyy-mm-dd)</string>
     <string name="connection_error">No connection available</string>
     <string name="choose_date">Pick a date</string>
+    <string name="delete_account">Delete account</string>
+    <string name="title_activity_delete_account">DeleteAccountActivity</string>
+    <string name="are_you_sure">Are you absolutely sure? Deleting your account will permanently remove all
+        your data, including any food added to your database and every log entry in your diary.
+        This action is irreversible.\n \n If you still want to proceed, please enter your password.
+    </string>
 
 </resources>

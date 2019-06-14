@@ -71,7 +71,7 @@ public class WeightChartActivity extends AppCompatActivity {
 
     private void loadMeasurements() {
         WeightService weightService = new WeightService();
-        disposable = weightService.getAllMeasurements().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        disposable = weightService.getAllMeasurements()
                 .subscribe(res -> {
                     weightRequests = res;
                     sortWeightRequestsByDate();
@@ -134,8 +134,6 @@ public class WeightChartActivity extends AppCompatActivity {
             public void finish(WeightRequest weightRequest) {
                 WeightService weightService = new WeightService();
                 disposable = weightService.postMeasurement(weightRequest)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 res -> {
                                     UserSettingsCache.getInstance().clearCache();

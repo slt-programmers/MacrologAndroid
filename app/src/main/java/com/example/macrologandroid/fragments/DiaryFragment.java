@@ -93,7 +93,7 @@ public class DiaryFragment extends Fragment implements Serializable {
         UserSettingsResponse userSettings = UserSettingsCache.getInstance().getCache();
         if (userSettings == null) {
             UserService userService = new UserService();
-            disposable = userService.getUserSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            disposable = userService.getUserSettings()
                     .subscribe(res -> {
                                 UserSettingsCache.getInstance().updateCache(res);
                                 setGoalIntake(res);

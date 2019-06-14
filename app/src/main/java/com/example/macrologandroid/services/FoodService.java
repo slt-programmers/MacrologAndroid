@@ -11,6 +11,8 @@ import com.example.macrologandroid.MainActivity;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -57,7 +59,7 @@ public class FoodService extends Service {
     }
 
     public Observable<ResponseBody> postFood(FoodResponse food) {
-        return apiService.postFood(food);
+        return apiService.postFood(food).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     private interface ApiService {

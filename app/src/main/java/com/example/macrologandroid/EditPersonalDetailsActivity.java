@@ -96,14 +96,14 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         editWeight = findViewById(R.id.edit_weight);
         editWeight.addTextChangedListener(textChangedListener);
 
-        Button backButton = findViewById(R.id.backbutton);
+        Button backButton = findViewById(R.id.back_button);
         saveButton = findViewById(R.id.savebutton);
 
         Intent intent = getIntent();
         intake = intent.getBooleanExtra("INTAKE", false);
         if (intake) {
             genderRadios.check(R.id.check_male);
-            backButton = findViewById(R.id.backbutton);
+            backButton = findViewById(R.id.back_button);
             backButton.setVisibility(View.GONE);
             TextView intakeTitle = findViewById(R.id.intake_title);
             intakeTitle.setVisibility(View.VISIBLE);
@@ -266,8 +266,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             }
 
             disposable = Observable.zip(obsList, i -> i)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(res -> {
                         if (intake) {
                             Intent intent = new Intent(this, AdjustIntakeActivity.class);

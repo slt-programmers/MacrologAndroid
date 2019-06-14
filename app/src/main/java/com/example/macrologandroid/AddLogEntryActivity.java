@@ -83,14 +83,14 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
         foodService = new FoodService();
         logService = new LogEntryService();
-        foodDisposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        foodDisposable = foodService.getAlFood()
                 .subscribe(res -> {
                     allFood = res;
                     fillFoodNameList();
                     setupAutoCompleteTextView();
                 }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
 
-        Button backbutton = findViewById(R.id.backbutton);
+        Button backbutton = findViewById(R.id.back_button);
         backbutton.setOnClickListener(v -> finish());
 
         setupMealSpinner();
@@ -144,7 +144,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
     private void setNewlyAddedFood(String foodName) {
         addButton.setVisibility(View.GONE);
-        foodDisposable = foodService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        foodDisposable = foodService.getAlFood()
                 .subscribe(res -> {
                     allFood = res;
                     fillFoodNameList();
@@ -176,7 +176,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                 selectedMeal.toString());
         List<LogEntryRequest> entryList = new ArrayList<>();
         entryList.add(entry);
-        logDisposable = logService.postLogEntry(entryList).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        logDisposable = logService.postLogEntry(entryList)
                 .subscribe(res -> {
                             Intent resultIntent = new Intent();
                             resultIntent.putExtra("RELOAD", true);
