@@ -23,7 +23,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
 
-        Button deleteButton = findViewById(R.id.delete_account);
+        Button deleteButton = findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(v -> attemptDelete());
     }
 
