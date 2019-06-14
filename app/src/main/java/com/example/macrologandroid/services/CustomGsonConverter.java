@@ -1,6 +1,5 @@
 package com.example.macrologandroid.services;
 
-import com.example.macrologandroid.models.Gender;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -23,7 +22,6 @@ public class CustomGsonConverter {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-//                .registerTypeAdapter(Gender.class, new GenderAdapter())
                 .create();
         return GsonConverterFactory.create(gson);
     }
@@ -40,18 +38,5 @@ class LocalDateAdapter implements JsonDeserializer<LocalDate>, JsonSerializer<Lo
     @Override
     public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
         return new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE));
-    }
-}
-
-class GenderAdapter implements JsonSerializer<Gender>, JsonDeserializer<Gender> {
-
-    @Override
-    public Gender deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return Gender.valueOf(json.getAsString());
-    }
-
-    @Override
-    public JsonElement serialize(Gender src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.toString());
     }
 }

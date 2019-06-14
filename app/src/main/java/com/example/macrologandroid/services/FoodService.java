@@ -55,7 +55,7 @@ public class FoodService extends Service {
     }
 
     public Observable<List<FoodResponse>> getAlFood() {
-        return apiService.getAlFood();
+        return apiService.getAlFood().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<ResponseBody> postFood(FoodResponse food) {
