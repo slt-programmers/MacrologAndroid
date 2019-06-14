@@ -105,7 +105,6 @@ public class DiaryFragment extends Fragment implements Serializable {
         }
 
         FloatingActionButton button = view.findViewById(R.id.floating_button);
-
         button.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddLogEntryActivity.class);
             intent.putExtra("DATE", selectedDate);
@@ -119,6 +118,8 @@ public class DiaryFragment extends Fragment implements Serializable {
     public void onViewCreated(@NonNull View view, Bundle bundle) {
         setupViewPager(view);
 
+        TextView dateTextView = view.findViewById(R.id.diary_date);
+        dateTextView.setOnClickListener(v -> showDateDialog());
         ImageView arrowLeft = view.findViewById(R.id.arrow_left);
         ImageView arrowRight = view.findViewById(R.id.arrow_right);
         arrowLeft.setOnClickListener((args) -> viewPager.arrowScroll(View.FOCUS_LEFT));
@@ -266,5 +267,18 @@ public class DiaryFragment extends Fragment implements Serializable {
 
     private int getPositionFromDate(LocalDate date) {
         return 501 + (int) ChronoUnit.DAYS.between(LocalDate.now(), date);
+    }
+
+    private void showDateDialog() {
+        DateDialogFragment dialog = new DateDialogFragment();
+        dialog.setCurrentDate(selectedDate);
+        dialog.setOnDialogResult(date -> {
+            TextView dateTextView = view.findViewById(R.id.diary_date);
+            dateTextView.setText(date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            selectedDate = date;
+            setupViewPager(view);
+
+        });
+        dialog.show(getActivity().getSupportFragmentManager(), "WeighDialogFragment");
     }
 }

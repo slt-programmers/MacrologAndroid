@@ -135,5 +135,6 @@
     <string name="cancel">Cancel</string>
     <string name="date_hint">Date (yyyy-mm-dd)</string>
     <string name="connection_error">No connection available</string>
+    <string name="choose_date">Pick a date</string>
 
 </resources>
