@@ -12,6 +12,9 @@ import com.example.macrologandroid.dtos.UserSettingsResponse;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -53,23 +56,16 @@ public class UserService extends Service {
         return null;
     }
 
-    public Observable<List<SettingsResponse>> getSettings() {
-        return apiService.getSettings();
-    }
-
     // Gets current weight from weight repository
     public Observable<UserSettingsResponse> getUserSettings() {
-        return apiService.getUserSettings();
+        return apiService.getUserSettings().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<ResponseBody> putSetting(SettingsResponse setting) {
-        return apiService.putSetting(setting);
+        return apiService.putSetting(setting).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     private interface ApiService {
-
-        @GET("settings")
-        Observable<List<SettingsResponse>> getSettings();
 
         @GET("settings/user")
         Observable<UserSettingsResponse> getUserSettings();

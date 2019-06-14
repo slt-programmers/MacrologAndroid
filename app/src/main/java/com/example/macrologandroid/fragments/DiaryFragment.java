@@ -97,6 +97,7 @@ public class DiaryFragment extends Fragment implements Serializable {
                     .subscribe(res -> {
                                 UserSettingsCache.getInstance().updateCache(res);
                                 setGoalIntake(res);
+                                updateTotals(LocalDate.now());
                             },
                             (error) -> Log.e(this.getClass().getName(), error.getMessage()));
         } else {

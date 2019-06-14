@@ -51,7 +51,6 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
         carbsView = view.findViewById(R.id.carbs_output);
         carbsView.setText(String.valueOf(Math.round(goalCarbs)));
 
-
         SeekBar slider = view.findViewById(R.id.slider);
         slider.setMax(4000);
         slider.setMin(1200);
@@ -60,7 +59,6 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
         slider.setOnSeekBarChangeListener(seekBarChangeListener);
 
         return view;
-
     }
 
     private double calculateCarbs() {

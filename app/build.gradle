@@ -19,8 +19,8 @@ android {
         development {
             applicationIdSuffix ".dev"
             debuggable true
-//            buildConfigField 'String', 'SERVER_URL', '"http://192.168.178.35:8090/"' // Home
-            buildConfigField 'String', 'SERVER_URL', '"https://192.168.1.92:8090/"' // Work
+            buildConfigField 'String', 'SERVER_URL', '"http://192.168.178.35:8090/"' // Home
+//            buildConfigField 'String', 'SERVER_URL', '"https://192.168.1.92:8090/"' // Work
         }
         release {
             minifyEnabled false

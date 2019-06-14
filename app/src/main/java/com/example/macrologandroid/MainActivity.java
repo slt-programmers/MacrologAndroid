@@ -12,6 +12,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.macrologandroid.cache.DiaryLogCache;
+import com.example.macrologandroid.cache.FoodCache;
+import com.example.macrologandroid.cache.UserSettingsCache;
+import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.fragments.DiaryFragment;
 import com.example.macrologandroid.fragments.FoodFragment;
 import com.example.macrologandroid.fragments.UserFragment;
@@ -103,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
 
     private void logout() {
         getSharedPreferences("AUTH", MODE_PRIVATE).edit().remove("TOKEN").remove("USER").apply();
+        UserSettingsCache.getInstance().clearCache();
+        FoodCache.getInstance().clearCache();
+        DiaryLogCache.getInstance().clearCache();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent, SUCCESFULL_REGISTER);
         navigation.callOnClick();

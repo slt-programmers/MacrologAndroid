@@ -34,6 +34,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
 
     private UserService service;
     private Disposable disposable;
+    private UserSettingsResponse userSettings;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -45,16 +46,34 @@ public class AdjustIntakeActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(v -> finish());
 
+        userSettings = UserSettingsCache.getInstance().getCache();
+
         if (intake) {
             backButton.setVisibility(View.INVISIBLE);
             TextView title = findViewById(R.id.adjust_intake_title);
             title.setVisibility(View.VISIBLE);
+            userSettings = (UserSettingsResponse) intent.getSerializableExtra("userSettings");
         }
 
         service = new UserService();
+        if (userSettings == null) {
+            disposable = service.getUserSettings().subscribe(
+                    res -> {
+                        userSettings = res;
+                        setupButtons();
+                    },
+                    err -> Log.e(this.getLocalClassName(), err.getMessage())
+            );
+        } else {
+            setupButtons();
+        }
 
-        UserSettingsResponse userSettings = UserSettingsCache.getInstance().getCache();
+        Button saveButton = findViewById(R.id.save_button);
+        saveButton.setOnClickListener(v -> saveGoalMacros());
 
+    }
+
+    private void setupButtons() {
         Button changeMacros = findViewById(R.id.button_macros);
         changeMacros.setOnClickListener(v -> {
             ChangeMacrosFragment fragment = new ChangeMacrosFragment();
@@ -74,10 +93,6 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             fragment.setArguments(settings);
             setFragment(fragment);
         });
-
-        Button saveButton = findViewById(R.id.save_button);
-        saveButton.setOnClickListener(v -> saveGoalMacros());
-
     }
 
     @Override
@@ -92,7 +107,8 @@ public class AdjustIntakeActivity extends AppCompatActivity {
         if (Session.getInstance().isExpired()) {
             Intent intent = new Intent(AdjustIntakeActivity.this, SplashscreenActivity.class);
             intent.putExtra("SESSION_EXPIRED", true);
-            startActivity(intent);        }
+            startActivity(intent);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.macrologandroid.fragments;
 
+import android.app.PendingIntent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.macrologandroid.cache.UserSettingsCache;
+import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.models.ChangeGoalMacros;
 import com.example.macrologandroid.R;
 
@@ -69,7 +72,6 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
     }
 
     TextWatcher textwatcher = new TextWatcher() {
-
         @Override
         public void afterTextChanged(Editable s) {
 
