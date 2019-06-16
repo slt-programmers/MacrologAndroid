@@ -25,9 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 public class AdjustIntakeActivity extends AppCompatActivity {
@@ -35,6 +33,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
     private UserService service;
     private Disposable disposable;
     private UserSettingsResponse userSettings;
+    private Button saveButton;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -68,14 +67,15 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             setupButtons();
         }
 
-        Button saveButton = findViewById(R.id.save_button);
+        saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(v -> saveGoalMacros());
-
+        saveButton.setEnabled(false);
     }
 
     private void setupButtons() {
         Button changeMacros = findViewById(R.id.button_macros);
         changeMacros.setOnClickListener(v -> {
+            saveButton.setEnabled(true);
             ChangeMacrosFragment fragment = new ChangeMacrosFragment();
             Bundle goalMacros = new Bundle();
             goalMacros.putInt("goalProtein", userSettings.getGoalProtein());
@@ -87,6 +87,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
 
         Button changeCalories = findViewById(R.id.button_calories);
         changeCalories.setOnClickListener(v -> {
+            saveButton.setEnabled(true);
             ChangeCaloriesFragment fragment = new ChangeCaloriesFragment();
             Bundle settings = new Bundle();
             settings.putSerializable("userSettings", userSettings);
