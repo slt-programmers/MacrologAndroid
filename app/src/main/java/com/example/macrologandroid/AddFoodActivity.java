@@ -213,12 +213,16 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     private Integer findIdForPortion(int index) {
-        List<PortionResponse> portions = foodResponse.getPortions();
-        if (portions != null && !portions.isEmpty()) {
-            try {
-                PortionResponse portion =  portions.get(index);
-                return portion.getId();
-            } catch (Exception ex) {
+        if (foodResponse != null) {
+            List<PortionResponse> portions = foodResponse.getPortions();
+            if (portions != null && !portions.isEmpty()) {
+                try {
+                    PortionResponse portion = portions.get(index);
+                    return portion.getId();
+                } catch (Exception ex) {
+                    return null;
+                }
+            } else {
                 return null;
             }
         } else {

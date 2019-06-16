@@ -10,6 +10,8 @@ import com.example.macrologandroid.dtos.AuthenticationRequest;
 import com.example.macrologandroid.dtos.AuthenticationResponse;
 import com.example.macrologandroid.dtos.ChangePasswordRequest;
 
+import java.util.Base64;
+
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -23,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class AuthenticationService extends Service {
 
@@ -75,7 +78,8 @@ public class AuthenticationService extends Service {
     }
 
     public Observable<ResponseBody> deleteAccount(String password) {
-        return apiServiceWithBearer.deleteAccount(password).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        String encryptedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+        return apiServiceWithBearer.deleteAccount(encryptedPassword).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     private interface ApiService {
@@ -93,7 +97,7 @@ public class AuthenticationService extends Service {
         Observable<ResponseBody> resetPassword(@Body AuthenticationRequest email);
 
         @POST("deleteAccount")
-        Observable<ResponseBody> deleteAccount(@Path("password") String password);
+        Observable<ResponseBody> deleteAccount(@Query("password") String password);
 
     }
 }

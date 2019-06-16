@@ -20,6 +20,8 @@ import com.example.macrologandroid.ChangePasswordActivity;
 import com.example.macrologandroid.DeleteAccountActivity;
 import com.example.macrologandroid.EditPersonalDetailsActivity;
 import com.example.macrologandroid.WeightChartActivity;
+import com.example.macrologandroid.cache.DiaryLogCache;
+import com.example.macrologandroid.cache.FoodCache;
 import com.example.macrologandroid.cache.UserSettingsCache;
 import com.example.macrologandroid.dtos.UserSettingsResponse;
 import com.example.macrologandroid.models.Gender;
@@ -28,15 +30,14 @@ import com.example.macrologandroid.services.UserService;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class UserFragment extends Fragment {
 
     private static final int EDIT_DETAILS_ID = 123;
     private static final int ADJUST_INTAKE_ID = 234;
     private static final int EDIT_WEIGHT_ID = 345;
+    private static final int DELETE_ACCOUNT = 999;
 
     private View view;
     private UserSettingsResponse userSettings;
@@ -56,6 +57,12 @@ public class UserFragment extends Fragment {
                 }
                 break;
             }
+            case (DELETE_ACCOUNT):
+            {
+                if (resultCode == Activity.RESULT_OK) {
+                    onLogoutPressedListener.onLogoutPressed();
+                }
+            }
         }
     }
 
@@ -74,7 +81,9 @@ public class UserFragment extends Fragment {
 
         Button logoutButton = view.findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(v -> {
-            this.userSettings = null;
+            UserSettingsCache.getInstance().clearCache();
+            FoodCache.getInstance().clearCache();
+            DiaryLogCache.getInstance().clearCache();
             onLogoutPressedListener.onLogoutPressed();
         });
 
@@ -111,7 +120,7 @@ public class UserFragment extends Fragment {
         Button deleteButton = view.findViewById(R.id.delete_account);
         deleteButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), DeleteAccountActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, DELETE_ACCOUNT);
         });
 
         return view;
