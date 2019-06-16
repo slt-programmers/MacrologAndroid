@@ -27,6 +27,7 @@ import com.example.macrologandroid.R;
 import com.example.macrologandroid.cache.FoodCache;
 import com.example.macrologandroid.dtos.FoodResponse;
 import com.example.macrologandroid.services.FoodService;
+import com.example.macrologandroid.util.KeyboardManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -72,6 +73,7 @@ public class FoodFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        KeyboardManager.hideKeyboard(getActivity());
         if (requestCode == ADD_FOOD_ID) {
             if (resultCode == Activity.RESULT_OK) {
                 search.setText("");

@@ -7,7 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="96dp">
+        android:layout_marginBottom="56dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -111,7 +111,7 @@
                 android:id="@+id/food_table_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="56dp"
                 android:padding="16dp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"

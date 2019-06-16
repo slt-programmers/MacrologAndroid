@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.macrologandroid.cache.FoodCache;
 import com.example.macrologandroid.dtos.FoodResponse;
 import com.example.macrologandroid.dtos.PortionResponse;
 import com.example.macrologandroid.lifecycle.Session;
@@ -22,6 +24,7 @@ import com.example.macrologandroid.services.FoodService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
 
@@ -33,33 +36,16 @@ public class AddFoodActivity extends AppCompatActivity {
     private TextInputEditText editCarbs;
     private LinearLayout portionsLayout;
     private Button saveButton;
+    private TextInputLayout editFoodNameLayout;
 
     private FoodResponse foodResponse;
-
     private Disposable disposable;
-
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            isSaveButtonEnabled();
-        }
-    };
+    private List<String> allFoodNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
-
 
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
@@ -68,6 +54,7 @@ public class AddFoodActivity extends AppCompatActivity {
         foodResponse = (FoodResponse) intent.getSerializableExtra("FOOD_RESPONSE");
         String foodName = intent.getStringExtra("FOOD_NAME");
 
+        editFoodNameLayout = findViewById(R.id.food_name_layout);
         editFoodName = findViewById(R.id.food_name);
         editProtein = findViewById(R.id.edit_protein);
         editProtein.addTextChangedListener(textWatcher);
@@ -95,14 +82,18 @@ public class AddFoodActivity extends AppCompatActivity {
             }
             saveButton.setEnabled(false);
         } else {
+            editFoodName.addTextChangedListener(foodNameWatcher);
             editFoodName.setText(foodName);
             editFoodName.requestFocus();
             saveButton.setEnabled(false);
         }
+
+        List<FoodResponse> allFood = FoodCache.getInstance().getCache();
+        allFoodNames = allFood.stream().map(FoodResponse::getName).collect(Collectors.toList());
     }
 
     private void isSaveButtonEnabled() {
-        boolean nameCheck = editFoodName.getText() != null && editFoodName.getText().toString().length() != 0;
+        boolean nameCheck = editFoodName.getText() != null && editFoodName.getText().toString().length() != 0 && !matchingFoodName(editFoodName.getText().toString());
         boolean proteinCheck = editProtein.getText() != null && editProtein.getText().toString().length() != 0;
         boolean fatCheck = editFat.getText() != null && editFat.getText().toString().length() != 0;
         boolean carbCheck = editCarbs.getText() != null && editCarbs.getText().toString().length() != 0;
@@ -227,4 +218,48 @@ public class AddFoodActivity extends AppCompatActivity {
             return null;
         }
     }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            isSaveButtonEnabled();
+        }
+    };
+
+    private TextWatcher foodNameWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (matchingFoodName(s.toString())) {
+                editFoodNameLayout.setErrorEnabled(true);
+                editFoodNameLayout.setError("Food already in database");
+            } else {
+                editFoodNameLayout.setErrorEnabled(false);
+                editFoodNameLayout.setError("");
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            isSaveButtonEnabled();
+        }
+    };
+
+    private boolean matchingFoodName(String foodName) {
+        return allFoodNames.contains(foodName);
+    }
+
 }
