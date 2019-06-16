@@ -77,7 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/protein"
+                    android:hint="@string/protein_hint"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -97,7 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/fat"
+                    android:hint="@string/fat_hint"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true"/>
@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/carbs"
+                    android:hint="@string/carbs_hint"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true" />

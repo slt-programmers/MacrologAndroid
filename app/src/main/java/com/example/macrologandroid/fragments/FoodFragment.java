@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
@@ -36,9 +38,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
@@ -96,6 +96,12 @@ public class FoodFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_food, container, false);
+
+        FloatingActionButton floatingButton = view.findViewById(R.id.floating_button);
+        floatingButton.setOnClickListener(v -> {
+            Intent intent = new Intent (this.getActivity(), AddFoodActivity.class);
+            startActivityForResult(intent, ADD_FOOD_ID);
+        });
 
         search = view.findViewById(R.id.search);
         search.addTextChangedListener(watcher);

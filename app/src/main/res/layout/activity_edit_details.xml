@@ -71,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/user_birthday"
+                    android:hint="@string/birthday_hint"
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -115,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/user_height"
+                    android:hint="@string/height_hint"
                     android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true" />
@@ -131,7 +131,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:hint="@string/weight"
+                    android:hint="@string/weight_hint"
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true" />
