@@ -212,7 +212,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
                 userSettings.setName(newName);
             }
 
-            if (!newBirthday.isEmpty() && originalBirthday != newDate) {
+            if (!newBirthday.isEmpty() && !originalBirthday.equals(newDate)) {
                 int age = Period.between(newDate, LocalDate.now()).getYears();
                 obsList.add(userService.putSetting(new SettingsResponse(1, "birthday", newBirthday)));
                 obsList.add(userService.putSetting(new SettingsResponse(1, "age", String.valueOf(age))));
