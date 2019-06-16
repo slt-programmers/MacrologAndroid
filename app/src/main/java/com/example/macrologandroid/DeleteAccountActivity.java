@@ -3,6 +3,7 @@ package com.example.macrologandroid;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
 
 import com.example.macrologandroid.cache.DiaryLogCache;
@@ -23,6 +24,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_account);
+
+        TextInputLayout passwordLayout = findViewById(R.id.password_layout);
+        Objects.requireNonNull(passwordLayout.getEditText()).setTransformationMethod(new PasswordTransformationMethod());
 
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
