@@ -82,8 +82,8 @@ public class AddFoodActivity extends AppCompatActivity {
             }
             saveButton.setEnabled(false);
         } else {
-            editFoodName.addTextChangedListener(foodNameWatcher);
             editFoodName.setText(foodName);
+            editFoodName.addTextChangedListener(foodNameWatcher);
             editFoodName.requestFocus();
             saveButton.setEnabled(false);
         }
