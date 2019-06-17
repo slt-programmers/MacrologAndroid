@@ -47,6 +47,9 @@ public class AddFoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
 
+        List<FoodResponse> allFood = FoodCache.getInstance().getCache();
+        allFoodNames = allFood.stream().map(FoodResponse::getName).collect(Collectors.toList());
+
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
 
@@ -87,9 +90,6 @@ public class AddFoodActivity extends AppCompatActivity {
             editFoodName.requestFocus();
             saveButton.setEnabled(false);
         }
-
-        List<FoodResponse> allFood = FoodCache.getInstance().getCache();
-        allFoodNames = allFood.stream().map(FoodResponse::getName).collect(Collectors.toList());
     }
 
     private void isSaveButtonEnabled() {
