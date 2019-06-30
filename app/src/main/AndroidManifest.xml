@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.macrologandroid">
+    package="com.csl.macrologandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
@@ -17,13 +17,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".DeleteAccountActivity"
+            android:name="com.csl.macrologandroid.DeleteAccountActivity"
             android:label="@string/title_activity_delete_account"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".AddFoodActivity" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.csl.macrologandroid.ForgotPasswordActivity" />
+        <activity android:name="com.csl.macrologandroid.AddFoodActivity" />
         <activity
-            android:name=".SplashscreenActivity"
+            android:name="com.csl.macrologandroid.SplashscreenActivity"
             android:label="@string/app_name"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -33,69 +33,69 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.csl.macrologandroid.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.csl.macrologandroid.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".EditPersonalDetailsActivity"
+            android:name="com.csl.macrologandroid.EditPersonalDetailsActivity"
             android:label="@string/title_edit_details"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".AdjustIntakeActivity"
+            android:name="com.csl.macrologandroid.AdjustIntakeActivity"
             android:label="@string/title_adjust_intake"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ChangePasswordActivity"
+            android:name="com.csl.macrologandroid.ChangePasswordActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".EditLogEntryActivity"
+            android:name="com.csl.macrologandroid.EditLogEntryActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".AddLogEntryActivity"
+            android:name="com.csl.macrologandroid.AddLogEntryActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".AboutActivity"
+            android:name="com.csl.macrologandroid.AboutActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".WeightChartActivity" />
+        <activity android:name="com.csl.macrologandroid.WeightChartActivity" />
 
         <receiver
-            android:name=".notifications.NotificationReceiver"
+            android:name="com.csl.macrologandroid.notifications.NotificationReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="NOTIFICATION_RECEIVED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".notifications.BootReceiver">
+        <receiver android:name="com.csl.macrologandroid.notifications.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".services.HealthcheckService"
+            android:name="com.csl.macrologandroid.services.HealthcheckService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".services.UserService"
+            android:name="com.csl.macrologandroid.services.UserService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".services.LogEntryService"
+            android:name="com.csl.macrologandroid.services.LogEntryService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".services.FoodService"
+            android:name="com.csl.macrologandroid.services.FoodService"
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name=".services.AuthenticationService"
+            android:name="com.csl.macrologandroid.services.AuthenticationService"
             android:enabled="true"
             android:exported="false" />
-        <service android:name=".services.WeightService" />
+        <service android:name="com.csl.macrologandroid.services.WeightService" />
     </application>
 
 </manifest>
