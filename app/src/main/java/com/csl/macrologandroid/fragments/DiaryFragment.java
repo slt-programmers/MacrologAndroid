@@ -28,13 +28,20 @@ import com.csl.macrologandroid.dtos.UserSettingsResponse;
 import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.services.UserService;
+import com.csl.macrologandroid.util.DateParser;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
@@ -48,7 +55,7 @@ public class DiaryFragment extends Fragment implements Serializable {
     private DiaryPager viewPager;
     private DiaryLogCache cache;
     private int goalProtein, goalFat, goalCarbs, goalCalories;
-    private LocalDate selectedDate;
+    private Date selectedDate;
 
     private Disposable disposable;
     private DiaryPagerAdaper adapter;
@@ -95,7 +102,7 @@ public class DiaryFragment extends Fragment implements Serializable {
                     .subscribe(res -> {
                                 UserSettingsCache.getInstance().updateCache(res);
                                 setGoalIntake(res);
-                                updateTotals(LocalDate.now());
+                                updateTotals(DateParser.parse(DateParser.format(new Date())));
                             },
                             (error) -> Log.e(this.getClass().getName(), error.getMessage()));
         } else {
@@ -137,7 +144,14 @@ public class DiaryFragment extends Fragment implements Serializable {
     public void startEditActivity(Meal meal) {
         Intent intent = new Intent(getActivity(), EditLogEntryActivity.class);
         List<LogEntryResponse> entries = cache.getFromCache(selectedDate);
-        entries = entries.stream().filter(entry -> entry.getMeal().equals(meal)).collect(Collectors.toList());
+        List<LogEntryResponse> filteredEntries = new ArrayList<>();
+        for (LogEntryResponse entry : entries) {
+            if (entry.getMeal().equals(meal)) {
+                filteredEntries.add(entry);
+            }
+        }
+        entries = filteredEntries;
+
         intent.putExtra("DATE", selectedDate);
         intent.putExtra("MEAL", meal);
         intent.putExtra("LOGENTRIES", (Serializable) entries);
@@ -159,11 +173,11 @@ public class DiaryFragment extends Fragment implements Serializable {
         TextView diaryDate = view.findViewById(R.id.diary_date);
 
         if (selectedDate == null) {
-            selectedDate = LocalDate.now();
+            selectedDate = DateParser.parse(DateParser.format(new Date()));
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        diaryDate.setText(selectedDate.format(formatter));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        diaryDate.setText(simpleDateFormat.format(selectedDate));
 
         viewPager = view.findViewById(R.id.day_view_pager);
         adapter = new DiaryPagerAdaper(getContext());
@@ -182,7 +196,7 @@ public class DiaryFragment extends Fragment implements Serializable {
             @Override
             public void onPageSelected(int i) {
                 selectedDate = getDateFromPosition(i);
-                diaryDate.setText(selectedDate.format(formatter));
+                diaryDate.setText(simpleDateFormat.format(selectedDate));
                 updateTotals(selectedDate);
             }
 
@@ -193,7 +207,7 @@ public class DiaryFragment extends Fragment implements Serializable {
 
     }
 
-    public void updateTotals(LocalDate date) {
+    public void updateTotals(Date date) {
         List<LogEntryResponse> entries = cache.getFromCache(date);
         double totalProtein = 0.0;
         double totalFat = 0.0;
@@ -259,24 +273,30 @@ public class DiaryFragment extends Fragment implements Serializable {
         }
     }
 
-    private LocalDate getDateFromPosition(int position) {
-        return LocalDate.now().plusDays(position - 500);
+    private Date getDateFromPosition(int position) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, (position - 500));
+        return DateParser.parse(DateParser.format(calendar.getTime()));
     }
 
-    private int getPositionFromDate(LocalDate date) {
-        return 501 + (int) ChronoUnit.DAYS.between(LocalDate.now(), date);
+    private int getPositionFromDate(Date date) {
+        long difference = new Date().getTime() - date.getTime();
+        long days = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
+        return 501 + (int) days;
     }
 
     private void showDateDialog() {
         DateDialogFragment dialog = new DateDialogFragment();
         dialog.setCurrentDate(selectedDate);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+
         dialog.setOnDialogResult(date -> {
             TextView dateTextView = view.findViewById(R.id.diary_date);
-            dateTextView.setText(date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            dateTextView.setText(simpleDateFormat.format(date));
             selectedDate = date;
             setupViewPager(view);
 
         });
-        dialog.show(getActivity().getSupportFragmentManager(), "WeighDialogFragment");
+        dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "WeighDialogFragment");
     }
 }

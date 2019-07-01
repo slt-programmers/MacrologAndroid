@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="24dp"
-    android:height="24dp"
+    android:width="200dp"
+    android:height="200dp"
     android:viewportWidth="100"
     android:viewportHeight="75">
 
@@ -18,16 +18,16 @@
                 android:startY="100"
                 android:type="linear">
                 <item
-                    android:color="?android:attr/colorAccent"
+                    android:color="#2196F3"
                     android:offset="0.0" />
                 <item
-                    android:color="?android:attr/colorAccent"
+                    android:color="#2196F3"
                     android:offset="0.2" />
                 <item
-                    android:color="?android:attr/colorPrimary"
+                    android:color="#3F51B5"
                     android:offset="0.8" />
                 <item
-                    android:color="?android:attr/colorPrimary"
+                    android:color="#3F51B5"
                     android:offset="1.0" />
             </gradient>
         </aapt:attr>

@@ -8,8 +8,10 @@ import com.csl.macrologandroid.BuildConfig;
 import com.csl.macrologandroid.dtos.LogEntryRequest;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.MainActivity;
+import com.csl.macrologandroid.util.DateParser;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -59,8 +61,8 @@ public class LogEntryService extends Service {
         return null;
     }
 
-    public Observable<List<LogEntryResponse>> getLogsForDay(LocalDate localDate) {
-        return apiService.getLogsForDay(localDate).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    public Observable<List<LogEntryResponse>> getLogsForDay(Date date) {
+        return apiService.getLogsForDay(DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<List<LogEntryResponse>> postLogEntry(List<LogEntryRequest> entries) {
@@ -74,7 +76,7 @@ public class LogEntryService extends Service {
     private interface ApiService {
 
         @GET("logs/day/{date}")
-        Observable<List<LogEntryResponse>> getLogsForDay(@Path("date") LocalDate date);
+        Observable<List<LogEntryResponse>> getLogsForDay(@Path("date") String date);
 
         @POST("logs")
         Observable<List<LogEntryResponse>> postLogEntry(@Body List<LogEntryRequest> entries);

@@ -10,8 +10,7 @@ import com.csl.macrologandroid.dtos.AuthenticationRequest;
 import com.csl.macrologandroid.dtos.AuthenticationResponse;
 import com.csl.macrologandroid.dtos.ChangePasswordRequest;
 
-import java.util.Base64;
-
+import android.util.Base64;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -76,7 +75,7 @@ public class AuthenticationService extends Service {
     }
 
     public Observable<ResponseBody> deleteAccount(String password) {
-        String encryptedPassword = Base64.getEncoder().encodeToString(password.getBytes());
+        String encryptedPassword = Base64.encodeToString(password.getBytes(), Base64.DEFAULT);
         return apiServiceWithBearer.deleteAccount(encryptedPassword).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 

@@ -34,12 +34,12 @@ import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.services.FoodService;
 import com.csl.macrologandroid.services.LogEntryService;
+import com.csl.macrologandroid.util.DateParser;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,7 +49,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private static final int ADD_FOOD_ID = 567;
 
-    private LocalDate selectedDate;
+    private Date selectedDate;
     private LogEntryService logEntryService;
     private FoodService foodService;
     private List<FoodResponse> allFood;
@@ -108,7 +108,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_log_entry);
 
-        selectedDate = (LocalDate) getIntent().getSerializableExtra("DATE");
+        selectedDate = (Date) getIntent().getSerializableExtra("DATE");
         logEntryService = new LogEntryService();
 
         foodService = new FoodService();
@@ -250,7 +250,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
         Long foodId = selectedFood.getId();
         LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
-                multiplier, selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
+                multiplier, DateParser.format(selectedDate),
                 selectedMeal.toString());
         List<LogEntryRequest> entryList = new ArrayList<>();
         entryList.add(entry);
@@ -518,7 +518,15 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void setupPortionUnitSpinner(String foodname) {
-        selectedFood = allFood.stream().filter(f -> f.getName().trim().equals(foodname.trim())).findFirst().orElse(null);
+//        selectedFood = allFood.stream().filter(f -> f.getName().trim().equals(foodname.trim())).findFirst().orElse(null);
+        for (FoodResponse food : allFood) {
+            if (food.getName().trim().equals(foodname.trim())){
+                selectedFood = food;
+                break;
+            } else {
+                selectedFood = null;
+            }
+        }
         List<String> list = new ArrayList<>();
 
         for (PortionResponse portion : selectedFood.getPortions()) {
@@ -564,8 +572,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void setMealBasedOnTime(Spinner spinner) {
-        LocalDateTime time = LocalDateTime.now();
-        int hour = time.getHour();
+//        LocalDateTime time = LocalDateTime.now();
+//        int hour = time.getHour();
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         switch (hour) {
             case 7:
             case 8:

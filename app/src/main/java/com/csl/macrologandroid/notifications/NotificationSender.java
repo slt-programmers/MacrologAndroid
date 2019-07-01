@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import com.csl.macrologandroid.R;
 
@@ -44,12 +45,14 @@ public class NotificationSender {
     }
 
     private static void createNotificationChannel(Context context) {
-        CharSequence name = context.getString(R.string.notification_channel_name);
-        String description = "Reminders to log your meals";
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(context.getString(R.string.notification_channel_id), name, importance);
-        channel.setDescription(description);
-        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = context.getString(R.string.notification_channel_name);
+            String description = "Reminders to log your meals";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(context.getString(R.string.notification_channel_id), name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

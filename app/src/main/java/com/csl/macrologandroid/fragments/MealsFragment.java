@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 public class MealsFragment extends Fragment {
 
     public MealsFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -24,7 +23,6 @@ public class MealsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meals, container, false);
     }
 

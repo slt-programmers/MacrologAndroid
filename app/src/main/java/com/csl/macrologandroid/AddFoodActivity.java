@@ -24,7 +24,6 @@ import com.csl.macrologandroid.services.FoodService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
 
@@ -40,7 +39,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
     private FoodResponse foodResponse;
     private Disposable disposable;
-    private List<String> allFoodNames;
+    private List<String> allFoodNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,9 @@ public class AddFoodActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_food);
 
         List<FoodResponse> allFood = FoodCache.getInstance().getCache();
-        allFoodNames = allFood.stream().map(FoodResponse::getName).collect(Collectors.toList());
+        for (FoodResponse food : allFood) {
+            allFoodNames.add(food.getName());
+        }
 
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());

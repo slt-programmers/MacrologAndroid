@@ -1,18 +1,19 @@
 package com.csl.macrologandroid.lifecycle;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Session {
 
     private static Session instance;
 
-    private static LocalDateTime timestamp;
+    private static Date timestamp;
 
     private static final long THRESHOLD = 30;
 
     private Session() {
-        timestamp = LocalDateTime.now();
+        timestamp = Calendar.getInstance().getTime();
     }
 
     public static Session getInstance() {
@@ -23,11 +24,13 @@ public class Session {
     }
 
     public boolean isExpired() {
-        return THRESHOLD <= ChronoUnit.MINUTES.between(timestamp, LocalDateTime.now());
+        long difference = Calendar.getInstance().getTimeInMillis() - timestamp.getTime();
+        long minutes = TimeUnit.MINUTES.convert(difference, TimeUnit.MILLISECONDS);
+        return THRESHOLD <= minutes;
     }
 
     public void resetTimestamp() {
-        timestamp = LocalDateTime.now();
+        timestamp = Calendar.getInstance().getTime();
     }
 
 }

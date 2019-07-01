@@ -166,9 +166,9 @@ public class LoginActivity extends AppCompatActivity {
         mNewEmailView.setError(null);
         mNewPasswordView.setError(null);
 
-        String username = mNewUsernameView.getEditText().getText().toString();
-        String email = mNewEmailView.getEditText().getText().toString();
-        String password = mNewPasswordView.getEditText().getText().toString();
+        String username = Objects.requireNonNull(mNewUsernameView.getEditText()).getText().toString();
+        String email = Objects.requireNonNull(mNewEmailView.getEditText()).getText().toString();
+        String password = Objects.requireNonNull(mNewPasswordView.getEditText()).getText().toString();
 
         boolean cancel = false;
         View focusView = null;

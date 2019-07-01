@@ -14,16 +14,16 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 
 import com.csl.macrologandroid.R;
+import com.csl.macrologandroid.util.DateParser;
 import com.csl.macrologandroid.util.LocalDateParser;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
 
 public class DateDialogFragment extends DialogFragment {
 
     private OnDialogResult onDialogResult;
-    private LocalDate currentDate;
+    private Date currentDate;
 
     @NonNull
     @Override
@@ -37,7 +37,7 @@ public class DateDialogFragment extends DialogFragment {
         ConstraintLayout dialogView = (ConstraintLayout) inflater.inflate(R.layout.dialog_date, null);
 
         TextInputLayout dateInputLayout = (TextInputLayout) dialogView.getChildAt(0);
-        dateInputLayout.getEditText().addTextChangedListener(new TextWatcher() {
+        Objects.requireNonNull(dateInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -45,7 +45,7 @@ public class DateDialogFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (LocalDateParser.parse(s.toString()) == null) {
+                if (DateParser.parse(s.toString()) == null) {
                     dateInputLayout.setErrorEnabled(true);
                     dateInputLayout.setError("Invalid format");
                 } else {
@@ -58,12 +58,13 @@ public class DateDialogFragment extends DialogFragment {
 
             }
         });
-        Objects.requireNonNull(dateInputLayout.getEditText()).setText(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        Objects.requireNonNull(dateInputLayout.getEditText()).setText(DateParser.format(new Date()));
 
         builder.setTitle(R.string.choose_date)
                 .setView(dialogView)
                 .setPositiveButton(R.string.done, (dialog, id) -> {
-                    LocalDate newDate = LocalDateParser.parse(dateInputLayout.getEditText().getText().toString());
+//                    LocalDate newDate = LocalDateParser.parse(dateInputLayout.getEditText().getText().toString());
+                    Date newDate = DateParser.parse(dateInputLayout.getEditText().getText().toString());
                     if (newDate != null) {
                         onDialogResult.finish(newDate);
                     }
@@ -72,7 +73,7 @@ public class DateDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public void setCurrentDate(LocalDate currentDate) {
+    public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
     }
 
@@ -81,6 +82,6 @@ public class DateDialogFragment extends DialogFragment {
     }
 
     public interface OnDialogResult {
-        void finish(LocalDate date);
+        void finish(Date date);
     }
 }

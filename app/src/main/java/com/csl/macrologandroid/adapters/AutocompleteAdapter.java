@@ -11,8 +11,8 @@ import android.widget.CheckedTextView;
 import android.widget.Filter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AutocompleteAdapter extends ArrayAdapter<String> {
 
@@ -62,9 +62,16 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
                     results.values = allItems;
                     results.count = allItems.size();
                 } else {
-                    List<String> filteredList = allItems.stream()
-                            .filter(s -> s.toLowerCase().contains(constraint.toString().toLowerCase()))
-                            .collect(Collectors.toList());
+//                    List<String> filteredList = allItems.stream()
+//                            .filter(s -> s.toLowerCase().contains(constraint.toString().toLowerCase()))
+//                            .collect(Collectors.toList());
+
+                    List<String> filteredList = new ArrayList<>();
+                    for(String item: allItems){
+                        if (item.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                            filteredList.add(item);
+                        }
+                    }
                     results.values = filteredList;
                     results.count = filteredList.size();
                 }

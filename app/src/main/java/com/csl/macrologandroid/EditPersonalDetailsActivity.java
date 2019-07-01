@@ -24,12 +24,11 @@ import com.csl.macrologandroid.dtos.UserSettingsResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.models.Gender;
 import com.csl.macrologandroid.services.UserService;
-import com.csl.macrologandroid.util.LocalDateParser;
+import com.csl.macrologandroid.util.DateParser;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +41,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     private static final int ADJUST_INTAKE_INTAKE = 901;
 
     private String originalName;
-    private LocalDate originalBirthday;
+    private Date originalBirthday;
     private Gender originalGender;
     private int originalHeight;
     private double originalWeight;
@@ -112,7 +111,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             editName.setText(originalName);
 
             originalBirthday = settings.getBirthday();
-            editBirthday.setText(originalBirthday.format(DateTimeFormatter.ISO_LOCAL_DATE));
+            editBirthday.setText(DateParser.format(originalBirthday));
 
             originalGender = settings.getGender();
             if (Gender.FEMALE.equals(originalGender)) {
@@ -197,7 +196,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
     private void saveSettings() {
         String newBirthday = Objects.requireNonNull(editBirthday.getText()).toString();
-        LocalDate newDate = LocalDateParser.parse(newBirthday);
+        Date newDate = DateParser.parse(newBirthday);
         if (newDate == null) {
             editBirthdayLayout.setError("Incorrect format");
         } else {
@@ -211,7 +210,11 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             }
 
             if (!newDate.equals(originalBirthday)) {
-                int age = Period.between(newDate, LocalDate.now()).getYears();
+                Calendar now = Calendar.getInstance();
+                Calendar birthDay = Calendar.getInstance();
+                birthDay.setTimeInMillis(newDate.getTime());
+                int age = now.get(Calendar.YEAR) - birthDay.get(Calendar.YEAR);
+//                int age = Period.between(newDate, LocalDate.now()).getYears();
                 obsList.add(userService.putSetting(new SettingsResponse(1, "birthday", newBirthday)));
                 obsList.add(userService.putSetting(new SettingsResponse(1, "age", String.valueOf(age))));
                 userSettings.setBirthday(newDate);

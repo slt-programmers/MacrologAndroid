@@ -3,9 +3,11 @@ package com.csl.macrologandroid.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -191,7 +193,14 @@ public class FoodFragment extends Fragment {
 
     private void selectFood(FoodResponse foodResponse) {
         Intent intent = new Intent(getContext(), AddFoodActivity.class);
-        FoodResponse food = allFood.stream().filter(f -> f.getName().equals(foodResponse.getName())).findFirst().orElse(null);
+        FoodResponse food = null;
+        for (FoodResponse response : allFood) {
+            if (response.getName().equals(foodResponse.getName())) {
+                food = response;
+                break;
+            }
+        }
+
         intent.putExtra("FOOD_RESPONSE", food);
         startActivityForResult(intent, ADD_FOOD_ID);
     }
@@ -288,28 +297,23 @@ public class FoodFragment extends Fragment {
 
         switch (sortHeader) {
             case FOOD: {
-                Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> f1.getName().compareTo(f2.getName());
-                convertedFood = convertedFood.stream().sorted(comparator).collect(Collectors.toList());
+                Collections.sort(convertedFood, (o1, o2) -> o1.getName().compareTo(o2.getName()));
                 break;
             }
             case PROTEIN: {
-                Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> Double.compare(f2.getProtein(), f1.getProtein());
-                convertedFood = convertedFood.stream().sorted(comparator).collect(Collectors.toList());
+                Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getProtein(), o1.getProtein()));
                 break;
             }
             case FAT: {
-                Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> Double.compare(f2.getFat(), f1.getFat());
-                convertedFood = convertedFood.stream().sorted(comparator).collect(Collectors.toList());
+                Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getFat(), o1.getFat()));
                 break;
             }
             case CARBS: {
-                Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> Double.compare(f2.getCarbs(), f1.getCarbs());
-                convertedFood = convertedFood.stream().sorted(comparator).collect(Collectors.toList());
+                Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getCarbs(), o1.getCarbs()));
                 break;
             }
             default: {
-                Comparator<FoodResponse> comparator = (FoodResponse f1, FoodResponse f2) -> f1.getName().compareTo(f2.getName());
-                convertedFood = convertedFood.stream().sorted(comparator).collect(Collectors.toList());
+                Collections.sort(convertedFood, (o1, o2) -> o1.getName().compareTo(o2.getName()));
             }
         }
 
@@ -323,6 +327,8 @@ public class FoodFragment extends Fragment {
     private TextView getDecimalNumberTextView(double text) {
         TextView view = new TextView(getContext());
         view.setText(String.format(Locale.ENGLISH, "%.1f", text));
+        Typeface typeface = ResourcesCompat.getFont(Objects.requireNonNull(getContext()), R.font.assistant_light);
+        view.setTypeface(typeface);
         setTextViewLayout(view);
         return getCustomizedTextView(view);
     }

@@ -1,8 +1,11 @@
 package com.csl.macrologandroid.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,12 +21,17 @@ import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.services.LogEntryService;
+import com.csl.macrologandroid.util.DateParser;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.font.TextAttribute;
 import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.Disposable;
 
@@ -31,7 +39,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     private Context context;
     private LogEntryService service;
-    private LocalDate selectedDate;
+    private Date selectedDate;
     private int mCurrentPosition = -1;
 
     private static final int LOOP_COUNT = 1000;
@@ -54,7 +62,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
         this.service = new LogEntryService();
     }
 
-    public void setSelectedDate(LocalDate date) {
+    public void setSelectedDate(Date date) {
         this.selectedDate = date;
     }
 
@@ -64,7 +72,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.layout_diary_page, container, false);
 
-        LocalDate date = getDateFromPosition(position);
+        Date date = getDateFromPosition(position);
 
         List<LogEntryResponse> entries = DiaryLogCache.getInstance().getFromCache(date);
         if (entries == null) {
@@ -85,7 +93,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
         return layout;
     }
 
-    private void notifyForTotalsUpdate(LocalDate date) {
+    private void notifyForTotalsUpdate(Date date) {
         if (date.equals(selectedDate)) {
             onTotalUpdateListener.updateTotals(date);
         }
@@ -123,8 +131,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
         }
     }
 
-    private LocalDate getDateFromPosition(int position) {
-        return LocalDate.now().plusDays(position - START_COUNT);
+    private Date getDateFromPosition(int position) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, (position - START_COUNT));
+        return DateParser.parse(DateParser.format(calendar.getTime()));
     }
 
     private void fillDiaryPage(List<LogEntryResponse> entries, ViewGroup view) {
@@ -187,6 +197,8 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     private TextView getCustomizedTextView(TextView view) {
         view.setTextSize(16);
+        Typeface typeface = ResourcesCompat.getFont(context, R.font.assistant_light);
+        view.setTypeface(typeface);
         return view;
     }
 
@@ -198,7 +210,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     }
 
     public interface OnTotalUpdateListener {
-        void updateTotals(LocalDate date);
+        void updateTotals(Date date);
     }
 
     public interface OnTableClickListener {

@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 public class UserSettingsResponse implements Serializable {
 
@@ -19,7 +20,7 @@ public class UserSettingsResponse implements Serializable {
 
     @Expose
     @SerializedName("birthday")
-    private LocalDate birthday;
+    private Date birthday;
 
     @Expose
     @SerializedName("gender")
@@ -69,11 +70,11 @@ public class UserSettingsResponse implements Serializable {
         this.age = age;
     }
 
-    public LocalDate getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 

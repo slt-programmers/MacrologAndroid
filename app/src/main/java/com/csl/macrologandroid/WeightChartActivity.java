@@ -17,9 +17,10 @@ import com.csl.macrologandroid.cache.UserSettingsCache;
 import com.csl.macrologandroid.dtos.WeightRequest;
 import com.csl.macrologandroid.fragments.WeighDialogFragment;
 import com.csl.macrologandroid.services.WeightService;
+import com.csl.macrologandroid.util.DateParser;
 
-import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -27,12 +28,11 @@ import io.reactivex.disposables.Disposable;
 public class WeightChartActivity extends AppCompatActivity {
 
     private Disposable disposable;
-    private List<WeightRequest> weightRequests;
+    private List<WeightRequest> weightRequests = new ArrayList<>();
     private double currentWeight;
     private TextView currentWeightTextView;
     private TableLayout weightTable;
     private TableRow weightTableHeader;
-    private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
     private boolean hasBeenEdited;
 
     @Override
@@ -80,7 +80,15 @@ public class WeightChartActivity extends AppCompatActivity {
     }
 
     private void sortWeightRequestsByDate() {
-         weightRequests.sort(Comparator.comparing(WeightRequest::getDay).reversed());
+        Collections.sort(weightRequests, (o1, o2) -> {
+            if (o1.getDay().before(o2.getDay())) {
+                return 1;
+            } else if (o1.getDay().after(o2.getDay())){
+                return -1;
+            } else {
+                return 0;
+            }
+        });
     }
 
     private void fillTable() {
@@ -95,7 +103,7 @@ public class WeightChartActivity extends AppCompatActivity {
 
             TextView date = new TextView(getApplicationContext());
             date.setTextAppearance(R.style.AppTheme);
-            date.setText(weightRequest.getDay().format(formatter));
+            date.setText(DateParser.format(weightRequest.getDay()));
             date.setTextColor(getResources().getColor(R.color.white, null));
             date.setTextSize(20);
             date.setLayoutParams(new TableRow.LayoutParams(-2, -2, 1.0f));
@@ -116,7 +124,17 @@ public class WeightChartActivity extends AppCompatActivity {
     }
 
     private double getCurrentWeight() {
-        WeightRequest latest = weightRequests.stream().max(Comparator.comparing(WeightRequest::getDay)).orElse(null);
+        List<WeightRequest> weightList = weightRequests;
+        Collections.sort(weightList,(o1, o2) -> {
+            if (o1.getDay().before(o2.getDay())) {
+                return 1;
+            } else if (o1.getDay().after(o2.getDay())){
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+        WeightRequest latest = weightList.get(0);
         if (latest != null) {
             return latest.getWeight();
         } else {
