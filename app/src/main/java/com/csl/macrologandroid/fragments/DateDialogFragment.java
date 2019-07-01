@@ -2,16 +2,20 @@ package com.csl.macrologandroid.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.widget.TextView;
 
 import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.util.DateParser;
@@ -59,7 +63,14 @@ public class DateDialogFragment extends DialogFragment {
         });
         Objects.requireNonNull(dateInputLayout.getEditText()).setText(DateParser.format(currentDate));
 
-        builder.setTitle(R.string.choose_date)
+        TextView customTitle = new TextView(getContext());
+        customTitle.setText(getResources().getString(R.string.choose_date));
+        customTitle.setTextSize(20);
+        customTitle.setPadding(48, 48, 0 ,0);
+        customTitle.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+        customTitle.setTypeface(ResourcesCompat.getFont(Objects.requireNonNull(getContext()), R.font.assistant_light), Typeface.BOLD);
+
+        builder.setCustomTitle(customTitle)
                 .setView(dialogView)
                 .setPositiveButton(R.string.done, (dialog, id) -> {
                     Date newDate = DateParser.parse(dateInputLayout.getEditText().getText().toString());
@@ -68,14 +79,15 @@ public class DateDialogFragment extends DialogFragment {
                     }
                 })
                 .setNegativeButton(R.string.cancel, (dialog, id) -> getDialog().cancel());
+
         return builder.create();
     }
 
-    public void setCurrentDate(Date currentDate) {
+    void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
     }
 
-    public void setOnDialogResult(OnDialogResult onDialogResult) {
+    void setOnDialogResult(OnDialogResult onDialogResult) {
         this.onDialogResult = onDialogResult;
     }
 
