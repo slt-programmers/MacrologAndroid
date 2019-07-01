@@ -2,9 +2,9 @@ package com.csl.macrologandroid.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.PagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.viewpager.widget.PagerAdapter;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;

@@ -43,12 +43,12 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/TextInputLayoutTheme">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,16 +57,16 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edit_birthday_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorTextAppearance="@style/TextInputError"
                 android:theme="@style/TextInputLayoutTheme">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RadioGroup
                 android:id="@+id/radiogroup_gender"
@@ -105,12 +105,12 @@
                     android:textSize="18sp" />
             </RadioGroup>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/TextInputLayoutTheme">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -119,14 +119,14 @@
                     android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/TextInputLayoutTheme">
 
-                <android.support.design.widget.TextInputEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                     android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Spinner
                 android:id="@+id/edit_activity"
