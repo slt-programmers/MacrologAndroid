@@ -86,7 +86,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     allFood = res;
                     fillFoodNameList();
                     setupAutoCompleteTextView();
-                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
 
         Button backbutton = findViewById(R.id.back_button);
         backbutton.setOnClickListener(v -> finish());
@@ -150,7 +150,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     foodTextView.setText(foodName);
                     setupPortionUnitSpinner(foodName);
                     toggleFields(true);
-                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
 
     private void addLogEntry() {
@@ -182,7 +182,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                             setResult(Activity.RESULT_OK, resultIntent);
                             finish();
                         },
-                        err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
 
     private void fillFoodNameList() {

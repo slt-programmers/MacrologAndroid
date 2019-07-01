@@ -210,7 +210,7 @@ public class FoodFragment extends Fragment {
                     searchedFood = allFood;
                     convertedFood = searchedFood;
                     fillTable(convertedFood);
-                }, (err) -> Log.d(this.getClass().getName(), err.toString()));
+                }, (err) -> Log.e(this.getClass().getName(), err.toString()));
     }
 
     private void searchFood(CharSequence chars) {

@@ -197,7 +197,7 @@ public class AddFoodActivity extends AppCompatActivity {
                     resultIntent.putExtra("FOOD_NAME", editFoodName.getText().toString());
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
-                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
 
     }
 

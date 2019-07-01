@@ -279,7 +279,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
                             setResult(Activity.RESULT_OK, resultIntent);
                             finish();
                         }
-                    }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                    }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
         }
     }
 

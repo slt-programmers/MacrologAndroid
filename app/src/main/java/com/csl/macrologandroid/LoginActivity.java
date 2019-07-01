@@ -221,7 +221,7 @@ public class LoginActivity extends AppCompatActivity {
                             saveCredentials(res);
                             finishWithResult();
                         }, err -> {
-                            Log.d(this.getLocalClassName(), err.getMessage());
+                            Log.e(this.getLocalClassName(), err.getMessage());
                             if (err instanceof ConnectException) {
                                 mLoginResultView.setText(R.string.connection_error);
                                 mLoginResultView.setVisibility(View.VISIBLE);

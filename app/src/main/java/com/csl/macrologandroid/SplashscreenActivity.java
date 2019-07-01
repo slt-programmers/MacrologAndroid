@@ -80,15 +80,15 @@ public class SplashscreenActivity extends AppCompatActivity {
                             }
                         },
                         err -> {
-                            Log.d(this.getLocalClassName(), err.getMessage());
+                            Log.e(this.getLocalClassName(), err.getMessage());
                             if (err instanceof SocketTimeoutException && callCounter < 4) {
-                                Log.d(this.getLocalClassName(), "retry: " + callCounter);
+                                Log.e(this.getLocalClassName(), "retry: " + callCounter);
                                 doHealthCheck();
                             }
                             else {
                                 Intent intent = new Intent(this, MainActivity.class);
                                 intent.putExtra("TOKEN_EXPIRED", true);
-                                Log.d(this.getLocalClassName(), "token expired");
+                                Log.e(this.getLocalClassName(), "token expired");
                                 startActivity(intent);
                                 finish();
                             }

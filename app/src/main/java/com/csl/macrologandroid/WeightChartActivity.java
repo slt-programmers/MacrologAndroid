@@ -154,7 +154,6 @@ public class WeightChartActivity extends AppCompatActivity {
                                 res -> {
                                     UserSettingsCache.getInstance().clearCache();
                                     hasBeenEdited = true;
-                                    Log.d(this.getClass().toString(), res.toString());
                                     loadMeasurements();
                                 },
                                 err -> Log.e(this.getClass().toString(), err.getMessage())

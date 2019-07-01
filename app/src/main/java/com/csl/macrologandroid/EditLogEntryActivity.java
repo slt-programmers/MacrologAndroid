@@ -118,7 +118,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     allFood = res;
                     fillFoodNameList();
                     setupAutoCompleteTextView();
-                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
 
         logEntries = new ArrayList<>();
         List entries = (List) getIntent().getSerializableExtra("LOGENTRIES");
@@ -260,7 +260,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                             newEntries = res;
                             appendNewEntry();
                         },
-                        err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
 
     private void addLogEntryToLayout(LogEntryResponse entry) {
@@ -300,7 +300,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     foodTextView.setText(foodName);
                     setupPortionUnitSpinner(foodName);
                     toggleFields(true);
-                }, err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
 
     private void toggleToRemoveEntry(LogEntryResponse entry) {
@@ -339,8 +339,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
         for (LogEntryResponse entry : logEntries) {
             if (copyEntries.indexOf(entry) == -1) {
                 deleteDisposable = logEntryService.deleteLogEntry(entry.getId())
-                        .subscribe(res -> Log.d(this.getLocalClassName(), res.string()),
-                                err -> Log.d(this.getLocalClassName(), err.getMessage()));
+                        .subscribe(res -> {},
+                                err -> Log.e(this.getLocalClassName(), err.getMessage()));
             } else {
                 int index = logEntries.indexOf(entry);
                 ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
