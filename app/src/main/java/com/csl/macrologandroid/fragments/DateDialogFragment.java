@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 
 import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.util.DateParser;
-import com.csl.macrologandroid.util.LocalDateParser;
 
 import java.util.Date;
 import java.util.Objects;
@@ -58,12 +57,11 @@ public class DateDialogFragment extends DialogFragment {
 
             }
         });
-        Objects.requireNonNull(dateInputLayout.getEditText()).setText(DateParser.format(new Date()));
+        Objects.requireNonNull(dateInputLayout.getEditText()).setText(DateParser.format(currentDate));
 
         builder.setTitle(R.string.choose_date)
                 .setView(dialogView)
                 .setPositiveButton(R.string.done, (dialog, id) -> {
-//                    LocalDate newDate = LocalDateParser.parse(dateInputLayout.getEditText().getText().toString());
                     Date newDate = DateParser.parse(dateInputLayout.getEditText().getText().toString());
                     if (newDate != null) {
                         onDialogResult.finish(newDate);

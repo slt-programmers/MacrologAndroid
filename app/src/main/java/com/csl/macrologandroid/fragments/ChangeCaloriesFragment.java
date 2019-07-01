@@ -75,11 +75,10 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
         return bmr * userSettings.getActivity();
     }
 
-    SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+    private final SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//            goalCalories = progress;
             goalCalories = progress + 1200;
             caloriesView.setText(String.valueOf(Math.round(goalCalories)));
             goalCarbs = calculateCarbs();

@@ -39,7 +39,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
     private FoodResponse foodResponse;
     private Disposable disposable;
-    private List<String> allFoodNames = new ArrayList<>();
+    private final List<String> allFoodNames = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,8 +183,7 @@ public class AddFoodActivity extends AppCompatActivity {
             TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
             String description = Objects.requireNonNull(portionDescription.getText()).toString();
             PortionResponse portion = new PortionResponse(findIdForPortion(i),
-                    Double.valueOf(Objects.requireNonNull(portionGrams.getText()).toString()), description
-                    , null);
+                    Double.valueOf(Objects.requireNonNull(portionGrams.getText()).toString()), description);
             portions.add(portion);
         }
         FoodResponse newFood = new FoodResponse(null, name, protein, fat, carbs, portions);
@@ -220,7 +219,7 @@ public class AddFoodActivity extends AppCompatActivity {
         }
     }
 
-    private TextWatcher textWatcher = new TextWatcher() {
+    private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -236,7 +235,7 @@ public class AddFoodActivity extends AppCompatActivity {
         }
     };
 
-    private TextWatcher foodNameWatcher = new TextWatcher() {
+    private final TextWatcher foodNameWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 

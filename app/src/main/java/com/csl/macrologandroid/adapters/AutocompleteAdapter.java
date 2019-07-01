@@ -11,7 +11,6 @@ import android.widget.CheckedTextView;
 import android.widget.Filter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AutocompleteAdapter extends ArrayAdapter<String> {
@@ -80,8 +79,15 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                if (results.values != null) {
-                    dataList = (ArrayList<String>) results.values;
+                if (results.values instanceof ArrayList) {
+                    List untyped = (ArrayList) results.values;
+                    List<String> typed = new ArrayList<>();
+                    for (Object item : untyped) {
+                        if (item instanceof String) {
+                            typed.add((String)item);
+                        }
+                    }
+                    dataList = typed;
                 } else {
                     dataList = null;
                 }

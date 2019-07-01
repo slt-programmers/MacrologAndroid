@@ -9,27 +9,27 @@ public class LogEntryRequest implements Serializable {
 
     @Expose
     @SerializedName("id")
-    private Long id;
+    private final Long id;
 
     @Expose
     @SerializedName("foodId")
-    private Long foodId;
+    private final Long foodId;
 
     @Expose
     @SerializedName("portionId")
-    private Long portionId;
+    private final Long portionId;
 
     @Expose
     @SerializedName("multiplier")
-    private double multiplier;
+    private final double multiplier;
 
     @Expose
     @SerializedName("day")
-    private String day;
+    private final String day;
 
     @Expose
     @SerializedName("meal")
-    private String meal;
+    private final String meal;
 
     public LogEntryRequest(Long id, Long foodId, Long portionId, double multiplier, String day, String meal) {
         this.id = id;
@@ -40,51 +40,4 @@ public class LogEntryRequest implements Serializable {
         this.meal = meal;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getFoodId() {
-        return foodId;
-    }
-
-    public void setFoodId(Long foodId) {
-        this.foodId = foodId;
-    }
-
-    public Long getPortionId() {
-        return portionId;
-    }
-
-    public void setPortionId(Long portionId) {
-        this.portionId = portionId;
-    }
-
-    public double getMultiplier() {
-        return multiplier;
-    }
-
-    public void setMultiplier(double multiplier) {
-        this.multiplier = multiplier;
-    }
-
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public String getMeal() {
-        return meal;
-    }
-
-    public void setMeal(String meal) {
-        this.meal = meal;
-    }
 }

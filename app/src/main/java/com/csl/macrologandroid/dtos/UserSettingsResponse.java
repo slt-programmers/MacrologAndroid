@@ -5,7 +5,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 
 public class UserSettingsResponse implements Serializable {
@@ -114,23 +113,12 @@ public class UserSettingsResponse implements Serializable {
         return goalProtein;
     }
 
-    public void setGoalProtein(int goalProtein) {
-        this.goalProtein = goalProtein;
-    }
-
     public int getGoalFat() {
         return goalFat;
-    }
-
-    public void setGoalFat(int goalFat) {
-        this.goalFat = goalFat;
     }
 
     public int getGoalCarbs() {
         return goalCarbs;
     }
 
-    public void setGoalCarbs(int goalCarbs) {
-        this.goalCarbs = goalCarbs;
-    }
 }

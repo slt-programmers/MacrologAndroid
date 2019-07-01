@@ -10,7 +10,6 @@ import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.MainActivity;
 import com.csl.macrologandroid.util.DateParser;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +30,7 @@ import retrofit2.http.Path;
 
 public class LogEntryService extends Service {
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
     public LogEntryService() {
         String token = MainActivity.getPreferences().getString("TOKEN", "");

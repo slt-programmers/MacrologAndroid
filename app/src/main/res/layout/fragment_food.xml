@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -117,7 +118,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/header">
 
-                <TableRow android:id="@+id/food_table_header">
+                <TableRow android:id="@+id/food_table_header"
+                    tools:ignore="UselessParent">
 
                     <TextView
                         android:id="@+id/food_header"
@@ -135,6 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"
                         android:paddingEnd="8dp"
+                        android:paddingStart="8dp"
                         android:paddingBottom="8dp"
                         android:text="@string/p"
                         android:textAlignment="viewEnd"
@@ -147,6 +150,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"
                         android:paddingEnd="8dp"
+                        android:paddingStart="8dp"
                         android:paddingBottom="8dp"
                         android:text="@string/f"
                         android:textAlignment="viewEnd"
@@ -159,6 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"
                         android:paddingEnd="8dp"
+                        android:paddingStart="8dp"
                         android:paddingBottom="8dp"
                         android:text="@string/c"
                         android:textAlignment="viewEnd"

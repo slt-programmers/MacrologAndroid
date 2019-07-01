@@ -7,15 +7,15 @@ public class ChangePasswordRequest {
 
     @Expose
     @SerializedName("oldPassword")
-    private String oldPassword;
+    private final String oldPassword;
 
     @Expose
     @SerializedName("newPassword")
-    private String newPassword;
+    private final String newPassword;
 
     @Expose
     @SerializedName("confirmPassword")
-    private String confirmPassword;
+    private final String confirmPassword;
 
     public ChangePasswordRequest(String oldPassword, String newPassword, String confirmPassword) {
         this.oldPassword = oldPassword;
@@ -23,27 +23,4 @@ public class ChangePasswordRequest {
         this.confirmPassword = confirmPassword;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
-
-    public String getOldPassword() {
-        return oldPassword;
-    }
-
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-    }
 }

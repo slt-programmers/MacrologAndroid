@@ -1,13 +1,8 @@
 <resources>
     <string name="app_name">Macrolog</string>
-    <string name="title_home">Home</string>
-    <string name="diary_title">Diary fragment</string>
-    <string name="food_title">Food fragment</string>
     <string name="meals_title">Meals fragment</string>
-    <string name="user_title">User fragment</string>
     <string name="botnav_diary">Diary</string>
     <string name="botnav_food">Food</string>
-    <string name="botnav_meals">Meals</string>
     <string name="botnav_user">User</string>
     <string name="title_activity_login">Log in</string>
     <string name="title_edit_details">Edit personal details</string>
@@ -19,7 +14,6 @@
     <string name="login_username_email">Username or Email</string>
     <string name="login_password">Password</string>
     <string name="login_login">Log in</string>
-    <string name="login_or">Or</string>
     <string name="login_register">Register</string>
     <string name="login_email">Email</string>
     <string name="login_username">Username</string>
@@ -27,12 +21,7 @@
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="logout">Log out</string>
     <string name="splash_message">"The hamsters in the treadmill powering this app are still asleep\n\nPlease wait while we wake them up…"</string>
 
     <string name="user_name">Name</string>
@@ -56,14 +45,11 @@
     <string name="gender_unknown">Unknown</string>
     <string name="activity_level">Activity level</string>
 
-    <string name="adjust_user">Edit details</string>
-    <string name="adjust_intake">Adjust intake</string>
     <string name="change_password">Change password</string>
 
     <string name="save">Save</string>
     <string name="add">Add</string>
 
-    <string name="change">Change</string>
     <string name="old_password">Old password</string>
     <string name="new_password">New password</string>
     <string name="confirm_password">Confirm password</string>
@@ -75,10 +61,6 @@
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="snacks">Snacks</string>
-
-    <string name="progress_circle_protein">Progress circle protein</string>
-    <string name="progress_circle_fat">Progress circle fat</string>
-    <string name="progress_circle_carbs">Progress circle carbs</string>
 
     <string name="arrow_left">Arrow left</string>
     <string name="arrow_right">Arrow right</string>
@@ -117,9 +99,6 @@
         not work for another. We won\'t pretend to know much about dieting so in the goal intake
         edit section a few calculations and suggestions based on mainstream theory will be done,
         which you are entirely free to ignore.\n\nIn the end, we just want to help you measure.</string>
-    <string name="disclaimer">For this beta version we are using free hosting.
-        This may cause some initial slowness on starting the application.</string>
-    <string name="gr">gr</string>
     <string name="food">Food</string>
     <string name="percentage">Percentage</string>
     <string name="beta">beta\n(may be slow on initial startup)</string>
@@ -150,5 +129,7 @@
         your data, including any food added to your database and every log entry in your diary.
         This action is irreversible.\n \n If you still want to proceed, please enter your password.
     </string>
+    <string name="running_hamster">Running hamster</string>
+    <string name="trash_icon">Trash icon</string>
 
 </resources>

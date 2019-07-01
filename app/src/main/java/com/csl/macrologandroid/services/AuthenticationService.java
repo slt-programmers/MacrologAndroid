@@ -26,9 +26,9 @@ import retrofit2.http.Query;
 
 public class AuthenticationService extends Service {
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
-    private ApiService apiServiceWithBearer;
+    private final ApiService apiServiceWithBearer;
 
     public AuthenticationService() {
         String token = MainActivity.getPreferences().getString("TOKEN", "");

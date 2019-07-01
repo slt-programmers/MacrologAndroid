@@ -36,7 +36,8 @@
         <ImageView
             android:id="@+id/animated_image"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:contentDescription="@string/running_hamster" />
     </FrameLayout>
 
     <TextView

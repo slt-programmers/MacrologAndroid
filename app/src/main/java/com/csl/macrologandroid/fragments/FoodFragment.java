@@ -34,11 +34,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
 
@@ -170,10 +168,6 @@ public class FoodFragment extends Fragment {
         super.onAttach(context);
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
     @Override
     public void onDestroyView() {
@@ -346,7 +340,7 @@ public class FoodFragment extends Fragment {
         view.setGravity(Gravity.END);
     }
 
-    TextWatcher watcher = new TextWatcher() {
+    private final TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -366,7 +360,7 @@ public class FoodFragment extends Fragment {
         }
     };
 
-    TextView.OnEditorActionListener actionListener = (v, actionId, event) -> {
+    private final TextView.OnEditorActionListener actionListener = (v, actionId, event) -> {
         if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KEYCODE_ENTER) {
             InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(Objects.requireNonNull(getActivity().getCurrentFocus()).getWindowToken(), 0);

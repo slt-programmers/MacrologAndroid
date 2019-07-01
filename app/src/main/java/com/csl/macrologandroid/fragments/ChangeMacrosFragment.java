@@ -68,7 +68,7 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
         return string;
     }
 
-    TextWatcher textwatcher = new TextWatcher() {
+    private final TextWatcher textwatcher = new TextWatcher() {
         @Override
         public void afterTextChanged(Editable s) {
 

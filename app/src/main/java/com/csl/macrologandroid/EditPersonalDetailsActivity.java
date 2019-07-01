@@ -58,7 +58,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
     private Button saveButton;
 
-    private UserService userService = new UserService();
+    private final UserService userService = new UserService();
     private Disposable disposable;
     private TextInputLayout editBirthdayLayout;
 
@@ -296,7 +296,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private TextWatcher textChangedListener = new TextWatcher() {
+    private final TextWatcher textChangedListener = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 

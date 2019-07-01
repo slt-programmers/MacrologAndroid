@@ -6,11 +6,11 @@ import java.util.List;
 public class FoodResponse implements Serializable {
 
     private Long id;
-    private String name;
-    private double protein;
-    private double fat;
-    private double carbs;
-    private List<PortionResponse> portions;
+    private final String name;
+    private final double protein;
+    private final double fat;
+    private final double carbs;
+    private final List<PortionResponse> portions;
 
     public FoodResponse(Long id, String name, double protein, double fat, double carbs, List<PortionResponse> portions) {
         this.id = id;
@@ -33,39 +33,20 @@ public class FoodResponse implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public double getProtein() {
         return protein;
-    }
-
-    public void setProtein(double protein) {
-        this.protein = protein;
     }
 
     public double getFat() {
         return fat;
     }
 
-    public void setFat(double fat) {
-        this.fat = fat;
-    }
-
     public double getCarbs() {
         return carbs;
-    }
-
-    public void setCarbs(double carbs) {
-        this.carbs = carbs;
     }
 
     public List<PortionResponse> getPortions() {
         return portions;
     }
 
-    public void setPortions(List<PortionResponse> portions) {
-        this.portions = portions;
-    }
 }

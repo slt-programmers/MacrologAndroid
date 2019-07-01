@@ -25,7 +25,7 @@ import retrofit2.http.POST;
 
 public class FoodService extends Service {
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
     public FoodService() {
         String token = MainActivity.getPreferences().getString("TOKEN", "");

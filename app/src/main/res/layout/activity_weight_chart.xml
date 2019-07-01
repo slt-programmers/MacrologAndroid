@@ -13,7 +13,7 @@
         style="@style/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:drawableStart="@drawable/arrow_back"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -76,7 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="fill_horizontal"
-            android:paddingBottom="16dp">
+            android:paddingBottom="16dp"
+            tools:ignore="UselessParent">
 
             <TextView
                 android:id="@+id/date_header"

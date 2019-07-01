@@ -32,9 +32,6 @@ import com.csl.macrologandroid.util.DateParser;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,7 +39,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import io.reactivex.disposables.Disposable;
 
@@ -141,7 +137,7 @@ public class DiaryFragment extends Fragment implements Serializable {
         adapter.disposeServiceCall();
     }
 
-    public void startEditActivity(Meal meal) {
+    private void startEditActivity(Meal meal) {
         Intent intent = new Intent(getActivity(), EditLogEntryActivity.class);
         List<LogEntryResponse> entries = cache.getFromCache(selectedDate);
         List<LogEntryResponse> filteredEntries = new ArrayList<>();
@@ -207,7 +203,7 @@ public class DiaryFragment extends Fragment implements Serializable {
 
     }
 
-    public void updateTotals(Date date) {
+    private void updateTotals(Date date) {
         List<LogEntryResponse> entries = cache.getFromCache(date);
         double totalProtein = 0.0;
         double totalFat = 0.0;

@@ -17,7 +17,7 @@ import retrofit2.http.Header;
 
 public class HealthcheckService extends Service {
 
-    private HealthcheckService.ApiService apiService;
+    private final HealthcheckService.ApiService apiService;
 
     public HealthcheckService() {
         Retrofit retrofit = new Retrofit.Builder()

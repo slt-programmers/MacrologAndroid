@@ -23,7 +23,7 @@ import retrofit2.http.PUT;
 
 public class UserService extends Service {
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
     public UserService() {
         String token = MainActivity.getPreferences().getString("TOKEN", "");

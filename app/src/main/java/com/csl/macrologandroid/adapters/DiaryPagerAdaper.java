@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.PagerAdapter;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,20 +24,17 @@ import com.csl.macrologandroid.util.DateParser;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.font.TextAttribute;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.Disposable;
 
 public class DiaryPagerAdaper extends PagerAdapter {
 
-    private Context context;
-    private LogEntryService service;
+    private final Context context;
+    private final LogEntryService service;
     private Date selectedDate;
     private int mCurrentPosition = -1;
 

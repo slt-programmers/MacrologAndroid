@@ -29,12 +29,10 @@ import com.csl.macrologandroid.services.FoodService;
 import com.csl.macrologandroid.util.DateParser;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
@@ -169,8 +167,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
         if (portionId == null) {
             multiplier = multiplier / 100;
         }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         Long foodId = selectedFood.getId();
         LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,

@@ -132,11 +132,6 @@ public class UserFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (settingsDisposable != null) {

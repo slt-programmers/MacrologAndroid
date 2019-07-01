@@ -19,14 +19,12 @@ import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 public class WeightService extends Service {
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
     public WeightService() {
         String token = MainActivity.getPreferences().getString("TOKEN", "");
@@ -50,6 +48,7 @@ public class WeightService extends Service {
         apiService = retrofit.create(ApiService.class);
     }
 
+    @SuppressWarnings("SameReturnValue")
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -59,16 +58,8 @@ public class WeightService extends Service {
         return apiService.getAllMeasurements().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<WeightRequest> getLastMeasurement() {
-        return apiService.getLastMeasurement().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-    }
-
     public Observable<ResponseBody> postMeasurement(WeightRequest weightRequest) {
         return apiService.postMeasurement(weightRequest).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Observable<ResponseBody> deleteMeasurement(int id){
-        return apiService.deleteMeasurement(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     private interface ApiService {
@@ -76,14 +67,8 @@ public class WeightService extends Service {
         @GET("weight")
         Observable<List<WeightRequest>> getAllMeasurements();
 
-        @GET("weight/current")
-        Observable<WeightRequest> getLastMeasurement();
-
         @POST("weight")
         Observable<ResponseBody> postMeasurement(@Body WeightRequest weightRequest);
-
-        @DELETE("weight")
-        Observable<ResponseBody> deleteMeasurement(@Path("id") int id);
 
     }
 }

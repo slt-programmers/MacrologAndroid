@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:fullBackupContent="false"
+        tools:targetApi="n">
         <activity
             android:name="com.csl.macrologandroid.DeleteAccountActivity"
             android:label="@string/title_activity_delete_account"

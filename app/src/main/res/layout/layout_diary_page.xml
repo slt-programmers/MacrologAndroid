@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/table_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,8 +14,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="24dp">
 
-        <TableRow>
-
+        <TableRow tools:ignore="UselessParent">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/p"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -38,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/f"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -48,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/c"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -72,7 +75,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="24dp">
 
-        <TableRow>
+        <TableRow tools:ignore="UselessParent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/p"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -97,6 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/f"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -107,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/c"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -131,7 +137,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="24dp">
 
-        <TableRow>
+        <TableRow tools:ignore="UselessParent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -146,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/p"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -156,6 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/f"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -166,6 +174,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/c"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -189,7 +198,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TableRow>
+        <TableRow tools:ignore="UselessParent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -204,6 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/p"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -214,6 +224,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/f"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"
@@ -224,6 +235,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
                 android:paddingEnd="8dp"
+                android:paddingStart="8dp"
                 android:text="@string/c"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"

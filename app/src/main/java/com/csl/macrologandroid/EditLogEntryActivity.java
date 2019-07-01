@@ -1,5 +1,6 @@
 package com.csl.macrologandroid;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -263,6 +264,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void addLogEntryToLayout(LogEntryResponse entry) {
+        @SuppressLint("InflateParams")
         ConstraintLayout logEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
 
         TextView foodNameTextView = logEntry.findViewById(R.id.food_name);
@@ -572,8 +574,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void setMealBasedOnTime(Spinner spinner) {
-//        LocalDateTime time = LocalDateTime.now();
-//        int hour = time.getHour();
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         switch (hour) {
             case 7:
