@@ -35,6 +35,10 @@ public class AdjustIntakeActivity extends AppCompatActivity {
     private UserSettingsResponse userSettings;
     private Button saveButton;
 
+    private static final String GOAL_PROTEIN = "goalProtein";
+    private static final String GOAL_FAT = "goalFat";
+    private static final String GOAL_CARBS = "goalCarbs";
+
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
@@ -78,9 +82,9 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             saveButton.setEnabled(true);
             ChangeMacrosFragment fragment = new ChangeMacrosFragment();
             Bundle goalMacros = new Bundle();
-            goalMacros.putInt("goalProtein", userSettings.getGoalProtein());
-            goalMacros.putInt("goalFat", userSettings.getGoalFat());
-            goalMacros.putInt("goalCarbs", userSettings.getGoalCarbs());
+            goalMacros.putInt(GOAL_PROTEIN, userSettings.getGoalProtein());
+            goalMacros.putInt(GOAL_FAT, userSettings.getGoalFat());
+            goalMacros.putInt(GOAL_CARBS, userSettings.getGoalCarbs());
             fragment.setArguments(goalMacros);
             setFragment(fragment);
         });
@@ -136,12 +140,12 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             if (frag instanceof ChangeGoalMacros) {
                 Bundle goal = ((ChangeGoalMacros) frag).getGoalMacros();
                 List<Observable<ResponseBody>> obsList = new ArrayList<>();
-                obsList.add(service.putSetting(new SettingsResponse(1, "goalProtein",
-                        String.valueOf(goal.getInt("goalProtein")))));
-                obsList.add(service.putSetting(new SettingsResponse(1, "goalFat",
-                        String.valueOf(goal.getInt("goalFat")))));
-                obsList.add(service.putSetting(new SettingsResponse(1, "goalCarbs",
-                        String.valueOf(goal.getInt("goalCarbs")))));
+                obsList.add(service.putSetting(new SettingsResponse(1, GOAL_PROTEIN,
+                        String.valueOf(goal.getInt(GOAL_PROTEIN)))));
+                obsList.add(service.putSetting(new SettingsResponse(1, GOAL_FAT,
+                        String.valueOf(goal.getInt(GOAL_FAT)))));
+                obsList.add(service.putSetting(new SettingsResponse(1, GOAL_CARBS,
+                        String.valueOf(goal.getInt(GOAL_CARBS)))));
 
                 disposable = Observable.zip(obsList, i -> i)
                         .subscribe(res -> {

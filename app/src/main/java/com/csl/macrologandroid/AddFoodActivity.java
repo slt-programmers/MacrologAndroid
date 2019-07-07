@@ -222,11 +222,12 @@ public class AddFoodActivity extends AppCompatActivity {
     private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            // Not needed
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            // Not needed
         }
 
         @Override
@@ -238,7 +239,7 @@ public class AddFoodActivity extends AppCompatActivity {
     private final TextWatcher foodNameWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            // Not needed
         }
 
         @Override

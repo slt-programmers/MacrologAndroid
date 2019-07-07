@@ -229,7 +229,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
             }
             return false;
         });
-
     }
 
     private void toggleFields(boolean visible) {
@@ -287,6 +286,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // Not needed
             }
         });
 
@@ -332,7 +332,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
+                    // Not needed
                 }
             });
         } else {
@@ -345,8 +345,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
     }
 
     private void setMealBasedOnTime(Spinner spinner) {
-//        LocalDateTime time = LocalDateTime.now();
-//        int hour = time.getHour();
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         switch (hour) {
             case 7:

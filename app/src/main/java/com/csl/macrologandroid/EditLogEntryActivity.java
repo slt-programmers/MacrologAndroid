@@ -333,57 +333,68 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void saveLogEntries() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
         List<LogEntryRequest> newEntries = new ArrayList<>();
+
         for (LogEntryResponse entry : logEntries) {
             if (copyEntries.indexOf(entry) == -1) {
-                deleteDisposable = logEntryService.deleteLogEntry(entry.getId())
-                        .subscribe(res -> {},
-                                err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                deleteEntry(entry);
             } else {
-                int index = logEntries.indexOf(entry);
-                ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
-                Spinner foodSpinner = (Spinner) logEntryLayout.getChildAt(2);
-                String item = (String) foodSpinner.getSelectedItem();
-
-                double multiplier = 1;
-                TextInputEditText foodAmount = (TextInputEditText) ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
-                if (foodAmount != null && foodAmount.getText() != null) {
-                    multiplier = Double.valueOf(foodAmount.getText().toString());
-                }
-
-                Long portionId = null;
-                if (!item.equals("gram")) {
-                    for (PortionResponse portion : entry.getFood().getPortions()) {
-                        String trimmedItem = item.substring(0, item.indexOf('(')).trim();
-                        if (trimmedItem.equals(portion.getDescription())) {
-                            portionId = (long) portion.getId();
-                            break;
-                        }
-                    }
-                } else {
-                    multiplier = multiplier / 100;
-                }
-
-                LogEntryRequest request = new LogEntryRequest(
-                        (long) entry.getId(),
-                        entry.getFood().getId(),
-                        portionId,
-                        multiplier,
-                        format.format(entry.getDay()),
-                        entry.getMeal().toString()
-                );
+                LogEntryRequest request = makeLogEntryRequest(entry);
                 newEntries.add(request);
             }
         }
 
-        postDisposable = logEntryService.postLogEntry(newEntries)
-                .subscribe(res -> {
-                    Intent resultIntent = new Intent();
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish();
-                });
+        if (!newEntries.isEmpty()) {
+            postDisposable = logEntryService.postLogEntry(newEntries)
+                    .subscribe(res -> {
+                        Intent resultIntent = new Intent();
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+                    });
+        }
+    }
+
+    private LogEntryRequest makeLogEntryRequest(LogEntryResponse entry){
+        int index = logEntries.indexOf(entry);
+        ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
+        Spinner foodSpinner = (Spinner) logEntryLayout.getChildAt(2);
+        String item = (String) foodSpinner.getSelectedItem();
+
+        double multiplier = 1;
+        TextInputEditText foodAmount = (TextInputEditText) ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
+        if (foodAmount != null && foodAmount.getText() != null) {
+            multiplier = Double.valueOf(foodAmount.getText().toString());
+        }
+
+        Long portionId = null;
+        if (!item.equals("gram")) {
+            for (PortionResponse portion : entry.getFood().getPortions()) {
+                String trimmedItem = item.substring(0, item.indexOf('(')).trim();
+                if (trimmedItem.equals(portion.getDescription())) {
+                    portionId = (long) portion.getId();
+                    break;
+                }
+            }
+        } else {
+            multiplier = multiplier / 100;
+        }
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        return new LogEntryRequest(
+                (long) entry.getId(),
+                entry.getFood().getId(),
+                portionId,
+                multiplier,
+                format.format(entry.getDay()),
+                entry.getMeal().toString()
+        );
+    }
+
+    private void deleteEntry(LogEntryResponse entry) {
+        deleteDisposable = logEntryService.deleteLogEntry(entry.getId())
+                .subscribe(res -> {},
+                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
 
     private void setupAutoCompleteTextView() {
@@ -469,7 +480,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
-
+                    // Not needed
                 }
             });
         } else {
@@ -515,6 +526,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // Not needed
             }
         });
     }
@@ -560,6 +572,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // Not needed
             }
         });
 
