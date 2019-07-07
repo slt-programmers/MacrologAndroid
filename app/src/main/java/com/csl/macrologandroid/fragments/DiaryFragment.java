@@ -278,7 +278,10 @@ public class DiaryFragment extends Fragment implements Serializable {
     private int getPositionFromDate(Date date) {
         long difference = new Date().getTime() - date.getTime();
         long days = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
-        return 501 + (int) days;
+        if (days < 0) {
+            days -=1;
+        }
+        return 501 - (int) days;
     }
 
     private void showDateDialog() {
