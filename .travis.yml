@@ -2,23 +2,11 @@ language: android
 dist: trusty
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
-    # - tools
-    # - platform-tools
-
-    # The BuildTools version used by your project
-    - build-tools-28.0.3
-
-    # The SDK version used to compile your project
-    - android-28
-
-    # Additional components
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
-
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    # - sys-img-x86-android-26
-    # - sys-img-armeabi-v7a-android-17
+  - build-tools-28.0.3
+  - android-28
+  - extra-google-google_play_services
+  - extra-google-m2repository
+  - extra-android-m2repository
+env:
+  global:
+    secure: coy85NnAimMMEVAqTGU6mY6nCI1ruEb0PXZKVlvsA4kE2Ears+S2kO4p5LgJ2eGAPz3PPeBIX7pB+YEpaJTcQEtTC8JbBowEHc6GnO6WoPAAef0D1DKgcNl1JXKO9ptbVFXWBSdPP3iS+LaVZI7SvpVwcHkJrOAWWUrWqUmDhYGW9A9etnZag+Rem8JPN5bhemtdkb08l2XnE2eiSk6LIeO4qZur5fYH/J/mFyznIWINGU+GJaNMgrznUGuBRhozmSpK3Gd+XKLVS4iJeEfdsQBR0tk/XOiHEDbUKtrMoLBiXJSiQx0pUegeGBLAd1YnY3meygbbKLJB9a9ZpJR3jgXo0Lc/RJgOWftbbqtLejcuXDi082zjzsBEdTwzMFG3eRbGzqQecP7s43FMU3k06o0LjcJvG6aEQD7MqoD/wB+ZICLAAyjjZJe1gCoLZTFmX5f2Nb7+uVttld2YCVCFCnlv2ZiOX5DQyNVh4bR1LFS5Q9YZdZBJ07aDfBOPiFv0ETzvlMgerp7enPctN7bzOcORTRI0DpVQLMszL83Za6p5RFWmIMd/ZSlxDPa6T/LnuYzYqD61nMbZ05cDt6S8p90QO2uDJCe2DhhQomVU4lvPGrJ1gahgAneAe/Nve4yaQJYdmHnogSKShTQ4kucPA0f/nBzOcIjCdE1Xx38GRDs=
