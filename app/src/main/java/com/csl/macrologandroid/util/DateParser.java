@@ -7,13 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-@SuppressWarnings("CanBeFinal")
 public class DateParser {
 
-    private static SimpleDateFormat standardFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    private static SimpleDateFormat shortFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
-    private static SimpleDateFormat reversedFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-    private static SimpleDateFormat reversedShortFormat = new SimpleDateFormat("d-M-yyyy", Locale.getDefault());
+    private static final SimpleDateFormat standardFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag("nl"));
+    private static final SimpleDateFormat shortFormat = new SimpleDateFormat("yyyy-M-d", Locale.forLanguageTag("nl"));
+    private static final SimpleDateFormat reversedFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.forLanguageTag("nl"));
+    private static final SimpleDateFormat reversedShortFormat = new SimpleDateFormat("d-M-yyyy", Locale.forLanguageTag("nl"));
 
     public static String format(Date date) {
         return standardFormat.format(date);

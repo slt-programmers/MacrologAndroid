@@ -247,18 +247,18 @@ public class AddLogEntryActivity extends AppCompatActivity {
     }
 
     private void setupPortionUnitSpinner(String foodname) {
-//        selectedFood = allFood.stream().filter(f -> f.getName().trim().equals(foodname.trim())).findFirst().orElse(null);
         for (FoodResponse food : allFood) {
             if (food.getName().trim().equals(foodname.trim())) {
                 selectedFood = food;
                 break;
             }
-            else {
-                selectedFood = null;
-            }
         }
-        List<String> list = new ArrayList<>();
 
+        if (selectedFood == null) {
+            return;
+        }
+
+        List<String> list = new ArrayList<>();
         for (PortionResponse portion : selectedFood.getPortions()) {
             String desc = portion.getDescription();
             if (desc != null && !desc.isEmpty()) {

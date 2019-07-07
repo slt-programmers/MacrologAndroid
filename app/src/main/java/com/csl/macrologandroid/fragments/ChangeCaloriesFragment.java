@@ -53,7 +53,6 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
 
         SeekBar slider = view.findViewById(R.id.slider);
         slider.setMax(4000 - 1200);
-//        slider.setMin(1200);
         slider.setProgress((int) goalCalories - 1200);
 
         slider.setOnSeekBarChangeListener(seekBarChangeListener);
@@ -79,7 +78,7 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            goalCalories = progress + 1200;
+            goalCalories = (double) progress + 1200;
             caloriesView.setText(String.valueOf(Math.round(goalCalories)));
             goalCarbs = calculateCarbs();
             carbsView.setText(String.valueOf(Math.round(goalCarbs)));
