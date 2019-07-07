@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public class MealsFragment extends Fragment {
 
     public MealsFragment() {
+        // Non arg constructor
     }
 
     @Override

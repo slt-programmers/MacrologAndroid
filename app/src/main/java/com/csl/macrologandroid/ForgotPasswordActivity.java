@@ -60,7 +60,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            // Not needed
         }
 
         @Override
@@ -74,7 +74,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-
+            // Not needed
         }
     };
 

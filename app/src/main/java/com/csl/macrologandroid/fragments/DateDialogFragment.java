@@ -43,7 +43,7 @@ public class DateDialogFragment extends DialogFragment {
         Objects.requireNonNull(dateInputLayout.getEditText()).addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                // Not needed
             }
 
             @Override
@@ -58,7 +58,7 @@ public class DateDialogFragment extends DialogFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                // Not needed
             }
         });
         Objects.requireNonNull(dateInputLayout.getEditText()).setText(DateParser.format(currentDate));

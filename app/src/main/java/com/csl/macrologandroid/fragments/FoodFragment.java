@@ -66,7 +66,7 @@ public class FoodFragment extends Fragment {
     private RadioGroup radioGroup;
 
     public FoodFragment() {
-        // Required empty public constructor
+        // Non arg constructor
     }
 
     @Override
@@ -343,7 +343,7 @@ public class FoodFragment extends Fragment {
     private final TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            // Not needed
         }
 
         @Override
@@ -356,7 +356,7 @@ public class FoodFragment extends Fragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-
+            // Not needed
         }
     };
 

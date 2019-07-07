@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.Disposable;
 
-public class DiaryFragment extends Fragment implements Serializable {
+public class DiaryFragment extends Fragment {
 
     private static final int ADD_LOG_ENTRY_ID = 345;
     private static final int EDIT_LOG_ENTRY_ID = 456;
@@ -57,6 +57,7 @@ public class DiaryFragment extends Fragment implements Serializable {
     private DiaryPagerAdaper adapter;
 
     public DiaryFragment() {
+        // Non arg constructor
     }
 
     @Override
@@ -75,6 +76,9 @@ public class DiaryFragment extends Fragment implements Serializable {
                     invalidateCache();
                     setupViewPager(view);
                 }
+                break;
+            }
+            default: {
                 break;
             }
         }
@@ -187,6 +191,7 @@ public class DiaryFragment extends Fragment implements Serializable {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
+                // Not needed
             }
 
             @Override
@@ -198,6 +203,7 @@ public class DiaryFragment extends Fragment implements Serializable {
 
             @Override
             public void onPageScrollStateChanged(int i) {
+                // Not needed
             }
         });
 

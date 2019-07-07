@@ -63,6 +63,9 @@ public class UserFragment extends Fragment {
                     onLogoutPressedListener.onLogoutPressed();
                 }
             }
+            default: {
+                break;
+            }
         }
     }
 

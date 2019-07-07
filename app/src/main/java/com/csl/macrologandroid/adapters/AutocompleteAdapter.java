@@ -1,8 +1,10 @@
 package com.csl.macrologandroid.adapters;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +31,8 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public @Nullable String getItem(int position) {
+    public @Nullable
+    String getItem(int position) {
         return dataList.get(position);
     }
 
@@ -49,7 +52,9 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
     @NonNull
     @Override
     public Filter getFilter() {
+
         return new Filter() {
+
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
@@ -61,41 +66,47 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
                     results.values = allItems;
                     results.count = allItems.size();
                 } else {
-//                    List<String> filteredList = allItems.stream()
-//                            .filter(s -> s.toLowerCase().contains(constraint.toString().toLowerCase()))
-//                            .collect(Collectors.toList());
-
-                    List<String> filteredList = new ArrayList<>();
-                    for(String item: allItems){
-                        if (item.toLowerCase().contains(constraint.toString().toLowerCase())) {
-                            filteredList.add(item);
-                        }
-                    }
+                    List<String> filteredList = getFilteredList(constraint);
                     results.values = filteredList;
                     results.count = filteredList.size();
                 }
                 return results;
             }
 
+            private List<String> getFilteredList(CharSequence constraint) {
+                List<String> filteredList = new ArrayList<>();
+                for (String item : allItems) {
+                    if (item.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        filteredList.add(item);
+                    }
+                }
+                return filteredList;
+            }
+
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results.values instanceof ArrayList) {
-                    List untyped = (ArrayList) results.values;
-                    List<String> typed = new ArrayList<>();
-                    for (Object item : untyped) {
-                        if (item instanceof String) {
-                            typed.add((String)item);
-                        }
-                    }
-                    dataList = typed;
+                    dataList = getTypedList(results);
                 } else {
                     dataList = null;
                 }
+
                 if (results.count > 0) {
                     notifyDataSetChanged();
                 } else {
                     notifyDataSetInvalidated();
                 }
+            }
+
+            private List<String> getTypedList(FilterResults results) {
+                List untyped = (ArrayList) results.values;
+                List<String> typed = new ArrayList<>();
+                for (Object item : untyped) {
+                    if (item instanceof String) {
+                        typed.add((String) item);
+                    }
+                }
+                return typed;
             }
         };
 

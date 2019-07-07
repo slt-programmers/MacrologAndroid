@@ -86,10 +86,12 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
+            // Not needed
         }
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
+            // Not needed
         }
     };
 
@@ -100,7 +102,6 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
         bundle.putInt("goalFat", Integer.valueOf(String.valueOf(Math.round(goalFat))));
         bundle.putInt("goalCarbs", Integer.valueOf(String.valueOf(Math.round(goalCarbs))));
         return bundle;
-
     }
 
 }

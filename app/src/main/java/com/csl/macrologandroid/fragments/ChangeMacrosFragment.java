@@ -1,8 +1,11 @@
 package com.csl.macrologandroid.fragments;
 
 import android.os.Bundle;
+
 import com.google.android.material.textfield.TextInputEditText;
+
 import androidx.fragment.app.Fragment;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -71,12 +74,12 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
     private final TextWatcher textwatcher = new TextWatcher() {
         @Override
         public void afterTextChanged(Editable s) {
-
+            // Not needed
         }
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start,
-        int count, int after) {
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            // Not needed
         }
 
         @Override

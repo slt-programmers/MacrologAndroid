@@ -51,6 +51,7 @@ public class UserSettingsResponse implements Serializable {
     private int goalCarbs;
 
     public UserSettingsResponse() {
+        // Non arg constructor
     }
 
     public String getName() {
