@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.csl.macrologandroid.cache.UserSettingsCache;
 import com.csl.macrologandroid.dtos.WeightRequest;
 import com.csl.macrologandroid.fragments.WeighDialogFragment;
+import com.csl.macrologandroid.graphs.LineGraph;
 import com.csl.macrologandroid.services.WeightService;
 import com.csl.macrologandroid.util.DateParser;
 
@@ -34,6 +36,7 @@ public class WeightChartActivity extends AppCompatActivity {
     private TableLayout weightTable;
     private TableRow weightTableHeader;
     private boolean hasBeenEdited;
+    private View graphView;
 
     @Override
     public void onCreate(Bundle bundle) {
@@ -41,10 +44,13 @@ public class WeightChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_weight_chart);
 
         currentWeightTextView = findViewById(R.id.current_weight_number);
-        weightTable = findViewById(R.id.weight_table);
-        weightTableHeader = findViewById(R.id.weight_table_header);
+        graphView = findViewById(R.id.graph_view);
+        graphView = new LineGraph(this);
 
-        loadMeasurements();
+//        weightTable = findViewById(R.id.weight_table);
+//        weightTableHeader = findViewById(R.id.weight_table_header);
+//
+//        loadMeasurements();
 
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> {
