@@ -1,3 +1,3 @@
-# MacrologAndroid
+# Macrolog Android
 
-# Initial Commit
+## Ownership has been transfered to SLT Programmers
