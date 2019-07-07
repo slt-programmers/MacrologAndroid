@@ -279,7 +279,7 @@ public class DiaryFragment extends Fragment implements Serializable {
         long difference = new Date().getTime() - date.getTime();
         long days = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
         if (days < 0) {
-            days -=1;
+            days -= 1;
         }
         return 501 - (int) days;
     }

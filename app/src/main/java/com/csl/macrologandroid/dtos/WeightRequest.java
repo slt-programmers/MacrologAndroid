@@ -18,9 +18,9 @@ public class WeightRequest implements Serializable {
 
     @Expose
     @SerializedName("day")
-    private final Date day;
+    private final String day;
 
-    public WeightRequest(Long id, double weight, Date day) {
+    public WeightRequest(Long id, double weight, String day) {
         this.id = id;
         this.weight = weight;
         this.day = day;
@@ -30,7 +30,7 @@ public class WeightRequest implements Serializable {
         return weight;
     }
 
-    public Date getDay() {
+    public String getDay() {
         return day;
     }
 

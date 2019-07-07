@@ -3,7 +3,9 @@ package com.csl.macrologandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -81,9 +83,9 @@ public class WeightChartActivity extends AppCompatActivity {
 
     private void sortWeightRequestsByDate() {
         Collections.sort(weightRequests, (o1, o2) -> {
-            if (o1.getDay().before(o2.getDay())) {
+            if (DateParser.parse(o1.getDay()).before(DateParser.parse(o2.getDay()))) {
                 return 1;
-            } else if (o1.getDay().after(o2.getDay())){
+            } else if (DateParser.parse(o1.getDay()).after(DateParser.parse(o2.getDay()))) {
                 return -1;
             } else {
                 return 0;
@@ -103,7 +105,7 @@ public class WeightChartActivity extends AppCompatActivity {
 
             TextView date = new TextView(getApplicationContext());
             date.setTextAppearance(R.style.AppTheme);
-            date.setText(DateParser.format(weightRequest.getDay()));
+            date.setText(weightRequest.getDay());
             date.setTextColor(getResources().getColor(R.color.white, null));
             date.setTextSize(20);
             date.setLayoutParams(new TableRow.LayoutParams(-2, -2, 1.0f));
@@ -125,10 +127,10 @@ public class WeightChartActivity extends AppCompatActivity {
 
     private double getCurrentWeight() {
         List<WeightRequest> weightList = weightRequests;
-        Collections.sort(weightList,(o1, o2) -> {
-            if (o1.getDay().before(o2.getDay())) {
+        Collections.sort(weightList, (o1, o2) -> {
+            if (DateParser.parse(o1.getDay()).before(DateParser.parse(o2.getDay()))) {
                 return 1;
-            } else if (o1.getDay().after(o2.getDay())){
+            } else if (DateParser.parse(o1.getDay()).after(DateParser.parse(o2.getDay()))) {
                 return -1;
             } else {
                 return 0;
