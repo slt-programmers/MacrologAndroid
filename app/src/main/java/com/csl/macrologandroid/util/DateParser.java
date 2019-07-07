@@ -9,16 +9,17 @@ import java.util.Locale;
 
 public class DateParser {
 
-    private static final SimpleDateFormat standardFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.forLanguageTag("nl"));
-    private static final SimpleDateFormat shortFormat = new SimpleDateFormat("yyyy-M-d", Locale.forLanguageTag("nl"));
-    private static final SimpleDateFormat reversedFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.forLanguageTag("nl"));
-    private static final SimpleDateFormat reversedShortFormat = new SimpleDateFormat("d-M-yyyy", Locale.forLanguageTag("nl"));
-
     public static String format(Date date) {
+        SimpleDateFormat standardFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return standardFormat.format(date);
     }
 
     public static Date parse(String string) {
+        SimpleDateFormat standardFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat shortFormat = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
+        SimpleDateFormat reversedFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        SimpleDateFormat reversedShortFormat = new SimpleDateFormat("d-M-yyyy", Locale.getDefault());
+
         Date date = null;
         try {
             date = standardFormat.parse(string);
