@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class DateParser {
 
-    private DateParser() {
+    protected DateParser() {
         // No arg constructor
     }
 
@@ -25,20 +25,25 @@ public class DateParser {
         SimpleDateFormat reversedShortFormat = new SimpleDateFormat("d-M-yyyy", Locale.getDefault());
 
         Date date = null;
-        try {
-            date = standardFormat.parse(string);
-        } catch (ParseException ex) {
+
+        if (string.charAt(4) == '-' && (string.charAt(6) == '-' || string.charAt(7) == '-')) {
             try {
-                date = shortFormat.parse(string);
-            } catch (ParseException ex2) {
+                date = standardFormat.parse(string);
+            } catch (ParseException ex) {
                 try {
-                    date = reversedFormat.parse(string);
-                } catch (ParseException ex3) {
-                    try {
-                        date = reversedShortFormat.parse(string);
-                    } catch (ParseException ex4) {
-                        Log.e(DateParser.class.toString(), "Could not parse to Date");
-                    }
+                    date = shortFormat.parse(string);
+                } catch (ParseException ex2) {
+                    Log.e(DateParser.class.toString(), "Could not parse to Date");
+                }
+            }
+        } else {
+            try {
+                date = reversedFormat.parse(string);
+            } catch (ParseException ex3) {
+                try {
+                    date = reversedShortFormat.parse(string);
+                } catch (ParseException ex4) {
+                    Log.e(DateParser.class.toString(), "Could not parse to Date");
                 }
             }
         }

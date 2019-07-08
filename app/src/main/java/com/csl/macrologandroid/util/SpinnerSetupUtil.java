@@ -27,7 +27,7 @@ public class SpinnerSetupUtil {
         return null;
     }
 
-    public List<String> getPortionList(FoodResponse selectedFood) {
+    private List<String> getPortionList(FoodResponse selectedFood) {
         List<String> list = new ArrayList<>();
         for (PortionResponse portion : selectedFood.getPortions()) {
             String desc = portion.getDescription();

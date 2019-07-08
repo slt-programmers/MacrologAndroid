@@ -3,17 +3,7 @@ package com.csl.macrologandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
-
-import com.csl.macrologandroid.util.SpinnerSetupUtil;
-import com.google.android.material.textfield.TextInputEditText;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatCheckedTextView;
-import androidx.appcompat.widget.AppCompatTextView;
-
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -23,15 +13,21 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckedTextView;
+import androidx.appcompat.widget.AppCompatTextView;
+
 import com.csl.macrologandroid.adapters.AutocompleteAdapter;
 import com.csl.macrologandroid.dtos.FoodResponse;
 import com.csl.macrologandroid.dtos.LogEntryRequest;
 import com.csl.macrologandroid.dtos.PortionResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.models.Meal;
-import com.csl.macrologandroid.services.LogEntryService;
 import com.csl.macrologandroid.services.FoodService;
+import com.csl.macrologandroid.services.LogEntryService;
 import com.csl.macrologandroid.util.DateParser;
+import com.csl.macrologandroid.util.SpinnerSetupUtil;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.Serializable;
 import java.util.ArrayList;
