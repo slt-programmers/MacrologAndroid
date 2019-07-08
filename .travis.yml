@@ -20,3 +20,7 @@ addons:
 
 script:
 - ./gradlew sonarqube
+
+notifications:
+  slack: homeworkcarmenarjan:YreL13iWQ3xpqtXLpudbTy2m
+    on_succes: change
