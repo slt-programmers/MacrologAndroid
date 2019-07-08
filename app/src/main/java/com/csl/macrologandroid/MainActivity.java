@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     @Override
     public void onPause() {
         super.onPause();
-        Session.getInstance().resetTimestamp();
+        Session.resetTimestamp();
     }
 
     private void logout() {

@@ -46,7 +46,6 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
         CheckedTextView strName = (CheckedTextView) convertView;
         strName.setText(getItem(position));
         return convertView;
-
     }
 
     @NonNull
@@ -58,35 +57,20 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-                if (allItems == null) {
-                    allItems = new ArrayList<>(dataList);
-                }
 
-                if (constraint == null || constraint.length() == 0) {
-                    results.values = allItems;
-                    results.count = allItems.size();
-                } else {
-                    List<String> filteredList = getFilteredList(constraint);
-                    results.values = filteredList;
-                    results.count = filteredList.size();
-                }
+                checkAllItemsNull();
+
+                List<String> values = getFilteredList(constraint);
+                results.values = values;
+                results.count = values.size();
+
                 return results;
-            }
-
-            private List<String> getFilteredList(CharSequence constraint) {
-                List<String> filteredList = new ArrayList<>();
-                for (String item : allItems) {
-                    if (item.toLowerCase().contains(constraint.toString().toLowerCase())) {
-                        filteredList.add(item);
-                    }
-                }
-                return filteredList;
             }
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results.values instanceof ArrayList) {
-                    dataList = getTypedList(results);
+                    dataList = getTypedList(results.values);
                 } else {
                     dataList = null;
                 }
@@ -97,18 +81,39 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
                     notifyDataSetInvalidated();
                 }
             }
-
-            private List<String> getTypedList(FilterResults results) {
-                List untyped = (ArrayList) results.values;
-                List<String> typed = new ArrayList<>();
-                for (Object item : untyped) {
-                    if (item instanceof String) {
-                        typed.add((String) item);
-                    }
-                }
-                return typed;
-            }
         };
 
     }
+
+    private void checkAllItemsNull() {
+        if (allItems == null) {
+            allItems = new ArrayList<>(dataList);
+        }
+    }
+
+    private List<String> getFilteredList(CharSequence constraint) {
+        if (constraint == null || constraint.length() == 0) {
+            return allItems;
+        } else {
+            List<String> filteredList = new ArrayList<>();
+            for (String item : allItems) {
+                if (item.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                    filteredList.add(item);
+                }
+            }
+            return filteredList;
+        }
+    }
+
+    private List<String> getTypedList(Object values) {
+        List untyped = (ArrayList) values;
+        List<String> typed = new ArrayList<>();
+        for (Object item : untyped) {
+            if (item instanceof String) {
+                typed.add((String) item);
+            }
+        }
+        return typed;
+    }
+
 }

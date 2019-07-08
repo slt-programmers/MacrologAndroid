@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        Session.getInstance().resetTimestamp();
+        Session.resetTimestamp();
     }
 
     @Override

@@ -144,7 +144,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        Session.getInstance().resetTimestamp();
+        Session.resetTimestamp();
     }
 
     @Override

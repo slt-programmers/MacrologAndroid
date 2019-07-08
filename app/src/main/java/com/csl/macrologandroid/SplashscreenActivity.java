@@ -54,7 +54,7 @@ public class SplashscreenActivity extends AppCompatActivity {
         Intent intent = getIntent();
         expired = (Boolean) intent.getSerializableExtra("SESSION_EXPIRED");
 
-        Session.getInstance().resetTimestamp();
+        Session.resetTimestamp();
 
         doHealthCheck();
     }

@@ -29,7 +29,7 @@ public class Session {
         return THRESHOLD <= minutes;
     }
 
-    public void resetTimestamp() {
+    public static void resetTimestamp() {
         timestamp = Calendar.getInstance().getTime();
     }
 
