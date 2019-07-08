@@ -14,7 +14,6 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -73,6 +72,22 @@ public class AddLogEntryActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (Session.getInstance().isExpired()) {
+            Intent intent = new Intent(AddLogEntryActivity.this, SplashscreenActivity.class);
+            intent.putExtra("SESSION_EXPIRED", true);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Session.resetTimestamp();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_log_entry);
@@ -113,23 +128,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
             startActivityForResult(addFoodIntent, ADD_FOOD_ID);
         });
     }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Session.resetTimestamp();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (Session.getInstance().isExpired()) {
-            Intent intent = new Intent(AddLogEntryActivity.this, SplashscreenActivity.class);
-            intent.putExtra("SESSION_EXPIRED", true);
-            startActivity(intent);
-        }
-    }
-
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
