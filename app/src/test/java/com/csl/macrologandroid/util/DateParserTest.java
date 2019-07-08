@@ -12,10 +12,10 @@ public class DateParserTest {
     @Test
     public void format() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2018, 5, 14);
+        calendar.set(2018, 4, 14);
         Date date = calendar.getTime();
 
-        assertEquals(DateParser.format(date), "2018-05-14");
+        assertEquals("2018-05-14", DateParser.format(date));
     }
 
     @Test
@@ -32,10 +32,10 @@ public class DateParserTest {
         String date10 = "1-7-2019";
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2018, 4, 14, 0,0,0);
+        calendar.set(2018, 4, 14, 0, 0, 0);
         Date resultDate = calendar.getTime();
 
-        calendar.set(2019, 6, 1,0,0,0);
+        calendar.set(2019, 6, 1, 0, 0, 0);
         Date resultDate2 = calendar.getTime();
 
         assertEquals(DateParser.format(DateParser.parse(date1)), DateParser.format(resultDate));
