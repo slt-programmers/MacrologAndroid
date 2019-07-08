@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         Button mRegisterButton = findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(v -> attemptRegister());
 
-        authService = new AuthenticationService();
+        authService = new AuthenticationService(getToken());
 
     }
 
@@ -266,6 +266,11 @@ public class LoginActivity extends AppCompatActivity {
                 .putString("USER", result.getName())
                 .putString("TOKEN", result.getToken())
                 .apply();
+    }
+
+
+    private String getToken() {
+        return getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 
 }

@@ -1,11 +1,6 @@
 package com.csl.macrologandroid.services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-
 import com.csl.macrologandroid.BuildConfig;
-import com.csl.macrologandroid.MainActivity;
 import com.csl.macrologandroid.dtos.SettingsResponse;
 import com.csl.macrologandroid.dtos.UserSettingsResponse;
 
@@ -21,12 +16,11 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
 
-public class UserService extends Service {
+public class UserService {
 
-    private final ApiService apiService;
+    private ApiService apiService;
 
-    public UserService() {
-        String token = MainActivity.getPreferences().getString("TOKEN", "");
+    public UserService(String token) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -45,11 +39,6 @@ public class UserService extends Service {
                 .build();
 
         apiService = retrofit.create(ApiService.class);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     // Gets current weight from weight repository

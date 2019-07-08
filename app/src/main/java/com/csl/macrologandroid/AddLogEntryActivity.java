@@ -79,8 +79,8 @@ public class AddLogEntryActivity extends AppCompatActivity {
         selectedDate = (Date) intent.getSerializableExtra("DATE");
         meal = (Meal) intent.getSerializableExtra("MEAL");
 
-        foodService = new FoodService();
-        logService = new LogEntryService();
+        foodService = new FoodService(getToken());
+        logService = new LogEntryService(getToken());
         foodDisposable = foodService.getAlFood()
                 .subscribe(res -> {
                     allFood = res;
@@ -364,5 +364,9 @@ public class AddLogEntryActivity extends AppCompatActivity {
             default:
                 spinner.setSelection(3);
         }
+    }
+
+    private String getToken() {
+        return getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 }

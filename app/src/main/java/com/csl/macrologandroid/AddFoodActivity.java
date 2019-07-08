@@ -2,10 +2,14 @@ package com.csl.macrologandroid;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -190,7 +194,7 @@ public class AddFoodActivity extends AppCompatActivity {
         if (foodResponse != null) {
             newFood.setId(foodResponse.getId());
         }
-        FoodService foodService = new FoodService();
+        FoodService foodService = new FoodService(getToken());
         disposable = foodService.postFood(newFood)
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
@@ -263,4 +267,7 @@ public class AddFoodActivity extends AppCompatActivity {
         return allFoodNames.contains(foodName);
     }
 
+    private String getToken() {
+        return getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+    }
 }

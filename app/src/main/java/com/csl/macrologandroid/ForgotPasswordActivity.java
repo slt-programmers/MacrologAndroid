@@ -9,6 +9,8 @@ import android.widget.Button;
 
 import com.csl.macrologandroid.services.AuthenticationService;
 
+import java.util.Objects;
+
 import io.reactivex.disposables.Disposable;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -47,7 +49,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             if (!email.contains("@")) {
                 emailEditText.setError(getResources().getString(R.string.error_invalid_email));
             } else {
-                AuthenticationService authService = new AuthenticationService();
+                AuthenticationService authService = new AuthenticationService(getToken());
                 disposable = authService.resetPassword(email)
                         .subscribe(
                                 res -> finish(),
@@ -78,4 +80,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         }
     };
 
+
+    private String getToken() {
+        return getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+    }
 }

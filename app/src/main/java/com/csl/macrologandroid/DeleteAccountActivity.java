@@ -39,7 +39,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
         TextInputLayout passwordLayout = findViewById(R.id.password_layout);
         String password = Objects.requireNonNull(passwordLayout.getEditText()).getText().toString();
 
-        AuthenticationService authService = new AuthenticationService();
+        AuthenticationService authService = new AuthenticationService(getToken());
         disposable = authService.deleteAccount(password)
                 .subscribe(res -> {
                     UserSettingsCache.getInstance().clearCache();
@@ -65,5 +65,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
         if (disposable != null) {
             disposable.dispose();
         }
+    }
+
+    private String getToken() {
+        return getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 }

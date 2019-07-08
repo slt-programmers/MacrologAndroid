@@ -31,6 +31,8 @@ import java.util.Locale;
 
 import io.reactivex.disposables.Disposable;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class DiaryPagerAdaper extends PagerAdapter {
 
     private final Context context;
@@ -55,7 +57,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     public DiaryPagerAdaper(Context context) {
         this.context = context;
-        this.service = new LogEntryService();
+        this.service = new LogEntryService(context.getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", ""));
     }
 
     public void setSelectedDate(Date date) {

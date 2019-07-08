@@ -1,11 +1,6 @@
 package com.csl.macrologandroid.services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-
 import com.csl.macrologandroid.BuildConfig;
-import com.csl.macrologandroid.MainActivity;
 import com.csl.macrologandroid.dtos.WeightRequest;
 
 import java.util.List;
@@ -22,12 +17,11 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-public class WeightService extends Service {
+public class WeightService {
 
     private final ApiService apiService;
 
-    public WeightService() {
-        String token = MainActivity.getPreferences().getString("TOKEN", "");
+    public WeightService(String token) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -46,12 +40,6 @@ public class WeightService extends Service {
                 .build();
 
         apiService = retrofit.create(ApiService.class);
-    }
-
-    @SuppressWarnings("SameReturnValue")
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     public Observable<List<WeightRequest>> getAllMeasurements() {

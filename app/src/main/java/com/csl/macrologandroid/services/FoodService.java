@@ -1,12 +1,7 @@
 package com.csl.macrologandroid.services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-
 import com.csl.macrologandroid.BuildConfig;
 import com.csl.macrologandroid.dtos.FoodResponse;
-import com.csl.macrologandroid.MainActivity;
 
 import java.util.List;
 
@@ -23,12 +18,11 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-public class FoodService extends Service {
+public class FoodService {
 
     private final ApiService apiService;
 
-    public FoodService() {
-        String token = MainActivity.getPreferences().getString("TOKEN", "");
+    public FoodService(String token) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -47,11 +41,6 @@ public class FoodService extends Service {
                 .build();
 
         apiService = retrofit.create(ApiService.class);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     public Observable<List<FoodResponse>> getAlFood() {

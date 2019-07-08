@@ -40,6 +40,7 @@ import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
 public class FoodFragment extends Fragment {
@@ -201,7 +202,7 @@ public class FoodFragment extends Fragment {
 
     private void refreshAllFood() {
         FoodCache.getInstance().clearCache();
-        FoodService foodService = new FoodService();
+        FoodService foodService = new FoodService(getToken());
         disposable = foodService.getAlFood()
                 .subscribe((res) ->
                 {
@@ -338,6 +339,10 @@ public class FoodFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f);
         view.setLayoutParams(lp);
         view.setGravity(Gravity.END);
+    }
+
+    private String getToken() {
+        return Objects.requireNonNull(this.getContext()).getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 
     private final TextWatcher watcher = new TextWatcher() {

@@ -64,7 +64,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
     private Button saveButton;
 
-    private final UserService userService = new UserService();
+    private UserService userService;
     private Disposable disposable;
     private TextInputLayout editBirthdayLayout;
 
@@ -227,6 +227,8 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     }
 
     private List<Observable<ResponseBody>> fillObsList(UserSettingsResponse userSettings, Date newDate, String newBirthday) {
+        userService = new UserService(getToken());
+
         List<Observable<ResponseBody>> obsList = new ArrayList<>();
 
         String newName = Objects.requireNonNull(editName.getText()).toString();
@@ -306,6 +308,10 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         } else {
             saveButton.setEnabled(false);
         }
+    }
+
+    private String getToken() {
+        return this.getApplicationContext().getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 
     private final TextWatcher textChangedListener = new TextWatcher() {

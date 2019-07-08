@@ -86,7 +86,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         String oldPassword = Objects.requireNonNull(oldPasswordView.getText()).toString();
         if (newPassword.equals(confirmPassword)) {
             if (!oldPassword.equals(newPassword)) {
-                AuthenticationService service = new AuthenticationService();
+                AuthenticationService service = new AuthenticationService(getToken());
                 disposable = service.changePassword(oldPassword, newPassword, confirmPassword)
                 .subscribe(
                         res -> finish(),
@@ -103,5 +103,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
             errorTextView.setText(R.string.must_be_same_passwords);
             errorTextView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private String getToken() {
+        return getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 }

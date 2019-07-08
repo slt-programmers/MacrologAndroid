@@ -58,7 +58,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             userSettings = (UserSettingsResponse) intent.getSerializableExtra("userSettings");
         }
 
-        service = new UserService();
+        service = new UserService(getToken());
         if (userSettings == null) {
             disposable = service.getUserSettings().subscribe(
                     res -> {
@@ -158,5 +158,9 @@ public class AdjustIntakeActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    private String getToken() {
+        return getApplicationContext().getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 }

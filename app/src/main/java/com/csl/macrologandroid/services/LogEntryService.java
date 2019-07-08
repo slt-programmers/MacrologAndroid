@@ -1,13 +1,8 @@
 package com.csl.macrologandroid.services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-
 import com.csl.macrologandroid.BuildConfig;
 import com.csl.macrologandroid.dtos.LogEntryRequest;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
-import com.csl.macrologandroid.MainActivity;
 import com.csl.macrologandroid.util.DateParser;
 
 import java.util.Date;
@@ -28,12 +23,11 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public class LogEntryService extends Service {
+public class LogEntryService {
 
     private final ApiService apiService;
 
-    public LogEntryService() {
-        String token = MainActivity.getPreferences().getString("TOKEN", "");
+    public LogEntryService(String token) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -53,11 +47,6 @@ public class LogEntryService extends Service {
                 .build();
 
         apiService = retrofit.create(ApiService.class);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     public Observable<List<LogEntryResponse>> getLogsForDay(Date date) {

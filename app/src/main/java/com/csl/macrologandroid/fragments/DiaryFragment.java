@@ -42,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.disposables.Disposable;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class DiaryFragment extends Fragment {
 
     private static final int ADD_LOG_ENTRY_ID = 345;
@@ -97,7 +99,7 @@ public class DiaryFragment extends Fragment {
 
         UserSettingsResponse userSettings = UserSettingsCache.getInstance().getCache();
         if (userSettings == null) {
-            UserService userService = new UserService();
+            UserService userService = new UserService(getToken());
             disposable = userService.getUserSettings()
                     .subscribe(res -> {
                                 UserSettingsCache.getInstance().updateCache(res);
@@ -303,5 +305,9 @@ public class DiaryFragment extends Fragment {
 
         });
         dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "WeighDialogFragment");
+    }
+
+    private String getToken() {
+        return Objects.requireNonNull(this.getContext()).getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 }

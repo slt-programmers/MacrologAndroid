@@ -1,11 +1,6 @@
 package com.csl.macrologandroid.services;
 
-import android.app.Service;
-import android.content.Intent;
-import android.os.IBinder;
-
 import com.csl.macrologandroid.BuildConfig;
-import com.csl.macrologandroid.MainActivity;
 import com.csl.macrologandroid.dtos.AuthenticationRequest;
 import com.csl.macrologandroid.dtos.AuthenticationResponse;
 import com.csl.macrologandroid.dtos.ChangePasswordRequest;
@@ -24,14 +19,13 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public class AuthenticationService extends Service {
+public class AuthenticationService {
 
     private final ApiService apiService;
 
     private final ApiService apiServiceWithBearer;
 
-    public AuthenticationService() {
-        String token = MainActivity.getPreferences().getString("TOKEN", "");
+    public AuthenticationService(String token) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Request original = chain.request();
@@ -49,11 +43,6 @@ public class AuthenticationService extends Service {
 
         apiService = builder.build().create(ApiService.class);
         apiServiceWithBearer = builder.client(client.build()).build().create(ApiService.class);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     // The username field is used for both username and email when logging in

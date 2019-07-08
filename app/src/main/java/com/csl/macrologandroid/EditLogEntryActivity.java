@@ -43,6 +43,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -110,9 +111,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_log_entry);
 
         selectedDate = (Date) getIntent().getSerializableExtra("DATE");
-        logEntryService = new LogEntryService();
+        logEntryService = new LogEntryService(getToken());
 
-        foodService = new FoodService();
+        foodService = new FoodService(getToken());
         foodDisposable = foodService.getAlFood()
                 .subscribe(res -> {
                     allFood = res;
@@ -607,6 +608,10 @@ public class EditLogEntryActivity extends AppCompatActivity {
             default:
                 spinner.setSelection(3);
         }
+    }
+
+    private String getToken() {
+        return getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 
 }

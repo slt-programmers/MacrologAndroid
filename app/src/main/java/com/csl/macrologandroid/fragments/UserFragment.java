@@ -30,7 +30,11 @@ import com.csl.macrologandroid.services.UserService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import io.reactivex.disposables.Disposable;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class UserFragment extends Fragment {
 
@@ -148,7 +152,7 @@ public class UserFragment extends Fragment {
     }
 
     private void fetchUserSettings() {
-        UserService userService = new UserService();
+        UserService userService = new UserService(getToken());
         settingsDisposable = userService.getUserSettings()
                 .subscribe(
                         res -> {
@@ -225,4 +229,7 @@ public class UserFragment extends Fragment {
         void onLogoutPressed();
     }
 
+    private String getToken() {
+        return Objects.requireNonNull(this.getContext()).getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+    }
 }

@@ -2,11 +2,12 @@ package com.csl.macrologandroid;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.StrictMode;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -25,9 +26,7 @@ import com.csl.macrologandroid.notifications.NotificationSender;
 public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener {
 
     private static final int SUCCESSFUL_LOGIN = 789;
-    private static final int SUCCESFULL_REGISTER = 890;
-
-    private static SharedPreferences preferences;
+    private static final int SUCCESFUL_REGISTER = 890;
 
     private BottomNavigationView navigation;
 
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (SUCCESSFUL_LOGIN):
-            case (SUCCESFULL_REGISTER): {
+            case (SUCCESFUL_REGISTER): {
                 if (resultCode == Activity.RESULT_OK) {
                     DiaryLogCache.getInstance().clearCache();
                     navigation.setSelectedItemId(R.id.navigation_diary);
@@ -74,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         setContentView(R.layout.activity_main);
 
         NotificationSender.initNotificationSending(getApplicationContext());
-
-        preferences = getSharedPreferences("AUTH", MODE_PRIVATE);
 
         setFragment(new DiaryFragment());
         navigation = findViewById(R.id.navigation);
@@ -103,17 +100,13 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         Session.getInstance().resetTimestamp();
     }
 
-    public static SharedPreferences getPreferences() {
-        return preferences;
-    }
-
     private void logout() {
         getSharedPreferences("AUTH", MODE_PRIVATE).edit().remove("TOKEN").remove("USER").apply();
         UserSettingsCache.getInstance().clearCache();
         FoodCache.getInstance().clearCache();
         DiaryLogCache.getInstance().clearCache();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivityForResult(intent, SUCCESFULL_REGISTER);
+        startActivityForResult(intent, SUCCESFUL_REGISTER);
         navigation.callOnClick();
     }
 

@@ -24,6 +24,7 @@ import com.csl.macrologandroid.util.DateParser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -70,7 +71,7 @@ public class WeightChartActivity extends AppCompatActivity {
     }
 
     private void loadMeasurements() {
-        WeightService weightService = new WeightService();
+        WeightService weightService = new WeightService(getToken());
         disposable = weightService.getAllMeasurements()
                 .subscribe(res -> {
                     weightRequests = res;
@@ -150,7 +151,7 @@ public class WeightChartActivity extends AppCompatActivity {
         dialog.setOnDialogResult(new WeighDialogFragment.OnDialogResult() {
             @Override
             public void finish(WeightRequest weightRequest) {
-                WeightService weightService = new WeightService();
+                WeightService weightService = new WeightService(getToken());
                 disposable = weightService.postMeasurement(weightRequest)
                         .subscribe(
                                 res -> {
@@ -165,4 +166,7 @@ public class WeightChartActivity extends AppCompatActivity {
         dialog.show(getSupportFragmentManager(), "WeighDialogFragment");
     }
 
+    private String getToken() {
+        return getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+    }
 }

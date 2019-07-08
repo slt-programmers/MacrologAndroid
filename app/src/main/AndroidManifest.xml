@@ -77,27 +77,6 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name="com.csl.macrologandroid.services.HealthcheckService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name="com.csl.macrologandroid.services.UserService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name="com.csl.macrologandroid.services.LogEntryService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name="com.csl.macrologandroid.services.FoodService"
-            android:enabled="true"
-            android:exported="false" />
-        <service
-            android:name="com.csl.macrologandroid.services.AuthenticationService"
-            android:enabled="true"
-            android:exported="false" />
-        <service android:name="com.csl.macrologandroid.services.WeightService" />
     </application>
 
 </manifest>
