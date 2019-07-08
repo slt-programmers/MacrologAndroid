@@ -62,6 +62,7 @@ public class UserFragment extends Fragment {
                 if (resultCode == Activity.RESULT_OK) {
                     onLogoutPressedListener.onLogoutPressed();
                 }
+                break;
             }
             default: {
                 break;

@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
                 }
                 break;
             }
+            default: {
+                break;
+            }
         }
     }
 
