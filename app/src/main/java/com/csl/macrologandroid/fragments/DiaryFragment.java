@@ -80,18 +80,14 @@ public class DiaryFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (ADD_LOG_ENTRY_ID):
-            case (EDIT_LOG_ENTRY_ID): {
-                checkResultCode(resultCode);
+            case (EDIT_LOG_ENTRY_ID):
+                if (resultCode == Activity.RESULT_OK) {
+                    invalidateCache();
+                    setupViewPager(view);
+                }
                 break;
-            }
-            default: break;
-        }
-    }
-
-    private void checkResultCode(int resultCode) {
-        if (resultCode == Activity.RESULT_OK) {
-            invalidateCache();
-            setupViewPager(view);
+            default:
+                break;
         }
     }
 

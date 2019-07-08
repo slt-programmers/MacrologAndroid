@@ -45,7 +45,6 @@ import com.csl.macrologandroid.util.DateParser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -182,7 +181,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
             addFoodIntent.putExtra("FOOD_NAME", foodTextView.getText().toString());
             startActivityForResult(addFoodIntent, ADD_FOOD_ID);
         });
-
     }
 
     @Override
@@ -458,42 +456,11 @@ public class EditLogEntryActivity extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mealtypeSpinner.setAdapter(dataAdapter);
 
-        if (meal == null) {
-            setMealBasedOnTime(mealtypeSpinner);
-            mealtypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    switch (((AppCompatTextView) view).getText().toString()) {
-                        case "Breakfast":
-                            selectedMeal = Meal.BREAKFAST;
-                            break;
-                        case "Lunch":
-                            selectedMeal = Meal.LUNCH;
-                            break;
-                        case "Dinner":
-                            selectedMeal = Meal.DINNER;
-                            break;
-                        case "Snacks":
-                            selectedMeal = Meal.SNACKS;
-                            break;
-                        default:
-                            selectedMeal = Meal.BREAKFAST;
-                    }
-                    foodTextView.requestFocus();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    // Not needed
-                }
-            });
-        } else {
-            selectedMeal = meal;
-            String capitalizedString = meal.toString().substring(0, 1).toUpperCase() + meal.toString().substring(1).toLowerCase();
-            mealtypeSpinner.setSelection(list.indexOf(capitalizedString));
-            mealtypeSpinner.setEnabled(false);
-            mealtypeSpinner.setClickable(false);
-        }
+        selectedMeal = meal;
+        String capitalizedString = meal.toString().substring(0, 1).toUpperCase() + meal.toString().substring(1).toLowerCase();
+        mealtypeSpinner.setSelection(list.indexOf(capitalizedString));
+        mealtypeSpinner.setEnabled(false);
+        mealtypeSpinner.setClickable(false);
     }
 
     private void setupPortionSpinner(Spinner foodPortion, LogEntryResponse entry, TextInputEditText foodAmount) {
@@ -588,28 +555,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
         if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    private void setMealBasedOnTime(Spinner spinner) {
-        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        switch (hour) {
-            case 7:
-            case 8:
-            case 9:
-                spinner.setSelection(0);
-                break;
-            case 12:
-            case 13:
-                spinner.setSelection(1);
-                break;
-            case 17:
-            case 18:
-            case 19:
-                spinner.setSelection(2);
-                break;
-            default:
-                spinner.setSelection(3);
         }
     }
 

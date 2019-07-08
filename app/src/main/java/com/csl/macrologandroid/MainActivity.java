@@ -54,18 +54,14 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (SUCCESSFUL_LOGIN):
-            case (SUCCESFUL_REGISTER): {
-                checkResultCode(resultCode);
+            case (SUCCESFUL_REGISTER):
+                if (resultCode == Activity.RESULT_OK) {
+                    DiaryLogCache.getInstance().clearCache();
+                    navigation.setSelectedItemId(R.id.navigation_diary);
+                }
                 break;
-            }
-            default: break;
-        }
-    }
-
-    private void checkResultCode(int resultCode) {
-        if (resultCode == Activity.RESULT_OK) {
-            DiaryLogCache.getInstance().clearCache();
-            navigation.setSelectedItemId(R.id.navigation_diary);
+            default:
+                break;
         }
     }
 

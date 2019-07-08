@@ -1,7 +1,6 @@
 package com.csl.macrologandroid.fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -57,28 +56,18 @@ public class UserFragment extends Fragment {
         switch (requestCode) {
             case (EDIT_WEIGHT_ID):
             case (EDIT_DETAILS_ID):
-            case (ADJUST_INTAKE_ID): {
-                checkToFetch(resultCode);
+            case (ADJUST_INTAKE_ID):
+                if (resultCode == Activity.RESULT_OK) {
+                    fetchUserSettings();
+                }
                 break;
-            }
-            case (DELETE_ACCOUNT): {
-                checkToLogout(resultCode);
+            case (DELETE_ACCOUNT):
+                if (resultCode == Activity.RESULT_OK) {
+                    onLogoutPressedListener.onLogoutPressed();
+                }
                 break;
-            }
             default:
                 break;
-        }
-    }
-
-    private void checkToFetch(int resultCode) {
-        if (resultCode == Activity.RESULT_OK) {
-            fetchUserSettings();
-        }
-    }
-
-    private void checkToLogout(int resultCode) {
-        if (resultCode == Activity.RESULT_OK) {
-            onLogoutPressedListener.onLogoutPressed();
         }
     }
 
