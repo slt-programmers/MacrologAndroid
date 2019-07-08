@@ -1,15 +1,15 @@
 package com.csl.macrologandroid;
 
 import com.google.android.material.textfield.TextInputEditText;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
 
 import com.csl.macrologandroid.services.AuthenticationService;
-
-import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -67,11 +67,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (s == null || s.toString().isEmpty()) {
-                sendButton.setEnabled(false);
-            } else {
-                sendButton.setEnabled(true);
-            }
+            sendButton.setEnabled(!(s == null || s.toString().isEmpty()));
         }
 
         @Override

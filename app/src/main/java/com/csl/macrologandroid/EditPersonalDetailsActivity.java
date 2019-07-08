@@ -294,24 +294,21 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         return obsList;
     }
 
-    private void checkEmptyTextViews() {
-        boolean nameIsEmpty = Objects.requireNonNull(editName.getText()).toString().isEmpty();
-        boolean birthdayIsEmpty = Objects.requireNonNull(editBirthday.getText()).toString().isEmpty();
-        boolean heightIsEmpty = Objects.requireNonNull(editHeight.getText()).toString().isEmpty();
-        boolean weightIsEmpty = Objects.requireNonNull(editWeight.getText()).toString().isEmpty();
-
-        if (!nameIsEmpty && !birthdayIsEmpty && !heightIsEmpty && !weightIsEmpty) {
-            saveButton.setEnabled(true);
-        } else {
-            saveButton.setEnabled(false);
-        }
-    }
 
     private String getToken() {
         return this.getApplicationContext().getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 
     private final TextWatcher textChangedListener = new TextWatcher() {
+        private void checkEmptyTextViews() {
+            boolean nameIsEmpty = Objects.requireNonNull(editName.getText()).toString().isEmpty();
+            boolean birthdayIsEmpty = Objects.requireNonNull(editBirthday.getText()).toString().isEmpty();
+            boolean heightIsEmpty = Objects.requireNonNull(editHeight.getText()).toString().isEmpty();
+            boolean weightIsEmpty = Objects.requireNonNull(editWeight.getText()).toString().isEmpty();
+
+            saveButton.setEnabled(!nameIsEmpty && !birthdayIsEmpty && !heightIsEmpty && !weightIsEmpty);
+        }
+
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             // Not needed

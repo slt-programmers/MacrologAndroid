@@ -24,7 +24,6 @@ import com.csl.macrologandroid.util.DateParser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 

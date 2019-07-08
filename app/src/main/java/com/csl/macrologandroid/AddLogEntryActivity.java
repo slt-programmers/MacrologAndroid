@@ -55,7 +55,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private LogEntryService logService;
     private List<FoodResponse> allFood;
     private List<String> foodNames = new ArrayList<>();
-    private ArrayAdapter<String> autocompleteAdapter;
     private FoodResponse selectedFood;
     private Meal selectedMeal;
     private Date selectedDate;
@@ -166,7 +165,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
             }
         }
 
-        double multiplier = Double.valueOf(Objects.requireNonNull(editGramsOrAmount.getText()).toString());
+        double multiplier = Double.parseDouble(Objects.requireNonNull(editGramsOrAmount.getText()).toString());
         if (portionId == null) {
             multiplier = multiplier / 100;
         }
@@ -197,7 +196,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
     private void setupAutoCompleteTextView() {
         foodTextView = findViewById(R.id.edit_food_textview);
-        autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, foodNames);
+        ArrayAdapter<String> autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, foodNames);
         foodTextView.setAdapter(autocompleteAdapter);
         foodTextView.setThreshold(1);
         foodTextView.setOnItemClickListener((parent, view, position, id) -> {

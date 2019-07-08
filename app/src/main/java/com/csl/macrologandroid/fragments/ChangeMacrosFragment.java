@@ -28,11 +28,6 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
     private TextView caloriesView;
 
     @Override
-    public void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
-    }
-
-    @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle bundle) {
         View view = inflater.inflate(R.layout.layout_change_macros, container, false);
 
@@ -57,9 +52,9 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
     }
 
     private long calculateCalories() {
-        double protein = Double.valueOf(handleEmptyString(Objects.requireNonNull(proteinView.getText()).toString()));
-        double fat = Double.valueOf(handleEmptyString(Objects.requireNonNull(fatView.getText()).toString()));
-        double carbs = Double.valueOf(handleEmptyString(Objects.requireNonNull(carbsView.getText()).toString()));
+        double protein = Double.parseDouble(handleEmptyString(Objects.requireNonNull(proteinView.getText()).toString()));
+        double fat = Double.parseDouble(handleEmptyString(Objects.requireNonNull(fatView.getText()).toString()));
+        double carbs = Double.parseDouble(handleEmptyString(Objects.requireNonNull(carbsView.getText()).toString()));
 
         return Math.round((protein * 4.0) + (fat * 9.0) + (carbs * 4.0));
     }

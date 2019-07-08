@@ -152,10 +152,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
             }
         }
 
-        breakfastTable.setOnClickListener((v) -> onTableClickListener.onTableClick(Meal.BREAKFAST));
-        lunchTable.setOnClickListener((v) -> onTableClickListener.onTableClick(Meal.LUNCH));
-        dinnerTable.setOnClickListener((v) -> onTableClickListener.onTableClick(Meal.DINNER));
-        snacksTable.setOnClickListener((v) -> onTableClickListener.onTableClick(Meal.SNACKS));
+        breakfastTable.setOnClickListener(v -> onTableClickListener.onTableClick(Meal.BREAKFAST));
+        lunchTable.setOnClickListener(v -> onTableClickListener.onTableClick(Meal.LUNCH));
+        dinnerTable.setOnClickListener(v -> onTableClickListener.onTableClick(Meal.DINNER));
+        snacksTable.setOnClickListener(v -> onTableClickListener.onTableClick(Meal.SNACKS));
     }
 
     private void addEntryToTable(TableLayout table, LogEntryResponse entry) {

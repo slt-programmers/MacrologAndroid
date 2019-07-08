@@ -90,11 +90,6 @@ public class FoodFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -166,12 +161,6 @@ public class FoodFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (disposable != null) {
@@ -205,27 +194,14 @@ public class FoodFragment extends Fragment {
         FoodCache.getInstance().clearCache();
         FoodService foodService = new FoodService(getToken());
         disposable = foodService.getAlFood()
-                .subscribe((res) ->
+                .subscribe(res ->
                 {
                     FoodCache.getInstance().addToCache(res);
                     allFood = res;
                     searchedFood = allFood;
                     convertedFood = searchedFood;
                     fillTable(convertedFood);
-                }, (err) -> Log.e(this.getClass().getName(), err.toString()));
-    }
-
-    private void searchFood(CharSequence chars) {
-        searchedFood = new ArrayList<>();
-        if (chars == null || chars.toString().isEmpty()) {
-            searchedFood = allFood;
-        } else {
-            for (FoodResponse food : allFood) {
-                if (food.getName().toLowerCase().contains(chars.toString().toLowerCase())) {
-                    searchedFood.add(food);
-                }
-            }
-        }
+                }, err -> Log.e(this.getClass().getName(), err.toString()));
     }
 
     private void determineGramsOrPercentage() {
@@ -292,25 +268,21 @@ public class FoodFragment extends Fragment {
         }
 
         switch (sortHeader) {
-            case FOOD: {
+            case FOOD:
                 Collections.sort(convertedFood, (o1, o2) -> o1.getName().compareTo(o2.getName()));
                 break;
-            }
-            case PROTEIN: {
+            case PROTEIN:
                 Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getProtein(), o1.getProtein()));
                 break;
-            }
-            case FAT: {
+            case FAT:
                 Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getFat(), o1.getFat()));
                 break;
-            }
-            case CARBS: {
+            case CARBS:
                 Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getCarbs(), o1.getCarbs()));
                 break;
-            }
-            default: {
+            default:
                 Collections.sort(convertedFood, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-            }
+
         }
 
         if (sortDirectionReversed) {
@@ -347,6 +319,20 @@ public class FoodFragment extends Fragment {
     }
 
     private final TextWatcher watcher = new TextWatcher() {
+
+        private void searchFood(CharSequence chars) {
+            searchedFood = new ArrayList<>();
+            if (chars == null || chars.toString().isEmpty()) {
+                searchedFood = allFood;
+            } else {
+                for (FoodResponse food : allFood) {
+                    if (food.getName().toLowerCase().contains(chars.toString().toLowerCase())) {
+                        searchedFood.add(food);
+                    }
+                }
+            }
+        }
+
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             // Not needed

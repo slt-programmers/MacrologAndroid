@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,21 +58,27 @@ public class UserFragment extends Fragment {
             case (EDIT_WEIGHT_ID):
             case (EDIT_DETAILS_ID):
             case (ADJUST_INTAKE_ID): {
-                if (resultCode == Activity.RESULT_OK) {
-                    fetchUserSettings();
-                }
+                checkToFetch(resultCode);
                 break;
             }
-            case (DELETE_ACCOUNT):
-            {
-                if (resultCode == Activity.RESULT_OK) {
-                    onLogoutPressedListener.onLogoutPressed();
-                }
+            case (DELETE_ACCOUNT): {
+                checkToLogout(resultCode);
                 break;
             }
-            default: {
+            default:
                 break;
-            }
+        }
+    }
+
+    private void checkToFetch(int resultCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            fetchUserSettings();
+        }
+    }
+
+    private void checkToLogout(int resultCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            onLogoutPressedListener.onLogoutPressed();
         }
     }
 
@@ -135,11 +143,6 @@ public class UserFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (settingsDisposable != null) {
@@ -147,7 +150,7 @@ public class UserFragment extends Fragment {
         }
     }
 
-    public void setOnLogoutPressedListener(OnLogoutPressedListener listener ) {
+    public void setOnLogoutPressedListener(OnLogoutPressedListener listener) {
         onLogoutPressedListener = listener;
     }
 

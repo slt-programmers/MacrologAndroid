@@ -116,11 +116,8 @@ public class AddFoodActivity extends AppCompatActivity {
             }
         }
 
-        if (nameCheck && proteinCheck && fatCheck && carbCheck && portionsCheck) {
-            saveButton.setEnabled(true);
-        } else {
-            saveButton.setEnabled(false);
-        }
+        saveButton.setEnabled(nameCheck && proteinCheck && fatCheck && carbCheck && portionsCheck);
+
     }
 
     @Override
@@ -175,9 +172,9 @@ public class AddFoodActivity extends AppCompatActivity {
 
     private void saveFood() {
         String name = Objects.requireNonNull(editFoodName.getText()).toString();
-        double protein = Double.valueOf(Objects.requireNonNull(editProtein.getText()).toString());
-        double fat = Double.valueOf(Objects.requireNonNull(editFat.getText()).toString());
-        double carbs = Double.valueOf(Objects.requireNonNull(editCarbs.getText()).toString());
+        double protein = Double.parseDouble(Objects.requireNonNull(editProtein.getText()).toString());
+        double fat = Double.parseDouble(Objects.requireNonNull(editFat.getText()).toString());
+        double carbs = Double.parseDouble(Objects.requireNonNull(editCarbs.getText()).toString());
 
         List<PortionResponse> portions = new ArrayList<>();
         int childCount = portionsLayout.getChildCount();

@@ -3,11 +3,15 @@ package com.csl.macrologandroid.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +56,10 @@ public class DiaryFragment extends Fragment {
     private View view;
     private DiaryPager viewPager;
     private DiaryLogCache cache;
-    private int goalProtein, goalFat, goalCarbs, goalCalories;
+    private int goalProtein;
+    private int goalFat;
+    private int goalCarbs;
+    private int goalCalories;
     private Date selectedDate;
 
     private Disposable disposable;
@@ -74,15 +81,17 @@ public class DiaryFragment extends Fragment {
         switch (requestCode) {
             case (ADD_LOG_ENTRY_ID):
             case (EDIT_LOG_ENTRY_ID): {
-                if (resultCode == Activity.RESULT_OK) {
-                    invalidateCache();
-                    setupViewPager(view);
-                }
+                checkResultCode(resultCode);
                 break;
             }
-            default: {
-                break;
-            }
+            default: break;
+        }
+    }
+
+    private void checkResultCode(int resultCode) {
+        if (resultCode == Activity.RESULT_OK) {
+            invalidateCache();
+            setupViewPager(view);
         }
     }
 
@@ -106,7 +115,7 @@ public class DiaryFragment extends Fragment {
                                 setGoalIntake(res);
                                 updateTotals(DateParser.parse(DateParser.format(new Date())));
                             },
-                            (error) -> Log.e(this.getClass().getName(), error.getMessage()));
+                            error -> Log.e(this.getClass().getName(), error.getMessage()));
         } else {
             setGoalIntake(userSettings);
         }
@@ -129,9 +138,9 @@ public class DiaryFragment extends Fragment {
         dateTextView.setOnClickListener(v -> showDateDialog());
         ImageView arrowLeft = view.findViewById(R.id.arrow_left);
         ImageView arrowRight = view.findViewById(R.id.arrow_right);
-        arrowLeft.setOnClickListener((args) -> viewPager.arrowScroll(View.FOCUS_LEFT));
+        arrowLeft.setOnClickListener(args -> viewPager.arrowScroll(View.FOCUS_LEFT));
 
-        arrowRight.setOnClickListener((args) -> viewPager.arrowScroll(View.FOCUS_RIGHT));
+        arrowRight.setOnClickListener(args -> viewPager.arrowScroll(View.FOCUS_RIGHT));
     }
 
     @Override
@@ -182,7 +191,7 @@ public class DiaryFragment extends Fragment {
         diaryDate.setText(simpleDateFormat.format(selectedDate));
 
         viewPager = view.findViewById(R.id.day_view_pager);
-        adapter = new DiaryPagerAdaper(getContext());
+        adapter = new DiaryPagerAdaper(Objects.requireNonNull(getContext()));
         adapter.setSelectedDate(selectedDate);
         adapter.setOnTotalsUpdateListener(this::updateTotals);
         adapter.setOnTableClickListener(this::startEditActivity);

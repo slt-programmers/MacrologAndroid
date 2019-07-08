@@ -49,7 +49,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -66,7 +65,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private Meal selectedMeal;
 
     private AutoCompleteTextView foodTextView;
-    private ArrayAdapter<String> autocompleteAdapter;
     private FoodResponse selectedFood;
 
     private Spinner editPortionOrUnitSpinner;
@@ -133,7 +131,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
             }
         }
 
-        if (logEntries.size() == 0) {
+        if (logEntries.isEmpty()) {
             meal = (Meal) getIntent().getSerializableExtra("MEAL");
         } else {
             meal = logEntries.get(0).getMeal();
@@ -165,7 +163,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         });
 
 
-        if (logEntries.size() == 0) {
+        if (logEntries.isEmpty()) {
             saveButton.setVisibility(View.GONE);
         }
 
@@ -276,7 +274,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         foodNameTextView.setText(entry.getFood().getName());
 
         ImageView trashImageView = logEntry.findViewById(R.id.trash_icon);
-        trashImageView.setOnClickListener((v) -> toggleToRemoveEntry(entry));
+        trashImageView.setOnClickListener(v -> toggleToRemoveEntry(entry));
 
         TextInputEditText foodAmount = logEntry.findViewById(R.id.food_amount);
         foodAmount.setId(R.id.food_amount);
@@ -405,7 +403,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void setupAutoCompleteTextView() {
         foodTextView = findViewById(R.id.edit_food_textview);
-        autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, foodNames);
+        ArrayAdapter<String> autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, foodNames);
         foodTextView.setAdapter(autocompleteAdapter);
         foodTextView.setThreshold(1);
         foodTextView.setOnItemClickListener((parent, view, position, id) -> {
