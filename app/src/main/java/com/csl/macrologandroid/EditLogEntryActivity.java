@@ -5,13 +5,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.appcompat.widget.AppCompatTextView;
+
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -83,11 +89,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_FOOD_ID) {
-            if (resultCode == Activity.RESULT_OK) {
-                String foodName = (String) data.getSerializableExtra("FOOD_NAME");
-                setNewlyAddedFood(foodName);
-            }
+        if (requestCode == ADD_FOOD_ID && resultCode == Activity.RESULT_OK) {
+            String foodName = (String) data.getSerializableExtra("FOOD_NAME");
+            setNewlyAddedFood(foodName);
         }
     }
 
@@ -334,19 +338,19 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void saveLogEntries() {
-        List<LogEntryRequest> newEntries = new ArrayList<>();
+        List<LogEntryRequest> entries = new ArrayList<>();
 
         for (LogEntryResponse entry : logEntries) {
             if (copyEntries.indexOf(entry) == -1) {
                 deleteEntry(entry);
             } else {
                 LogEntryRequest request = makeLogEntryRequest(entry);
-                newEntries.add(request);
+                entries.add(request);
             }
         }
 
-        if (!newEntries.isEmpty()) {
-            postDisposable = logEntryService.postLogEntry(newEntries)
+        if (!entries.isEmpty()) {
+            postDisposable = logEntryService.postLogEntry(entries)
                     .subscribe(res -> {
                         Intent resultIntent = new Intent();
                         setResult(Activity.RESULT_OK, resultIntent);
@@ -355,7 +359,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    private LogEntryRequest makeLogEntryRequest(LogEntryResponse entry){
+    private LogEntryRequest makeLogEntryRequest(LogEntryResponse entry) {
         int index = logEntries.indexOf(entry);
         ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
         Spinner foodSpinner = (Spinner) logEntryLayout.getChildAt(2);
@@ -394,7 +398,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void deleteEntry(LogEntryResponse entry) {
         deleteDisposable = logEntryService.deleteLogEntry(entry.getId())
-                .subscribe(res -> {},
+                .subscribe(res -> {
+                        },
                         err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
 
@@ -534,7 +539,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void setupPortionUnitSpinner(String foodname) {
         for (FoodResponse food : allFood) {
-            if (food.getName().trim().equals(foodname.trim())){
+            if (food.getName().trim().equals(foodname.trim())) {
                 selectedFood = food;
                 break;
             }

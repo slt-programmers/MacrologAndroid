@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.fragment.app.Fragment;
 import androidx.core.content.res.ResourcesCompat;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -74,17 +77,15 @@ public class FoodFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         KeyboardManager.hideKeyboard(getActivity());
-        if (requestCode == ADD_FOOD_ID) {
-            if (resultCode == Activity.RESULT_OK) {
-                search.setText("");
-                radioGroup.check(R.id.grams_radio);
-                currentSortHeader = SortHeader.FOOD;
-                sortDirectionReversed = false;
+        if (requestCode == ADD_FOOD_ID && resultCode == Activity.RESULT_OK) {
+            search.setText("");
+            radioGroup.check(R.id.grams_radio);
+            currentSortHeader = SortHeader.FOOD;
+            sortDirectionReversed = false;
 
-                loader.setVisibility(View.VISIBLE);
-                foodTable.setVisibility(View.INVISIBLE);
-                refreshAllFood();
-            }
+            loader.setVisibility(View.VISIBLE);
+            foodTable.setVisibility(View.INVISIBLE);
+            refreshAllFood();
         }
     }
 
@@ -101,7 +102,7 @@ public class FoodFragment extends Fragment {
 
         FloatingActionButton floatingButton = view.findViewById(R.id.floating_button);
         floatingButton.setOnClickListener(v -> {
-            Intent intent = new Intent (this.getActivity(), AddFoodActivity.class);
+            Intent intent = new Intent(this.getActivity(), AddFoodActivity.class);
             startActivityForResult(intent, ADD_FOOD_ID);
         });
 

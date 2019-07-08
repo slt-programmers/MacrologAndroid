@@ -8,12 +8,12 @@ public class Session {
 
     private static Session instance;
 
-    private static Date timestamp;
+    private static Date timestamp = Calendar.getInstance().getTime();
 
     private static final long THRESHOLD = 30;
 
     private Session() {
-        timestamp = Calendar.getInstance().getTime();
+
     }
 
     public static Session getInstance() {

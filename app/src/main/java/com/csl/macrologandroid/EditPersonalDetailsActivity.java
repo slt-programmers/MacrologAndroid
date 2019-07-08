@@ -64,19 +64,16 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
     private Button saveButton;
 
-    private UserService userService;
     private Disposable disposable;
     private TextInputLayout editBirthdayLayout;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADJUST_INTAKE_INTAKE) {
-            if (resultCode == Activity.RESULT_OK) {
-                Intent resultIntent = new Intent();
-                setResult(Activity.RESULT_OK, resultIntent);
-                finish();
-            }
+        if (requestCode == ADJUST_INTAKE_INTAKE && resultCode == Activity.RESULT_OK) {
+            Intent resultIntent = new Intent();
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         }
     }
 
@@ -227,7 +224,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     }
 
     private List<Observable<ResponseBody>> fillObsList(UserSettingsResponse userSettings, Date newDate, String newBirthday) {
-        userService = new UserService(getToken());
+        UserService userService = new UserService(getToken());
 
         List<Observable<ResponseBody>> obsList = new ArrayList<>();
 

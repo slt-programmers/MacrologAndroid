@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import com.google.android.material.textfield.TextInputLayout;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -45,10 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == INTAKE_SUCCESSFUL) {
-            if (resultCode == Activity.RESULT_OK) {
-                finishWithResult();
-            }
+        if (requestCode == INTAKE_SUCCESSFUL && resultCode == Activity.RESULT_OK) {
+            finishWithResult();
         }
     }
 

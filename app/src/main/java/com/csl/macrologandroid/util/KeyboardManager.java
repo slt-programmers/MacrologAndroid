@@ -7,6 +7,10 @@ import android.view.inputmethod.InputMethodManager;
 
 public class KeyboardManager {
 
+    private KeyboardManager() {
+        // No arg constructor
+    }
+
     public static void hideKeyboard(Activity activity) {
         if (activity != null) {
             View view = activity.findViewById(android.R.id.content);

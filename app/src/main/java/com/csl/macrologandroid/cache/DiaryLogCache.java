@@ -11,10 +11,10 @@ public class DiaryLogCache {
 
     private static DiaryLogCache instance;
 
-    private Map<Date, List<LogEntryResponse>> logEntryCache;
+    private Map<Date, List<LogEntryResponse>> cache;
 
     private DiaryLogCache() {
-        this.logEntryCache = new HashMap<>();
+        this.cache = new HashMap<>();
     }
 
     public static DiaryLogCache getInstance() {
@@ -25,20 +25,20 @@ public class DiaryLogCache {
     }
 
     public void addToCache(Date date, List<LogEntryResponse> logEntryResponse) {
-        logEntryCache.put(date, logEntryResponse);
+        cache.put(date, logEntryResponse);
     }
 
     public List<LogEntryResponse> getFromCache(Date date) {
-        return logEntryCache.get(date);
+        return cache.get(date);
     }
 
     public void removeFromCache(Date date) {
         //noinspection ConstantConditions
-        logEntryCache.put(date, null);
+        cache.put(date, null);
     }
 
     public void clearCache() {
-        logEntryCache = new HashMap<>();
+        cache = new HashMap<>();
     }
 
 }

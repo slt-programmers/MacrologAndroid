@@ -14,6 +14,10 @@ import java.util.Calendar;
 
 public class NotificationSender {
 
+    private NotificationSender() {
+        // No arg constructor
+    }
+
     public static void initNotificationSending(Context context) {
         createNotificationChannel(context);
 

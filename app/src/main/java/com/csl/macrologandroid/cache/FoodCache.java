@@ -9,10 +9,10 @@ public class FoodCache {
 
     private static FoodCache instance;
 
-    private List<FoodResponse> foodCache;
+    private List<FoodResponse> cache;
 
     private FoodCache() {
-        this.foodCache = new ArrayList<>();
+        this.cache = new ArrayList<>();
     }
 
     public static FoodCache getInstance() {
@@ -23,15 +23,15 @@ public class FoodCache {
     }
 
     public void addToCache(List<FoodResponse> foodResponses) {
-        foodCache.addAll(foodResponses);
+        cache.addAll(foodResponses);
     }
 
     public List<FoodResponse> getCache() {
-        return foodCache;
+        return cache;
     }
 
     public void clearCache() {
-        foodCache = new ArrayList<>();
+        cache = new ArrayList<>();
     }
 
 }

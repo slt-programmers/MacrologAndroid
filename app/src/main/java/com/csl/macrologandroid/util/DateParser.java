@@ -9,6 +9,10 @@ import java.util.Locale;
 
 public class DateParser {
 
+    private DateParser() {
+        // No arg constructor
+    }
+
     public static String format(Date date) {
         SimpleDateFormat standardFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return standardFormat.format(date);

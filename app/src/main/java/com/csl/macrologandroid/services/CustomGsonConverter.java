@@ -7,6 +7,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 class CustomGsonConverter {
 
+    private CustomGsonConverter() {
+        // No arg constructor
+    }
+
     static GsonConverterFactory create() {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()

@@ -3,11 +3,16 @@ package com.csl.macrologandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
+
 import com.google.android.material.textfield.TextInputEditText;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.appcompat.widget.AppCompatTextView;
+
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -61,12 +66,10 @@ public class AddLogEntryActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_FOOD_ID) {
-            if (resultCode == Activity.RESULT_OK) {
-                String foodName = (String) data.getSerializableExtra("FOOD_NAME");
-                foodTextView.setText(foodName);
-                setNewlyAddedFood(foodName);
-            }
+        if (requestCode == ADD_FOOD_ID && resultCode == Activity.RESULT_OK) {
+            String foodName = (String) data.getSerializableExtra("FOOD_NAME");
+            foodTextView.setText(foodName);
+            setNewlyAddedFood(foodName);
         }
     }
 

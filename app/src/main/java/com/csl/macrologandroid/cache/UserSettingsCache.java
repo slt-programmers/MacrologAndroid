@@ -6,10 +6,10 @@ public class UserSettingsCache {
 
     private static UserSettingsCache instance;
 
-    private UserSettingsResponse userSettingsCache;
+    private UserSettingsResponse cache;
 
     private UserSettingsCache() {
-        this.userSettingsCache = null;
+        this.cache = null;
     }
 
     public static UserSettingsCache getInstance() {
@@ -20,15 +20,15 @@ public class UserSettingsCache {
     }
 
     public UserSettingsResponse getCache() {
-        return userSettingsCache;
+        return cache;
     }
 
     public void updateCache(UserSettingsResponse settingsResponse) {
-        userSettingsCache = settingsResponse;
+        cache = settingsResponse;
     }
 
     public void clearCache() {
-        userSettingsCache = null;
+        cache = null;
     }
 
 }
