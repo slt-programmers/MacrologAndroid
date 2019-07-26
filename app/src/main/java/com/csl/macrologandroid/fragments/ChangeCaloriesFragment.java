@@ -1,17 +1,18 @@
 package com.csl.macrologandroid.fragments;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
+import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.dtos.UserSettingsResponse;
 import com.csl.macrologandroid.models.ChangeGoalMacros;
 import com.csl.macrologandroid.models.Gender;
-import com.csl.macrologandroid.R;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -67,9 +68,9 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
     private double calculateCalories() {
         double bmr;
         if (userSettings.getGender() == Gender.MALE) {
-            bmr = 66.5 + (13.7 * userSettings.getWeight()) + (5 * userSettings.getHeight()) - (6.76 * userSettings.getAge());
+            bmr = (10 *userSettings.getWeight()) + (6.25 * userSettings.getHeight()) - (5 * userSettings.getAge()) + 5;
         } else {
-            bmr = 655.0 + (9.56 * userSettings.getWeight()) + (1.8 * userSettings.getHeight()) - (4.68 * userSettings.getAge());
+            bmr = (10 * userSettings.getWeight()) + (6.25 * userSettings.getHeight()) - (5 * userSettings.getAge()) - 161;
         }
         return bmr * userSettings.getActivity();
     }
