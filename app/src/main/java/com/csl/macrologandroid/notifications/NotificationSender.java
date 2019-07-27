@@ -31,10 +31,6 @@ public class NotificationSender {
         eveningCal.set(Calendar.HOUR_OF_DAY, 19);
         eveningCal.set(Calendar.MINUTE, 0);
 
-//        Calendar testCal = Calendar.getInstance();
-//        eveningCal.set(Calendar.HOUR_OF_DAY, 11);
-//        eveningCal.set(Calendar.MINUTE, 0);
-
         Calendar now = Calendar.getInstance();
         if (now.after(morningCal)) {
             morningCal.add(Calendar.HOUR_OF_DAY, 24);
@@ -47,11 +43,9 @@ public class NotificationSender {
         Intent notificationIntent = new Intent(context, NotificationReceiver.class);
         PendingIntent pendingNotification = PendingIntent.getBroadcast(context, 1, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         PendingIntent secondPendingNotification = PendingIntent.getBroadcast(context, 2, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-//        PendingIntent testNotification = PendingIntent.getBroadcast(context, 3, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, morningCal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingNotification);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, eveningCal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, secondPendingNotification);
-//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, testCal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, testNotification);
     }
 
     private static void createNotificationChannel(Context context) {
