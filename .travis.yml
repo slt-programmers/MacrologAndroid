@@ -27,3 +27,5 @@ deploy:
   provider: gae
   keyfile: macrolog-service-account-key.json
   project: api-4969776351416209484-853923
+  on: 
+    branche: release
