@@ -1,6 +1,9 @@
 /build
+/ignore
+/app/release/*
 .gradle
 .idea
 .iml
+
 local.properties
 macrologAndroid.iml
