@@ -1,0 +1,8 @@
+Features:
+ - Remove now unneeded slowness warnings, since the backend is upgraded to be online permanently
+
+Bugfixes:
+ - Fix empty diary page when opening a notification
+
+Development:
+ - Add auto-deploy plugin for the beta track

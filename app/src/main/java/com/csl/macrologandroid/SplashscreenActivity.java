@@ -2,15 +2,14 @@ package com.csl.macrologandroid;
 
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.os.Handler;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.HealthcheckService;
@@ -36,7 +35,6 @@ public class SplashscreenActivity extends AppCompatActivity {
         token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", null);
 
         ImageView image = findViewById(R.id.animated_image);
-        TextView waitMessage = findViewById(R.id.wait_message);
 
         Handler handler = new Handler();
         Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
@@ -45,10 +43,6 @@ public class SplashscreenActivity extends AppCompatActivity {
             image.setBackgroundResource(R.drawable.hamster_wheel);
             AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
             animation.start();
-
-            image.startAnimation(fadeIn);
-            waitMessage.setVisibility(View.VISIBLE);
-            waitMessage.startAnimation(fadeIn);
         }, 2000);
 
         Intent intent = getIntent();

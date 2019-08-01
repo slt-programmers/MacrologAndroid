@@ -1,12 +1,27 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.sonarqube'
+apply plugin: 'com.github.triplet.play'
 
 android {
+    signingConfigs {
+        release
+    }
+
+    def isRunningOnTravis = System.getenv("CI") == "true"
+
+    if (isRunningOnTravis) {
+        signingConfigs.release.storeFile = file("../macrologKeyStore")
+        signingConfigs.release.keyAlias = System.getenv("keystore_alias")
+        signingConfigs.release.storePassword = System.getenv("keystore_store_password")
+        signingConfigs.release.keyPassword = System.getenv("keystore_password")
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.csl.macrologandroid"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 4
+        versionCode 6
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
@@ -25,6 +40,7 @@ android {
             minifyEnabled false
             buildConfigField 'String', 'SERVER_URL', '"https://macrolog-backend.herokuapp.com/"'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -35,6 +51,12 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/notice.txt'
     }
+}
+
+play {
+    serviceAccountCredentials = file("../macrolog-service-account-key.json")
+    track = "beta"
+    defaultToAppBundles = true
 }
 
 dependencies {
@@ -57,4 +79,3 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
-apply plugin: 'org.sonarqube'

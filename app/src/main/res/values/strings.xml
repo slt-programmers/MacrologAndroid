@@ -22,7 +22,6 @@
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_field_required">This field is required</string>
-    <string name="splash_message">"The hamsters in the treadmill powering this app are still asleep\n\nPlease wait while we wake them up…"</string>
 
     <string name="user_name">Name</string>
     <string name="user_age">Age</string>
@@ -101,7 +100,6 @@
         which you are entirely free to ignore.\n\nIn the end, we just want to help you measure.</string>
     <string name="food">Food</string>
     <string name="percentage">Percentage</string>
-    <string name="beta">beta\n(may be slow on initial startup)</string>
 
     <string name="birthday_hint">Birthday (yyyy-mm-dd)</string>
     <string name="height_hint">Height (cm)</string>
