@@ -4,7 +4,12 @@ apply plugin: 'com.github.triplet.play'
 
 android {
     signingConfigs {
-        release
+        release {
+            storeFile = file("../ignore/macrologKeyStore")
+            keyAlias = "secret"
+            storePassword = "secret"
+            keyPassword = "secret"
+        }
     }
 
     def isRunningOnTravis = System.getenv("CI") == "true"
