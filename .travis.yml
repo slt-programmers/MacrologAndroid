@@ -16,6 +16,8 @@ branches:
   - release
 before_install:
 - openssl aes-256-cbc -K $encrypted_b2d0e6c8f8ad_key -iv $encrypted_b2d0e6c8f8ad_iv
+  -in macrologKeyStore.enc -out macrologKeyStore -d
+- openssl aes-256-cbc -K $encrypted_b2d0e6c8f8ad_key -iv $encrypted_b2d0e6c8f8ad_iv
   -in macrolog-service-account-key.json.enc -out macrolog-service-account-key.json
   -d
 stages:
