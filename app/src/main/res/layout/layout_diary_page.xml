@@ -196,7 +196,8 @@
     <TableLayout
         android:id="@+id/snacks_table"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
 
         <TableRow tools:ignore="UselessParent">
 
@@ -245,6 +246,34 @@
                 android:layout_width="42dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
+                android:text="@string/kcal"
+                android:textAlignment="viewEnd"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+
+    <!--Activities-->
+
+    <TableLayout
+        android:id="@+id/activities_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow tools:ignore="UselessParent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="8.0"
+                android:text="@string/activities"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
                 android:text="@string/kcal"
                 android:textAlignment="viewEnd"
                 android:textSize="16sp"

@@ -3,15 +3,6 @@ package com.csl.macrologandroid.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,19 +11,28 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
+
+import com.csl.macrologandroid.AddLogEntryActivity;
+import com.csl.macrologandroid.EditActivityActivity;
+import com.csl.macrologandroid.EditLogEntryActivity;
+import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.adapters.DiaryPager;
 import com.csl.macrologandroid.adapters.DiaryPagerAdaper;
-import com.csl.macrologandroid.AddLogEntryActivity;
+import com.csl.macrologandroid.cache.ActivityCache;
 import com.csl.macrologandroid.cache.DiaryLogCache;
 import com.csl.macrologandroid.cache.UserSettingsCache;
+import com.csl.macrologandroid.dtos.ActivityResponse;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.dtos.MacrosResponse;
-import com.csl.macrologandroid.EditLogEntryActivity;
 import com.csl.macrologandroid.dtos.UserSettingsResponse;
 import com.csl.macrologandroid.models.Meal;
-import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.services.UserService;
 import com.csl.macrologandroid.util.DateParser;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -52,10 +52,12 @@ public class DiaryFragment extends Fragment {
 
     private static final int ADD_LOG_ENTRY_ID = 345;
     private static final int EDIT_LOG_ENTRY_ID = 456;
+    private static final int EDIT_ACTIVITY_ID = 567;
 
     private View view;
     private DiaryPager viewPager;
-    private DiaryLogCache cache;
+    private DiaryLogCache logEntryCache;
+    private ActivityCache activityCache;
     private int goalProtein;
     private int goalFat;
     private int goalCarbs;
@@ -72,7 +74,8 @@ public class DiaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cache = DiaryLogCache.getInstance();
+        logEntryCache = DiaryLogCache.getInstance();
+        activityCache = ActivityCache.getInstance();
     }
 
     @Override
@@ -82,10 +85,15 @@ public class DiaryFragment extends Fragment {
             case (ADD_LOG_ENTRY_ID):
             case (EDIT_LOG_ENTRY_ID):
                 if (resultCode == Activity.RESULT_OK) {
-                    invalidateCache();
+                    logEntryCache.removeFromCache(selectedDate);
                     setupViewPager(view);
                 }
                 break;
+            case (EDIT_ACTIVITY_ID):
+                if (resultCode == Activity.RESULT_OK) {
+                    activityCache.removeFromCache(selectedDate);
+                    setupViewPager(view);
+                }
             default:
                 break;
         }
@@ -97,7 +105,8 @@ public class DiaryFragment extends Fragment {
 
         SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(() -> {
-            cache.clearCache();
+            logEntryCache.clearCache();
+            activityCache.clearCache();
             setupViewPager(view);
             pullToRefresh.setRefreshing(false);
         });
@@ -135,7 +144,6 @@ public class DiaryFragment extends Fragment {
         ImageView arrowLeft = view.findViewById(R.id.arrow_left);
         ImageView arrowRight = view.findViewById(R.id.arrow_right);
         arrowLeft.setOnClickListener(args -> viewPager.arrowScroll(View.FOCUS_LEFT));
-
         arrowRight.setOnClickListener(args -> viewPager.arrowScroll(View.FOCUS_RIGHT));
     }
 
@@ -148,9 +156,9 @@ public class DiaryFragment extends Fragment {
         adapter.disposeServiceCall();
     }
 
-    private void startEditActivity(Meal meal) {
+    private void startEditMeal(Meal meal) {
         Intent intent = new Intent(getActivity(), EditLogEntryActivity.class);
-        List<LogEntryResponse> entries = cache.getFromCache(selectedDate);
+        List<LogEntryResponse> entries = logEntryCache.getFromCache(selectedDate);
         List<LogEntryResponse> filteredEntries = new ArrayList<>();
         for (LogEntryResponse entry : entries) {
             if (entry.getMeal().equals(meal)) {
@@ -165,8 +173,12 @@ public class DiaryFragment extends Fragment {
         startActivityForResult(intent, EDIT_LOG_ENTRY_ID);
     }
 
-    private void invalidateCache() {
-        cache.removeFromCache(selectedDate);
+    private void startEditActivity() {
+        Intent intent = new Intent(getActivity(), EditActivityActivity.class);
+        List<ActivityResponse> activities = activityCache.getFromCache(selectedDate);
+        intent.putExtra("DATE", selectedDate);
+        intent.putExtra("ACTIVITIES", (Serializable) activities);
+        startActivityForResult(intent, EDIT_ACTIVITY_ID);
     }
 
     private void setGoalIntake(UserSettingsResponse settings) {
@@ -190,7 +202,8 @@ public class DiaryFragment extends Fragment {
         adapter = new DiaryPagerAdaper(Objects.requireNonNull(getContext()));
         adapter.setSelectedDate(selectedDate);
         adapter.setOnTotalsUpdateListener(this::updateTotals);
-        adapter.setOnTableClickListener(this::startEditActivity);
+        adapter.setOnMealClickListener(this::startEditMeal);
+        adapter.setOnActivityClickListener(this::startEditActivity);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(getPositionFromDate(selectedDate));
 
@@ -217,7 +230,7 @@ public class DiaryFragment extends Fragment {
     }
 
     private void updateTotals(Date date) {
-        List<LogEntryResponse> entries = cache.getFromCache(date);
+        List<LogEntryResponse> entries = logEntryCache.getFromCache(date);
         double totalProtein = 0.0;
         double totalFat = 0.0;
         double totalCarbs = 0.0;

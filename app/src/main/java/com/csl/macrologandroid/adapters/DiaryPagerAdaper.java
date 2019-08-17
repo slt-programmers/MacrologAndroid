@@ -2,9 +2,6 @@ package com.csl.macrologandroid.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.viewpager.widget.PagerAdapter;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,10 +12,17 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.viewpager.widget.PagerAdapter;
+
+import com.csl.macrologandroid.R;
+import com.csl.macrologandroid.cache.ActivityCache;
 import com.csl.macrologandroid.cache.DiaryLogCache;
+import com.csl.macrologandroid.dtos.ActivityResponse;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.models.Meal;
-import com.csl.macrologandroid.R;
+import com.csl.macrologandroid.services.ActivityService;
 import com.csl.macrologandroid.services.LogEntryService;
 import com.csl.macrologandroid.util.DateParser;
 
@@ -36,28 +40,36 @@ import static android.content.Context.MODE_PRIVATE;
 public class DiaryPagerAdaper extends PagerAdapter {
 
     private final Context context;
-    private final LogEntryService service;
+    private final LogEntryService logService;
+    private final ActivityService activityService;
     private Date selectedDate;
     private int mCurrentPosition = -1;
 
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
 
-    private Disposable disposable;
-    private OnTableClickListener onTableClickListener;
+    private Disposable disposableLogs;
+    private Disposable disposableActs;
+    private OnMealClickListener onMealClickListener;
+    private OnActivityClickListener onActivityClickListener;
     private OnTotalUpdateListener onTotalUpdateListener;
 
     public void setOnTotalsUpdateListener(OnTotalUpdateListener listener) {
         this.onTotalUpdateListener = listener;
     }
 
-    public void setOnTableClickListener(OnTableClickListener listener) {
-        this.onTableClickListener = listener;
+    public void setOnMealClickListener(OnMealClickListener listener) {
+        this.onMealClickListener = listener;
+    }
+
+    public void setOnActivityClickListener(OnActivityClickListener listener) {
+        this.onActivityClickListener = listener;
     }
 
     public DiaryPagerAdaper(Context context) {
         this.context = context;
-        this.service = new LogEntryService(context.getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", ""));
+        this.logService = new LogEntryService(context.getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", ""));
+        this.activityService = new ActivityService(context.getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", ""));
     }
 
     public void setSelectedDate(Date date) {
@@ -74,17 +86,26 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
         List<LogEntryResponse> entries = DiaryLogCache.getInstance().getFromCache(date);
         if (entries == null) {
-            disposable = service.getLogsForDay(date)
+            disposableLogs = logService.getLogsForDay(date)
                     .subscribe(
                             res -> {
                                 DiaryLogCache.getInstance().addToCache(date, res);
                                 notifyForTotalsUpdate(date);
-                                fillDiaryPage(res, layout);
+                                fillLogEntriesOnPage(res, layout);
                                 container.addView(layout);
                             }, err -> Log.e(this.getClass().getName(), err.getMessage())
                     );
+            disposableActs = activityService.getActivitiesForDay(date)
+                    .subscribe(
+                            res -> {
+                                ActivityCache.getInstance().addToCache(date, res);
+                                notifyForTotalsUpdate(date);
+                                fillActivitiesOnPage(res, layout);
+                            },
+                            err -> Log.e(this.getClass().getName(), err.getMessage())
+                    );
         } else {
-            fillDiaryPage(entries, layout);
+            fillLogEntriesOnPage(entries, layout);
             notifyForTotalsUpdate(date);
             container.addView(layout);
         }
@@ -124,8 +145,8 @@ public class DiaryPagerAdaper extends PagerAdapter {
     }
 
     public void disposeServiceCall() {
-        if (disposable != null) {
-            disposable.dispose();
+        if (disposableLogs != null) {
+            disposableLogs.dispose();
         }
     }
 
@@ -135,7 +156,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
         return DateParser.parse(DateParser.format(calendar.getTime()));
     }
 
-    private void fillDiaryPage(List<LogEntryResponse> entries, ViewGroup view) {
+    private void fillLogEntriesOnPage(List<LogEntryResponse> entries, ViewGroup view) {
         TableLayout breakfastTable = view.findViewById(R.id.breakfast_table);
         TableLayout lunchTable = view.findViewById(R.id.lunch_table);
         TableLayout dinnerTable = view.findViewById(R.id.dinner_table);
@@ -152,10 +173,29 @@ public class DiaryPagerAdaper extends PagerAdapter {
             }
         }
 
-        breakfastTable.setOnClickListener(v -> onTableClickListener.onTableClick(Meal.BREAKFAST));
-        lunchTable.setOnClickListener(v -> onTableClickListener.onTableClick(Meal.LUNCH));
-        dinnerTable.setOnClickListener(v -> onTableClickListener.onTableClick(Meal.DINNER));
-        snacksTable.setOnClickListener(v -> onTableClickListener.onTableClick(Meal.SNACKS));
+        breakfastTable.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.BREAKFAST));
+        lunchTable.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.LUNCH));
+        dinnerTable.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.DINNER));
+        snacksTable.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.SNACKS));
+    }
+
+    private void fillActivitiesOnPage(List<ActivityResponse> activities, ViewGroup view) {
+        TableLayout activitiesTable = view.findViewById(R.id.activities_table);
+        for (ActivityResponse activity : activities) {
+            TableRow row = new TableRow(context);
+            TextView name = getCustomizedTextView(new TextView(context));
+            TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 8.0f);
+            name.setText(activity.getName());
+            name.setLayoutParams(lp);
+
+            // TODO custom larger kcal textview?
+            TextView kcal = getCustomizedCalorieTextView(activity.getCalories());
+            row.addView(name);
+            row.addView(kcal);
+            activitiesTable.addView(row);
+        }
+        activitiesTable.setOnClickListener(v -> onActivityClickListener.onActivityClick());
     }
 
     private void addEntryToTable(TableLayout table, LogEntryResponse entry) {
@@ -211,8 +251,12 @@ public class DiaryPagerAdaper extends PagerAdapter {
         void updateTotals(Date date);
     }
 
-    public interface OnTableClickListener {
-        void onTableClick(Meal meal);
+    public interface OnMealClickListener {
+        void onMealClick(Meal meal);
+    }
+
+    public interface OnActivityClickListener {
+        void onActivityClick();
     }
 
 }
