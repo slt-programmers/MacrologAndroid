@@ -224,8 +224,7 @@ public class EditActivityActivity extends AppCompatActivity {
                         .subscribe(res -> {},
                                 err -> Log.e(this.getLocalClassName(), err.getMessage()));
             } else {
-                ActivityRequest request = new ActivityRequest((long) act.getId(),
-                        format.format(act.getDay()), act.getName(), act.getCalories(), act.isSyncedWith(), (long) act.getSyncedId());
+                ActivityRequest request = makeActivityRequest(act);
                 activityRequests.add(request);
             }
         }
@@ -242,6 +241,27 @@ public class EditActivityActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, resultIntent);
             finish();
         }
+    }
+
+    private ActivityRequest makeActivityRequest(ActivityResponse act) {
+        int index = activities.indexOf(act);
+        ConstraintLayout editActivity = (ConstraintLayout) activityLayout.getChildAt(index);
+        TextInputLayout activityNameLayout = (TextInputLayout) editActivity.getChildAt(0);
+        String name = Objects.requireNonNull(activityNameLayout.getEditText()).getText().toString();
+
+        TextInputLayout calorieLayout = (TextInputLayout) editActivity.getChildAt(4);
+        int calories = Integer.valueOf(Objects.requireNonNull(calorieLayout.getEditText()).getText().toString());
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        return new ActivityRequest(
+                (long) act.getId(),
+                format.format(act.getDay()),
+                name,
+                calories,
+                act.isSyncedWith(),
+                act.getSyncedId()
+        );
     }
 
     private void hideSoftKeyboard() {
