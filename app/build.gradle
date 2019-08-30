@@ -41,6 +41,11 @@ android {
             debuggable true
             buildConfigField 'String', 'SERVER_URL', '"http://192.168.178.35:8090/"'
         }
+        acceptance {
+            applicationIdSuffix ".acc"
+            debuggable true
+            buildConfigField 'String', 'SERVER_URL', '"http://macrolog-backend-acc.herokuapp.com"'
+        }
         release {
             minifyEnabled false
             buildConfigField 'String', 'SERVER_URL', '"https://macrolog-backend.herokuapp.com/"'

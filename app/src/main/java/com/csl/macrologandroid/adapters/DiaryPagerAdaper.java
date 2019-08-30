@@ -85,13 +85,15 @@ public class DiaryPagerAdaper extends PagerAdapter {
         Date date = getDateFromPosition(position);
 
         List<LogEntryResponse> entries = DiaryLogCache.getInstance().getFromCache(date);
-        if (entries == null) {
+        List<ActivityResponse> activities = ActivityCache.getInstance().getFromCache(date);
+        if (entries == null || activities == null) {
             disposableLogs = logService.getLogsForDay(date)
                     .subscribe(
                             res -> {
                                 DiaryLogCache.getInstance().addToCache(date, res);
                                 notifyForTotalsUpdate(date);
                                 fillLogEntriesOnPage(res, layout);
+                                container.removeView(layout);
                                 container.addView(layout);
                             }, err -> Log.e(this.getClass().getName(), err.getMessage())
                     );
@@ -101,12 +103,16 @@ public class DiaryPagerAdaper extends PagerAdapter {
                                 ActivityCache.getInstance().addToCache(date, res);
                                 notifyForTotalsUpdate(date);
                                 fillActivitiesOnPage(res, layout);
+                                container.removeView(layout);
+                                container.addView(layout);
                             },
                             err -> Log.e(this.getClass().getName(), err.getMessage())
                     );
         } else {
             fillLogEntriesOnPage(entries, layout);
+            fillActivitiesOnPage(activities, layout);
             notifyForTotalsUpdate(date);
+            container.removeView(layout);
             container.addView(layout);
         }
         return layout;
@@ -148,6 +154,9 @@ public class DiaryPagerAdaper extends PagerAdapter {
         if (disposableLogs != null) {
             disposableLogs.dispose();
         }
+        if (disposableActs != null) {
+            disposableActs.dispose();
+        }
     }
 
     private Date getDateFromPosition(int position) {
@@ -185,11 +194,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
             TableRow row = new TableRow(context);
             TextView name = getCustomizedTextView(new TextView(context));
             TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT, 8.0f);
+                    ViewGroup.LayoutParams.WRAP_CONTENT, 8.3f);
             name.setText(activity.getName());
             name.setLayoutParams(lp);
 
-            // TODO custom larger kcal textview?
             TextView kcal = getCustomizedCalorieTextView(activity.getCalories());
             row.addView(name);
             row.addView(kcal);

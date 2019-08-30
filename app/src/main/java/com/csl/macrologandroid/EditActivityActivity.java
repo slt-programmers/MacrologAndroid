@@ -24,6 +24,7 @@ import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.ActivityService;
 import com.csl.macrologandroid.util.DateParser;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -102,16 +103,16 @@ public class EditActivityActivity extends AppCompatActivity {
             saveButton.setEnabled(false);
             saveActivities();
         });
-        saveButton.setEnabled(false);
+        if (activities.isEmpty()) {
+            saveButton.setVisibility(View.GONE);
+        }
 
         addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(v -> {
             hideSoftKeyboard();
-            editName.setText("");
             addActivity();
         });
         addButton.setEnabled(false);
-
     }
 
     @Override
@@ -140,7 +141,7 @@ public class EditActivityActivity extends AppCompatActivity {
         activities.addAll(newActs);
         copyActs.addAll(newActs);
         addActivityToLayout(newActs.get(0));
-        saveButton.setEnabled(true);
+        saveButton.setVisibility(View.VISIBLE);
     }
 
     private void addActivity() {
@@ -151,11 +152,14 @@ public class EditActivityActivity extends AppCompatActivity {
                 Integer.valueOf(Objects.requireNonNull(editCalories.getText()).toString().trim()),
                 false,
                 null);
+        System.out.println(act);
         List<ActivityRequest> activityList = new ArrayList<>();
         activityList.add(act);
         postDisposable = activityService.postActivity(activityList)
                 .subscribe(res -> {
                             newActs = res;
+                            editName.setText("");
+                            editCalories.setText("");
                             appendNewActivity();
                         },
                         err -> Log.e(this.getLocalClassName(), err.getMessage()));
@@ -165,14 +169,14 @@ public class EditActivityActivity extends AppCompatActivity {
         @SuppressLint("InflateParams")
         ConstraintLayout activityConstraintLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_activity, null);
 
-        TextView foodNameTextView = activityConstraintLayout.findViewById(R.id.activity_name);
-        foodNameTextView.setText(act.getName());
+        TextInputEditText activityName = activityConstraintLayout.findViewById(R.id.activity_name);
+        activityName.setText(act.getName());
 
         ImageView trashImageView = activityConstraintLayout.findViewById(R.id.trash_icon);
         trashImageView.setOnClickListener(v -> toggleToRemoveActivity(act));
 
         TextInputEditText caloriesAmount = activityConstraintLayout.findViewById(R.id.calories_amount);
-        caloriesAmount.setId(R.id.calories_amount);
+        caloriesAmount.setText(String.valueOf(act.getCalories()));
 
         activityLayout.addView(activityConstraintLayout);
     }
@@ -181,9 +185,10 @@ public class EditActivityActivity extends AppCompatActivity {
         int index = activities.indexOf(act);
 
         ConstraintLayout activityConstraintLayout = (ConstraintLayout) activityLayout.getChildAt(index);
-        TextView name = (TextView) activityConstraintLayout.getChildAt(0);
-        ImageView trashcan = (ImageView) activityConstraintLayout.getChildAt(1);
-        TextInputEditText caloriesAmount = (TextInputEditText) activityConstraintLayout.getChildAt(4);
+        TextInputLayout nameLayout = (TextInputLayout) activityConstraintLayout.getChildAt(0);
+        TextView calorieLabel = (TextView) activityConstraintLayout.getChildAt(1);
+        ImageView trashcan = (ImageView) activityConstraintLayout.getChildAt(2);
+        TextInputLayout caloriesAmountLayout = (TextInputLayout) activityConstraintLayout.getChildAt(4);
 
         if (copyActs.indexOf(act) == -1) {
             // item was removed, so add it again
@@ -192,13 +197,19 @@ public class EditActivityActivity extends AppCompatActivity {
             } else {
                 copyActs.add(index, act);
             }
-            name.setAlpha(1f);
-            caloriesAmount.setEnabled(true);
+            nameLayout.setAlpha(1f);
+            nameLayout.setEnabled(true);
+            calorieLabel.setAlpha(1f);
+            caloriesAmountLayout.setAlpha(1f);
+            caloriesAmountLayout.setEnabled(true);
             trashcan.setImageResource(R.drawable.trashcan);
         } else {
             copyActs.remove(act);
-            name.setAlpha(0.4f);
-            caloriesAmount.setEnabled(false);
+            nameLayout.setAlpha(0.4f);
+            nameLayout.setEnabled(false);
+            calorieLabel.setAlpha(0.4f);
+            caloriesAmountLayout.setAlpha(0.4f);
+            caloriesAmountLayout.setEnabled(false);
             trashcan.setImageResource(R.drawable.replay);
         }
     }
@@ -226,6 +237,10 @@ public class EditActivityActivity extends AppCompatActivity {
                         setResult(Activity.RESULT_OK, resultIntent);
                         finish();
                     });
+        } else {
+            Intent resultIntent = new Intent();
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         }
     }
 
