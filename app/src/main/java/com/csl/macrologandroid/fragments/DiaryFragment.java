@@ -198,7 +198,7 @@ public class DiaryFragment extends Fragment {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         diaryDate.setText(simpleDateFormat.format(selectedDate));
 
-        viewPager = view.findViewById(R.id.day_view_pager);
+        viewPager = view.findViewById(R.id.diary_pager_layout);
         adapter = new DiaryPagerAdaper(Objects.requireNonNull(getContext()));
         adapter.setSelectedDate(selectedDate);
         adapter.setOnTotalsUpdateListener(this::updateTotals);

@@ -7,9 +7,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +27,7 @@ import com.csl.macrologandroid.util.DateParser;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -166,51 +166,156 @@ public class DiaryPagerAdaper extends PagerAdapter {
     }
 
     private void fillLogEntriesOnPage(List<LogEntryResponse> entries, ViewGroup view) {
-        TableLayout breakfastTable = view.findViewById(R.id.breakfast_table);
-        TableLayout lunchTable = view.findViewById(R.id.lunch_table);
-        TableLayout dinnerTable = view.findViewById(R.id.dinner_table);
-        TableLayout snacksTable = view.findViewById(R.id.snacks_table);
+        LinearLayout breakfastLayout = view.findViewById(R.id.breakfast_layout);
+        LinearLayout lunchLayout = view.findViewById(R.id.lunch_layout);
+        LinearLayout dinnerLayout = view.findViewById(R.id.dinner_layout);
+        LinearLayout snacksLayout = view.findViewById(R.id.snacks_layout);
+
+        List<LogEntryResponse> breakfastEntries = new ArrayList<>();
+        List<LogEntryResponse> lunchEntries = new ArrayList<>();
+        List<LogEntryResponse> dinnerEntries = new ArrayList<>();
+        List<LogEntryResponse> snacksEntries = new ArrayList<>();
+
         for (LogEntryResponse entry : entries) {
             if (entry.getMeal() == Meal.BREAKFAST) {
-                addEntryToTable(breakfastTable, entry);
+                breakfastEntries.add(entry);
             } else if (entry.getMeal() == Meal.LUNCH) {
-                addEntryToTable(lunchTable, entry);
+                lunchEntries.add(entry);
             } else if (entry.getMeal() == Meal.DINNER) {
-                addEntryToTable(dinnerTable, entry);
+                dinnerEntries.add(entry);
             } else {
-                addEntryToTable(snacksTable, entry);
+                snacksEntries.add(entry);
             }
         }
 
-        breakfastTable.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.BREAKFAST));
-        lunchTable.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.LUNCH));
-        dinnerTable.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.DINNER));
-        snacksTable.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.SNACKS));
+        fillCard(breakfastLayout, breakfastEntries);
+        fillCard(lunchLayout, lunchEntries);
+        fillCard(dinnerLayout, dinnerEntries);
+        fillCard(snacksLayout, snacksEntries);
+
+        Button editBreakfast = view.findViewById(R.id.edit_breakfast);
+        editBreakfast.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.BREAKFAST));
+        Button editLunch = view.findViewById(R.id.edit_lunch);
+        editLunch.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.LUNCH));
+        Button editDinner = view.findViewById(R.id.edit_dinner);
+        editDinner.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.DINNER));
+        Button editSnacks = view.findViewById(R.id.edit_snacks);
+        editSnacks.setOnClickListener(v -> onMealClickListener.onMealClick(Meal.SNACKS));
+    }
+
+    private void fillCard(LinearLayout layout, List<LogEntryResponse> entries) {
+        if (entries.size() > 0) {
+            addEntryCardHeader(layout);
+            for (LogEntryResponse entry : entries) {
+                addEntryToTable(layout, entry);
+            }
+        } else {
+            TextView hint = new TextView(context);
+            hint.setText(R.string.eaten);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 8, 0, 8);
+            layout.addView(hint, lp);
+        }
     }
 
     private void fillActivitiesOnPage(List<ActivityResponse> activities, ViewGroup view) {
-        TableLayout activitiesTable = view.findViewById(R.id.activities_table);
-        for (ActivityResponse activity : activities) {
-            TableRow row = new TableRow(context);
-            TextView name = getCustomizedTextView(new TextView(context));
-            TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT, 8.3f);
-            name.setText(activity.getName());
-            name.setLayoutParams(lp);
+        LinearLayout activitiesLayout = view.findViewById(R.id.activities_layout);
+        if (activities.size() > 0) {
+            addActivityCardHeader(activitiesLayout);
 
-            TextView kcal = getCustomizedCalorieTextView(activity.getCalories());
-            row.addView(name);
-            row.addView(kcal);
-            activitiesTable.addView(row);
+            for (ActivityResponse activity : activities) {
+                LinearLayout row = new LinearLayout(context);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                TextView name = getCustomizedTextView(new TextView(context));
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT, 8.3f);
+                lp.setMargins(0, 8, 0, 8);
+                name.setText(activity.getName());
+                name.setLayoutParams(lp);
+
+                TextView kcal = getCustomizedCalorieTextView(activity.getCalories());
+                row.addView(name);
+                row.addView(kcal);
+
+
+                activitiesLayout.addView(row);
+            }
+        } else {
+            TextView hint = new TextView(context);
+            hint.setText(R.string.activity_done);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0, 8, 0, 8);
+            activitiesLayout.addView(hint, lp);
         }
-        activitiesTable.setOnClickListener(v -> onActivityClickListener.onActivityClick());
+
+        Button editActivities = view.findViewById(R.id.edit_activities);
+        editActivities.setOnClickListener(v -> onActivityClickListener.onActivityClick());
     }
 
-    private void addEntryToTable(TableLayout table, LogEntryResponse entry) {
-        TableRow row = new TableRow(context);
+    private void addEntryCardHeader(LinearLayout layout) {
+        LinearLayout header = new LinearLayout(context);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView dummy = new TextView(context);
+        dummy.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+
+        TextView p = new TextView(context);
+        p.setText(R.string.p);
+        p.setTypeface(null, Typeface.BOLD);
+        p.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        TextView f = new TextView(context);
+        f.setText(R.string.f);
+        f.setTypeface(null, Typeface.BOLD);
+        f.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        TextView c = new TextView(context);
+        c.setText(R.string.c);
+        c.setTypeface(null, Typeface.BOLD);
+        c.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        TextView kcal = new TextView(context);
+        kcal.setText(R.string.kcal);
+        kcal.setTypeface(null, Typeface.BOLD);
+        kcal.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 8, 0, 8);
+        header.addView(dummy);
+        header.addView(p, lp);
+        header.addView(f, lp);
+        header.addView(c, lp);
+        header.addView(kcal, lp);
+
+        layout.addView(header);
+    }
+
+    private void addActivityCardHeader(LinearLayout activitiesLayout) {
+        LinearLayout header = new LinearLayout(context);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView kcal = new TextView(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 8, 0, 8);
+        kcal.setText(R.string.kcal);
+        kcal.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+        kcal.setTypeface(null, Typeface.BOLD);
+
+        header.addView(kcal, lp);
+
+        activitiesLayout.addView(header);
+    }
+
+    private void addEntryToTable(LinearLayout layout, LogEntryResponse entry) {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+
         TextView name = getCustomizedTextView(new TextView(context));
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 8.0f);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
         name.setText(entry.getFood().getName());
         name.setLayoutParams(lp);
 
@@ -224,7 +329,8 @@ public class DiaryPagerAdaper extends PagerAdapter {
         row.addView(fat);
         row.addView(carbs);
         row.addView(kcal);
-        table.addView(row);
+
+        layout.addView(row);
     }
 
     private TextView getCustomizedCalorieTextView(double text) {
@@ -249,8 +355,8 @@ public class DiaryPagerAdaper extends PagerAdapter {
     }
 
     private void setTextViewLayout(TextView view) {
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 0.1f);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 8, 0, 8);
         view.setLayoutParams(lp);
         view.setGravity(Gravity.END);
     }
