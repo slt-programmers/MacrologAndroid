@@ -26,6 +26,8 @@ import com.csl.macrologandroid.dtos.ConnectivityResponse;
 import com.csl.macrologandroid.services.UserService;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
@@ -111,16 +113,21 @@ public class ConnectivityActivity extends AppCompatActivity implements BitmapHan
         if (data != null) {
             String scope = data.getQueryParameter("scope");
             String code = data.getQueryParameter("code");
-            if ("read,activity:read_all".equals(scope) && code != null) {
-                ConnectivityRequest request = new ConnectivityRequest("code", code);
-                disposable = userService.postConnectivitySetting("STRAVA", request).subscribe(
-                        res -> {
-                            setConnectedLayoutVisible(res);
-                            notConnectedLayout.setVisibility(View.GONE);
-                            accessError.setVisibility(View.GONE);
-                        },
-                        err -> Log.e(this.getLocalClassName(), err.getMessage())
-                );
+            if (scope != null) {
+                List<String> scopeList = Arrays.asList(scope.split(","));
+                if (scopeList.contains("read") && scopeList.contains("activity:read_all") && code != null) {
+                    ConnectivityRequest request = new ConnectivityRequest("code", code);
+                    disposable = userService.postConnectivitySetting("STRAVA", request).subscribe(
+                            res -> {
+                                setConnectedLayoutVisible(res);
+                                notConnectedLayout.setVisibility(View.GONE);
+                                accessError.setVisibility(View.GONE);
+                            },
+                            err -> Log.e(this.getLocalClassName(), err.getMessage())
+                    );
+                } else {
+                    accessError.setVisibility(View.VISIBLE);
+                }
             } else {
                 accessError.setVisibility(View.VISIBLE);
             }
