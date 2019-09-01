@@ -8,11 +8,17 @@ import java.util.Date;
 public class LogEntryResponse implements Serializable {
 
     private int id;
+
     private FoodResponse food;
+
     private PortionResponse portion;
+
     private MacrosResponse macrosCalculated;
+
     private double multiplier;
+
     private Date day;
+
     private Meal meal;
 
     public int getId() {

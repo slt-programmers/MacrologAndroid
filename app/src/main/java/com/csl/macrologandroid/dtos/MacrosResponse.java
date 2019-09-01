@@ -5,8 +5,11 @@ import java.io.Serializable;
 public class MacrosResponse implements Serializable {
 
     private double protein;
+
     private double fat;
+
     private double carbs;
+
     private double calories;
 
     public double getProtein() {

@@ -3,9 +3,6 @@ package com.csl.macrologandroid.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +12,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.csl.macrologandroid.AboutActivity;
 import com.csl.macrologandroid.AdjustIntakeActivity;
 import com.csl.macrologandroid.ChangePasswordActivity;
+import com.csl.macrologandroid.ConnectivityActivity;
 import com.csl.macrologandroid.DeleteAccountActivity;
 import com.csl.macrologandroid.EditPersonalDetailsActivity;
+import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.WeightChartActivity;
 import com.csl.macrologandroid.cache.DiaryLogCache;
 import com.csl.macrologandroid.cache.FoodCache;
 import com.csl.macrologandroid.cache.UserSettingsCache;
 import com.csl.macrologandroid.dtos.UserSettingsResponse;
 import com.csl.macrologandroid.models.Gender;
-import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.services.UserService;
 
 import org.jetbrains.annotations.NotNull;
@@ -104,10 +104,17 @@ public class UserFragment extends Fragment {
             startActivityForResult(intent, ADJUST_INTAKE_ID);
         });
 
+
         Button weightButton = view.findViewById(R.id.weight_button);
         weightButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WeightChartActivity.class);
             startActivityForResult(intent, EDIT_WEIGHT_ID);
+        });
+
+        Button connectivityButton = view.findViewById(R.id.connectivity_button);
+        connectivityButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ConnectivityActivity.class);
+            startActivity(intent);
         });
 
         Button changePassword = view.findViewById(R.id.change_password);

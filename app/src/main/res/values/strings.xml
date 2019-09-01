@@ -129,5 +129,13 @@
     </string>
     <string name="running_hamster">Running hamster</string>
     <string name="trash_icon">Trash icon</string>
+    <string name="activities">Activities</string>
+    <string name="activity_done">What did you do?</string>
+    <string name="calories_burned">Calories burned</string>
+    <string name="connectivity">Connectivity</string>
+    <string name="connect_strava_title">Connect to Strava</string>
+    <string name="connect_strava_description">Add activities automatically by connecting Macrolog to Strava!</string>
+    <string name="strava_disconnect">Disconnect</string>
+    <string name="strava_invalid_rights">Please grant Macrolog access to view your private activitities to sync them automatically.</string>
 
 </resources>
