@@ -22,6 +22,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class ActivityService {
 
@@ -50,11 +51,11 @@ public class ActivityService {
     }
 
     public Observable<List<ActivityResponse>> getActivitiesForDay(Date date) {
-        return apiService.getActivitiesForDay(DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        return apiService.getActivitiesForDay(DateParser.format(date), true).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<List<ActivityResponse>> getActivitiesForDayForced(Date date) {
-        return apiService.getActivitiesForDay(DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        return apiService.getActivitiesForDayForced(DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<List<ActivityResponse>> postActivity(List<ActivityRequest> activities) {
@@ -68,7 +69,7 @@ public class ActivityService {
     private interface ApiService {
 
         @GET("activities/day/{date}")
-        Observable<List<ActivityResponse>> getActivitiesForDay(@Path("date") String date);
+        Observable<List<ActivityResponse>> getActivitiesForDay(@Path("date") String date, @Query("forced") boolean forced);
 
         @GET("activities/day/{date}?forceSync=true")
         Observable<List<ActivityResponse>> getActivitiesForDayForced(@Path("date") String date);

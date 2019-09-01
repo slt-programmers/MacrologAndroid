@@ -30,6 +30,7 @@ import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.dtos.MacrosResponse;
 import com.csl.macrologandroid.dtos.UserSettingsResponse;
 import com.csl.macrologandroid.models.Meal;
+import com.csl.macrologandroid.services.ActivityService;
 import com.csl.macrologandroid.services.UserService;
 import com.csl.macrologandroid.util.DateParser;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -66,6 +67,7 @@ public class DiaryFragment extends Fragment {
 
     private Disposable disposable;
     private DiaryPagerAdaper adapter;
+    private ActivityService activityService;
 
     public DiaryFragment() {
         // Non arg constructor
@@ -76,6 +78,7 @@ public class DiaryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         logEntryCache = DiaryLogCache.getInstance();
         activityCache = ActivityCache.getInstance();
+        activityService = new ActivityService(getToken());
     }
 
     @Override
@@ -188,6 +191,17 @@ public class DiaryFragment extends Fragment {
         goalCalories = (goalProtein * 4) + (goalFat * 9) + (goalCarbs * 4);
     }
 
+    private void forceSyncActivity() {
+        disposable = activityService.getActivitiesForDayForced(selectedDate).subscribe(
+                res -> {
+                    logEntryCache.clearCache();
+                    activityCache.clearCache();
+                    setupViewPager(view);
+                },
+                err -> Log.e(this.getClass().getName(), err.getMessage())
+        );
+    }
+
     private void setupViewPager(View view) {
         TextView diaryDate = view.findViewById(R.id.diary_date);
 
@@ -204,6 +218,7 @@ public class DiaryFragment extends Fragment {
         adapter.setOnTotalsUpdateListener(this::updateTotals);
         adapter.setOnMealClickListener(this::startEditMeal);
         adapter.setOnActivityClickListener(this::startEditActivity);
+        adapter.setOnActivitySyncListener(this::forceSyncActivity);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(getPositionFromDate(selectedDate));
 

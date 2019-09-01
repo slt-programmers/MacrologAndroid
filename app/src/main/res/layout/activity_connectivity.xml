@@ -99,6 +99,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/textView2">
 
                 <ImageView

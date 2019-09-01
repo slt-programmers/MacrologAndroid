@@ -76,6 +76,7 @@
 
     <style name="buttonBack" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@color/transparent</item>
+        <item name="android:layout_width">40dp</item>
     </style>
 
     <style name="buttonGradient" parent="Base.Widget.AppCompat.Button">

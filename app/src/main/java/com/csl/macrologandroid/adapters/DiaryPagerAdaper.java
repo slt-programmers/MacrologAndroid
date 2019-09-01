@@ -52,6 +52,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private Disposable disposableActs;
     private OnMealClickListener onMealClickListener;
     private OnActivityClickListener onActivityClickListener;
+    private OnActivitySyncListener onActivitySyncListener;
     private OnTotalUpdateListener onTotalUpdateListener;
 
     public void setOnTotalsUpdateListener(OnTotalUpdateListener listener) {
@@ -64,6 +65,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     public void setOnActivityClickListener(OnActivityClickListener listener) {
         this.onActivityClickListener = listener;
+    }
+
+    public void setOnActivitySyncListener(OnActivitySyncListener listener) {
+        this.onActivitySyncListener = listener;
     }
 
     public DiaryPagerAdaper(Context context) {
@@ -252,6 +257,8 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
         Button editActivities = view.findViewById(R.id.edit_activities);
         editActivities.setOnClickListener(v -> onActivityClickListener.onActivityClick());
+        Button syncActivities = view.findViewById(R.id.sync_activities);
+        syncActivities.setOnClickListener(v -> onActivitySyncListener.onActivitySync());
     }
 
     private void addEntryCardHeader(LinearLayout layout) {
@@ -371,6 +378,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     public interface OnActivityClickListener {
         void onActivityClick();
+    }
+
+    public interface OnActivitySyncListener {
+        void onActivitySync();
     }
 
 }
