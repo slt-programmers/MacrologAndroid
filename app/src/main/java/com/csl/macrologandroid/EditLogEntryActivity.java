@@ -50,6 +50,7 @@ import com.csl.macrologandroid.util.DateParser;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -236,6 +237,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
         for (DishResponse res : allDishes) {
             autoCompleteList.add(res.getName() +" (Dish)");
         }
+        Collections.sort(autoCompleteList);
+
     }
 
     private void fillLogEntrylayout() {

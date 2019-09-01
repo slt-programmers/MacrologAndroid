@@ -35,6 +35,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -247,6 +248,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         for (DishResponse res : allDishes) {
             autoCompleteList.add(res.getName() +" (Dish)");
         }
+        Collections.sort(autoCompleteList);
     }
     private boolean isDish(String selectedName) {
         return selectedName!= null && selectedName.endsWith(" (Dish)");
