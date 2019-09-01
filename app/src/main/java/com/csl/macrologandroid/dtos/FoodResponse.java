@@ -6,10 +6,15 @@ import java.util.List;
 public class FoodResponse implements Serializable {
 
     private Long id;
+
     private final String name;
+
     private final double protein;
+
     private final double fat;
+
     private final double carbs;
+
     private final List<PortionResponse> portions;
 
     public FoodResponse(Long id, String name, double protein, double fat, double carbs, List<PortionResponse> portions) {
