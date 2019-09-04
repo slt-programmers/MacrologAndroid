@@ -246,10 +246,10 @@ public class DiaryFragment extends Fragment {
 
     }
 
-    private void openLink(String path) {
+    private void openLink(String activityId) {
         Uri intentUri = Uri.parse("https://www.strava.com/activities/")
                 .buildUpon()
-                .appendPath(path)
+                .appendPath(activityId)
                 .build();
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, intentUri);
         startActivity(browserIntent);
