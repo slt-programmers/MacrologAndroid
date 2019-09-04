@@ -137,5 +137,6 @@
     <string name="connect_strava_description">Add activities automatically by connecting Macrolog to Strava!</string>
     <string name="strava_disconnect">Disconnect</string>
     <string name="strava_invalid_rights">Please grant Macrolog access to view your private activitities to sync them automatically.</string>
+    <string name="strava_view">View on Strava</string>
 
 </resources>

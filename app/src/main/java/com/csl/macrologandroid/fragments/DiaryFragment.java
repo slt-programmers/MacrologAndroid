@@ -2,6 +2,7 @@ package com.csl.macrologandroid.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -218,6 +219,7 @@ public class DiaryFragment extends Fragment {
         adapter.setOnTotalsUpdateListener(this::updateTotals);
         adapter.setOnMealClickListener(this::startEditMeal);
         adapter.setOnActivityClickListener(this::startEditActivity);
+        adapter.setOnActivityLinkClickListener(this::openLink);
         adapter.setOnActivitySyncListener(this::forceSyncActivity);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(getPositionFromDate(selectedDate));
@@ -242,6 +244,15 @@ public class DiaryFragment extends Fragment {
             }
         });
 
+    }
+
+    private void openLink(String path) {
+        Uri intentUri = Uri.parse("https://www.strava.com/activities/")
+                .buildUpon()
+                .appendPath(path)
+                .build();
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, intentUri);
+        startActivity(browserIntent);
     }
 
     private void updateTotals(Date date) {

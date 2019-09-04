@@ -1,6 +1,7 @@
 package com.csl.macrologandroid.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,6 +53,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private Disposable disposableActs;
     private OnMealClickListener onMealClickListener;
     private OnActivityClickListener onActivityClickListener;
+    private OnActivityLinkClickListener onActivityLinkClickListener;
     private OnActivitySyncListener onActivitySyncListener;
     private OnTotalUpdateListener onTotalUpdateListener;
 
@@ -65,6 +67,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     public void setOnActivityClickListener(OnActivityClickListener listener) {
         this.onActivityClickListener = listener;
+    }
+
+    public void setOnActivityLinkClickListener(OnActivityLinkClickListener listener) {
+        this.onActivityLinkClickListener = listener;
     }
 
     public void setOnActivitySyncListener(OnActivitySyncListener listener) {
@@ -232,17 +238,26 @@ public class DiaryPagerAdaper extends PagerAdapter {
             for (ActivityResponse activity : activities) {
                 LinearLayout row = new LinearLayout(context);
                 row.setOrientation(LinearLayout.HORIZONTAL);
+
                 TextView name = getCustomizedTextView(new TextView(context));
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT, 8.3f);
-                lp.setMargins(0, 8, 0, 8);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, 8, 32, 8);
                 name.setText(activity.getName());
                 name.setLayoutParams(lp);
+                row.addView(name);
+
+                if ("STRAVA".equals(activity.getSyncedWith())) {
+                    TextView link = getCustomizedTextView(new TextView(context));
+                    link.setText(R.string.strava_view);
+                    link.setTextColor(Color.rgb(252, 76, 2));
+                    link.setOnClickListener(v -> this.onActivityLinkClickListener.onActivityLinkClick(String.valueOf(activity.getSyncedId())));
+                    row.addView(link, lp);
+                }
 
                 TextView kcal = getCustomizedCalorieTextView(activity.getCalories());
-                row.addView(name);
-                row.addView(kcal);
-
+                lp = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+                lp.setMargins(0, 8, 0, 8);
+                row.addView(kcal, lp);
 
                 activitiesLayout.addView(row);
             }
@@ -378,6 +393,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     public interface OnActivityClickListener {
         void onActivityClick();
+    }
+
+    public interface OnActivityLinkClickListener {
+        void onActivityLinkClick(String path);
     }
 
     public interface OnActivitySyncListener {

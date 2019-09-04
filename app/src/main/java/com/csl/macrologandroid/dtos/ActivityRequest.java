@@ -25,13 +25,13 @@ public class ActivityRequest implements Serializable {
 
     @Expose
     @SerializedName("syncedWith")
-    private final boolean syncedWith;
+    private final String syncedWith;
 
     @Expose
     @SerializedName("syncedId")
     private final Long syncedId;
 
-    public ActivityRequest(Long id, String day, String name, Integer calories, boolean syncedWith, Long syncedId) {
+    public ActivityRequest(Long id, String day, String name, Integer calories, String syncedWith, Long syncedId) {
         this.id = id;
         this.day = day;
         this.name = name;

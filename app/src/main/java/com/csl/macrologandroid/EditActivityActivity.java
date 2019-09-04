@@ -150,7 +150,7 @@ public class EditActivityActivity extends AppCompatActivity {
                 DateParser.format(selectedDate),
                 Objects.requireNonNull(editName.getText()).toString().trim(),
                 Integer.valueOf(Objects.requireNonNull(editCalories.getText()).toString().trim()),
-                false,
+                null,
                 null);
         System.out.println(act);
         List<ActivityRequest> activityList = new ArrayList<>();
@@ -259,7 +259,7 @@ public class EditActivityActivity extends AppCompatActivity {
                 format.format(act.getDay()),
                 name,
                 calories,
-                act.isSyncedWith(),
+                act.getSyncedWith(),
                 act.getSyncedId()
         );
     }

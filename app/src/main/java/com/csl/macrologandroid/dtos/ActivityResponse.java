@@ -9,7 +9,7 @@ public class ActivityResponse implements Serializable {
     private Date day;
     private String name;
     private int calories;
-    private boolean syncedWith;
+    private String syncedWith;
     private long syncedId;
 
     public int getId() {
@@ -44,11 +44,11 @@ public class ActivityResponse implements Serializable {
         this.calories = calories;
     }
 
-    public boolean isSyncedWith() {
+    public String getSyncedWith() {
         return syncedWith;
     }
 
-    public void setSyncedWith(boolean syncedWith) {
+    public void setSyncedWith(String syncedWith) {
         this.syncedWith = syncedWith;
     }
 
