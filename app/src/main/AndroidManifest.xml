@@ -9,6 +9,7 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -16,16 +17,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
-        android:fullBackupContent="false"
         tools:targetApi="n">
+        <activity android:name=".ConnectivityActivity">
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="callback"
+                    android:scheme="macrologandroid" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="www.macrolog.herokuapp.com"
+                    android:pathPrefix="/callback"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity
-            android:name="com.csl.macrologandroid.DeleteAccountActivity"
+            android:name=".DeleteAccountActivity"
             android:label="@string/title_activity_delete_account"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.csl.macrologandroid.ForgotPasswordActivity" />
-        <activity android:name="com.csl.macrologandroid.AddFoodActivity" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".AddFoodActivity" />
         <activity
-            android:name="com.csl.macrologandroid.SplashscreenActivity"
+            android:name=".SplashscreenActivity"
             android:label="@string/app_name"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -35,48 +54,50 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.csl.macrologandroid.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.csl.macrologandroid.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.csl.macrologandroid.EditPersonalDetailsActivity"
+            android:name=".EditPersonalDetailsActivity"
             android:label="@string/title_edit_details"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.csl.macrologandroid.AdjustIntakeActivity"
+            android:name=".AdjustIntakeActivity"
             android:label="@string/title_adjust_intake"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.csl.macrologandroid.ChangePasswordActivity"
+            android:name=".ChangePasswordActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.csl.macrologandroid.EditLogEntryActivity"
+            android:name=".EditLogEntryActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.csl.macrologandroid.AddLogEntryActivity"
+            android:name=".EditActivityActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.csl.macrologandroid.AboutActivity"
+            android:name=".AddLogEntryActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name="com.csl.macrologandroid.WeightChartActivity" />
+        <activity
+            android:name=".AboutActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".WeightChartActivity" />
 
         <receiver
-            android:name="com.csl.macrologandroid.notifications.NotificationReceiver"
+            android:name=".notifications.NotificationReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="NOTIFICATION_RECEIVED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.csl.macrologandroid.notifications.BootReceiver">
+        <receiver android:name=".notifications.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

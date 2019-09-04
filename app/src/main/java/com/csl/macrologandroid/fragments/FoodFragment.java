@@ -193,7 +193,7 @@ public class FoodFragment extends Fragment {
     private void refreshAllFood() {
         FoodCache.getInstance().clearCache();
         FoodService foodService = new FoodService(getToken());
-        disposable = foodService.getAlFood()
+        disposable = foodService.getAllFood()
                 .subscribe(res ->
                 {
                     FoodCache.getInstance().addToCache(res);

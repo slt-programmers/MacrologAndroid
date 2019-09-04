@@ -8,6 +8,9 @@ import android.database.DataSetObserver;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.csl.macrologandroid.dtos.DishResponse;
+import com.csl.macrologandroid.dtos.IngredientResponse;
+import com.csl.macrologandroid.services.DishService;
 import com.csl.macrologandroid.util.SpinnerSetupUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -44,8 +47,10 @@ import com.csl.macrologandroid.services.FoodService;
 import com.csl.macrologandroid.services.LogEntryService;
 import com.csl.macrologandroid.util.DateParser;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -59,8 +64,12 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private Date selectedDate;
     private LogEntryService logEntryService;
     private FoodService foodService;
+    private DishService dishService;
+
     private List<FoodResponse> allFood;
-    private List<String> foodNames = new ArrayList<>();
+    private List<DishResponse> allDishes;
+
+    private List<String> autoCompleteList = new ArrayList<>();
 
     private Meal selectedMeal;
 
@@ -83,6 +92,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private Disposable postDisposable;
     private Disposable foodDisposable;
     private Disposable deleteDisposable;
+    private Disposable dishDisposable;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -105,8 +115,31 @@ public class EditLogEntryActivity extends AppCompatActivity {
         if (deleteDisposable != null) {
             deleteDisposable.dispose();
         }
+        if (dishDisposable !=null){
+            dishDisposable.dispose();
+        }
     }
 
+    private void setupFoodAndDishes(){
+        allFood = null;
+        allDishes = null;
+        foodDisposable = foodService.getAllFood().subscribe(res -> {
+            allFood= res;
+            checkFoodAndDishesResponse();
+        },  err -> Log.e(this.getLocalClassName(), err.getMessage()));
+
+        dishDisposable = dishService.getAllDishes().subscribe(res -> {
+            allDishes= res;
+            checkFoodAndDishesResponse();
+        },  err -> Log.e(this.getLocalClassName(), err.getMessage()));
+    }
+    private void checkFoodAndDishesResponse(){
+        autoCompleteList = new ArrayList<>();
+        if (allFood != null && allDishes!= null){
+            fillAutoCompleteList();
+            setupAutoCompleteTextView();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,13 +149,9 @@ public class EditLogEntryActivity extends AppCompatActivity {
         logEntryService = new LogEntryService(getToken());
 
         foodService = new FoodService(getToken());
-        foodDisposable = foodService.getAlFood()
-                .subscribe(res -> {
-                    allFood = res;
-                    fillFoodNameList();
-                    setupAutoCompleteTextView();
-                }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
+        dishService = new DishService(getToken());
 
+        setupFoodAndDishes();
         logEntries = new ArrayList<>();
         List entries = (List) getIntent().getSerializableExtra("LOGENTRIES");
         for (Object entry : entries) {
@@ -200,11 +229,16 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    private void fillFoodNameList() {
-        foodNames = new ArrayList<>();
+    private void fillAutoCompleteList() {
+        autoCompleteList = new ArrayList<>();
         for (FoodResponse res : allFood) {
-            foodNames.add(res.getName());
+            autoCompleteList.add(res.getName());
         }
+        for (DishResponse res : allDishes) {
+            autoCompleteList.add(res.getName() +" (Dish)");
+        }
+        Collections.sort(autoCompleteList);
+
     }
 
     private void fillLogEntrylayout() {
@@ -227,13 +261,44 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    private void appendNewEntry() {
-        logEntries.addAll(newEntries);
-        copyEntries.addAll(newEntries);
-        addLogEntryToLayout(newEntries.get(0));
+    private void appendNewEntry(LogEntryResponse entry) {
+        logEntries.add(entry);
+        copyEntries.add(entry);
+
+        addLogEntryToLayout(entry);
         saveButton.setVisibility(View.VISIBLE);
     }
 
+    private void addDishEntry(String dishName) {
+        // dishName = dish.name + " (Dish)"
+        String dishFromInput = dishName.substring(0,dishName.length() - 7);
+        DishResponse selectedDish = null;
+        for (DishResponse dish : allDishes) {
+            if (dish.getName().equalsIgnoreCase(dishFromInput)){
+                selectedDish = dish;
+                break;
+            }
+        }
+        List<LogEntryRequest> entryList = new ArrayList<>();
+        for (IngredientResponse ingredient : selectedDish.getIngredients()) {
+            Long portionId = ingredient.getPortionId();
+            double multiplier = ingredient.getMultiplier();
+
+            Long foodId = ingredient.getFood().getId();
+            LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
+                    multiplier, DateParser.format(selectedDate),
+                    selectedMeal.toString());
+            entryList.add(entry);
+        }
+        postDisposable = logEntryService.postLogEntry(entryList)
+                .subscribe(res -> {
+                            newEntries = res;
+                            for (LogEntryResponse newEntry : newEntries) {
+                                appendNewEntry(newEntry);
+                            }
+                        },
+                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
+    }
     private void addLogEntry() {
         Long portionId = null;
         for (PortionResponse portion : selectedFood.getPortions()) {
@@ -260,7 +325,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         postDisposable = logEntryService.postLogEntry(entryList)
                 .subscribe(res -> {
                             newEntries = res;
-                            appendNewEntry();
+                            appendNewEntry(newEntries.get(0));
                         },
                         err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
@@ -294,10 +359,13 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void setNewlyAddedFood(String foodName) {
         addNewFoodButton.setVisibility(View.GONE);
-        foodDisposable = foodService.getAlFood()
+        if (foodDisposable != null) {
+            foodDisposable.dispose();
+        }
+        foodDisposable = foodService.getAllFood()
                 .subscribe(res -> {
                     allFood = res;
-                    fillFoodNameList();
+                    fillAutoCompleteList();
                     setupAutoCompleteTextView();
                     foodTextView.setText(foodName);
                     setupPortionUnitSpinner(foodName);
@@ -353,6 +421,10 @@ public class EditLogEntryActivity extends AppCompatActivity {
                         setResult(Activity.RESULT_OK, resultIntent);
                         finish();
                     });
+        } else {
+            Intent resultIntent = new Intent();
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         }
     }
 
@@ -399,15 +471,24 @@ public class EditLogEntryActivity extends AppCompatActivity {
                         },
                         err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
+    private boolean isDish(String selectedName) {
+        return selectedName!= null && selectedName.endsWith(" (Dish)");
+    }
 
     private void setupAutoCompleteTextView() {
         foodTextView = findViewById(R.id.edit_food_textview);
-        ArrayAdapter<String> autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, foodNames);
+        ArrayAdapter<String> autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, autoCompleteList);
         foodTextView.setAdapter(autocompleteAdapter);
         foodTextView.setThreshold(1);
         foodTextView.setOnItemClickListener((parent, view, position, id) -> {
-            setupPortionUnitSpinner(((AppCompatCheckedTextView) view).getText().toString());
-            toggleFields(true);
+            String foodName = ((AppCompatCheckedTextView) view).getText().toString();
+            if (isDish(foodName)) {
+                foodTextView.setText("");
+                addDishEntry(foodName);
+            } else {
+                setupPortionUnitSpinner(((AppCompatCheckedTextView) view).getText().toString());
+                toggleFields(true);
+            }
             addNewFoodButton.setVisibility(View.INVISIBLE);
         });
 
@@ -417,7 +498,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     public void onInvalidated() {
                         super.onInvalidated();
                         String text = foodTextView.getText().toString();
-                        if (text.length() > 2 && !foodNames.contains(text)) {
+                        if (text.length() > 2 && !autoCompleteList.contains(text)) {
                             toggleFields(false);
                             addButton.setVisibility(View.INVISIBLE);
                             addNewFoodButton.setVisibility(View.VISIBLE);
@@ -432,10 +513,15 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     && autocompleteAdapter.getCount() != 0) {
                 String selectedOption = autocompleteAdapter.getItem(0);
                 if (selectedOption != null) {
-                    foodTextView.setText(selectedOption);
-                    foodTextView.dismissDropDown();
-                    setupPortionUnitSpinner(selectedOption);
-                    toggleFields(true);
+                    if (isDish(selectedOption)) {
+                       foodTextView.setText("");
+                       addDishEntry(selectedOption);
+                    } else {
+                        foodTextView.setText(selectedOption);
+                        foodTextView.dismissDropDown();
+                        setupPortionUnitSpinner(selectedOption);
+                        toggleFields(true);
+                    }
                     addNewFoodButton.setVisibility(View.INVISIBLE);
                 }
                 return true;

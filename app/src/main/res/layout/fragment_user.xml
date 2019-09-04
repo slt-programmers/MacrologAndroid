@@ -254,6 +254,14 @@
                     android:text="@string/weight_chart" />
 
                 <Button
+                    android:id="@+id/connectivity_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/button_gradient_background"
+                    android:text="@string/connectivity" />
+
+                <Button
                     android:id="@+id/change_password"
                     style="@style/buttonGradient"
                     android:layout_width="match_parent"

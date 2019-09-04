@@ -1,6 +1,8 @@
 package com.csl.macrologandroid.services;
 
 import com.csl.macrologandroid.BuildConfig;
+import com.csl.macrologandroid.dtos.ConnectivityRequest;
+import com.csl.macrologandroid.dtos.ConnectivityResponse;
 import com.csl.macrologandroid.dtos.SettingsResponse;
 import com.csl.macrologandroid.dtos.UserSettingsResponse;
 
@@ -13,8 +15,11 @@ import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public class UserService {
 
@@ -50,6 +55,18 @@ public class UserService {
         return apiService.putSetting(setting).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable<ConnectivityResponse> getConnectivitySetting(String key) {
+        return apiService.getConnectivitySetting(key).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ConnectivityResponse> postConnectivitySetting(String platform, ConnectivityRequest request) {
+        return apiService.postConnectivitySetting(platform, request).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ResponseBody> deleteConnectivitySetting(String platform) {
+        return apiService.deleteConnectivitySetting(platform).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
     private interface ApiService {
 
         @GET("settings/user")
@@ -58,5 +75,13 @@ public class UserService {
         @PUT("settings")
         Observable<ResponseBody> putSetting(@Body SettingsResponse setting);
 
+        @GET("settings/connectivity/{key}")
+        Observable<ConnectivityResponse> getConnectivitySetting(@Path("key") String key);
+
+        @POST("settings/connectivity/{platform}")
+        Observable<ConnectivityResponse> postConnectivitySetting(@Path("platform") String platform, @Body ConnectivityRequest request);
+
+        @DELETE("settings/connectivity/{platform}")
+        Observable<ResponseBody> deleteConnectivitySetting(@Path("platform") String platform);
     }
 }

@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.csl.macrologandroid.cache.ActivityCache;
 import com.csl.macrologandroid.cache.DiaryLogCache;
 import com.csl.macrologandroid.cache.FoodCache;
 import com.csl.macrologandroid.cache.UserSettingsCache;
@@ -21,6 +19,7 @@ import com.csl.macrologandroid.fragments.FoodFragment;
 import com.csl.macrologandroid.fragments.UserFragment;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.notifications.NotificationSender;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener {
@@ -56,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
             case (SUCCESSFUL_LOGIN):
             case (SUCCESFUL_REGISTER):
                 if (resultCode == Activity.RESULT_OK) {
+                    FoodCache.getInstance().clearCache();
                     DiaryLogCache.getInstance().clearCache();
+                    ActivityCache.getInstance().clearCache();
                     navigation.setSelectedItemId(R.id.navigation_diary);
                 }
                 break;
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         UserSettingsCache.getInstance().clearCache();
         FoodCache.getInstance().clearCache();
         DiaryLogCache.getInstance().clearCache();
+        ActivityCache.getInstance().clearCache();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent, SUCCESFUL_REGISTER);
         navigation.callOnClick();
