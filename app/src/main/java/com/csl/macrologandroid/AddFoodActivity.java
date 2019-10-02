@@ -65,6 +65,7 @@ public class AddFoodActivity extends AppCompatActivity {
         editFoodNameLayout = findViewById(R.id.food_name_layout);
         editFoodName = findViewById(R.id.food_name);
         editProtein = findViewById(R.id.edit_protein);
+        editFoodName.addTextChangedListener(textWatcher);
         editProtein.addTextChangedListener(textWatcher);
         editFat = findViewById(R.id.edit_fat);
         editFat.addTextChangedListener(textWatcher);
@@ -114,6 +115,9 @@ public class AddFoodActivity extends AppCompatActivity {
             if (portionGrams.getText() == null || portionGrams.getText().toString().length() == 0) {
                 portionsCheck = false;
             }
+        }
+        if (portionsCheck){ // dont check duplicate name if portions were altered. It will have the same name.
+            nameCheck = editFoodName.getText() != null && editFoodName.getText().toString().length() != 0;
         }
 
         saveButton.setEnabled(nameCheck && proteinCheck && fatCheck && carbCheck && portionsCheck);
@@ -171,6 +175,9 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     private void saveFood() {
+        
+        if (editFoodNameLayout.isErrorEnabled()) return;
+
         String name = Objects.requireNonNull(editFoodName.getText()).toString();
         double protein = Double.parseDouble(Objects.requireNonNull(editProtein.getText()).toString());
         double fat = Double.parseDouble(Objects.requireNonNull(editFat.getText()).toString());
