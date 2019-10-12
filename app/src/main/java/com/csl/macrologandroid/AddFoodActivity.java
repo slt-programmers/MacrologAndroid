@@ -66,6 +66,7 @@ public class AddFoodActivity extends AppCompatActivity {
         editFoodName = findViewById(R.id.food_name);
         editProtein = findViewById(R.id.edit_protein);
         editFoodName.addTextChangedListener(textWatcher);
+        editFoodName.addTextChangedListener(foodNameWatcher);
         editProtein.addTextChangedListener(textWatcher);
         editFat = findViewById(R.id.edit_fat);
         editFat.addTextChangedListener(textWatcher);
@@ -92,14 +93,23 @@ public class AddFoodActivity extends AppCompatActivity {
             saveButton.setEnabled(false);
         } else {
             editFoodName.setText(foodName);
-            editFoodName.addTextChangedListener(foodNameWatcher);
             editFoodName.requestFocus();
             saveButton.setEnabled(false);
         }
     }
 
     private void isSaveButtonEnabled() {
-        boolean nameCheck = editFoodName.getText() != null && editFoodName.getText().toString().length() != 0 && !matchingFoodName(editFoodName.getText().toString());
+        boolean nameCheck =  editFoodName.getText() != null && editFoodName.getText().toString().length() != 0;
+        if (foodResponse == null){
+            // Adding a new food. Food may not be added twice, so check name
+            nameCheck = nameCheck && !matchingFoodName(editFoodName.getText().toString());
+        } else {
+            boolean foodNameChanged = !foodResponse.getName().equals(editFoodName.getText().toString());
+            if (foodNameChanged){
+                // If altering the name, the new name may not be present in the database
+                nameCheck = nameCheck && !matchingFoodName(editFoodName.getText().toString());
+            }
+        }
         boolean proteinCheck = editProtein.getText() != null && editProtein.getText().toString().length() != 0;
         boolean fatCheck = editFat.getText() != null && editFat.getText().toString().length() != 0;
         boolean carbCheck = editCarbs.getText() != null && editCarbs.getText().toString().length() != 0;
@@ -109,15 +119,15 @@ public class AddFoodActivity extends AppCompatActivity {
             ConstraintLayout inner = (ConstraintLayout) portionsLayout.getChildAt(i);
             TextInputEditText portionDescription = inner.findViewById(R.id.portion_description);
             TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
+
             if (portionDescription.getText() == null || portionDescription.getText().toString().length() == 0) {
+                // description not filled in
                 portionsCheck = false;
             }
             if (portionGrams.getText() == null || portionGrams.getText().toString().length() == 0) {
+                // grams not filled in
                 portionsCheck = false;
             }
-        }
-        if (portionsCheck){ // dont check duplicate name if portions were altered. It will have the same name.
-            nameCheck = editFoodName.getText() != null && editFoodName.getText().toString().length() != 0;
         }
 
         saveButton.setEnabled(nameCheck && proteinCheck && fatCheck && carbCheck && portionsCheck);
@@ -252,12 +262,29 @@ public class AddFoodActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (matchingFoodName(s.toString())) {
-                editFoodNameLayout.setErrorEnabled(true);
-                editFoodNameLayout.setError("Food already in database");
+            if (foodResponse == null) { // new food
+                if (matchingFoodName(s.toString())) {
+                    editFoodNameLayout.setErrorEnabled(true);
+                    editFoodNameLayout.setError("Food already in database");
+                } else {
+                    editFoodNameLayout.setErrorEnabled(false);
+                    editFoodNameLayout.setError("");
+                }
             } else {
-                editFoodNameLayout.setErrorEnabled(false);
-                editFoodNameLayout.setError("");
+                // edit food
+                if (foodResponse.getName().equalsIgnoreCase(s.toString())) {
+                    // nothing altered
+                    editFoodNameLayout.setErrorEnabled(false);
+                    editFoodNameLayout.setError("");
+                } else if (matchingFoodName(s.toString())){
+                    // new food already exists in the database
+                    editFoodNameLayout.setErrorEnabled(true);
+                    editFoodNameLayout.setError("Food already in database");
+                } else {
+                    // new food name is ok
+                    editFoodNameLayout.setErrorEnabled(false);
+                    editFoodNameLayout.setError("");
+                }
             }
         }
 
