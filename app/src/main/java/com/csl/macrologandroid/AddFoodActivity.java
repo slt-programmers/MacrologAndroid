@@ -2,14 +2,6 @@ package com.csl.macrologandroid;
 
 import android.app.Activity;
 import android.content.Intent;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,17 +11,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.csl.macrologandroid.cache.FoodCache;
 import com.csl.macrologandroid.dtos.FoodResponse;
 import com.csl.macrologandroid.dtos.PortionResponse;
 import com.csl.macrologandroid.lifecycle.Session;
-import com.csl.macrologandroid.services.FoodService;
+import com.csl.macrologandroid.models.Food;
+import com.csl.macrologandroid.models.Portion;
+import com.csl.macrologandroid.services.FoodRepository;
+import com.csl.macrologandroid.viewmodels.FoodViewModel;
+import com.csl.macrologandroid.viewmodels.ViewModelFactory;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import io.reactivex.disposables.Disposable;
 
 public class AddFoodActivity extends AppCompatActivity {
 
@@ -42,16 +42,20 @@ public class AddFoodActivity extends AppCompatActivity {
     private TextInputLayout editFoodNameLayout;
 
     private FoodResponse foodResponse;
-    private Disposable disposable;
     private final List<String> allFoodNames = new ArrayList<>();
+    private FoodViewModel viewModel;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        viewModel = ViewModelProviders.of(this, new ViewModelFactory(getToken())).get(FoodViewModel.class);
+
         setContentView(R.layout.activity_add_food);
 
-        List<FoodResponse> allFood = FoodCache.getInstance().getCache();
-        for (FoodResponse food : allFood) {
+        List<Food> allFood = FoodCache.getInstance().getCache();
+        for (Food food : allFood) {
             allFoodNames.add(food.getName());
         }
 
@@ -136,14 +140,6 @@ public class AddFoodActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (disposable != null) {
-            disposable.dispose();
-        }
-    }
-
     private void addPortion(LinearLayout container, PortionResponse portion) {
         ConstraintLayout newPortionLayout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_add_portion, container, false);
         TextInputEditText portionDescription = newPortionLayout.findViewById(R.id.portion_description);
@@ -176,23 +172,24 @@ public class AddFoodActivity extends AppCompatActivity {
         double fat = Double.parseDouble(Objects.requireNonNull(editFat.getText()).toString());
         double carbs = Double.parseDouble(Objects.requireNonNull(editCarbs.getText()).toString());
 
-        List<PortionResponse> portions = new ArrayList<>();
+        List<Portion> portions = new ArrayList<>();
         int childCount = portionsLayout.getChildCount();
         for (int i = 0; i < childCount; i++) {
             ConstraintLayout inner = (ConstraintLayout) portionsLayout.getChildAt(i);
             TextInputEditText portionDescription = inner.findViewById(R.id.portion_description);
             TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
             String description = Objects.requireNonNull(portionDescription.getText()).toString();
-            PortionResponse portion = new PortionResponse(findIdForPortion(i),
+            Portion portion = new Portion(findIdForPortion(i),
                     Double.valueOf(Objects.requireNonNull(portionGrams.getText()).toString()), description);
             portions.add(portion);
         }
-        FoodResponse newFood = new FoodResponse(null, name, protein, fat, carbs, portions);
+        Food newFood = new Food(null, name, protein, fat, carbs, portions);
         if (foodResponse != null) {
             newFood.setId(foodResponse.getId());
         }
-        FoodService foodService = new FoodService(getToken());
-        disposable = foodService.postFood(newFood)
+        viewModel.postFood(newFood);
+        FoodRepository foodRepository = new FoodRepository(getToken());
+        disposable = foodRepository.postFoodObservable(newFood)
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("FOOD_NAME", editFoodName.getText().toString());

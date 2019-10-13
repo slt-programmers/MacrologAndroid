@@ -26,7 +26,7 @@ import com.csl.macrologandroid.dtos.PortionResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.services.DishService;
-import com.csl.macrologandroid.services.FoodService;
+import com.csl.macrologandroid.services.FoodRepository;
 import com.csl.macrologandroid.services.LogEntryService;
 import com.csl.macrologandroid.util.DateParser;
 import com.csl.macrologandroid.util.SpinnerSetupUtil;
@@ -51,7 +51,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private TextInputEditText editGramsOrAmount;
     private Button saveButton;
     private Button addButton;
-    private FoodService foodService;
+    private FoodRepository foodRepository;
     private DishService dishService;
     private LogEntryService logService;
     private List<FoodResponse> allFood;
@@ -92,7 +92,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private void setupFoodAndDishes(){
         allFood = null;
         allDishes = null;
-        foodService.getAllFood().subscribe(res -> {
+        foodRepository.getAllFoodObservable().subscribe(res -> {
             allFood= res;
             checkFoodAndDishesResponse();
         },  err -> Log.e(this.getLocalClassName(), err.getMessage()));
@@ -118,7 +118,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         Intent intent = getIntent();
         selectedDate = (Date) intent.getSerializableExtra("DATE");
 
-        foodService = new FoodService(getToken());
+        foodRepository = new FoodRepository(getToken());
         dishService = new DishService(getToken());
         logService = new LogEntryService(getToken());
 
@@ -163,7 +163,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
     private void setNewlyAddedFood(String foodName) {
         addButton.setVisibility(View.GONE);
-        foodDisposable = foodService.getAllFood()
+        foodDisposable = foodRepository.getAllFoodObservable()
                 .subscribe(res -> {
                     allFood = res;
                     fillAutoCompleteList();

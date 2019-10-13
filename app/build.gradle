@@ -3,6 +3,10 @@ apply plugin: 'org.sonarqube'
 apply plugin: 'com.github.triplet.play'
 
 android {
+    dataBinding {
+        enabled = true
+    }
+
     signingConfigs {
         release {
             storeFile = file("../ignore/macrologKeyStore")
@@ -87,4 +91,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'com.google.dagger:dagger:2.16'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
 }

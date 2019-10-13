@@ -5,15 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.fragment.app.Fragment;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +19,17 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.csl.macrologandroid.AddFoodActivity;
 import com.csl.macrologandroid.R;
-import com.csl.macrologandroid.cache.FoodCache;
-import com.csl.macrologandroid.dtos.FoodResponse;
-import com.csl.macrologandroid.services.FoodService;
+import com.csl.macrologandroid.models.Food;
 import com.csl.macrologandroid.util.KeyboardManager;
+import com.csl.macrologandroid.viewmodels.FoodViewModel;
+import com.csl.macrologandroid.viewmodels.ViewModelFactory;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,17 +39,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import io.reactivex.disposables.Disposable;
-
 import static android.content.Context.MODE_PRIVATE;
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
 public class FoodFragment extends Fragment {
 
     private static final int ADD_FOOD_ID = 123;
-    private List<FoodResponse> allFood;
-    private List<FoodResponse> searchedFood;
-    private List<FoodResponse> convertedFood;
+    private List<Food> allFood;
+    private List<Food> searchedFood;
+    private List<Food> convertedFood;
 
     private TableLayout foodTable;
     private TableRow foodTableHeader;
@@ -61,7 +57,6 @@ public class FoodFragment extends Fragment {
 
     private int selectedRadioId;
 
-    private Disposable disposable;
     private TextView foodHeader;
     private TextView proteinHeader;
     private TextView fatHeader;
@@ -73,6 +68,20 @@ public class FoodFragment extends Fragment {
         // Non arg constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        FoodViewModel viewModel = ViewModelProviders.of(this, new ViewModelFactory(getToken())).get(FoodViewModel.class);
+        viewModel.getFoodListData().observe(this, foods -> {
+            allFood = foods;
+            searchedFood = allFood;
+            convertedFood = searchedFood;
+            fillTable(convertedFood);
+        });
+    }
+
+    // OUD
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -149,23 +158,7 @@ public class FoodFragment extends Fragment {
 
         setSortHeaderColor(foodHeader);
 
-        allFood = FoodCache.getInstance().getCache();
-        searchedFood = allFood;
-        convertedFood = searchedFood;
-        if (allFood.isEmpty()) {
-            refreshAllFood();
-        } else {
-            fillTable(convertedFood);
-        }
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (disposable != null) {
-            disposable.dispose();
-        }
     }
 
     private void setSortHeaderColor(TextView header) {
@@ -176,32 +169,32 @@ public class FoodFragment extends Fragment {
         header.setTextColor(getResources().getColor(R.color.colorPrimary, null));
     }
 
-    private void selectFood(FoodResponse foodResponse) {
+    private void selectFood(Food selectedFood) {
         Intent intent = new Intent(getContext(), AddFoodActivity.class);
-        FoodResponse food = null;
-        for (FoodResponse response : allFood) {
-            if (response.getName().equals(foodResponse.getName())) {
-                food = response;
+        Food newFood = null;
+        for (Food food : allFood) {
+            if (food.getName().equals(selectedFood.getName())) {
+                newFood = food;
                 break;
             }
         }
 
-        intent.putExtra("FOOD_RESPONSE", food);
+        intent.putExtra("FOOD_RESPONSE", newFood);
         startActivityForResult(intent, ADD_FOOD_ID);
     }
 
     private void refreshAllFood() {
-        FoodCache.getInstance().clearCache();
-        FoodService foodService = new FoodService(getToken());
-        disposable = foodService.getAllFood()
-                .subscribe(res ->
-                {
-                    FoodCache.getInstance().addToCache(res);
-                    allFood = res;
-                    searchedFood = allFood;
-                    convertedFood = searchedFood;
-                    fillTable(convertedFood);
-                }, err -> Log.e(this.getClass().getName(), err.toString()));
+//        FoodCache.getInstance().clearCache();
+//        FoodRepository foodRepository = new FoodRepository(getToken());
+//        disposable = foodRepository.getAllFoodObservable()
+//                .subscribe(res ->
+//                {
+//                    FoodCache.getInstance().addToCache(res);
+//                    allFood = res;
+//                    searchedFood = allFood;
+//                    convertedFood = searchedFood;
+//                    fillTable(convertedFood);
+//                }, err -> Log.e(this.getClass().getName(), err.toString()));
     }
 
     private void determineGramsOrPercentage() {
@@ -212,11 +205,11 @@ public class FoodFragment extends Fragment {
         }
     }
 
-    private List<FoodResponse> convertGramsToPercentage(List<FoodResponse> foodResponses) {
-        List<FoodResponse> result = new ArrayList<>();
-        for (FoodResponse food : foodResponses) {
+    private List<Food> convertGramsToPercentage(List<Food> foodList) {
+        List<Food> result = new ArrayList<>();
+        for (Food food : foodList) {
             double total = food.getProtein() + food.getFat() + food.getCarbs();
-            FoodResponse foodPercentage = new FoodResponse(
+            Food foodPercentage = new Food(
                     food.getId(),
                     food.getName(),
                     (food.getProtein() / total * 100),
@@ -229,26 +222,26 @@ public class FoodFragment extends Fragment {
         return result;
     }
 
-    private void fillTable(List<FoodResponse> selection) {
+    private void fillTable(List<Food> selection) {
         foodTable.removeAllViews();
         foodTable.addView(foodTableHeader);
 
-        for (FoodResponse foodResponse : selection) {
+        for (Food food : selection) {
             TableRow row = new TableRow(getContext());
-            TextView food = getCustomizedTextView(new TextView(getContext()));
+            TextView foodTextView = getCustomizedTextView(new TextView(getContext()));
             TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT, 8.0f);
 
-            food.setText(foodResponse.getName());
-            food.setLayoutParams(lp);
-            food.setClickable(true);
-            food.setOnClickListener(v -> selectFood(foodResponse));
+            foodTextView.setText(food.getName());
+            foodTextView.setLayoutParams(lp);
+            foodTextView.setClickable(true);
+            foodTextView.setOnClickListener(v -> selectFood(food));
 
-            TextView protein = getDecimalNumberTextView(foodResponse.getProtein());
-            TextView fat = getDecimalNumberTextView(foodResponse.getFat());
-            TextView carbs = getDecimalNumberTextView(foodResponse.getCarbs());
+            TextView protein = getDecimalNumberTextView(food.getProtein());
+            TextView fat = getDecimalNumberTextView(food.getFat());
+            TextView carbs = getDecimalNumberTextView(food.getCarbs());
 
-            row.addView(food);
+            row.addView(foodTextView);
             row.addView(protein);
             row.addView(fat);
             row.addView(carbs);
@@ -325,7 +318,7 @@ public class FoodFragment extends Fragment {
             if (chars == null || chars.toString().isEmpty()) {
                 searchedFood = allFood;
             } else {
-                for (FoodResponse food : allFood) {
+                for (Food food : allFood) {
                     if (food.getName().toLowerCase().contains(chars.toString().toLowerCase())) {
                         searchedFood.add(food);
                     }

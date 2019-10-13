@@ -5,23 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.csl.macrologandroid.dtos.DishResponse;
-import com.csl.macrologandroid.dtos.IngredientResponse;
-import com.csl.macrologandroid.services.DishService;
-import com.csl.macrologandroid.util.SpinnerSetupUtil;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatCheckedTextView;
-import androidx.appcompat.widget.AppCompatTextView;
-
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -36,24 +20,35 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckedTextView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.csl.macrologandroid.adapters.AutocompleteAdapter;
+import com.csl.macrologandroid.dtos.DishResponse;
 import com.csl.macrologandroid.dtos.FoodResponse;
+import com.csl.macrologandroid.dtos.IngredientResponse;
 import com.csl.macrologandroid.dtos.LogEntryRequest;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.dtos.PortionResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.models.Meal;
-import com.csl.macrologandroid.services.FoodService;
+import com.csl.macrologandroid.services.DishService;
+import com.csl.macrologandroid.services.FoodRepository;
 import com.csl.macrologandroid.services.LogEntryService;
 import com.csl.macrologandroid.util.DateParser;
+import com.csl.macrologandroid.util.SpinnerSetupUtil;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -63,7 +58,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private Date selectedDate;
     private LogEntryService logEntryService;
-    private FoodService foodService;
+    private FoodRepository foodRepository;
     private DishService dishService;
 
     private List<FoodResponse> allFood;
@@ -123,7 +118,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private void setupFoodAndDishes(){
         allFood = null;
         allDishes = null;
-        foodDisposable = foodService.getAllFood().subscribe(res -> {
+        foodDisposable = foodRepository.getAllFoodObservable().subscribe(res -> {
             allFood= res;
             checkFoodAndDishesResponse();
         },  err -> Log.e(this.getLocalClassName(), err.getMessage()));
@@ -148,7 +143,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         selectedDate = (Date) getIntent().getSerializableExtra("DATE");
         logEntryService = new LogEntryService(getToken());
 
-        foodService = new FoodService(getToken());
+        foodRepository = new FoodRepository(getToken());
         dishService = new DishService(getToken());
 
         setupFoodAndDishes();
@@ -280,7 +275,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
             }
         }
         List<LogEntryRequest> entryList = new ArrayList<>();
-        for (IngredientResponse ingredient : selectedDish.getIngredients()) {
+        for (IngredientResponse ingredient : Objects.requireNonNull(selectedDish).getIngredients()) {
             Long portionId = ingredient.getPortionId();
             double multiplier = ingredient.getMultiplier();
 
@@ -362,7 +357,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         if (foodDisposable != null) {
             foodDisposable.dispose();
         }
-        foodDisposable = foodService.getAllFood()
+        foodDisposable = foodRepository.getAllFoodObservable()
                 .subscribe(res -> {
                     allFood = res;
                     fillAutoCompleteList();

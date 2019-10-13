@@ -1,15 +1,18 @@
 package com.csl.macrologandroid.cache;
 
-import com.csl.macrologandroid.dtos.FoodResponse;
+import com.csl.macrologandroid.models.Food;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class FoodCache {
 
     private static FoodCache instance;
 
-    private List<FoodResponse> cache;
+    private List<Food> cache;
 
     private FoodCache() {
         this.cache = new ArrayList<>();
@@ -22,11 +25,11 @@ public class FoodCache {
         return instance;
     }
 
-    public void addToCache(List<FoodResponse> foodResponses) {
+    public void addToCache(List<Food> foodResponses) {
         cache.addAll(foodResponses);
     }
 
-    public List<FoodResponse> getCache() {
+    public List<Food> getCache() {
         return cache;
     }
 
