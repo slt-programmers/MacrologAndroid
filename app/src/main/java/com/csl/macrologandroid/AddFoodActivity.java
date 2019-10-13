@@ -2,14 +2,6 @@ package com.csl.macrologandroid;
 
 import android.app.Activity;
 import android.content.Intent;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,11 +11,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.csl.macrologandroid.cache.FoodCache;
 import com.csl.macrologandroid.dtos.FoodResponse;
 import com.csl.macrologandroid.dtos.PortionResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.FoodService;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,20 +96,20 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     private void isSaveButtonEnabled() {
-        boolean nameCheck =  editFoodName.getText() != null && editFoodName.getText().toString().length() != 0;
-        if (foodResponse == null){
+        boolean nameCheck = editFoodName.getText() != null && editFoodName.getText().toString().length() != 0;
+        if (foodResponse == null) {
             // Adding a new food. Food may not be added twice, so check name
             nameCheck = nameCheck && !matchingFoodName(editFoodName.getText().toString());
         } else {
             boolean foodNameChanged = !foodResponse.getName().equals(editFoodName.getText().toString());
-            if (foodNameChanged){
+            if (foodNameChanged) {
                 // If altering the name, the new name may not be present in the database
                 nameCheck = nameCheck && !matchingFoodName(editFoodName.getText().toString());
             }
         }
         boolean proteinCheck = editProtein.getText() != null && editProtein.getText().toString().length() != 0;
         boolean fatCheck = editFat.getText() != null && editFat.getText().toString().length() != 0;
-        boolean carbCheck = editCarbs.getText() != null && editCarbs.getText().toString().length() != 0;
+        boolean carbsCheck = editCarbs.getText() != null && editCarbs.getText().toString().length() != 0;
 
         boolean portionsCheck = true;
         for (int i = 0; i < portionsLayout.getChildCount(); i++) {
@@ -121,17 +118,14 @@ public class AddFoodActivity extends AppCompatActivity {
             TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
 
             if (portionDescription.getText() == null || portionDescription.getText().toString().length() == 0) {
-                // description not filled in
                 portionsCheck = false;
             }
             if (portionGrams.getText() == null || portionGrams.getText().toString().length() == 0) {
-                // grams not filled in
                 portionsCheck = false;
             }
         }
 
-        saveButton.setEnabled(nameCheck && proteinCheck && fatCheck && carbCheck && portionsCheck);
-
+        saveButton.setEnabled(nameCheck && proteinCheck && fatCheck && carbsCheck && portionsCheck);
     }
 
     @Override
@@ -185,7 +179,6 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     private void saveFood() {
-        
         if (editFoodNameLayout.isErrorEnabled()) return;
 
         String name = Objects.requireNonNull(editFoodName.getText()).toString();
@@ -265,7 +258,7 @@ public class AddFoodActivity extends AppCompatActivity {
             if (foodResponse == null) { // new food
                 if (matchingFoodName(s.toString())) {
                     editFoodNameLayout.setErrorEnabled(true);
-                    editFoodNameLayout.setError("Food already in database");
+                    editFoodNameLayout.setError("You've already added this product");
                 } else {
                     editFoodNameLayout.setErrorEnabled(false);
                     editFoodNameLayout.setError("");
@@ -276,10 +269,10 @@ public class AddFoodActivity extends AppCompatActivity {
                     // nothing altered
                     editFoodNameLayout.setErrorEnabled(false);
                     editFoodNameLayout.setError("");
-                } else if (matchingFoodName(s.toString())){
+                } else if (matchingFoodName(s.toString())) {
                     // new food already exists in the database
                     editFoodNameLayout.setErrorEnabled(true);
-                    editFoodNameLayout.setError("Food already in database");
+                    editFoodNameLayout.setError("You've already added this product");
                 } else {
                     // new food name is ok
                     editFoodNameLayout.setErrorEnabled(false);
