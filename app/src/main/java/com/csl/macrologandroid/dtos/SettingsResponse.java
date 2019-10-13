@@ -9,7 +9,7 @@ public class SettingsResponse implements Serializable {
 
     @Expose
     @SerializedName("id")
-    private final int id;
+    private final Integer id;
 
     @Expose
     @SerializedName("name")
@@ -19,7 +19,7 @@ public class SettingsResponse implements Serializable {
     @SerializedName("value")
     private final String value;
 
-    public SettingsResponse(int id, String name, String value) {
+    public SettingsResponse(Integer id, String name, String value) {
         this.id = id;
         this.name = name;
         this.value = value;

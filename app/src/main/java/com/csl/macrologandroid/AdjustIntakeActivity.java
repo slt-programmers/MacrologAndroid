@@ -140,11 +140,11 @@ public class AdjustIntakeActivity extends AppCompatActivity {
             if (frag instanceof ChangeGoalMacros) {
                 Bundle goal = ((ChangeGoalMacros) frag).getGoalMacros();
                 List<Observable<ResponseBody>> obsList = new ArrayList<>();
-                obsList.add(service.putSetting(new SettingsResponse(1, GOAL_PROTEIN,
+                obsList.add(service.putSetting(new SettingsResponse(null, GOAL_PROTEIN,
                         String.valueOf(goal.getInt(GOAL_PROTEIN)))));
-                obsList.add(service.putSetting(new SettingsResponse(1, GOAL_FAT,
+                obsList.add(service.putSetting(new SettingsResponse(null, GOAL_FAT,
                         String.valueOf(goal.getInt(GOAL_FAT)))));
-                obsList.add(service.putSetting(new SettingsResponse(1, GOAL_CARBS,
+                obsList.add(service.putSetting(new SettingsResponse(null, GOAL_CARBS,
                         String.valueOf(goal.getInt(GOAL_CARBS)))));
 
                 disposable = Observable.zip(obsList, i -> i)

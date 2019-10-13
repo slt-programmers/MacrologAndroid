@@ -230,7 +230,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
         String newName = Objects.requireNonNull(editName.getText()).toString();
         if (!newName.isEmpty() && !newName.equals(originalName)) {
-            obsList.add(userService.putSetting(new SettingsResponse(1, "name", newName)));
+            obsList.add(userService.putSetting(new SettingsResponse(null, "name", newName)));
             userSettings.setName(newName);
         }
 
@@ -239,8 +239,8 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             Calendar birthDay = Calendar.getInstance();
             birthDay.setTimeInMillis(newDate.getTime());
             int age = now.get(Calendar.YEAR) - birthDay.get(Calendar.YEAR);
-            obsList.add(userService.putSetting(new SettingsResponse(1, "birthday", newBirthday)));
-            obsList.add(userService.putSetting(new SettingsResponse(1, "age", String.valueOf(age))));
+            obsList.add(userService.putSetting(new SettingsResponse(null, "birthday", newBirthday)));
+            obsList.add(userService.putSetting(new SettingsResponse(null, "age", String.valueOf(age))));
             userSettings.setBirthday(newDate);
             userSettings.setAge(age);
         }
@@ -248,19 +248,19 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         RadioButton selected = findViewById(genderRadios.getCheckedRadioButtonId());
         String newGender = selected.getText().toString().toUpperCase();
         if (originalGender == null || !newGender.equals(originalGender.toString())) {
-            obsList.add(userService.putSetting(new SettingsResponse(1, "gender", newGender)));
+            obsList.add(userService.putSetting(new SettingsResponse(null, "gender", newGender)));
             userSettings.setGender(Gender.valueOf(newGender));
         }
 
         String newHeight = Objects.requireNonNull(editHeight.getText()).toString();
         if (!newHeight.isEmpty() && originalHeight != Integer.valueOf(newHeight)) {
-            obsList.add(userService.putSetting(new SettingsResponse(1, "height", newHeight)));
+            obsList.add(userService.putSetting(new SettingsResponse(null, "height", newHeight)));
             userSettings.setHeight(Integer.valueOf(newHeight));
         }
 
         String newWeight = Objects.requireNonNull(editWeight.getText()).toString();
         if (!newWeight.isEmpty() && !String.valueOf(originalWeight).equals(newWeight)) {
-            obsList.add(userService.putSetting(new SettingsResponse(1, "weight", newWeight)));
+            obsList.add(userService.putSetting(new SettingsResponse(null, "weight", newWeight)));
             userSettings.setWeight(Double.valueOf(newWeight));
         }
 
@@ -287,7 +287,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
 
         if (!String.valueOf(originalActivity).equals(newActivity)) {
-            obsList.add(userService.putSetting(new SettingsResponse(1, "activity", newActivity)));
+            obsList.add(userService.putSetting(new SettingsResponse(null, "activity", newActivity)));
             userSettings.setActivity(Double.valueOf(newActivity));
         }
 

@@ -2,14 +2,6 @@ package com.csl.macrologandroid;
 
 import android.app.Activity;
 import android.content.Intent;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,11 +11,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.csl.macrologandroid.cache.FoodCache;
 import com.csl.macrologandroid.dtos.FoodResponse;
 import com.csl.macrologandroid.dtos.PortionResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.FoodService;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +62,8 @@ public class AddFoodActivity extends AppCompatActivity {
         editFoodNameLayout = findViewById(R.id.food_name_layout);
         editFoodName = findViewById(R.id.food_name);
         editProtein = findViewById(R.id.edit_protein);
+        editFoodName.addTextChangedListener(textWatcher);
+        editFoodName.addTextChangedListener(foodNameWatcher);
         editProtein.addTextChangedListener(textWatcher);
         editFat = findViewById(R.id.edit_fat);
         editFat.addTextChangedListener(textWatcher);
@@ -91,23 +90,33 @@ public class AddFoodActivity extends AppCompatActivity {
             saveButton.setEnabled(false);
         } else {
             editFoodName.setText(foodName);
-            editFoodName.addTextChangedListener(foodNameWatcher);
             editFoodName.requestFocus();
             saveButton.setEnabled(false);
         }
     }
 
     private void isSaveButtonEnabled() {
-        boolean nameCheck = editFoodName.getText() != null && editFoodName.getText().toString().length() != 0 && !matchingFoodName(editFoodName.getText().toString());
+        boolean nameCheck = editFoodName.getText() != null && editFoodName.getText().toString().length() != 0;
+        if (foodResponse == null) {
+            // Adding a new food. Food may not be added twice, so check name
+            nameCheck = nameCheck && !matchingFoodName(editFoodName.getText().toString());
+        } else {
+            boolean foodNameChanged = !foodResponse.getName().equals(editFoodName.getText().toString());
+            if (foodNameChanged) {
+                // If altering the name, the new name may not be present in the database
+                nameCheck = nameCheck && !matchingFoodName(editFoodName.getText().toString());
+            }
+        }
         boolean proteinCheck = editProtein.getText() != null && editProtein.getText().toString().length() != 0;
         boolean fatCheck = editFat.getText() != null && editFat.getText().toString().length() != 0;
-        boolean carbCheck = editCarbs.getText() != null && editCarbs.getText().toString().length() != 0;
+        boolean carbsCheck = editCarbs.getText() != null && editCarbs.getText().toString().length() != 0;
 
         boolean portionsCheck = true;
         for (int i = 0; i < portionsLayout.getChildCount(); i++) {
             ConstraintLayout inner = (ConstraintLayout) portionsLayout.getChildAt(i);
             TextInputEditText portionDescription = inner.findViewById(R.id.portion_description);
             TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
+
             if (portionDescription.getText() == null || portionDescription.getText().toString().length() == 0) {
                 portionsCheck = false;
             }
@@ -116,8 +125,7 @@ public class AddFoodActivity extends AppCompatActivity {
             }
         }
 
-        saveButton.setEnabled(nameCheck && proteinCheck && fatCheck && carbCheck && portionsCheck);
-
+        saveButton.setEnabled(nameCheck && proteinCheck && fatCheck && carbsCheck && portionsCheck);
     }
 
     @Override
@@ -171,6 +179,8 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     private void saveFood() {
+        if (editFoodNameLayout.isErrorEnabled()) return;
+
         String name = Objects.requireNonNull(editFoodName.getText()).toString();
         double protein = Double.parseDouble(Objects.requireNonNull(editProtein.getText()).toString());
         double fat = Double.parseDouble(Objects.requireNonNull(editFat.getText()).toString());
@@ -245,12 +255,29 @@ public class AddFoodActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (matchingFoodName(s.toString())) {
-                editFoodNameLayout.setErrorEnabled(true);
-                editFoodNameLayout.setError("Food already in database");
+            if (foodResponse == null) { // new food
+                if (matchingFoodName(s.toString())) {
+                    editFoodNameLayout.setErrorEnabled(true);
+                    editFoodNameLayout.setError("You've already added this product");
+                } else {
+                    editFoodNameLayout.setErrorEnabled(false);
+                    editFoodNameLayout.setError("");
+                }
             } else {
-                editFoodNameLayout.setErrorEnabled(false);
-                editFoodNameLayout.setError("");
+                // edit food
+                if (foodResponse.getName().equalsIgnoreCase(s.toString())) {
+                    // nothing altered
+                    editFoodNameLayout.setErrorEnabled(false);
+                    editFoodNameLayout.setError("");
+                } else if (matchingFoodName(s.toString())) {
+                    // new food already exists in the database
+                    editFoodNameLayout.setErrorEnabled(true);
+                    editFoodNameLayout.setError("You've already added this product");
+                } else {
+                    // new food name is ok
+                    editFoodNameLayout.setErrorEnabled(false);
+                    editFoodNameLayout.setError("");
+                }
             }
         }
 
