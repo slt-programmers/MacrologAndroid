@@ -22,6 +22,7 @@ import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.AuthenticationService;
 
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
@@ -250,9 +251,10 @@ public class LoginActivity extends AppCompatActivity {
                             startActivityForResult(intent, INTAKE_SUCCESSFUL);
                         },
                         err -> {
-                            ResponseBody body = ((HttpException) err).response().errorBody();
-                            if (body != null) {
-                                mRegisterResultView.setText(body.string());
+
+                            if (err instanceof  HttpException &&
+                                    ((HttpException) err).response().errorBody() != null) {
+                                mRegisterResultView.setText( ((HttpException) err).response().errorBody().string());
                                 mRegisterResultView.setVisibility(View.VISIBLE);
                             } else {
                                 mRegisterResultView.setText(R.string.general_error);
