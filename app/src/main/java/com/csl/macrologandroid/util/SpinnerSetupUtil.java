@@ -1,6 +1,7 @@
 package com.csl.macrologandroid.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,8 +40,14 @@ public class SpinnerSetupUtil {
         return list;
     }
 
-    public void setupPortionUnitSpinner(Context context, FoodResponse selectedFood, Spinner editPortionOrUnitSpinner, TextInputEditText editGramsOrAmount) {
+    public void setupPortionUnitSpinner(Context context, FoodResponse selectedFood, Spinner editPortionOrUnitSpinner, TextInputEditText editGramsOrAmount, SharedPreferences prefs) {
         List<String> list = getPortionList(selectedFood);
+
+        String prefPortion = prefs.getString(selectedFood.getName().toUpperCase(), null);
+        if (prefPortion != null) {
+            prefPortionFirst(prefPortion, list);
+        }
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         editPortionOrUnitSpinner.setAdapter(dataAdapter);
@@ -48,7 +55,8 @@ public class SpinnerSetupUtil {
         editPortionOrUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((AppCompatTextView) view).getText().toString().equals("gram")) {
+                String portion = ((AppCompatTextView) view).getText().toString();
+                if (portion.equals("gram")) {
                     editGramsOrAmount.setInputType(InputType.TYPE_CLASS_NUMBER);
                     editGramsOrAmount.setText(String.valueOf(100));
                     editGramsOrAmount.setSelection(3);
@@ -57,6 +65,7 @@ public class SpinnerSetupUtil {
                     editGramsOrAmount.setText(String.valueOf(1));
                     editGramsOrAmount.setSelection(1);
                 }
+                prefs.edit().putString(selectedFood.getName().toUpperCase(), portion).apply();
             }
 
             @Override
@@ -66,6 +75,11 @@ public class SpinnerSetupUtil {
         });
 
         editGramsOrAmount.setVisibility(View.VISIBLE);
+    }
+
+    private void prefPortionFirst(String prefPortion, List<String> portionList) {
+        portionList.remove(prefPortion);
+        portionList.add(0, prefPortion);
     }
 
 }
