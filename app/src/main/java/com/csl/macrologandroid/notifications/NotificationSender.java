@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import androidx.core.app.NotificationManagerCompat;
+
 import com.csl.macrologandroid.R;
 
 import java.util.Calendar;
@@ -19,6 +21,9 @@ public class NotificationSender {
     }
 
     public static void initNotificationSending(Context context) {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.cancelAll();
+
         createNotificationChannel(context);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
