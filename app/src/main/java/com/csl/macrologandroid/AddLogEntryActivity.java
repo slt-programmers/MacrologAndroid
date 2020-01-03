@@ -2,6 +2,7 @@ package com.csl.macrologandroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,6 +62,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private Meal selectedMeal;
     private Date selectedDate;
     private Disposable foodDisposable;
+    private Disposable dishDisposable;
     private Disposable logDisposable;
 
     @Override
@@ -89,27 +91,28 @@ public class AddLogEntryActivity extends AppCompatActivity {
         Session.resetTimestamp();
     }
 
-    private void setupFoodAndDishes(){
+    private void setupFoodAndDishes() {
         allFood = null;
         allDishes = null;
-        foodService.getAllFood().subscribe(res -> {
-            allFood= res;
+        foodDisposable = foodService.getAllFood().subscribe(res -> {
+            allFood = res;
             checkFoodAndDishesResponse();
-        },  err -> Log.e(this.getLocalClassName(), err.getMessage()));
+        }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
 
-        dishService.getAllDishes().subscribe(res -> {
-            allDishes= res;
+        dishDisposable = dishService.getAllDishes().subscribe(res -> {
+            allDishes = res;
             checkFoodAndDishesResponse();
-        },  err -> Log.e(this.getLocalClassName(), err.getMessage()));
+        }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
     }
 
-    private void checkFoodAndDishesResponse(){
+    private void checkFoodAndDishesResponse() {
         autoCompleteList = new ArrayList<>();
-        if (allFood != null && allDishes!= null){
+        if (allFood != null && allDishes != null) {
             fillAutoCompleteList();
             setupAutoCompleteTextView();
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +151,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
             startActivityForResult(addFoodIntent, ADD_FOOD_ID);
         });
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -158,7 +161,9 @@ public class AddLogEntryActivity extends AppCompatActivity {
         if (logDisposable != null) {
             logDisposable.dispose();
         }
-
+        if (dishDisposable != null) {
+            dishDisposable.dispose();
+        }
     }
 
     private void setNewlyAddedFood(String foodName) {
@@ -168,7 +173,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     allFood = res;
                     fillAutoCompleteList();
                     setupAutoCompleteTextView();
-//                    foodTextView.setText(foodName);
                     setupPortionUnitSpinner(foodName);
                     toggleFields(true);
                 }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
@@ -208,36 +212,39 @@ public class AddLogEntryActivity extends AppCompatActivity {
 
     private void addDishEntry(String dishName) {
         // dishName = dish.name + " (Dish)"
-        String dishFromInput = dishName.substring(0,dishName.length() - 7);
+        String dishFromInput = dishName.substring(0, dishName.length() - 7);
         DishResponse selectedDish = null;
         for (DishResponse dish : allDishes) {
-            if (dish.getName().equalsIgnoreCase(dishFromInput)){
-              selectedDish = dish;
-              break;
+            if (dish.getName().equalsIgnoreCase(dishFromInput)) {
+                selectedDish = dish;
+                break;
             }
         }
 
-        List<LogEntryRequest> entryList = new ArrayList<>();
-        for (IngredientResponse ingredient : selectedDish.getIngredients()) {
-            Long portionId = ingredient.getPortionId();
-            double multiplier = ingredient.getMultiplier();
+        if (selectedDish != null) {
+            List<LogEntryRequest> entryList = new ArrayList<>();
 
-            Long foodId = ingredient.getFood().getId();
-            LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
-                    multiplier, DateParser.format(selectedDate),
-                    selectedMeal.toString());
-            entryList.add(entry);
+            for (IngredientResponse ingredient : selectedDish.getIngredients()) {
+                Long portionId = ingredient.getPortionId();
+                double multiplier = ingredient.getMultiplier();
+
+                Long foodId = ingredient.getFood().getId();
+                LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
+                        multiplier, DateParser.format(selectedDate),
+                        selectedMeal.toString());
+                entryList.add(entry);
+            }
+
+            logDisposable = logService.postLogEntry(entryList)
+                    .subscribe(res -> {
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("RELOAD", true);
+                                resultIntent.putExtra("NEW_ENTRIES", (Serializable) res);
+                                setResult(Activity.RESULT_OK, resultIntent);
+                                finish();
+                            },
+                            err -> Log.e(this.getLocalClassName(), err.getMessage()));
         }
-        logDisposable = logService.postLogEntry(entryList)
-                .subscribe(res -> {
-                            Intent resultIntent = new Intent();
-                            resultIntent.putExtra("RELOAD", true);
-                            resultIntent.putExtra("NEW_ENTRIES", (Serializable) res);
-                            setResult(Activity.RESULT_OK, resultIntent);
-                            finish();
-                        },
-                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
-
     }
 
     private void fillAutoCompleteList() {
@@ -246,12 +253,13 @@ public class AddLogEntryActivity extends AppCompatActivity {
             autoCompleteList.add(res.getName());
         }
         for (DishResponse res : allDishes) {
-            autoCompleteList.add(res.getName() +" (Dish)");
+            autoCompleteList.add(res.getName() + " (Dish)");
         }
         Collections.sort(autoCompleteList);
     }
+
     private boolean isDish(String selectedName) {
-        return selectedName!= null && selectedName.endsWith(" (Dish)");
+        return selectedName != null && selectedName.endsWith(" (Dish)");
     }
 
     private void setupAutoCompleteTextView() {
@@ -322,7 +330,9 @@ public class AddLogEntryActivity extends AppCompatActivity {
         if (selectedFood == null) {
             return;
         }
-        spinnerUtil.setupPortionUnitSpinner(this, selectedFood, editPortionOrUnitSpinner, editGramsOrAmount);
+
+        SharedPreferences prefs = getSharedPreferences("PREF_PORTION", MODE_PRIVATE);
+        spinnerUtil.setupPortionUnitSpinner(this, selectedFood, editPortionOrUnitSpinner, editGramsOrAmount, prefs);
     }
 
     private void setupMealSpinner() {
@@ -355,8 +365,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     case "Snacks":
                         selectedMeal = Meal.SNACKS;
                         break;
-                    default:
-                        selectedMeal = Meal.BREAKFAST;
                 }
                 foodTextView.requestFocus();
             }
