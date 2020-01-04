@@ -12,6 +12,11 @@
         android:title="@string/botnav_food" />
 
     <item
+        android:icon="@drawable/dish"
+        android:id="@+id/navigation_dish"
+        android:title="@string/botnav_dish" />
+
+    <item
         android:icon="@drawable/account"
         android:id="@+id/navigation_user"
         android:title="@string/botnav_user" />

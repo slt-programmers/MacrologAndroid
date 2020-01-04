@@ -15,6 +15,7 @@ import com.csl.macrologandroid.cache.DiaryLogCache;
 import com.csl.macrologandroid.cache.FoodCache;
 import com.csl.macrologandroid.cache.UserSettingsCache;
 import com.csl.macrologandroid.fragments.DiaryFragment;
+import com.csl.macrologandroid.fragments.DishFragment;
 import com.csl.macrologandroid.fragments.FoodFragment;
 import com.csl.macrologandroid.fragments.UserFragment;
 import com.csl.macrologandroid.lifecycle.Session;
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
                 return true;
             case R.id.navigation_food:
                 setFragment(new FoodFragment());
+                return true;
+            case R.id.navigation_dish:
+                setFragment(new DishFragment());
                 return true;
             case R.id.navigation_user:
                 UserFragment userFragment = new UserFragment();

@@ -44,7 +44,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private final LogEntryService logService;
     private final ActivityService activityService;
     private Date selectedDate;
-    private int mCurrentPosition = -1;
+    private int currentPosition = -1;
 
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
@@ -138,10 +138,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
     @Override
     public void setPrimaryItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
         super.setPrimaryItem(container, position, object);
-        if (position != mCurrentPosition) {
+        if (position != currentPosition) {
             LinearLayout diaryPage = (LinearLayout) object;
             DiaryPager pager = (DiaryPager) container;
-            mCurrentPosition = position;
+            currentPosition = position;
             pager.measureCurrentView(diaryPage);
         }
     }

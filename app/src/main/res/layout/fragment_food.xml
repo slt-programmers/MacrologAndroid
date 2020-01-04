@@ -40,7 +40,7 @@
                     android:id="@+id/search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/search"
+                    android:hint="@string/search_food"
                     android:imeOptions="actionDone|actionNext"
                     android:inputType="textCapSentences"
                     android:maxLines="1" />

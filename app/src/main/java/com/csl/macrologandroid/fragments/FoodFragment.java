@@ -5,12 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.fragment.app.Fragment;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,12 +20,16 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
+
 import com.csl.macrologandroid.AddFoodActivity;
 import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.cache.FoodCache;
 import com.csl.macrologandroid.dtos.FoodResponse;
 import com.csl.macrologandroid.services.FoodService;
 import com.csl.macrologandroid.util.KeyboardManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -268,9 +266,6 @@ public class FoodFragment extends Fragment {
         }
 
         switch (sortHeader) {
-            case FOOD:
-                Collections.sort(convertedFood, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-                break;
             case PROTEIN:
                 Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getProtein(), o1.getProtein()));
                 break;
