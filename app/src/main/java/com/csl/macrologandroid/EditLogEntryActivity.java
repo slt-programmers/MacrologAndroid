@@ -171,7 +171,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
             saveLogEntries();
         });
 
-
         if (logEntries.isEmpty()) {
             saveButton.setVisibility(View.GONE);
         }

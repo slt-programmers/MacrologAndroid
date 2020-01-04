@@ -33,6 +33,7 @@ import com.csl.macrologandroid.dtos.IngredientResponse;
 import com.csl.macrologandroid.dtos.PortionResponse;
 import com.csl.macrologandroid.services.DishService;
 import com.csl.macrologandroid.services.FoodService;
+import com.csl.macrologandroid.util.ListUtil;
 import com.csl.macrologandroid.util.SpinnerSetupUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -119,7 +120,7 @@ public class AddDishActivity extends AppCompatActivity {
         if (disposable != null) {
             disposable.dispose();
         }
-        if (foodDisposable != null ) {
+        if (foodDisposable != null) {
             foodDisposable.dispose();
         }
         super.onDestroy();
@@ -137,7 +138,15 @@ public class AddDishActivity extends AppCompatActivity {
         ArrayAdapter<String> autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, autoCompleteList);
         searchFoodTextView.setAdapter(autocompleteAdapter);
         searchFoodTextView.setThreshold(2);
-        searchFoodTextView.setOnItemClickListener(this::handleSelectFood);
+        searchFoodTextView.setOnItemClickListener((parent, view, position, id) -> {
+            String foodName = ((AppCompatCheckedTextView) view).getText().toString();
+            FoodResponse selectedFood = new SpinnerSetupUtil().getFoodFromList(foodName, allFood);
+            IngredientResponse ingredientResponse = new IngredientResponse(1.0, selectedFood, null);
+            allIngredients.add(ingredientResponse);
+            copyIngredients.add(ingredientResponse);
+            searchFoodTextView.setText("");
+            addIngredientToLayout(ingredientResponse);
+        });
 
         searchFoodTextView.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_NEXT
@@ -154,56 +163,77 @@ public class AddDishActivity extends AppCompatActivity {
         });
     }
 
-    private void handleSelectFood(AdapterView parent, View view, int position, long id) {
-        String foodName = ((AppCompatCheckedTextView) view).getText().toString();
-        FoodResponse selectedFood = new SpinnerSetupUtil().getFoodFromList(foodName, allFood);
-        IngredientResponse ingredientResponse = new IngredientResponse(1.0, selectedFood, null);
-        allIngredients.add(ingredientResponse);
-        copyIngredients.add(ingredientResponse);
-        searchFoodTextView.setText("");
-        addIngredientToLayout(ingredientResponse);
-    }
-
     private void addIngredientToLayout(IngredientResponse ingredient) {
         @SuppressLint("InflateParams")
-        ConstraintLayout foodEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
+        ConstraintLayout ingredientEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
 
-        TextView foodNameTextView = foodEntry.findViewById(R.id.food_name);
+        TextView foodNameTextView = ingredientEntry.findViewById(R.id.food_name);
         foodNameTextView.setText(ingredient.getFood().getName());
 
-        ImageView trashImageView = foodEntry.findViewById(R.id.trash_icon);
+        ImageView trashImageView = ingredientEntry.findViewById(R.id.trash_icon);
         trashImageView.setOnClickListener(v -> toggleToRemoveIngredient(ingredient));
 
-        TextInputEditText amount = foodEntry.findViewById(R.id.food_amount);
-        Spinner portionSpinner = foodEntry.findViewById(R.id.portion_spinner);
+        TextInputEditText amountEditText = ingredientEntry.findViewById(R.id.food_amount);
+        amountEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // not needed
+            }
 
-        setupPortionSpinner(portionSpinner, ingredient, amount);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // not needed
+            }
 
-        ingredientsLayout.addView(foodEntry);
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    ingredient.setMultiplier(Double.parseDouble(s.toString()));
+                } catch (NumberFormatException ex) {
+                    ingredient.setMultiplier(1.0);
+                }
+            }
+        });
+
+        Spinner portionSpinner = ingredientEntry.findViewById(R.id.portion_spinner);
+        setupPortionSpinner(portionSpinner, ingredient, amountEditText);
+
+        ingredientsLayout.addView(ingredientEntry);
     }
 
     private void setupPortionSpinner(Spinner portionSpinner, IngredientResponse ingredient, TextInputEditText amount) {
-        List<String> list = new ArrayList<>();
         List<PortionResponse> allPortions = ingredient.getFood().getPortions();
-        for (PortionResponse portion : allPortions) {
-            String portionText = portion.getDescription() + " (" + portion.getGrams() + " gr)";
-            list.add(portionText);
+        List<String> portionDescList = ListUtil.getPortionDescList(allPortions, true);
+
+        ArrayAdapter<String> portionSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, portionDescList);
+        portionSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        portionSpinner.setAdapter(portionSpinnerAdapter);
+        if (ingredient.getPortionId() != null) {
+            PortionResponse portion = ListUtil.getPortionFromListById(allPortions, ingredient.getPortionId());
+            if (portion != null) {
+                int index = portionDescList.indexOf(portion.getDescription() + " (" + portion.getGrams() + " gr)");
+                portionSpinner.setSelection(index);
+            }
+        } else {
+            portionSpinner.setSelection(portionDescList.size() - 1);
         }
-        list.add("gram");
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        portionSpinner.setAdapter(dataAdapter);
-
         portionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (((AppCompatTextView) view).getText().toString().equals("gram")) {
+                String selectedPortion = ((AppCompatTextView) view).getText().toString();
+                if (selectedPortion.equals("gram")) {
                     amount.setInputType(InputType.TYPE_CLASS_NUMBER);
                     amount.setText(String.valueOf(Math.round(ingredient.getMultiplier() * 100)));
+                    ingredient.setPortionId(null);
                 } else {
                     amount.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                     amount.setText(String.valueOf(ingredient.getMultiplier()));
+                    PortionResponse portion = ListUtil.getPortionFromFoodByName(selectedPortion, ingredient.getFood());
+                    if (portion != null) {
+                        ingredient.setPortionId(portion.getId());
+                    } else {
+                        ingredient.setPortionId(null);
+                    }
                 }
             }
 
@@ -212,7 +242,10 @@ public class AddDishActivity extends AppCompatActivity {
                 // Not needed
             }
         });
+
+
     }
+
 
     private void toggleToRemoveIngredient(IngredientResponse ingredient) {
         int index = allIngredients.indexOf(ingredient);
@@ -244,10 +277,11 @@ public class AddDishActivity extends AppCompatActivity {
     }
 
     private void saveDish() {
-        if (editDishNameLayout.isErrorEnabled()) return;
+        if (editDishNameLayout.isErrorEnabled()) {
+            return;
+        }
 
         String dishName = Objects.requireNonNull(editDishName.getText()).toString();
-
         DishResponse newDish = new DishResponse(null, dishName, copyIngredients);
         if (dishResponse != null) {
             newDish.setId(dishResponse.getId());
@@ -257,7 +291,6 @@ public class AddDishActivity extends AppCompatActivity {
         disposable = dishService.postDish(newDish)
                 .subscribe(res -> {
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra("DISH_NAME", editDishName.getText().toString());
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                 }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
