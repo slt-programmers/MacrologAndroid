@@ -141,6 +141,10 @@
     <string name="strava_disconnect">Disconnect</string>
     <string name="strava_invalid_rights">Please grant Macrolog access to view your private activities to sync them automatically.</string>
     <string name="strava_view">View on Strava</string>
+
     <string name="dish_title">Dishes</string>
+    <string name="add_dish_explanation">Give your dish a name</string>
+    <string name="add_ingredients">Add ingredients to your dish</string>
+    <string name="dish_name">Dish name</string>
 
 </resources>

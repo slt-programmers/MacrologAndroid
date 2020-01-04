@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -106,7 +107,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
                                 fillLogEntriesOnPage(res, layout);
                                 container.removeView(layout);
                                 container.addView(layout);
-                            }, err -> Log.e(this.getClass().getName(), err.getMessage())
+                            }, err -> Log.e(this.getClass().getName(), Objects.requireNonNull(err.getMessage()))
                     );
             disposableActs = activityService.getActivitiesForDay(date)
                     .subscribe(
@@ -117,7 +118,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
                                 container.removeView(layout);
                                 container.addView(layout);
                             },
-                            err -> Log.e(this.getClass().getName(), err.getMessage())
+                            err -> Log.e(this.getClass().getName(), Objects.requireNonNull(err.getMessage()))
                     );
         } else {
             fillLogEntriesOnPage(entries, layout);

@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,10 +26,15 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
 
     private List<DishResponse> dishList;
     private Context context;
+    private OnEditClickListener onEditClickLister;
 
     public DishRecyclerViewAdapter(Context context, List<DishResponse> dishList) {
         this.dishList = dishList;
         this.context = context;
+    }
+
+    public void setOnEditClickListener(OnEditClickListener listener) {
+        this.onEditClickLister = listener;
     }
 
     @NonNull
@@ -42,6 +48,8 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
     public void onBindViewHolder(@NonNull DishViewHolder viewHolder, int position) {
         DishResponse dish = dishList.get(position);
         viewHolder.title.setText(dish.getName());
+        viewHolder.edit.setOnClickListener((v) -> onEditClickLister.onEditClick(dish));
+        viewHolder.ingredientLayout.removeAllViews();
 
         List<IngredientResponse> ingredients = dish.getIngredients();
         for (IngredientResponse ingredient : ingredients) {
@@ -74,7 +82,7 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
                 }
             } else {
                 amount = getCustomDoubleTextView(ingredient.getMultiplier() * 100);
-                portionName = getCustomStringTextView(context.getResources().getString(R.string.grams));
+                portionName = getCustomStringTextView("gram");
             }
 
             row.addView(foodName);
@@ -83,6 +91,14 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
 
             viewHolder.ingredientLayout.addView(row);
         }
+    }
+
+    @Override
+    public int getItemCount() {
+        if (dishList != null) {
+            return dishList.size();
+        }
+        return 0;
     }
 
     private TextView getCustomStringTextView(String text) {
@@ -121,23 +137,22 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
     }
 
 
-    @Override
-    public int getItemCount() {
-        if (dishList != null) {
-            return dishList.size();
-        }
-        return 0;
-    }
-
     class DishViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         LinearLayout ingredientLayout;
+        Button edit;
 
         DishViewHolder(View view) {
             super(view);
 
             title = view.findViewById(R.id.dish_title);
             ingredientLayout = view.findViewById(R.id.dish_ingredient_layout);
+            edit = view.findViewById(R.id.dish_edit);
         }
+    }
+
+
+    public interface OnEditClickListener {
+        void onEditClick(DishResponse dish);
     }
 }
