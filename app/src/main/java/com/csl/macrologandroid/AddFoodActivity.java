@@ -212,7 +212,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
     }
 
-    private Integer findIdForPortion(int index) {
+    private Long findIdForPortion(int index) {
         if (foodResponse != null) {
             List<PortionResponse> portions = foodResponse.getPortions();
             if (portions != null && !portions.isEmpty()) {

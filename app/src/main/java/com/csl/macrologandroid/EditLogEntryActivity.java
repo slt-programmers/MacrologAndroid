@@ -2,7 +2,6 @@ package com.csl.macrologandroid;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
@@ -11,7 +10,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -39,6 +37,7 @@ import com.csl.macrologandroid.services.DishService;
 import com.csl.macrologandroid.services.FoodService;
 import com.csl.macrologandroid.services.LogEntryService;
 import com.csl.macrologandroid.util.DateParser;
+import com.csl.macrologandroid.util.KeyboardManager;
 import com.csl.macrologandroid.util.SpinnerSetupUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -49,6 +48,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -64,7 +64,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private List<FoodResponse> allFood;
     private List<DishResponse> allDishes;
 
-    private List<String> autoCompleteList = new ArrayList<>();
+    private final List<String> autoCompleteList = new ArrayList<>();
 
     private Meal selectedMeal;
 
@@ -115,57 +115,39 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
     }
 
-    private void setupFoodAndDishes() {
-        allFood = null;
-        allDishes = null;
-        foodDisposable = foodService.getAllFood().subscribe(res -> {
-            allFood = res;
-            checkFoodAndDishesResponse();
-        }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
-
-        dishDisposable = dishService.getAllDishes().subscribe(res -> {
-            allDishes = res;
-            checkFoodAndDishesResponse();
-        }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
-    }
-
-    private void checkFoodAndDishesResponse() {
-        autoCompleteList = new ArrayList<>();
-        if (allFood != null && allDishes != null) {
-            fillAutoCompleteList();
-            setupAutoCompleteTextView();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_log_entry);
 
         selectedDate = (Date) getIntent().getSerializableExtra("DATE");
-        logEntryService = new LogEntryService(getToken());
 
+        logEntryService = new LogEntryService(getToken());
         foodService = new FoodService(getToken());
         dishService = new DishService(getToken());
 
-        setupFoodAndDishes();
+        getFoodAndDishes();
+
         logEntries = new ArrayList<>();
         List entries = (List) getIntent().getSerializableExtra("LOGENTRIES");
-        for (Object entry : entries) {
-            if (entry instanceof LogEntryResponse) {
-                logEntries.add((LogEntryResponse) entry);
+        if (entries != null) {
+            for (Object entry : entries) {
+                if (entry instanceof LogEntryResponse) {
+                    logEntries.add((LogEntryResponse) entry);
+                }
             }
-        }
 
-        if (logEntries.isEmpty()) {
-            meal = (Meal) getIntent().getSerializableExtra("MEAL");
-        } else {
-            meal = logEntries.get(0).getMeal();
+            if (logEntries.isEmpty()) {
+                meal = (Meal) getIntent().getSerializableExtra("MEAL");
+            } else {
+                meal = logEntries.get(0).getMeal();
+            }
+            copyEntries = new ArrayList<>(logEntries);
         }
-        copyEntries = new ArrayList<>(logEntries);
 
         setupMealSpinner();
         setupAutoCompleteTextView();
+
         editPortionOrUnitSpinner = findViewById(R.id.edit_portion_unit);
         editPortionOrUnitSpinner.setVisibility(View.GONE);
         editGramsOrAmount = findViewById(R.id.edit_grams_amount);
@@ -173,7 +155,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         editGramsOrAmountLayout.setVisibility(View.GONE);
 
         logentryLayout = findViewById(R.id.logentry_layout);
-        fillLogEntrylayout();
+        fillLogEntryLayout();
 
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> {
@@ -188,7 +170,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
             saveLogEntries();
         });
 
-
         if (logEntries.isEmpty()) {
             saveButton.setVisibility(View.GONE);
         }
@@ -196,7 +177,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(v -> {
             toggleFields(false);
-            hideSoftKeyboard();
+            KeyboardManager.hideKeyboard(this);
             foodTextView.setText("");
             addLogEntry();
         });
@@ -226,8 +207,30 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
     }
 
+    private void getFoodAndDishes() {
+        allFood = null;
+        allDishes = null;
+        foodDisposable = foodService.getAllFood().subscribe(res -> {
+            allFood = res;
+            combineFoodAndDishesSearchList();
+        }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
+
+        dishDisposable = dishService.getAllDishes().subscribe(res -> {
+            allDishes = res;
+            combineFoodAndDishesSearchList();
+        }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
+    }
+
+    private void combineFoodAndDishesSearchList() {
+        autoCompleteList.clear();
+        if (allFood != null && allDishes != null) {
+            fillAutoCompleteList();
+            setupAutoCompleteTextView();
+        }
+    }
+
     private void fillAutoCompleteList() {
-        autoCompleteList = new ArrayList<>();
+        autoCompleteList.clear();
         for (FoodResponse res : allFood) {
             autoCompleteList.add(res.getName());
         }
@@ -238,7 +241,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     }
 
-    private void fillLogEntrylayout() {
+    private void fillLogEntryLayout() {
         for (LogEntryResponse entry : logEntries) {
             addLogEntryToLayout(entry);
         }
@@ -295,7 +298,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                                     appendNewEntry(newEntry);
                                 }
                             },
-                            err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                            err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
         }
     }
 
@@ -304,7 +307,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         for (PortionResponse portion : selectedFood.getPortions()) {
             String portionDescription = (String) editPortionOrUnitSpinner.getSelectedItem();
             if (portionDescription.equals(portion.getDescription())) {
-                portionId = (long) portion.getId();
+                portionId = portion.getId();
                 break;
             }
         }
@@ -327,7 +330,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                             newEntries = res;
                             appendNewEntry(newEntries.get(0));
                         },
-                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                        err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
     }
 
     private void addLogEntryToLayout(LogEntryResponse entry) {
@@ -370,7 +373,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
                     foodTextView.setText(foodName);
                     setupPortionUnitSpinner(foodName);
                     toggleFields(true);
-                }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
     }
 
     private void toggleToRemoveEntry(LogEntryResponse entry) {
@@ -431,8 +434,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private LogEntryRequest makeLogEntryRequest(LogEntryResponse entry) {
         int index = logEntries.indexOf(entry);
         ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
-        Spinner foodSpinner = (Spinner) logEntryLayout.getChildAt(2);
-        String item = (String) foodSpinner.getSelectedItem();
+        Spinner portionSpinner = (Spinner) logEntryLayout.getChildAt(2);
+        String item = (String) portionSpinner.getSelectedItem();
 
         double multiplier = 1;
         TextInputEditText foodAmount = (TextInputEditText) ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
@@ -445,7 +448,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
             for (PortionResponse portion : entry.getFood().getPortions()) {
                 String trimmedItem = item.substring(0, item.indexOf('(')).trim();
                 if (trimmedItem.equals(portion.getDescription())) {
-                    portionId = (long) portion.getId();
+                    portionId = portion.getId();
                     break;
                 }
             }
@@ -469,7 +472,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         deleteDisposable = logEntryService.deleteLogEntry(entry.getId())
                 .subscribe(res -> {
                         },
-                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                        err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
     }
 
     private boolean isDish(String selectedName) {
@@ -480,7 +483,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         foodTextView = findViewById(R.id.edit_food_textview);
         ArrayAdapter<String> autocompleteAdapter = new AutocompleteAdapter(this, android.R.layout.simple_spinner_dropdown_item, autoCompleteList);
         foodTextView.setAdapter(autocompleteAdapter);
-        foodTextView.setThreshold(1);
+        foodTextView.setThreshold(2);
         foodTextView.setOnItemClickListener((parent, view, position, id) -> {
             String foodName = ((AppCompatCheckedTextView) view).getText().toString();
             if (isDish(foodName)) {
@@ -599,14 +602,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("PREF_PORTION", MODE_PRIVATE);
         spinnerUtil.setupPortionUnitSpinner(this, selectedFood, editPortionOrUnitSpinner, editGramsOrAmount, prefs);
-    }
-
-    private void hideSoftKeyboard() {
-        View view = findViewById(android.R.id.content);
-        if (view != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     private String getToken() {

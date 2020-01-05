@@ -57,7 +57,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private LogEntryService logService;
     private List<FoodResponse> allFood;
     private List<DishResponse> allDishes;
-    private List<String> autoCompleteList = new ArrayList<>();
+    private final List<String> autoCompleteList = new ArrayList<>();
     private FoodResponse selectedFood;
     private Meal selectedMeal;
     private Date selectedDate;
@@ -89,28 +89,6 @@ public class AddLogEntryActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         Session.resetTimestamp();
-    }
-
-    private void setupFoodAndDishes() {
-        allFood = null;
-        allDishes = null;
-        foodDisposable = foodService.getAllFood().subscribe(res -> {
-            allFood = res;
-            checkFoodAndDishesResponse();
-        }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
-
-        dishDisposable = dishService.getAllDishes().subscribe(res -> {
-            allDishes = res;
-            checkFoodAndDishesResponse();
-        }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
-    }
-
-    private void checkFoodAndDishesResponse() {
-        autoCompleteList = new ArrayList<>();
-        if (allFood != null && allDishes != null) {
-            fillAutoCompleteList();
-            setupAutoCompleteTextView();
-        }
     }
 
     @Override
@@ -166,6 +144,29 @@ public class AddLogEntryActivity extends AppCompatActivity {
         }
     }
 
+    private void setupFoodAndDishes() {
+        allFood = null;
+        allDishes = null;
+        foodDisposable = foodService.getAllFood().subscribe(res -> {
+            allFood = res;
+            checkFoodAndDishesResponse();
+        }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
+
+        dishDisposable = dishService.getAllDishes().subscribe(res -> {
+            allDishes = res;
+            checkFoodAndDishesResponse();
+        }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
+    }
+
+    private void checkFoodAndDishesResponse() {
+        autoCompleteList.clear();
+        if (allFood != null && allDishes != null) {
+            fillAutoCompleteList();
+            setupAutoCompleteTextView();
+        }
+    }
+
+
     private void setNewlyAddedFood(String foodName) {
         addButton.setVisibility(View.GONE);
         foodDisposable = foodService.getAllFood()
@@ -175,7 +176,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                     setupAutoCompleteTextView();
                     setupPortionUnitSpinner(foodName);
                     toggleFields(true);
-                }, err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
     }
 
     private void addLogEntry() {
@@ -183,7 +184,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
         for (PortionResponse portion : selectedFood.getPortions()) {
             String portionDescription = (String) editPortionOrUnitSpinner.getSelectedItem();
             if (portionDescription.equals(portion.getDescription())) {
-                portionId = (long) portion.getId();
+                portionId = portion.getId();
                 break;
             }
         }
@@ -207,7 +208,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
                             setResult(Activity.RESULT_OK, resultIntent);
                             finish();
                         },
-                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                        err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
     }
 
     private void addDishEntry(String dishName) {
@@ -243,12 +244,12 @@ public class AddLogEntryActivity extends AppCompatActivity {
                                 setResult(Activity.RESULT_OK, resultIntent);
                                 finish();
                             },
-                            err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                            err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
         }
     }
 
     private void fillAutoCompleteList() {
-        autoCompleteList = new ArrayList<>();
+        autoCompleteList.clear();
         for (FoodResponse res : allFood) {
             autoCompleteList.add(res.getName());
         }

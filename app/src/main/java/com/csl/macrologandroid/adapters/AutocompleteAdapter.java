@@ -1,16 +1,15 @@
 package com.csl.macrologandroid.adapters;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.Filter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class AutocompleteAdapter extends ArrayAdapter<String> {
     private List<String> allItems;
     private List<String> dataList;
 
-    public AutocompleteAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
+    public AutocompleteAdapter(@NonNull Context context, int resource, @NonNull final List<String> objects) {
         super(context, resource, objects);
         dataList = objects;
     }

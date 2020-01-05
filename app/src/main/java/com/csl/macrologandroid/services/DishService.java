@@ -13,7 +13,9 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public class DishService {
 
@@ -44,9 +46,16 @@ public class DishService {
         return apiService.getAllDishes().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable<DishResponse> postDish(DishResponse dish) {
+        return apiService.postDish(dish).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
     private interface ApiService {
 
         @GET("dishes")
         Observable<List<DishResponse>> getAllDishes();
+
+        @POST("dishes")
+        Observable<DishResponse> postDish(@Body DishResponse dish);
     }
 }

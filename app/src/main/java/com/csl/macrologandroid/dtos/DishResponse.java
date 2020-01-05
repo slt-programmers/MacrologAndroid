@@ -27,7 +27,6 @@ public class DishResponse implements Serializable {
         return name;
     }
 
-
     public List<IngredientResponse> getIngredients() {
         return ingredients;
     }

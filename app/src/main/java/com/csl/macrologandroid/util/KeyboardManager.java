@@ -16,7 +16,9 @@ public class KeyboardManager {
             View view = activity.findViewById(android.R.id.content);
             if (view != null) {
                 InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                if (inputMethodManager != null) {
+                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         }
     }

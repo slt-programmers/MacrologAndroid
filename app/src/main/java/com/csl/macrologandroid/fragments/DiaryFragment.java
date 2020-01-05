@@ -124,7 +124,7 @@ public class DiaryFragment extends Fragment {
                                 setGoalIntake(res);
                                 updateTotals(DateParser.parse(DateParser.format(new Date())));
                             },
-                            error -> Log.e(this.getClass().getName(), error.getMessage()));
+                            err -> Log.e(this.getClass().getName(), Objects.requireNonNull(err.getMessage())));
         } else {
             setGoalIntake(userSettings);
         }

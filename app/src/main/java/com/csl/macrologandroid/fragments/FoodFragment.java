@@ -1,16 +1,9 @@
 package com.csl.macrologandroid.fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.fragment.app.Fragment;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 
 import com.csl.macrologandroid.AddFoodActivity;
 import com.csl.macrologandroid.R;
@@ -32,6 +27,7 @@ import com.csl.macrologandroid.cache.FoodCache;
 import com.csl.macrologandroid.dtos.FoodResponse;
 import com.csl.macrologandroid.services.FoodService;
 import com.csl.macrologandroid.util.KeyboardManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -268,9 +264,6 @@ public class FoodFragment extends Fragment {
         }
 
         switch (sortHeader) {
-            case FOOD:
-                Collections.sort(convertedFood, (o1, o2) -> o1.getName().compareTo(o2.getName()));
-                break;
             case PROTEIN:
                 Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getProtein(), o1.getProtein()));
                 break;
@@ -354,8 +347,7 @@ public class FoodFragment extends Fragment {
 
     private final TextView.OnEditorActionListener actionListener = (v, actionId, event) -> {
         if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KEYCODE_ENTER) {
-            InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(Objects.requireNonNull(getActivity().getCurrentFocus()).getWindowToken(), 0);
+            KeyboardManager.hideKeyboard(this.getActivity());
             v.clearFocus();
             return true;
         }

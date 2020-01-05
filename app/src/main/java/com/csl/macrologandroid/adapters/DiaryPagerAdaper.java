@@ -33,6 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -44,7 +45,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
     private final LogEntryService logService;
     private final ActivityService activityService;
     private Date selectedDate;
-    private int mCurrentPosition = -1;
+    private int currentPosition = -1;
 
     private static final int LOOP_COUNT = 1000;
     private static final int START_COUNT = 500;
@@ -106,7 +107,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
                                 fillLogEntriesOnPage(res, layout);
                                 container.removeView(layout);
                                 container.addView(layout);
-                            }, err -> Log.e(this.getClass().getName(), err.getMessage())
+                            }, err -> Log.e(this.getClass().getName(), Objects.requireNonNull(err.getMessage()))
                     );
             disposableActs = activityService.getActivitiesForDay(date)
                     .subscribe(
@@ -117,7 +118,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
                                 container.removeView(layout);
                                 container.addView(layout);
                             },
-                            err -> Log.e(this.getClass().getName(), err.getMessage())
+                            err -> Log.e(this.getClass().getName(), Objects.requireNonNull(err.getMessage()))
                     );
         } else {
             fillLogEntriesOnPage(entries, layout);
@@ -138,10 +139,10 @@ public class DiaryPagerAdaper extends PagerAdapter {
     @Override
     public void setPrimaryItem(@NotNull ViewGroup container, int position, @NotNull Object object) {
         super.setPrimaryItem(container, position, object);
-        if (position != mCurrentPosition) {
+        if (position != currentPosition) {
             LinearLayout diaryPage = (LinearLayout) object;
             DiaryPager pager = (DiaryPager) container;
-            mCurrentPosition = position;
+            currentPosition = position;
             pager.measureCurrentView(diaryPage);
         }
     }
