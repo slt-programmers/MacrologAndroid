@@ -22,13 +22,13 @@ import com.csl.macrologandroid.dtos.PortionResponse;
 import java.util.List;
 import java.util.Locale;
 
-public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerViewAdapter.DishViewHolder> {
+public class DishListAdapter extends RecyclerView.Adapter<DishListAdapter.DishViewHolder> {
 
     private List<DishResponse> dishList;
     private Context context;
     private OnEditClickListener onEditClickLister;
 
-    public DishRecyclerViewAdapter(Context context, List<DishResponse> dishList) {
+    public DishListAdapter(Context context, List<DishResponse> dishList) {
         this.dishList = dishList;
         this.context = context;
     }
@@ -60,7 +60,7 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-            lp.setMargins(0,8,16,8);
+            lp.setMargins(0, 8, 16, 8);
             foodName.setLayoutParams(lp);
             TextView amount;
             TextView portionName;
@@ -74,14 +74,14 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
                     }
                 }
                 if (usedPortion != null) {
-                    amount = getCustomDoubleTextView(ingredient.getMultiplier());
+                    amount = getCustomNumberTextView(ingredient.getMultiplier());
                     portionName = getCustomStringTextView(usedPortion.getDescription());
                 } else {
-                    amount = getCustomDoubleTextView(0);
+                    amount = getCustomNumberTextView(0);
                     portionName = getCustomStringTextView("");
                 }
             } else {
-                amount = getCustomDoubleTextView(ingredient.getMultiplier() * 100);
+                amount = getCustomNumberTextView(Math.round(ingredient.getMultiplier() * 100));
                 portionName = getCustomStringTextView("gram");
             }
 
@@ -119,9 +119,13 @@ public class DishRecyclerViewAdapter extends RecyclerView.Adapter<DishRecyclerVi
         return view;
     }
 
-    private TextView getCustomDoubleTextView(double text) {
+    private TextView getCustomNumberTextView(double text) {
         TextView view = new TextView(context);
-        view.setText(String.format(Locale.ENGLISH, "%.1f", text));
+        if (String.valueOf(text).endsWith(".0")) {
+            view.setText(String.format(Locale.ENGLISH, "%.0f", text));
+        } else {
+            view.setText(String.format(Locale.ENGLISH, "%.1f", text));
+        }
 
         // layout
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT);

@@ -57,7 +57,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     private LogEntryService logService;
     private List<FoodResponse> allFood;
     private List<DishResponse> allDishes;
-    private List<String> autoCompleteList = new ArrayList<>();
+    private final List<String> autoCompleteList = new ArrayList<>();
     private FoodResponse selectedFood;
     private Meal selectedMeal;
     private Date selectedDate;
@@ -159,7 +159,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     }
 
     private void checkFoodAndDishesResponse() {
-        autoCompleteList = new ArrayList<>();
+        autoCompleteList.clear();
         if (allFood != null && allDishes != null) {
             fillAutoCompleteList();
             setupAutoCompleteTextView();
@@ -249,7 +249,7 @@ public class AddLogEntryActivity extends AppCompatActivity {
     }
 
     private void fillAutoCompleteList() {
-        autoCompleteList = new ArrayList<>();
+        autoCompleteList.clear();
         for (FoodResponse res : allFood) {
             autoCompleteList.add(res.getName());
         }

@@ -3,10 +3,14 @@ package com.csl.macrologandroid.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.csl.macrologandroid.AddDishActivity;
 import com.csl.macrologandroid.R;
-import com.csl.macrologandroid.adapters.DishRecyclerViewAdapter;
+import com.csl.macrologandroid.adapters.DishListAdapter;
 import com.csl.macrologandroid.cache.DishCache;
 import com.csl.macrologandroid.dtos.DishResponse;
 import com.csl.macrologandroid.services.DishService;
+import com.csl.macrologandroid.util.KeyboardManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +36,7 @@ import java.util.Objects;
 import io.reactivex.disposables.Disposable;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.view.KeyEvent.KEYCODE_ENTER;
 
 public class DishFragment extends Fragment {
 
@@ -38,7 +45,9 @@ public class DishFragment extends Fragment {
 
     private Disposable dishDisposable;
     private List<DishResponse> allDishes = new ArrayList<>();
-    private DishRecyclerViewAdapter dishAdapter;
+    private final List<DishResponse> searchedDishes = new ArrayList<>();
+
+    private DishListAdapter dishAdapter;
 
     public DishFragment() {
         // Non arg constructor
@@ -53,8 +62,9 @@ public class DishFragment extends Fragment {
                     .subscribe(res ->
                     {
                         DishCache.getInstance().addToCache(res);
-                        allDishes.clear();
-                        allDishes.addAll(res);
+                        allDishes = res;
+                        searchedDishes.clear();
+                        searchedDishes.addAll(allDishes);
                         dishAdapter.notifyDataSetChanged();
                     }, err -> Log.e(this.getClass().getName(), err.toString()));
 
@@ -66,9 +76,17 @@ public class DishFragment extends Fragment {
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dish, container, false);
+
+        TextInputEditText search = view.findViewById(R.id.search);
+        search.addTextChangedListener(watcher);
+        search.setOnEditorActionListener(actionListener);
+        search.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
         RecyclerView dishRecyclerView = view.findViewById(R.id.list_view);
         dishRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        dishAdapter = new DishRecyclerViewAdapter(this.getContext(), allDishes);
+
+        searchedDishes.addAll(allDishes);
+        dishAdapter = new DishListAdapter(this.getContext(), searchedDishes);
         dishAdapter.setOnEditClickListener(this::onEditClick);
         dishRecyclerView.setAdapter(dishAdapter);
 
@@ -83,8 +101,9 @@ public class DishFragment extends Fragment {
                 res ->
                 {
                     DishCache.getInstance().addToCache(res);
-                    allDishes.clear();
-                    allDishes.addAll(res);
+                    allDishes = res;
+                    searchedDishes.clear();
+                    searchedDishes.addAll(allDishes);
                     dishAdapter.notifyDataSetChanged();
                 },
                 err -> Log.e(this.getClass().getName(), err.toString())
@@ -102,11 +121,47 @@ public class DishFragment extends Fragment {
         super.onDestroyView();
     }
 
+    private final TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            // Not needed
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            searchedDishes.clear();
+            if (s == null || s.toString().isEmpty()) {
+                searchedDishes.addAll(allDishes);
+            } else {
+                for (DishResponse dish : allDishes) {
+                    if (dish.getName().toLowerCase().contains(s.toString().toLowerCase())) {
+                        searchedDishes.add(dish);
+                    }
+                }
+            }
+            dishAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            // Not needed
+        }
+    };
+
     private void onEditClick(DishResponse dish) {
         Intent intent = new Intent(this.getActivity(), AddDishActivity.class);
         intent.putExtra("DISH", dish);
         startActivityForResult(intent, EDIT_DISH_ID);
     }
+
+    private final TextView.OnEditorActionListener actionListener = (v, actionId, event) -> {
+        if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE || event.getKeyCode() == KEYCODE_ENTER) {
+            KeyboardManager.hideKeyboard(this.getActivity());
+            v.clearFocus();
+            return true;
+        }
+        return false;
+    };
 
     private String getToken() {
         return Objects.requireNonNull(this.getContext()).getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");

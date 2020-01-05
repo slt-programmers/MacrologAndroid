@@ -2,14 +2,12 @@ package com.csl.macrologandroid;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +21,7 @@ import com.csl.macrologandroid.dtos.ActivityResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.ActivityService;
 import com.csl.macrologandroid.util.DateParser;
+import com.csl.macrologandroid.util.KeyboardManager;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -74,9 +73,11 @@ public class EditActivityActivity extends AppCompatActivity {
 
         activities = new ArrayList<>();
         List acts = (List) getIntent().getSerializableExtra("ACTIVITIES");
-        for (Object act : acts) {
-            if (act instanceof ActivityResponse) {
-                activities.add((ActivityResponse) act);
+        if (acts != null) {
+            for (Object act : acts) {
+                if (act instanceof ActivityResponse) {
+                    activities.add((ActivityResponse) act);
+                }
             }
         }
 
@@ -109,7 +110,7 @@ public class EditActivityActivity extends AppCompatActivity {
 
         addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(v -> {
-            hideSoftKeyboard();
+            KeyboardManager.hideKeyboard(this);
             addActivity();
         });
         addButton.setEnabled(false);
@@ -162,7 +163,7 @@ public class EditActivityActivity extends AppCompatActivity {
                             editCalories.setText("");
                             appendNewActivity();
                         },
-                        err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                        err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
     }
 
     private void addActivityToLayout(ActivityResponse act) {
@@ -216,13 +217,12 @@ public class EditActivityActivity extends AppCompatActivity {
 
     private void saveActivities() {
         List<ActivityRequest> activityRequests = new ArrayList<>();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         for (ActivityResponse act : activities) {
             if (copyActs.indexOf(act) == -1) {
                 deleteDisposable = activityService.deleteActivity(act.getId())
                         .subscribe(res -> {},
-                                err -> Log.e(this.getLocalClassName(), err.getMessage()));
+                                err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
             } else {
                 ActivityRequest request = makeActivityRequest(act);
                 activityRequests.add(request);
@@ -262,14 +262,6 @@ public class EditActivityActivity extends AppCompatActivity {
                 act.getSyncedWith(),
                 act.getSyncedId()
         );
-    }
-
-    private void hideSoftKeyboard() {
-        View view = findViewById(android.R.id.content);
-        if (view != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     private final TextWatcher textWatcher = new TextWatcher() {
