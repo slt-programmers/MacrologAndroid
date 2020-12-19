@@ -5,13 +5,13 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath "com.android.tools.build:gradle:4.1.1"
+        classpath "com.github.triplet.gradle:play-publisher:3.0.0"
     }
 }
 
 plugins {
     id "org.sonarqube" version "2.7"
-    id "com.github.triplet.play" version "2.2.1"
 }
 
 sonarqube {
