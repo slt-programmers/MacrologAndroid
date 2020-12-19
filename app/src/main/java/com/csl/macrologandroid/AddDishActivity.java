@@ -58,8 +58,7 @@ public class AddDishActivity extends AppCompatActivity {
     private final List<String> autoCompleteList = new ArrayList<>();
     private Disposable foodDisposable;
     private List<FoodResponse> allFood;
-    private List<IngredientResponse> allIngredients = new ArrayList<>();
-    private List<IngredientResponse> copyIngredients = new ArrayList<>();
+    private List<IngredientResponse> displayedIngredients = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,16 +104,14 @@ public class AddDishActivity extends AppCompatActivity {
         // Add or edit
         if (dishResponse != null) {
             editDishName.setText(dishResponse.getName());
-            allIngredients = dishResponse.getIngredients();
-            copyIngredients = allIngredients;
-            for (IngredientResponse ingredient : allIngredients) {
+            displayedIngredients = dishResponse.getIngredients();
+            for (IngredientResponse ingredient : displayedIngredients) {
                 addIngredientToLayout(ingredient);
             }
-            saveButton.setEnabled(false);
         } else {
             editDishName.requestFocus();
-            saveButton.setEnabled(false);
         }
+        saveButton.setEnabled(false);
     }
 
     @Override
@@ -144,8 +141,7 @@ public class AddDishActivity extends AppCompatActivity {
             String foodName = ((AppCompatCheckedTextView) view).getText().toString();
             FoodResponse selectedFood = new SpinnerSetupUtil().getFoodFromList(foodName, allFood);
             IngredientResponse ingredientResponse = new IngredientResponse(1.0, selectedFood, null);
-            allIngredients.add(ingredientResponse);
-            copyIngredients.add(ingredientResponse);
+            displayedIngredients.add(ingredientResponse);
             searchFoodTextView.setText("");
             addIngredientToLayout(ingredientResponse);
         });
@@ -173,7 +169,7 @@ public class AddDishActivity extends AppCompatActivity {
         foodNameTextView.setText(ingredient.getFood().getName());
 
         ImageView trashImageView = ingredientEntry.findViewById(R.id.trash_icon);
-        trashImageView.setOnClickListener(v -> toggleToRemoveIngredient(ingredient));
+        trashImageView.setOnClickListener(v -> removeIngredient(ingredient));
 
         TextInputEditText amountEditText = ingredientEntry.findViewById(R.id.food_amount);
         amountEditText.addTextChangedListener(new TextWatcher() {
@@ -237,34 +233,11 @@ public class AddDishActivity extends AppCompatActivity {
         });
     }
 
-    private void toggleToRemoveIngredient(IngredientResponse ingredient) {
-        int index = allIngredients.indexOf(ingredient);
-
+    private void removeIngredient(IngredientResponse ingredient) {
+        int index = displayedIngredients.indexOf(ingredient);
         ConstraintLayout inner = (ConstraintLayout) ingredientsLayout.getChildAt(index);
-        TextView foodName = (TextView) inner.getChildAt(0);
-        ImageView trashcan = (ImageView) inner.getChildAt(1);
-        View portionSpinner = inner.getChildAt(2);
-        View amount = inner.getChildAt(4);
-
-        if (copyIngredients.indexOf(ingredient) == -1) {
-            // item was removed, so add it again
-            if (index > copyIngredients.size()) {
-                copyIngredients.add(ingredient);
-            } else {
-                copyIngredients.add(index, ingredient);
-            }
-            foodName.setAlpha(1f);
-            trashcan.setImageResource(R.drawable.trashcan);
-            portionSpinner.setVisibility(View.VISIBLE);
-            amount.setVisibility(View.VISIBLE);
-        } else {
-            copyIngredients.remove(ingredient);
-            foodName.setAlpha(0.4f);
-            trashcan.setImageResource(R.drawable.replay);
-            portionSpinner.setVisibility(View.GONE);
-            amount.setVisibility(View.GONE);
-        }
-
+        displayedIngredients.remove(ingredient);
+        ingredientsLayout.removeView(inner);
         isSaveButtonEnabled();
     }
 
@@ -273,47 +246,15 @@ public class AddDishActivity extends AppCompatActivity {
             return;
         }
 
+        Long dishId = getDishId(dishResponse);
         String dishName = Objects.requireNonNull(editDishName.getText()).toString();
 
-        Long dishId = null;
-        if (dishResponse != null) {
-            dishId = dishResponse.getId();
-        }
-
         List<IngredientResponse> newIngredients = new ArrayList<>();
-        int ingredientCount = ingredientsLayout.getChildCount();
-        for (int i = 0; i < ingredientCount; i++) {
-            ConstraintLayout inner = (ConstraintLayout) ingredientsLayout.getChildAt(i);
-            TextView foodName = (TextView) inner.getChildAt(0);
-            Spinner portionSpinner = (Spinner) inner.getChildAt(2);
-            TextInputEditText amount = inner.findViewById(R.id.food_amount);
-
-            for (IngredientResponse ingredient : copyIngredients) {
-                if (foodName.getText().toString().equals(ingredient.getFood().getName())) {
-                    FoodResponse food = ingredient.getFood();
-                    Long portionId = null;
-                    String selectedPortionDesc = portionSpinner.getSelectedItem().toString();
-                    if (!selectedPortionDesc.equals("gram")) {
-                        PortionResponse selectedPortion = ListUtil.getPortionFromListByName(selectedPortionDesc, food);
-                        if (selectedPortion!= null) {
-                            portionId = selectedPortion.getId();
-                        }
-                    }
-
-                    Double multiplier = Double.valueOf(Objects.requireNonNull(amount.getText()).toString());
-                    if (portionId == null) {
-                        multiplier = multiplier / 100;
-                    }
-
-                    IngredientResponse newIngredient = new IngredientResponse(multiplier, food, portionId);
-
-                    newIngredients.add(newIngredient);
-                }
-            }
+        for (int i = 0; i < displayedIngredients.size(); i++) {
+            getPortionAndAmountFromView(newIngredients, i);
         }
 
         DishResponse newDish = new DishResponse(dishId, dishName, newIngredients);
-
         DishService dishService = new DishService(getToken());
         disposable = dishService.postDish(newDish)
                 .subscribe(res -> {
@@ -322,6 +263,37 @@ public class AddDishActivity extends AppCompatActivity {
                     finish();
                 }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
 
+    }
+
+    private Long getDishId(DishResponse dishResponse) {
+        if (dishResponse != null) {
+            return dishResponse.getId();
+        }
+        return null;
+    }
+
+    private void getPortionAndAmountFromView(List<IngredientResponse> newIngredients, int index) {
+        IngredientResponse ingredient = displayedIngredients.get(index);
+        ConstraintLayout inner = (ConstraintLayout) ingredientsLayout.getChildAt(index);
+        Spinner portionSpinner = (Spinner) inner.getChildAt(2);
+        TextInputEditText amount = inner.findViewById(R.id.food_amount);
+
+        FoodResponse food = ingredient.getFood();
+        Long portionId = null;
+        String selectedPortionDesc = portionSpinner.getSelectedItem().toString();
+        if (!selectedPortionDesc.equals("gram")) {
+            PortionResponse selectedPortion = ListUtil.getPortionFromListByName(selectedPortionDesc, food);
+            if (selectedPortion != null) {
+                portionId = selectedPortion.getId();
+            }
+        }
+        double multiplier = Double.parseDouble(Objects.requireNonNull(amount.getText()).toString());
+        if (portionId == null) {
+            multiplier = multiplier / 100;
+        }
+
+        IngredientResponse newIngredient = new IngredientResponse(multiplier, food, portionId);
+        newIngredients.add(newIngredient);
     }
 
     private void isSaveButtonEnabled() {
