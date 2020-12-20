@@ -18,7 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.csl.macrologandroid.AddLogEntryActivity;
-import com.csl.macrologandroid.EditActivityActivity;
+import com.csl.macrologandroid.ActivityActivity;
 import com.csl.macrologandroid.EditLogEntryActivity;
 import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.adapters.DiaryPager;
@@ -178,7 +178,7 @@ public class DiaryFragment extends Fragment {
     }
 
     private void startEditActivity() {
-        Intent intent = new Intent(getActivity(), EditActivityActivity.class);
+        Intent intent = new Intent(getActivity(), ActivityActivity.class);
         List<ActivityResponse> activities = activityCache.getFromCache(selectedDate);
         intent.putExtra("DATE", selectedDate);
         intent.putExtra("ACTIVITIES", (Serializable) activities);
@@ -193,7 +193,7 @@ public class DiaryFragment extends Fragment {
     }
 
     private void forceSyncActivity() {
-        disposable = activityService.getActivitiesForDayForced(selectedDate).subscribe(
+        disposable = activityService.getActivitiesForDay(selectedDate).subscribe(
                 res -> {
                     logEntryCache.clearCache();
                     activityCache.clearCache();

@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
-        <activity android:name=".AddDishActivity"></activity>
+        <activity android:name=".DishActivity"></activity>
         <activity android:name=".ConnectivityActivity">
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.VIEW" />
@@ -77,7 +77,7 @@
             android:name=".EditLogEntryActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".EditActivityActivity"
+            android:name=".ActivityActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AddLogEntryActivity"

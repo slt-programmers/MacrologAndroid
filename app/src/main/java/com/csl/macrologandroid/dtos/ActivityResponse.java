@@ -5,18 +5,18 @@ import java.util.Date;
 
 public class ActivityResponse implements Serializable {
 
-    private int id;
+    private Long id;
     private Date day;
     private String name;
     private int calories;
     private String syncedWith;
-    private long syncedId;
+    private Long syncedId;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,11 +52,11 @@ public class ActivityResponse implements Serializable {
         this.syncedWith = syncedWith;
     }
 
-    public long getSyncedId() {
+    public Long getSyncedId() {
         return syncedId;
     }
 
-    public void setSyncedId(int syncedId) {
+    public void setSyncedId(Long syncedId) {
         this.syncedId = syncedId;
     }
 }

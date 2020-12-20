@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.csl.macrologandroid.AddDishActivity;
+import com.csl.macrologandroid.DishActivity;
 import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.adapters.DishListAdapter;
 import com.csl.macrologandroid.cache.DishCache;
@@ -92,7 +92,7 @@ public class DishFragment extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.floating_button);
         fab.setOnClickListener((v) -> {
-            Intent intent = new Intent(this.getActivity(), AddDishActivity.class);
+            Intent intent = new Intent(this.getActivity(), DishActivity.class);
             startActivityForResult(intent, ADD_DISH_ID);
         });
 
@@ -149,7 +149,7 @@ public class DishFragment extends Fragment {
     };
 
     private void onEditClick(DishResponse dish) {
-        Intent intent = new Intent(this.getActivity(), AddDishActivity.class);
+        Intent intent = new Intent(this.getActivity(), DishActivity.class);
         intent.putExtra("DISH", dish);
         startActivityForResult(intent, EDIT_DISH_ID);
     }

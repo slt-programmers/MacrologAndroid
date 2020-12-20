@@ -13,16 +13,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public class ActivityService {
 
@@ -51,34 +48,21 @@ public class ActivityService {
     }
 
     public Observable<List<ActivityResponse>> getActivitiesForDay(Date date) {
-        return apiService.getActivitiesForDay(DateParser.format(date), true).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        return apiService.getActivitiesForDay(DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<ActivityResponse>> getActivitiesForDayForced(Date date) {
-        return apiService.getActivitiesForDayForced(DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Observable<List<ActivityResponse>> postActivity(List<ActivityRequest> activities) {
-        return apiService.postActivity(activities).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Observable<ResponseBody> deleteActivity(long id) {
-        return apiService.deleteActivity((int) id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    public Observable<List<ActivityResponse>> postActivitiesForDay(List<ActivityRequest> activities, Date date) {
+        String day = DateParser.format(date);
+        return apiService.postActivitiesForDay(day, activities).subscribeOn((Schedulers.io())).observeOn(AndroidSchedulers.mainThread());
     }
 
     private interface ApiService {
 
-        @GET("activities/day/{date}")
-        Observable<List<ActivityResponse>> getActivitiesForDay(@Path("date") String date, @Query("forced") boolean forced);
-
         @GET("activities/day/{date}?forceSync=true")
-        Observable<List<ActivityResponse>> getActivitiesForDayForced(@Path("date") String date);
+        Observable<List<ActivityResponse>> getActivitiesForDay(@Path("date") String date);
 
-        @POST("activities")
-        Observable<List<ActivityResponse>> postActivity(@Body List<ActivityRequest> entries);
-
-        @DELETE("activities/{id}")
-        Observable<ResponseBody> deleteActivity(@Path("id") int id);
+        @POST("activities/day/{date}")
+        Observable<List<ActivityResponse>> postActivitiesForDay(@Path("date") String date, @Body List<ActivityRequest> entries);
 
     }
 }
