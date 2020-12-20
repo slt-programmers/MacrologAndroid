@@ -8,9 +8,9 @@ android {
     signingConfigs {
         release {
             storeFile = file("../ignore/macrologKeyStore")
-            keyAlias = "secret"
-            storePassword = "secret"
-            keyPassword = "secret"
+            keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
+            storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
+            keyPassword = file("../ignore/keystore.properties").getText().getProperties().get('keyPassword')
         }
     }
 
@@ -72,7 +72,6 @@ play {
     serviceAccountCredentials.set(file("../ignore/macrolog-service-account-key.json"))
     defaultToAppBundles.set(true)
 }
-
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
