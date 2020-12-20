@@ -17,7 +17,7 @@ android {
     def isRunningOnTravis = System.getenv("CI") == "true"
 
     if (isRunningOnTravis) {
-        signingConfigs.release.storeFile = file("../ignore/macrologKeyStore")
+        signingConfigs.release.storeFile = file("../macrologKeyStore")
         signingConfigs.release.keyAlias = System.getenv("keystore_alias")
         signingConfigs.release.storePassword = System.getenv("keystore_store_password")
         signingConfigs.release.keyPassword = System.getenv("keystore_password")
@@ -28,7 +28,7 @@ android {
         applicationId "com.csl.macrologandroid"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 15
+        versionCode 16
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
