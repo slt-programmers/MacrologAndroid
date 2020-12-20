@@ -26,7 +26,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener {
 
     private static final int SUCCESSFUL_LOGIN = 789;
-    private static final int SUCCESFUL_REGISTER = 890;
+    private static final int SUCCESSFUL_REGISTER = 890;
 
     private BottomNavigationView navigation;
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (SUCCESSFUL_LOGIN):
-            case (SUCCESFUL_REGISTER):
+            case (SUCCESSFUL_REGISTER):
                 if (resultCode == Activity.RESULT_OK) {
                     FoodCache.getInstance().clearCache();
                     DiaryLogCache.getInstance().clearCache();
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         DiaryLogCache.getInstance().clearCache();
         ActivityCache.getInstance().clearCache();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivityForResult(intent, SUCCESFUL_REGISTER);
+        startActivityForResult(intent, SUCCESSFUL_REGISTER);
         navigation.callOnClick();
     }
 

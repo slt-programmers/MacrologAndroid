@@ -66,12 +66,10 @@ public class SplashscreenActivity extends AppCompatActivity {
         disposable = service.healthcheck(token)
                 .subscribe(
                         res -> {
-                            if (expired != null) {
-                                finish();
-                            } else {
+                            if (expired == null) {
                                 startActivity(new Intent(SplashscreenActivity.this, MainActivity.class));
-                                finish();
                             }
+                            finish();
                         },
                         err -> {
                             Log.e(this.getLocalClassName(), err.getMessage());

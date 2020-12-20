@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.application'
-    id 'com.github.triplet.play'
-    id 'org.sonarqube'
+    id "com.android.application"
+    id "com.github.triplet.play"
+    id "org.sonarqube"
 }
 
 android {
@@ -17,7 +17,7 @@ android {
     def isRunningOnTravis = System.getenv("CI") == "true"
 
     if (isRunningOnTravis) {
-        signingConfigs.release.storeFile = file("../macrologKeyStore")
+        signingConfigs.release.storeFile = file("../ignore/macrologKeyStore")
         signingConfigs.release.keyAlias = System.getenv("keystore_alias")
         signingConfigs.release.storePassword = System.getenv("keystore_store_password")
         signingConfigs.release.keyPassword = System.getenv("keystore_password")
@@ -28,15 +28,17 @@ android {
         applicationId "com.csl.macrologandroid"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 13
-        versionName "1.0"
+        versionCode 14
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
     }
     buildTypes {
         debug {
+            minifyEnabled true
             debuggable true
             buildConfigField 'String', 'SERVER_URL', '"https://macrolog-backend.herokuapp.com/"'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         development {
             applicationIdSuffix ".dev"
