@@ -5,15 +5,6 @@ plugins {
 }
 
 android {
-    signingConfigs {
-        release {
-            storeFile = file("../ignore/macrologKeyStore")
-            keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
-            storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
-            keyPassword = file("../ignore/keystore.properties").getText().getProperties().get('keyPassword')
-        }
-    }
-
     def isRunningOnTravis = System.getenv("CI") == "true"
 
     if (isRunningOnTravis) {
@@ -21,6 +12,15 @@ android {
         signingConfigs.release.keyAlias = System.getenv("keystore_alias")
         signingConfigs.release.storePassword = System.getenv("keystore_store_password")
         signingConfigs.release.keyPassword = System.getenv("keystore_password")
+    } else {
+        signingConfigs {
+            release {
+                storeFile = file("../ignore/macrologKeyStore")
+                keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
+                storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
+                keyPassword = file("../ignore/keystore.properties").getText().getProperties().get('keyPassword')
+            }
+        }
     }
 
     compileSdkVersion 29
