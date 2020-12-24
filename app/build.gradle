@@ -5,28 +5,23 @@ plugins {
 }
 
 android {
-    def isRunningOnTravis = System.getenv("CI") == "true"
-
-    if (isRunningOnTravis) {
-        signingConfig {
-            release {
-                storeFile = file("../macrologKeyStore")
-                keyAlias = System.getenv("keystore_alias")
-                storePassword = System.getenv("keystore_store_password")
-                keyPassword = System.getenv("keystore_password")
-            }
-        }
-    } else {
-        signingConfigs {
-            release {
-                storeFile = file("../ignore/macrologKeyStore")
-                keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
-                storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
-                keyPassword = file("../ignore/keystore.properties").getText().getProperties().get('keyPassword')
-            }
+    signingConfigs {
+        release {
+            storeFile = file("../ignore/macrologKeyStore")
+            keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
+            storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
+            keyPassword = file("../ignore/keystore.properties").getText().getProperties().get('keyPassword')
         }
     }
 
+    def isRunningOnTravis = System.getenv("CI") == "true"
+    if (isRunningOnTravis) {
+        signingConfig.release.storeFile = file("../macrologKeyStore")
+        signingConfig.release.keyAlias = System.getenv("keystore_alias")
+        signingConfig.release.storePassword = System.getenv("keystore_store_password")
+        signingConfig.release.keyPassword = System.getenv("keystore_password")
+    }
+    
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.csl.macrologandroid"
