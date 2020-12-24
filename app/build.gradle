@@ -8,10 +8,14 @@ android {
     def isRunningOnTravis = System.getenv("CI") == "true"
 
     if (isRunningOnTravis) {
-        signingConfigs.release.storeFile = file("../macrologKeyStore")
-        signingConfigs.release.keyAlias = System.getenv("keystore_alias")
-        signingConfigs.release.storePassword = System.getenv("keystore_store_password")
-        signingConfigs.release.keyPassword = System.getenv("keystore_password")
+        signingConfig {
+            release {
+                storeFile = file("../macrologKeyStore")
+                keyAlias = System.getenv("keystore_alias")
+                storePassword = System.getenv("keystore_store_password")
+                keyPassword = System.getenv("keystore_password")
+            }
+        }
     } else {
         signingConfigs {
             release {
