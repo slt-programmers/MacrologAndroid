@@ -20,10 +20,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile = file("../ignore/macrologKeyStore")
-            keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
-            storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
-            keyPassword = file("../ignore/keystore.properties").getText().getProperties().get('keyPassword')
+            storeFile = null
+            keyAlias = "secret"
+            storePassword = "secret"
+            keyPassword = "secret"
         }
     }
 
@@ -33,6 +33,11 @@ android {
         signingConfig.release.keyAlias = System.getenv("keystore_alias")
         signingConfig.release.storePassword = System.getenv("keystore_store_password")
         signingConfig.release.keyPassword = System.getenv("keystore_password")
+    } else {
+        signingConfigs.release.storeFile = file("../ignore/macrologKeyStore")
+        signingConfigs.release.keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
+        signingConfigs.release.storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
+        signingConfigs.release.keyPassword = file("../ignore/keystore.properties").getText().getProperties().get('keyPassword')
     }
 
     buildTypes {
