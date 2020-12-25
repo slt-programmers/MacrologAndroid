@@ -33,7 +33,9 @@ android {
         signingConfigs.release.keyAlias = System.getenv("keystore_alias")
         signingConfigs.release.storePassword = System.getenv("keystore_store_password")
         signingConfigs.release.keyPassword = System.getenv("keystore_password")
-    } else {
+    }
+    def isRunningLocal = System.getenv("CI") == "false"
+    if (isRunningLocal) {
         signingConfigs.release.storeFile = file("../ignore/macrologKeyStore")
         signingConfigs.release.keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
         signingConfigs.release.storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
