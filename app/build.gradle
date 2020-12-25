@@ -12,7 +12,7 @@ android {
         applicationId "com.csl.macrologandroid"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 16
+        versionCode 17
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
@@ -33,9 +33,7 @@ android {
         signingConfigs.release.keyAlias = System.getenv("keystore_alias")
         signingConfigs.release.storePassword = System.getenv("keystore_store_password")
         signingConfigs.release.keyPassword = System.getenv("keystore_password")
-    }
-    def isRunningLocal = System.getenv("CI") == "false"
-    if (isRunningLocal) {
+    } else {
         signingConfigs.release.storeFile = file("../ignore/macrologKeyStore")
         signingConfigs.release.keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
         signingConfigs.release.storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
@@ -77,13 +75,11 @@ android {
 
 play {
     promoteTrack.set("beta")
-    serviceAccountCredentials.set(file("../macrolog-service-account-key.enc"))
+    serviceAccountCredentials.set(file("../secrets.tar.enc"))
     def isRunningOnTravis = System.getenv("CI") == "true"
     if (isRunningOnTravis) {
         serviceAccountCredentials.set(file("../macrolog-service-account-key.json"))
-    }
-    def isRunningLocal = System.getenv("CI") == "false"
-    if (isRunningLocal) {
+    } else {
         serviceAccountCredentials.set(file("../ignore/macrolog-service-account-key.json"))
     }
     defaultToAppBundles.set(true)
