@@ -77,7 +77,15 @@ android {
 
 play {
     promoteTrack.set("beta")
-    serviceAccountCredentials.set(file("../ignore/macrolog-service-account-key.json"))
+    serviceAccountCredentials.set(file("../macrolog-service-account-key.enc"))
+    def isRunningOnTravis = System.getenv("CI") == "true"
+    if (isRunningOnTravis) {
+        serviceAccountCredentials.set(file("../macrolog-service-account-key.json"))
+    }
+    def isRunningLocal = System.getenv("CI") == "false"
+    if (isRunningLocal) {
+        serviceAccountCredentials.set(file("../ignore/macrolog-service-account-key.json"))
+    }
     defaultToAppBundles.set(true)
 }
 
