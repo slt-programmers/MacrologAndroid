@@ -314,7 +314,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
         double multiplier = 1.0;
         if (editGramsOrAmount.getText() != null) {
-            multiplier = Double.valueOf(editGramsOrAmount.getText().toString());
+            multiplier = Double.parseDouble(editGramsOrAmount.getText().toString());
             if (portionId == null) {
                 multiplier = multiplier / 100;
             }
@@ -385,7 +385,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         View foodSpinner = logEntryLayout.getChildAt(2);
         View foodAmount = logEntryLayout.getChildAt(4);
 
-        if (copyEntries.indexOf(entry) == -1) {
+        if (!copyEntries.contains(entry)) {
             // item was removed, so add it again
             if (index > copyEntries.size()) {
                 copyEntries.add(entry);
@@ -409,7 +409,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         List<LogEntryRequest> entries = new ArrayList<>();
 
         for (LogEntryResponse entry : logEntries) {
-            if (copyEntries.indexOf(entry) == -1) {
+            if (!copyEntries.contains(entry)) {
                 deleteEntry(entry);
             } else {
                 LogEntryRequest request = makeLogEntryRequest(entry);
@@ -440,7 +440,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         double multiplier = 1;
         TextInputEditText foodAmount = (TextInputEditText) ((TextInputLayout) logEntryLayout.getChildAt(4)).getEditText();
         if (foodAmount != null && foodAmount.getText() != null) {
-            multiplier = Double.valueOf(foodAmount.getText().toString());
+            multiplier = Double.parseDouble(foodAmount.getText().toString());
         }
 
         Long portionId = null;
