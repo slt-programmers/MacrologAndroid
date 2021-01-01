@@ -27,27 +27,40 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:text="@string/login_login"
+                android:text="@string/login_register"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/user_email"
+                android:id="@+id/register_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
                 android:backgroundTint="@color/white"
-                android:hint="@string/login_username_email"
+                android:hint="@string/login_username"
                 android:inputType="text"
                 android:paddingVertical="20dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/whiteTransparent"/>
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/register_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/white"
+                android:hint="@string/login_email"
+                android:inputType="textEmailAddress"
+                android:paddingVertical="20dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/whiteTransparent"/>
+
+            <EditText
+                android:id="@+id/register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -60,7 +73,7 @@
                 android:textColorHint="@color/whiteTransparent" />
 
             <TextView
-                android:id="@+id/login_result"
+                android:id="@+id/register_result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
@@ -70,7 +83,7 @@
                 android:visibility="invisible" />
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/register_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -78,19 +91,8 @@
                 android:elevation="12dp"
                 android:textAllCaps="true"
                 android:textStyle="bold"
-                android:text="@string/login_login"
+                android:text="@string/login_register"
                 android:textColor="@color/colorPrimary" />
-
-            <TextView
-                android:id="@+id/forgot_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="@string/forgot_password_link"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -104,17 +106,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
-                android:text="@string/login_not_registered"
+                android:text="@string/register_already_registered"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/register_text"
+                android:id="@+id/login_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
-                android:text="@string/login_register"
+                android:text="@string/login_login"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
