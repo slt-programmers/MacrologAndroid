@@ -194,7 +194,8 @@ public class AddFoodActivity extends AppCompatActivity {
             TextInputEditText portionGrams = inner.findViewById(R.id.portion_grams);
             String description = Objects.requireNonNull(portionDescription.getText()).toString();
             PortionResponse portion = new PortionResponse(findIdForPortion(i),
-                    Double.valueOf(Objects.requireNonNull(portionGrams.getText()).toString()), description);
+                    Double.parseDouble(Objects.requireNonNull(portionGrams.getText()).toString()),
+                    description.trim());
             portions.add(portion);
         }
         FoodResponse newFood = new FoodResponse(null, name, protein, fat, carbs, portions);
