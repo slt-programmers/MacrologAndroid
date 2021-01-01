@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion = '30.0.3'
+    compileSdkVersion 29
+    buildToolsVersion = '29.0.2'
 
     defaultConfig {
         applicationId "com.csl.macrologandroid"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 18
         versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -34,10 +34,14 @@ android {
         signingConfigs.release.storePassword = System.getenv("keystore_store_password")
         signingConfigs.release.keyPassword = System.getenv("keystore_password")
     } else {
+        def props = new Properties()
+        file("../ignore/keystore.properties").withInputStream {
+            props.load(it)
+        }
         signingConfigs.release.storeFile = file("../ignore/macrologKeyStore")
-        signingConfigs.release.keyAlias = file("../ignore/keystore.properties").getText().getProperties().get('keyAlias')
-        signingConfigs.release.storePassword = file("../ignore/keystore.properties").getText().getProperties().get('storePassword')
-        signingConfigs.release.keyPassword = file("../ignore/keystore.properties").getText().getProperties().get('keyPassword')
+        signingConfigs.release.keyAlias = props.getProperty('keyAlias')
+        signingConfigs.release.storePassword = props.getProperty('storePassword')
+        signingConfigs.release.keyPassword = props.getProperty('keyPassword')
     }
 
     buildTypes {
