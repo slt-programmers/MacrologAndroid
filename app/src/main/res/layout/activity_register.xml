@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
     android:orientation="vertical"
+    android:background="@drawable/background_gradient"
     tools:context=".LoginActivity">
 
     <LinearLayout
@@ -27,38 +27,61 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:text="@string/login_login"
+                android:text="@string/login_register"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp"
-                android:fontFamily="@font/assistant_bold"/>
+                android:fontFamily="@font/assistant_bold" />
 
             <EditText
-                android:id="@+id/user"
+                android:id="@+id/register_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:autofillHints=""
                 android:backgroundTint="@color/white"
-                android:hint="@string/login_username_email"
+                android:hint="@string/login_username"
                 android:inputType="text"
                 android:paddingVertical="16dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/whiteTransparent" />
+                android:textColorHint="@color/whiteTransparent"/>
 
             <TextView
-                android:id="@+id/user_email_error"
+                android:id="@+id/user_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
+                android:textColor="@color/red"
                 android:text="@string/error_field_required"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+
+            <EditText
+                android:id="@+id/register_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:backgroundTint="@color/white"
+                android:hint="@string/login_email"
+                android:inputType="textEmailAddress"
+                android:paddingVertical="16dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/whiteTransparent"/>
+
+            <TextView
+                android:id="@+id/email_error"
+                android:text="@string/error_invalid_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                 android:textColor="@color/red"
                 android:textSize="16sp"
                 android:visibility="invisible" />
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/register_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
@@ -80,26 +103,15 @@
                 android:visibility="invisible" />
 
             <Button
-                android:id="@+id/login_button"
+                android:id="@+id/register_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/button_white_background"
-                android:text="@string/login_login"
+                android:elevation="12dp"
                 android:textAllCaps="true"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/assistant_bold"/>
-
-            <TextView
-                android:id="@+id/forgot_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:text="@string/forgot_password_link"
-                android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:fontFamily="@font/assistant_bold"                android:text="@string/login_register"
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
 
         <LinearLayout
@@ -113,17 +125,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
-                android:text="@string/login_not_registered"
+                android:text="@string/register_already_registered"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/register_text"
+                android:id="@+id/login_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="2dp"
-                android:text="@string/login_register"
+                android:text="@string/login_login"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
