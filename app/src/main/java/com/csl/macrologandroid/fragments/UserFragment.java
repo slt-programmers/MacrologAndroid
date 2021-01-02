@@ -15,7 +15,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.csl.macrologandroid.AboutActivity;
-import com.csl.macrologandroid.AdjustIntakeActivity;
+import com.csl.macrologandroid.EditIntakeActivity;
 import com.csl.macrologandroid.ChangePasswordActivity;
 import com.csl.macrologandroid.ConnectivityActivity;
 import com.csl.macrologandroid.DeleteAccountActivity;
@@ -100,7 +100,7 @@ public class UserFragment extends Fragment {
 
         ImageView header = view.findViewById(R.id.header);
         header.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), AdjustIntakeActivity.class);
+            Intent intent = new Intent(getActivity(), EditIntakeActivity.class);
             startActivityForResult(intent, ADJUST_INTAKE_ID);
         });
 

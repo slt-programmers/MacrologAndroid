@@ -1,13 +1,12 @@
 package com.csl.macrologandroid;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -25,15 +25,18 @@ import android.widget.TextView;
 import com.csl.macrologandroid.cache.UserSettingsCache;
 import com.csl.macrologandroid.dtos.SettingsResponse;
 import com.csl.macrologandroid.dtos.UserSettingsResponse;
+import com.csl.macrologandroid.fragments.DateDialogFragment;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.models.Gender;
 import com.csl.macrologandroid.services.UserService;
 import com.csl.macrologandroid.util.DateParser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import io.reactivex.Observable;
@@ -53,19 +56,16 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     private double originalWeight;
     private double originalActivity;
 
-    private TextInputEditText editName;
-    private TextInputEditText editBirthday;
+    private EditText editName;
+    private EditText editBirthday;
     private RadioGroup genderRadios;
-    private TextInputEditText editHeight;
-    private TextInputEditText editWeight;
+    private EditText editHeight;
+    private EditText editWeight;
     private Spinner editActivity;
 
     private boolean intake;
-
     private Button saveButton;
-
     private Disposable disposable;
-    private TextInputLayout editBirthdayLayout;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -92,9 +92,12 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         editName = findViewById(R.id.edit_name);
         editName.addTextChangedListener(textChangedListener);
 
-        editBirthdayLayout = findViewById(R.id.edit_birthday_layout);
         editBirthday = findViewById(R.id.edit_birthday);
         editBirthday.addTextChangedListener(textChangedListener);
+
+//        editBirthday.setOnFocusChangeListener((v,i) -> {
+//            openDatePickerDialog();
+//        });
 
         genderRadios = findViewById(R.id.radiogroup_gender);
         editHeight = findViewById(R.id.edit_height);
@@ -109,20 +112,16 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         intake = intent.getBooleanExtra("INTAKE", false);
         if (intake) {
-            genderRadios.check(R.id.check_male);
-            backButton = findViewById(R.id.back_button);
-            backButton.setVisibility(View.GONE);
             TextView intakeTitle = findViewById(R.id.intake_title);
             intakeTitle.setVisibility(View.VISIBLE);
+            genderRadios.check(R.id.check_male);
             saveButton.setEnabled(false);
         } else {
             UserSettingsResponse settings = UserSettingsCache.getInstance().getCache();
             originalName = settings.getName();
             editName.setText(originalName);
-
             originalBirthday = settings.getBirthday();
             editBirthday.setText(DateParser.format(originalBirthday));
-
             originalGender = settings.getGender();
             if (Gender.FEMALE.equals(originalGender)) {
                 genderRadios.check(R.id.check_female);
@@ -132,15 +131,12 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
             originalHeight = settings.getHeight();
             editHeight.setText(String.valueOf(originalHeight));
-
             originalWeight = settings.getWeight();
             editWeight.setText(String.valueOf(originalWeight));
-
             originalActivity = settings.getActivity();
-
-            backButton.setOnClickListener(v -> finish());
         }
         setupSpinner();
+        backButton.setOnClickListener(v -> finish());
 
         saveButton.setOnClickListener(v -> saveSettings());
     }
@@ -184,9 +180,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         editActivity.setAdapter(dataAdapter);
 
         switch (String.valueOf(originalActivity)) {
-            case "1.2":
-                editActivity.setSelection(0);
-                break;
             case DEFAULT_ACTIVITY:
                 editActivity.setSelection(1);
                 break;
@@ -199,6 +192,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             case "1.9":
                 editActivity.setSelection(4);
                 break;
+            case "1.2":
             default:
                 editActivity.setSelection(0);
         }
@@ -208,7 +202,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         String newBirthday = Objects.requireNonNull(editBirthday.getText()).toString();
         Date newDate = DateParser.parse(newBirthday);
         if (newDate == null) {
-            editBirthdayLayout.setError("Incorrect format");
+            // TODO
         } else {
             UserSettingsResponse userSettings = new UserSettingsResponse();
             List<Observable<ResponseBody>> obsList = fillObsList(userSettings, newDate, newBirthday);
@@ -216,7 +210,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             disposable = Observable.zip(obsList, i -> i)
                     .subscribe(res -> {
                         if (intake) {
-                            Intent intent = new Intent(this, AdjustIntakeActivity.class);
+                            Intent intent = new Intent(this, EditIntakeActivity.class);
                             intent.putExtra("userSettings", userSettings);
                             intent.putExtra("INTAKE", true);
                             startActivityForResult(intent, ADJUST_INTAKE_INTAKE);
@@ -260,15 +254,15 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
 
         String newHeight = Objects.requireNonNull(editHeight.getText()).toString();
-        if (!newHeight.isEmpty() && originalHeight != Integer.valueOf(newHeight)) {
+        if (!newHeight.isEmpty() && originalHeight != Integer.parseInt(newHeight)) {
             obsList.add(userService.putSetting(new SettingsResponse(null, "height", newHeight)));
-            userSettings.setHeight(Integer.valueOf(newHeight));
+            userSettings.setHeight(Integer.parseInt(newHeight));
         }
 
         String newWeight = Objects.requireNonNull(editWeight.getText()).toString();
         if (!newWeight.isEmpty() && !String.valueOf(originalWeight).equals(newWeight)) {
             obsList.add(userService.putSetting(new SettingsResponse(null, "weight", newWeight)));
-            userSettings.setWeight(Double.valueOf(newWeight));
+            userSettings.setWeight(Double.parseDouble(newWeight));
         }
 
         String item = (String) editActivity.getSelectedItem();
@@ -276,9 +270,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         switch (item) {
             case "Sedentary":
                 newActivity = "1.2";
-                break;
-            case "Lightly active":
-                newActivity = DEFAULT_ACTIVITY;
                 break;
             case "Moderately active":
                 newActivity = "1.55";
@@ -289,18 +280,27 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
             case "Extremely active":
                 newActivity = "1.9";
                 break;
+            case "Lightly active":
             default:
                 newActivity = DEFAULT_ACTIVITY;
         }
 
         if (!String.valueOf(originalActivity).equals(newActivity)) {
             obsList.add(userService.putSetting(new SettingsResponse(null, "activity", newActivity)));
-            userSettings.setActivity(Double.valueOf(newActivity));
+            userSettings.setActivity(Double.parseDouble(newActivity));
         }
 
         return obsList;
     }
 
+//    private void openDatePickerDialog() {
+//        DateDialogFragment dialog = new DateDialogFragment();
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+//        dialog.setOnDialogResult(date -> {
+//            editBirthday.setText(simpleDateFormat.format(date));
+//        });
+//        dialog.show(getSupportFragmentManager(), "DateDialogFragment");
+//    }
 
     private String getToken() {
         return this.getApplicationContext().getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");

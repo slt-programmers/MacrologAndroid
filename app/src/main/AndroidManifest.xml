@@ -21,8 +21,8 @@
 
         <activity
             android:name=".RegisterActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:label="@string/title_activity_register"/>
+            android:label="@string/title_activity_register"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".DishActivity" />
         <activity android:name=".ConnectivityActivity">
             <intent-filter android:label="@string/app_name">
@@ -76,7 +76,7 @@
             android:label="@string/title_edit_details"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".AdjustIntakeActivity"
+            android:name=".EditIntakeActivity"
             android:label="@string/title_adjust_intake"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -94,7 +94,12 @@
         <activity
             android:name=".AboutActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".WeightChartActivity" />
+        <activity
+            android:name=".WeightChartActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".OnboardingActivity"
+            android:windowSoftInputMode="adjustResize" />
 
         <receiver
             android:name=".notifications.NotificationReceiver"
@@ -109,4 +114,5 @@
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

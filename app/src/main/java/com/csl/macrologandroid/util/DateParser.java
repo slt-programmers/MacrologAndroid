@@ -14,6 +14,9 @@ public class DateParser {
     }
 
     public static String format(Date date) {
+        if (date == null) {
+            return "";
+        }
         SimpleDateFormat standardFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return standardFormat.format(date);
     }

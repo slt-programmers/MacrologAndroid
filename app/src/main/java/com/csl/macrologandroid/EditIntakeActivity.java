@@ -28,7 +28,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 
-public class AdjustIntakeActivity extends AppCompatActivity {
+public class EditIntakeActivity extends AppCompatActivity {
 
     private UserService service;
     private Disposable disposable;
@@ -42,7 +42,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        setContentView(R.layout.activity_adjust_intake);
+        setContentView(R.layout.activity_edit_intake);
         Intent intent = getIntent();
         boolean intake = intent.getBooleanExtra("INTAKE", false);
 
@@ -110,7 +110,7 @@ public class AdjustIntakeActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            Intent intent = new Intent(AdjustIntakeActivity.this, SplashscreenActivity.class);
+            Intent intent = new Intent(EditIntakeActivity.this, SplashscreenActivity.class);
             intent.putExtra("SESSION_EXPIRED", true);
             startActivity(intent);
         }

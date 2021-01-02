@@ -4,14 +4,17 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -26,7 +29,7 @@ import java.util.Objects;
 public class DateDialogFragment extends DialogFragment {
 
     private OnDialogResult onDialogResult;
-    private Date currentDate;
+    private Date currentDate = new Date();
 
     @NonNull
     @Override
@@ -66,7 +69,7 @@ public class DateDialogFragment extends DialogFragment {
         TextView customTitle = new TextView(getContext());
         customTitle.setText(getResources().getString(R.string.choose_date));
         customTitle.setTextSize(20);
-        customTitle.setPadding(48, 48, 0 ,0);
+        customTitle.setPadding(48, 48, 0, 0);
         customTitle.setTextColor(getResources().getColor(R.color.colorPrimary, null));
         customTitle.setTypeface(ResourcesCompat.getFont(Objects.requireNonNull(getContext()), R.font.assistant_light), Typeface.BOLD);
 
@@ -83,11 +86,11 @@ public class DateDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    void setCurrentDate(Date currentDate) {
+    public void setCurrentDate(Date currentDate) {
         this.currentDate = currentDate;
     }
 
-    void setOnDialogResult(OnDialogResult onDialogResult) {
+    public void setOnDialogResult(OnDialogResult onDialogResult) {
         this.onDialogResult = onDialogResult;
     }
 

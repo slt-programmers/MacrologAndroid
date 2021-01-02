@@ -1,87 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_gradient"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/back_button"
-        style="@style/buttonBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:drawableStart="@drawable/arrow_back" />
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/back_button"
+                style="@style/buttonBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/arrow_back"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/intake_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/assistant_bold"
+                android:text="@string/intake"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="32dp">
 
-            <TextView
-                android:id="@+id/intake_title"
+            <EditText
+                android:id="@+id/edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:paddingBottom="8dp"
-                android:text="@string/intake"
+                android:autofillHints=""
+                android:backgroundTint="@color/white"
+                android:hint="@string/user_name"
+                android:inputType="text"
+                android:paddingVertical="16dp"
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:textColorHint="@color/whiteTransparent" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/edit_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/TextInputLayoutTheme">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="@string/user_name"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edit_birthday_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorTextAppearance="@style/TextInputError"
-                android:theme="@style/TextInputLayoutTheme">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_birthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="@string/birthday_hint"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:autofillHints=""
+                android:backgroundTint="@color/white"
+                android:hint="@string/birthday"
+                android:inputType="date"
+                android:paddingVertical="16dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/whiteTransparent" />
 
             <RadioGroup
                 android:id="@+id/radiogroup_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -105,54 +97,63 @@
                     android:textSize="18sp" />
             </RadioGroup>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/edit_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/TextInputLayoutTheme">
+                android:autofillHints=""
+                android:backgroundTint="@color/white"
+                android:hint="@string/height_hint"
+                android:inputType="number"
+                android:paddingVertical="16dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/whiteTransparent" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_height"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="@string/height_hint"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/edit_weight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/TextInputLayoutTheme">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_weight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/weight_hint"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
-                    android:singleLine="true" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:autofillHints=""
+                android:backgroundTint="@color/white"
+                android:hint="@string/weight_hint"
+                android:inputType="number"
+                android:paddingVertical="16dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/whiteTransparent" />
 
             <Spinner
                 android:id="@+id/edit_activity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 android:prompt="@string/activity_level"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+            <TextView
+                android:id="@+id/form_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/error_field_required"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/savebutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/save" />
+                android:background="@drawable/button_white_background"
+                android:fontFamily="@font/assistant_bold"
+                android:text="@string/save"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

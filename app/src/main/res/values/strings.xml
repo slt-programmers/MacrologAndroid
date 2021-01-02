@@ -104,7 +104,7 @@
     <string name="food">Food</string>
     <string name="percentage">Percentage</string>
 
-    <string name="birthday_hint">Birthday (yyyy-mm-dd)</string>
+    <string name="birthday">Birthday</string>
     <string name="height_hint">Height (cm)</string>
     <string name="weight_hint">Weight (kg)</string>
 
@@ -149,4 +149,11 @@
     <string name="register_already_registered">Already have an account?</string>
     <string name="error_email_not_found">Email not found</string>
     <string name="error_general">Something went wrong. Try again later.</string>
+    <string name="welcome">Welcome</string>
+    <string name="thank_you">Thank you for using Macrolog!</string>
+    <string name="onboarding_personal_details">First, you will be able to fill in your personal details.
+        That way calculations can be made to help you set your goals. </string>
+    <string name="onboarding_goals">Next, you can set your food intake goals like your preferred macronutrient ratios
+        or calorie amount. </string>
+    <string name="onboarding_get_started">Get started</string>
 </resources>

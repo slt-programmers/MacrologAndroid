@@ -348,7 +348,7 @@ public class DiaryFragment extends Fragment {
             setupViewPager(view);
 
         });
-        dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "WeighDialogFragment");
+        dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "DateDialogFragment");
     }
 
     private String getToken() {

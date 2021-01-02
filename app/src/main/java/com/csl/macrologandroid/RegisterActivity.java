@@ -168,9 +168,9 @@ public class RegisterActivity extends AppCompatActivity {
         disposable = authService.register(username, email, password)
                 .subscribe(res -> {
                             saveCredentials(res);
-                            Intent intent = new Intent(this, EditPersonalDetailsActivity.class);
-                            intent.putExtra("INTAKE", true);
-                            startActivityForResult(intent, INTAKE_SUCCESSFUL);
+                            Intent intent = new Intent(this, OnboardingActivity.class);
+                            startActivity(intent);
+                            finish();
                         },
                         err -> {
                             if (err instanceof HttpException &&
