@@ -2,7 +2,8 @@ package com.csl.macrologandroid;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import com.csl.macrologandroid.dtos.AuthenticationResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.AuthenticationService;
+import com.csl.macrologandroid.util.ResetErrorTextWatcher;
+
 import java.net.ConnectException;
 import java.util.Objects;
 import io.reactivex.disposables.Disposable;
@@ -23,12 +26,12 @@ import io.reactivex.disposables.Disposable;
 public class LoginActivity extends AppCompatActivity {
 
     // UI references.
-    private EditText mUserOrEmailLayout;
-    private EditText mPasswordLayout;
-    private TextView mLoginResultView;
+    private EditText userEmailInput;
+    private EditText passwordInput;
+    private TextView userEmailError;
+    private TextView passwordError;
 
     private AuthenticationService authService;
-
     private static final int INTAKE_SUCCESSFUL = 678;
     private Disposable disposable;
 
@@ -50,16 +53,14 @@ public class LoginActivity extends AppCompatActivity {
             actionbar.hide();
         }
 
-        mUserOrEmailLayout = findViewById(R.id.user_email);
-        mPasswordLayout = findViewById(R.id.password);
-
-        // For hiding password with dots
-        Objects.requireNonNull(mPasswordLayout).setTypeface(Typeface.DEFAULT);
-        mPasswordLayout.setTransformationMethod(new PasswordTransformationMethod());
-        mLoginResultView = findViewById(R.id.login_result);
+        userEmailInput = findViewById(R.id.user);
+        passwordInput = findViewById(R.id.password);
+        userEmailError = findViewById(R.id.user_email_error);
+        passwordError = findViewById(R.id.password_error);
+        userEmailInput.addTextChangedListener(new ResetErrorTextWatcher(userEmailInput, userEmailError));
+        passwordInput.addTextChangedListener(new ResetErrorTextWatcher(passwordInput, passwordError));
 
         TextView forgotPassword = findViewById(R.id.forgot_password);
-        forgotPassword.setClickable(true);
         forgotPassword.setOnClickListener(v -> {
             Intent intent = new Intent(this, ForgotPasswordActivity.class);
             startActivity(intent);
@@ -107,26 +108,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        resetErrors();
-        mUserOrEmailLayout.setError(null);
-        mPasswordLayout.setError(null);
-
-        String username = Objects.requireNonNull(mUserOrEmailLayout).getText().toString();
-        String password = Objects.requireNonNull(mPasswordLayout).getText().toString();
+        String username = Objects.requireNonNull(userEmailInput).getText().toString();
+        String password = Objects.requireNonNull(passwordInput).getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        if (isUsernameInvalid(username)) {
-            mUserOrEmailLayout.setError(getString(R.string.error_field_required));
-            focusView = mUserOrEmailLayout;
+        if (TextUtils.isEmpty(username)) {
+            userEmailError.setVisibility(View.VISIBLE);
+            userEmailInput.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            focusView = userEmailInput;
             cancel = true;
         }
 
-        if (isPasswordInvalid(password)) {
-            mPasswordLayout.setError(getString(R.string.error_invalid_password));
+        if (TextUtils.isEmpty(password)) {
+            passwordError.setText(R.string.error_field_required);
+            passwordError.setVisibility(View.VISIBLE);
+            passwordInput.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             if (focusView == null) {
-                focusView = mPasswordLayout;
+                focusView = passwordInput;
             }
             cancel = true;
         }
@@ -138,18 +138,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void resetErrors() {
-        mLoginResultView.setVisibility(View.INVISIBLE);
-    }
-
-    private boolean isUsernameInvalid(String username) {
-        return TextUtils.isEmpty(username);
-    }
-
-    private boolean isPasswordInvalid(String password) {
-        return TextUtils.isEmpty(password) || password.length() < 6;
-    }
-
     private void login(String username, String password) {
         disposable = authService.authenticate(username, password)
                 .subscribe(res -> {
@@ -158,12 +146,11 @@ public class LoginActivity extends AppCompatActivity {
                         }, err -> {
                             Log.e(this.getLocalClassName(), err.getMessage());
                             if (err instanceof ConnectException) {
-                                mLoginResultView.setText(R.string.connection_error);
-                                mLoginResultView.setVisibility(View.VISIBLE);
+                                passwordError.setText(R.string.connection_error);
                             } else {
-                                mLoginResultView.setText(R.string.login_failed);
-                                mLoginResultView.setVisibility(View.VISIBLE);
+                                passwordError.setText(R.string.login_failed);
                             }
+                            passwordError.setVisibility(View.VISIBLE);
                         }
                 );
 

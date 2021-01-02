@@ -12,7 +12,7 @@
     <string name="notification_channel_name">Reminders</string>
     <string name="notification_channel_id">REMINDERS</string>
 
-    <string name="login_username_email">Username or Email</string>
+    <string name="login_username_email">Username or email</string>
     <string name="login_password">Password</string>
     <string name="login_login">Log in</string>
     <string name="login_register">Register</string>
@@ -21,7 +21,7 @@
     <string name="login_failed">Username or password incorrect</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_password_invalid">This password is too short</string>
     <string name="error_field_required">This field is required</string>
 
     <string name="user_name">Name</string>
@@ -109,10 +109,9 @@
     <string name="weight_hint">Weight (kg)</string>
 
     <string name="forgot_password_link">Forgot your password?</string>
-    <string name="forgot_password_title">Forgotten password</string>
+    <string name="forgot_password_title">Forgot password</string>
     <string name="forgot_password_description">Please fill in your email so we can send you a newly
-        generated password. You can use it within the next half hour to log in and choose a new password
-        of your own.</string>
+        generated password. You can use it within the next half hour to log in and choose a new password.</string>
     <string name="send">Send</string>
     <string name="plus">plus</string>
     <string name="weight_chart">Weight chart</string>
@@ -148,4 +147,6 @@
     <string name="login_not_registered">No account yet?</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="register_already_registered">Already have an account?</string>
+    <string name="error_email_not_found">Email not found</string>
+    <string name="error_general">Something went wrong. Try again later.</string>
 </resources>

@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/background_gradient"
+    android:orientation="vertical"
     tools:context=".LoginActivity">
 
     <LinearLayout
@@ -31,10 +31,10 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/assistant_bold"/>
 
             <EditText
-                android:id="@+id/user_email"
+                android:id="@+id/user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -42,30 +42,40 @@
                 android:backgroundTint="@color/white"
                 android:hint="@string/login_username_email"
                 android:inputType="text"
-                android:paddingVertical="20dp"
+                android:paddingVertical="16dp"
                 android:textColor="@color/white"
-                android:textColorHint="@color/whiteTransparent"/>
+                android:textColorHint="@color/whiteTransparent" />
+
+            <TextView
+                android:id="@+id/user_email_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:text="@string/error_field_required"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:visibility="invisible" />
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:autofillHints=""
                 android:backgroundTint="@color/white"
                 android:hint="@string/login_password"
                 android:inputType="textPassword"
-                android:paddingVertical="20dp"
+                android:paddingVertical="16dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/whiteTransparent" />
 
             <TextView
-                android:id="@+id/login_result"
+                android:id="@+id/password_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:textColor="@color/colorSignal"
+                android:textColor="@color/red"
                 android:textSize="16sp"
                 android:visibility="invisible" />
 
@@ -75,11 +85,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/button_white_background"
-                android:elevation="12dp"
-                android:textAllCaps="true"
-                android:textStyle="bold"
                 android:text="@string/login_login"
-                android:textColor="@color/colorPrimary" />
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/assistant_bold"/>
 
             <TextView
                 android:id="@+id/forgot_password"
@@ -118,7 +127,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/assistant_bold" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

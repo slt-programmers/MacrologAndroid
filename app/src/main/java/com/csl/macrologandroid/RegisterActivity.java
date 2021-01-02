@@ -2,12 +2,12 @@ package com.csl.macrologandroid;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.csl.macrologandroid.dtos.AuthenticationResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.AuthenticationService;
+import com.csl.macrologandroid.util.ResetErrorTextWatcher;
+
 import java.util.Objects;
 import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;
@@ -22,10 +24,12 @@ import retrofit2.HttpException;
 public class RegisterActivity extends AppCompatActivity {
 
     // UI references.
-    private EditText mNewUsernameView;
-    private EditText mNewEmailView;
-    private EditText mNewPasswordView;
-    private TextView mRegisterResultView;
+    private EditText newUserInput;
+    private EditText newEmailInput;
+    private EditText newPasswordInput;
+    private TextView userError;
+    private TextView emailError;
+    private TextView passwordError;
 
     private AuthenticationService authService;
 
@@ -50,22 +54,22 @@ public class RegisterActivity extends AppCompatActivity {
             actionbar.hide();
         }
 
-        mNewUsernameView = findViewById(R.id.register_username);
-        mNewEmailView = findViewById(R.id.register_email);
-        mNewPasswordView = findViewById(R.id.register_password);
+        newUserInput = findViewById(R.id.register_username);
+        newEmailInput = findViewById(R.id.register_email);
+        newPasswordInput = findViewById(R.id.register_password);
+        userError = findViewById(R.id.user_error);
+        emailError = findViewById(R.id.email_error);
+        passwordError = findViewById(R.id.password_error);
 
-        // For hiding password with dots
-        Objects.requireNonNull(mNewPasswordView).setTypeface(Typeface.DEFAULT);
-        mNewPasswordView.setTransformationMethod(new PasswordTransformationMethod());
+        newUserInput.addTextChangedListener(new ResetErrorTextWatcher(newUserInput, userError));
+        newEmailInput.addTextChangedListener(new ResetErrorTextWatcher(newEmailInput, emailError));
+        newPasswordInput.addTextChangedListener(new ResetErrorTextWatcher(newPasswordInput, passwordError));
 
-        mRegisterResultView = findViewById(R.id.register_result);
         Button mRegisterButton = findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(v -> attemptRegister());
 
         TextView loginText = findViewById(R.id.login_text);
-        loginText.setOnClickListener(v -> {
-            toLogin();
-        });
+        loginText.setOnClickListener(v -> toLogin());
 
         authService = new AuthenticationService(getToken());
     }
@@ -106,33 +110,32 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
-        resetErrors();
-        mNewUsernameView.setError(null);
-        mNewEmailView.setError(null);
-        mNewPasswordView.setError(null);
-
-        String username = Objects.requireNonNull(mNewUsernameView).getText().toString();
-        String email = Objects.requireNonNull(mNewEmailView).getText().toString();
-        String password = Objects.requireNonNull(mNewPasswordView).getText().toString();
+        String username = Objects.requireNonNull(newUserInput).getText().toString();
+        String email = Objects.requireNonNull(newEmailInput).getText().toString();
+        String password = Objects.requireNonNull(newPasswordInput).getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         if (isUsernameInvalid(username)) {
-            mNewUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mNewUsernameView;
+            newUserInput.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            userError.setVisibility(View.VISIBLE);
+            focusView = newUserInput;
             cancel = true;
         }
 
         if (!isEmailValid(email)) {
-            mNewEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mNewEmailView;
+            newEmailInput.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            emailError.setVisibility(View.VISIBLE);
+            focusView = newEmailInput;
             cancel = true;
         }
 
         if (isPasswordInvalid(password)) {
-            mNewPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mNewPasswordView;
+            newPasswordInput.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            passwordError.setText(R.string.error_password_invalid);
+            passwordError.setVisibility(View.VISIBLE);
+            focusView = newPasswordInput;
             cancel = true;
         }
 
@@ -141,10 +144,6 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             register(username, email, password);
         }
-    }
-
-    private void resetErrors() {
-        mRegisterResultView.setVisibility(View.INVISIBLE);
     }
 
     private boolean isUsernameInvalid(String username) {
@@ -174,15 +173,13 @@ public class RegisterActivity extends AppCompatActivity {
                             startActivityForResult(intent, INTAKE_SUCCESSFUL);
                         },
                         err -> {
-
                             if (err instanceof HttpException &&
                                     ((HttpException) err).response().errorBody() != null) {
-                                mRegisterResultView.setText(Objects.requireNonNull(((HttpException) err).response().errorBody()).string());
-                                mRegisterResultView.setVisibility(View.VISIBLE);
+                                passwordError.setText(Objects.requireNonNull(((HttpException) err).response().errorBody()).string());
                             } else {
-                                mRegisterResultView.setText(R.string.general_error);
-                                mRegisterResultView.setVisibility(View.VISIBLE);
+                                passwordError.setText(R.string.general_error);
                             }
+                            passwordError.setVisibility(View.VISIBLE);
                         });
     }
 
