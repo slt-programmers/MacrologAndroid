@@ -1,21 +1,26 @@
 package com.csl.macrologandroid;
 
-import com.google.android.material.textfield.TextInputEditText;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.csl.macrologandroid.services.AuthenticationService;
+import com.csl.macrologandroid.util.ResetErrorTextWatcher;
 
 import io.reactivex.disposables.Disposable;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
-    private TextInputEditText emailEditText;
+    private EditText emailInput;
+    private TextView emailError;
     private Button sendButton;
     private Disposable disposable;
 
@@ -27,11 +32,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> finish());
 
-        emailEditText = findViewById(R.id.email_edittext);
-        emailEditText.addTextChangedListener(textWatcher);
+        emailInput = findViewById(R.id.email_edittext);
+        emailError = findViewById(R.id.email_error);
+
+        emailInput.addTextChangedListener(textWatcher);
+        emailInput.addTextChangedListener(new ResetErrorTextWatcher(emailInput, emailError));
 
         sendButton = findViewById(R.id.send_button);
         sendButton.setOnClickListener(v -> attemptSend());
+        sendButton.setEnabled(false);
     }
 
     @Override
@@ -43,17 +52,26 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void attemptSend() {
-        Editable editable = emailEditText.getText();
+        Editable editable = emailInput.getText();
         if (editable != null) {
-            String email = emailEditText.getText().toString();
+            String email = editable.toString();
             if (!email.contains("@")) {
-                emailEditText.setError(getResources().getString(R.string.error_invalid_email));
+                emailError.setVisibility(View.VISIBLE);
+                emailInput.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             } else {
                 AuthenticationService authService = new AuthenticationService(getToken());
                 disposable = authService.resetPassword(email)
                         .subscribe(
                                 res -> finish(),
-                                err -> emailEditText.setError(err.getMessage())
+                                err -> {
+                                    if (err.getMessage().contains("404")) {
+                                        emailError.setText(R.string.error_email_not_found);
+                                    } else {
+                                        emailError.setText(R.string.error_general);
+                                    }
+                                    emailError.setVisibility(View.VISIBLE);
+                                    emailInput.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                                }
                         );
             }
         }

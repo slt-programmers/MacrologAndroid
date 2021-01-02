@@ -78,6 +78,13 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (!intake) {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_details);
