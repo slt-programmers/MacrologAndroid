@@ -57,6 +57,10 @@ public class LogEntryService {
         return apiService.postLogEntry(entries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable<List<LogEntryResponse>> postEntries(List<LogEntryRequest> entries, Date date) {
+        return apiService.postEntries(entries, DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
     public Observable<ResponseBody> deleteLogEntry(long id) {
         return apiService.deleteLogEntry((int) id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
@@ -68,6 +72,9 @@ public class LogEntryService {
 
         @POST("logs")
         Observable<List<LogEntryResponse>> postLogEntry(@Body List<LogEntryRequest> entries);
+
+        @POST("logs/day/{date}")
+        Observable<List<LogEntryResponse>> postEntries(@Body List<LogEntryRequest> entries, @Path("date") String date);
 
         @DELETE("logs/{id}")
         Observable<ResponseBody> deleteLogEntry(@Path("id") int id);

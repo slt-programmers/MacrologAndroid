@@ -1,6 +1,5 @@
 package com.csl.macrologandroid;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -78,15 +77,12 @@ public class EditLogEntryActivity extends AppCompatActivity {
     private Button addButton;
     private Button addNewFoodButton;
 
-    private LinearLayout logentryLayout;
+    private LinearLayout logEntryContraintLayout;
     private List<LogEntryResponse> logEntries;
-    private List<LogEntryResponse> copyEntries;
-    private List<LogEntryResponse> newEntries;
     private Meal meal;
     private Button saveButton;
     private Disposable postDisposable;
     private Disposable foodDisposable;
-    private Disposable deleteDisposable;
     private Disposable dishDisposable;
 
     @Override
@@ -106,9 +102,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
         }
         if (postDisposable != null) {
             postDisposable.dispose();
-        }
-        if (deleteDisposable != null) {
-            deleteDisposable.dispose();
         }
         if (dishDisposable != null) {
             dishDisposable.dispose();
@@ -142,7 +135,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
             } else {
                 meal = logEntries.get(0).getMeal();
             }
-            copyEntries = new ArrayList<>(logEntries);
         }
 
         setupMealSpinner();
@@ -154,8 +146,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
         editGramsOrAmountLayout = findViewById(R.id.edit_grams_amount_layout);
         editGramsOrAmountLayout.setVisibility(View.GONE);
 
-        logentryLayout = findViewById(R.id.logentry_layout);
-        fillLogEntryLayout();
+        logEntryContraintLayout = findViewById(R.id.logentry_layout);
 
         Button backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(v -> {
@@ -189,6 +180,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
             addFoodIntent.putExtra("FOOD_NAME", foodTextView.getText().toString());
             startActivityForResult(addFoodIntent, ADD_FOOD_ID);
         });
+
+        fillLogEntryLayout();
     }
 
     @Override
@@ -243,7 +236,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void fillLogEntryLayout() {
         for (LogEntryResponse entry : logEntries) {
-            addLogEntryToLayout(entry);
+            addEntryToLayout(entry);
         }
     }
 
@@ -259,14 +252,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
             editGramsOrAmountLayout.setVisibility(View.GONE);
             addButton.setEnabled(false);
         }
-    }
-
-    private void appendNewEntry(LogEntryResponse entry) {
-        logEntries.add(entry);
-        copyEntries.add(entry);
-
-        addLogEntryToLayout(entry);
-        saveButton.setVisibility(View.VISIBLE);
     }
 
     private void addDishEntry(String dishName) {
@@ -291,23 +276,17 @@ public class EditLogEntryActivity extends AppCompatActivity {
                         selectedMeal.toString());
                 entryList.add(entry);
             }
-            postDisposable = logEntryService.postLogEntry(entryList)
-                    .subscribe(res -> {
-                                newEntries = res;
-                                for (LogEntryResponse newEntry : newEntries) {
-                                    appendNewEntry(newEntry);
-                                }
-                            },
-                            err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
+
+            // TODO add to layout and entrylist
         }
     }
 
     private void addLogEntry() {
-        Long portionId = null;
+        PortionResponse selectedPortion = null;
         for (PortionResponse portion : selectedFood.getPortions()) {
             String portionDescription = (String) editPortionOrUnitSpinner.getSelectedItem();
             if (portionDescription.equals(portion.getDescription())) {
-                portionId = portion.getId();
+                selectedPortion = portion;
                 break;
             }
         }
@@ -315,33 +294,30 @@ public class EditLogEntryActivity extends AppCompatActivity {
         double multiplier = 1.0;
         if (editGramsOrAmount.getText() != null) {
             multiplier = Double.parseDouble(editGramsOrAmount.getText().toString());
-            if (portionId == null) {
+            if (selectedPortion == null) {
                 multiplier = multiplier / 100;
             }
         }
-        Long foodId = selectedFood.getId();
-        LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
-                multiplier, DateParser.format(selectedDate),
-                selectedMeal.toString());
-        List<LogEntryRequest> entryList = new ArrayList<>();
-        entryList.add(entry);
-        postDisposable = logEntryService.postLogEntry(entryList)
-                .subscribe(res -> {
-                            newEntries = res;
-                            appendNewEntry(newEntries.get(0));
-                        },
-                        err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
+
+        LogEntryResponse entry = new LogEntryResponse();
+        entry.setFood(selectedFood);
+        entry.setPortion(selectedPortion);
+        entry.setMultiplier(multiplier);
+        entry.setDay(selectedDate);
+        entry.setMeal(selectedMeal);
+
+        logEntries.add(entry);
+        addEntryToLayout(entry);
     }
 
-    private void addLogEntryToLayout(LogEntryResponse entry) {
-        @SuppressLint("InflateParams")
+    private void addEntryToLayout(LogEntryResponse entry) {
         ConstraintLayout logEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
 
         TextView foodNameTextView = logEntry.findViewById(R.id.food_name);
         foodNameTextView.setText(entry.getFood().getName());
 
         ImageView trashImageView = logEntry.findViewById(R.id.trash_icon);
-        trashImageView.setOnClickListener(v -> toggleToRemoveEntry(entry));
+        trashImageView.setOnClickListener(v -> removeEntry(entry));
 
         TextInputEditText foodAmount = logEntry.findViewById(R.id.food_amount);
         foodAmount.setId(R.id.food_amount);
@@ -357,7 +333,8 @@ public class EditLogEntryActivity extends AppCompatActivity {
         Spinner foodPortion = logEntry.findViewById(R.id.portion_spinner);
         setupPortionSpinner(foodPortion, entry, foodAmount);
 
-        logentryLayout.addView(logEntry);
+        logEntryContraintLayout.addView(logEntry);
+        saveButton.setVisibility(View.VISIBLE);
     }
 
     private void setNewlyAddedFood(String foodName) {
@@ -376,64 +353,38 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 }, err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
     }
 
-    private void toggleToRemoveEntry(LogEntryResponse entry) {
+    private void removeEntry(LogEntryResponse entry) {
         int index = logEntries.indexOf(entry);
-
-        ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
-        TextView foodName = (TextView) logEntryLayout.getChildAt(0);
-        ImageView trashcan = (ImageView) logEntryLayout.getChildAt(1);
-        View foodSpinner = logEntryLayout.getChildAt(2);
-        View foodAmount = logEntryLayout.getChildAt(4);
-
-        if (!copyEntries.contains(entry)) {
-            // item was removed, so add it again
-            if (index > copyEntries.size()) {
-                copyEntries.add(entry);
-            } else {
-                copyEntries.add(index, entry);
-            }
-            foodName.setAlpha(1f);
-            trashcan.setImageResource(R.drawable.trashcan);
-            foodSpinner.setVisibility(View.VISIBLE);
-            foodAmount.setVisibility(View.VISIBLE);
-        } else {
-            copyEntries.remove(entry);
-            foodName.setAlpha(0.4f);
-            trashcan.setImageResource(R.drawable.replay);
-            foodSpinner.setVisibility(View.GONE);
-            foodAmount.setVisibility(View.GONE);
-        }
+        ConstraintLayout logEntryLayout = (ConstraintLayout) logEntryContraintLayout.getChildAt(index);
+        logEntryContraintLayout.removeView((logEntryLayout));
+        logEntries.remove(entry);
     }
 
     private void saveLogEntries() {
         List<LogEntryRequest> entries = new ArrayList<>();
-
         for (LogEntryResponse entry : logEntries) {
-            if (!copyEntries.contains(entry)) {
-                deleteEntry(entry);
-            } else {
-                LogEntryRequest request = makeLogEntryRequest(entry);
-                entries.add(request);
-            }
+            LogEntryRequest request = makeLogEntryRequest(entry);
+            entries.add(request);
         }
 
-        if (!entries.isEmpty()) {
-            postDisposable = logEntryService.postLogEntry(entries)
-                    .subscribe(res -> {
-                        Intent resultIntent = new Intent();
-                        setResult(Activity.RESULT_OK, resultIntent);
-                        finish();
-                    });
-        } else {
-            Intent resultIntent = new Intent();
-            setResult(Activity.RESULT_OK, resultIntent);
-            finish();
-        }
+        postDisposable = logEntryService.postEntries(entries, selectedDate)
+                .subscribe(
+                        res -> {
+                            Intent resultIntent = new Intent();
+                            setResult(Activity.RESULT_OK, resultIntent);
+                            finish();
+                        },
+                        err -> {
+                            System.out.println(err.getMessage());
+                            saveButton.setEnabled(true);
+                            // TODO handle error
+                        });
+
     }
 
     private LogEntryRequest makeLogEntryRequest(LogEntryResponse entry) {
         int index = logEntries.indexOf(entry);
-        ConstraintLayout logEntryLayout = (ConstraintLayout) logentryLayout.getChildAt(index);
+        ConstraintLayout logEntryLayout = (ConstraintLayout) logEntryContraintLayout.getChildAt(index);
         Spinner portionSpinner = (Spinner) logEntryLayout.getChildAt(2);
         String item = (String) portionSpinner.getSelectedItem();
 
@@ -466,13 +417,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
                 format.format(entry.getDay()),
                 entry.getMeal().toString()
         );
-    }
-
-    private void deleteEntry(LogEntryResponse entry) {
-        deleteDisposable = logEntryService.deleteLogEntry(entry.getId())
-                .subscribe(res -> {
-                        },
-                        err -> Log.e(this.getLocalClassName(), Objects.requireNonNull(err.getMessage())));
     }
 
     private boolean isDish(String selectedName) {

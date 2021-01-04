@@ -160,7 +160,6 @@ public class ActivityActivity extends AppCompatActivity {
     private void removeActivity(ActivityResponse act) {
         int index = activities.indexOf(act);
         ConstraintLayout activityConstraintLayout = (ConstraintLayout) activityLayout.getChildAt(index);
-
         activityLayout.removeView((activityConstraintLayout));
         activities.remove(act);
     }

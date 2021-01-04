@@ -6,8 +6,8 @@ import java.util.Date;
 public class ActivityResponse implements Serializable {
 
     private Long id;
-    private Date day;
     private String name;
+    private Date day;
     private int calories;
     private String syncedWith;
     private Long syncedId;
