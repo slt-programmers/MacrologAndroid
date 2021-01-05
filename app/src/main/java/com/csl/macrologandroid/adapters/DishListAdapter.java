@@ -65,10 +65,10 @@ public class DishListAdapter extends RecyclerView.Adapter<DishListAdapter.DishVi
             TextView amount;
             TextView portionName;
 
-            if (ingredient.getPortionId() != null) {
+            if (ingredient.getPortion() != null ) {
                 PortionResponse usedPortion = null;
                 for (PortionResponse portion : ingredient.getFood().getPortions()) {
-                    if (portion.getId().equals(ingredient.getPortionId())) {
+                    if (portion.getId().equals(ingredient.getPortion().getId())) {
                         usedPortion = portion;
                         break;
                     }

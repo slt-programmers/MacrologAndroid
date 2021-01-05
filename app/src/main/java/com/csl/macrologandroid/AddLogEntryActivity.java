@@ -226,7 +226,11 @@ public class AddLogEntryActivity extends AppCompatActivity {
             List<LogEntryRequest> entryList = new ArrayList<>();
 
             for (IngredientResponse ingredient : selectedDish.getIngredients()) {
-                Long portionId = ingredient.getPortionId();
+                PortionResponse portion = ingredient.getPortion();
+                Long portionId = null;
+                if (portion != null) {
+                    portionId = portion.getId();
+                }
                 double multiplier = ingredient.getMultiplier();
 
                 Long foodId = ingredient.getFood().getId();

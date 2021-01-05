@@ -3,6 +3,7 @@ package com.csl.macrologandroid.services;
 import com.csl.macrologandroid.BuildConfig;
 import com.csl.macrologandroid.dtos.LogEntryRequest;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
+import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.util.DateParser;
 
 import java.util.Date;
@@ -22,6 +23,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class LogEntryService {
 
@@ -57,8 +59,8 @@ public class LogEntryService {
         return apiService.postLogEntry(entries).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<LogEntryResponse>> postEntries(List<LogEntryRequest> entries, Date date) {
-        return apiService.postEntries(entries, DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    public Observable<List<LogEntryResponse>> postEntries(List<LogEntryRequest> entries, Date date, Meal meal) {
+        return apiService.postEntries(entries, DateParser.format(date), meal).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<ResponseBody> deleteLogEntry(long id) {
@@ -74,7 +76,9 @@ public class LogEntryService {
         Observable<List<LogEntryResponse>> postLogEntry(@Body List<LogEntryRequest> entries);
 
         @POST("logs/day/{date}")
-        Observable<List<LogEntryResponse>> postEntries(@Body List<LogEntryRequest> entries, @Path("date") String date);
+        Observable<List<LogEntryResponse>> postEntries(@Body List<LogEntryRequest> entries,
+                                                       @Path("date") String date,
+                                                       @Query("meal") Meal meal);
 
         @DELETE("logs/{id}")
         Observable<ResponseBody> deleteLogEntry(@Path("id") int id);

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.csl.macrologandroid"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 19
         versionName "1.1.2"
@@ -52,7 +52,7 @@ android {
         development {
             applicationIdSuffix ".dev"
             debuggable true
-            buildConfigField 'String', 'SERVER_URL', '"http://192.168.178.23:8090/"'
+            buildConfigField 'String', 'SERVER_URL', '"http://192.168.178.67:8090/"'
         }
         acceptance {
             applicationIdSuffix ".acc"

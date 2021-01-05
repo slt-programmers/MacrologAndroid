@@ -87,12 +87,11 @@ public class AddFoodActivity extends AppCompatActivity {
             for (PortionResponse portion : foodResponse.getPortions()) {
                 addPortion(portionsLayout, portion);
             }
-            saveButton.setEnabled(false);
         } else {
             editFoodName.setText(foodName);
             editFoodName.requestFocus();
-            saveButton.setEnabled(false);
         }
+        saveButton.setEnabled(false);
     }
 
     private void isSaveButtonEnabled() {

@@ -1,5 +1,6 @@
 package com.csl.macrologandroid;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,7 +36,6 @@ import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.services.DishService;
 import com.csl.macrologandroid.services.FoodService;
 import com.csl.macrologandroid.services.LogEntryService;
-import com.csl.macrologandroid.util.DateParser;
 import com.csl.macrologandroid.util.KeyboardManager;
 import com.csl.macrologandroid.util.SpinnerSetupUtil;
 import com.google.android.material.textfield.TextInputEditText;
@@ -231,7 +231,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
             autoCompleteList.add(res.getName() + " (Dish)");
         }
         Collections.sort(autoCompleteList);
-
     }
 
     private void fillLogEntryLayout() {
@@ -256,28 +255,24 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     private void addDishEntry(String dishName) {
         String dishFromInput = dishName.substring(0, dishName.length() - 7);
-        DishResponse selectedDish = null;
-        for (DishResponse dish : allDishes) {
-            if (dish.getName().equalsIgnoreCase(dishFromInput)) {
-                selectedDish = dish;
-                break;
-            }
-        }
+        DishResponse selectedDish = allDishes
+                .stream()
+                .filter(d -> d.getName().equalsIgnoreCase(dishFromInput))
+                .findFirst()
+                .orElse(null);
 
         if (selectedDish != null) {
-            List<LogEntryRequest> entryList = new ArrayList<>();
             for (IngredientResponse ingredient : selectedDish.getIngredients()) {
-                Long portionId = ingredient.getPortionId();
-                double multiplier = ingredient.getMultiplier();
+                LogEntryResponse entry = new LogEntryResponse();
+                entry.setFood(ingredient.getFood());
+                entry.setPortion(ingredient.getPortion());
+                entry.setMultiplier(ingredient.getMultiplier());
+                entry.setDay(selectedDate);
+                entry.setMeal(selectedMeal);
 
-                Long foodId = ingredient.getFood().getId();
-                LogEntryRequest entry = new LogEntryRequest(null, foodId, portionId,
-                        multiplier, DateParser.format(selectedDate),
-                        selectedMeal.toString());
-                entryList.add(entry);
+                logEntries.add(entry);
+                addEntryToLayout(entry);
             }
-
-            // TODO add to layout and entrylist
         }
     }
 
@@ -311,7 +306,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void addEntryToLayout(LogEntryResponse entry) {
-        ConstraintLayout logEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
+        @SuppressLint("InflateParams") ConstraintLayout logEntry = (ConstraintLayout) getLayoutInflater().inflate(R.layout.layout_edit_log_entry, null);
 
         TextView foodNameTextView = logEntry.findViewById(R.id.food_name);
         foodNameTextView.setText(entry.getFood().getName());
@@ -367,7 +362,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
             entries.add(request);
         }
 
-        postDisposable = logEntryService.postEntries(entries, selectedDate)
+        postDisposable = logEntryService.postEntries(entries, selectedDate, selectedMeal)
                 .subscribe(
                         res -> {
                             Intent resultIntent = new Intent();
@@ -377,7 +372,6 @@ public class EditLogEntryActivity extends AppCompatActivity {
                         err -> {
                             System.out.println(err.getMessage());
                             saveButton.setEnabled(true);
-                            // TODO handle error
                         });
 
     }

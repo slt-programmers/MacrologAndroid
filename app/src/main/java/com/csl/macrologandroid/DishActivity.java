@@ -202,8 +202,8 @@ public class DishActivity extends AppCompatActivity {
         ArrayAdapter<String> portionSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, portionDescList);
         portionSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         portionSpinner.setAdapter(portionSpinnerAdapter);
-        if (ingredient.getPortionId() != null) {
-            PortionResponse portion = ListUtil.getPortionFromListById(ingredient.getPortionId(), allPortions);
+        if (ingredient.getPortion() != null) {
+            PortionResponse portion = ListUtil.getPortionFromListById(ingredient.getPortion().getId(), allPortions);
             if (portion != null) {
                 int index = portionDescList.indexOf(portion.getDescription() + " (" + portion.getGrams() + " gr)");
                 portionSpinner.setSelection(index);
@@ -279,20 +279,17 @@ public class DishActivity extends AppCompatActivity {
         TextInputEditText amount = inner.findViewById(R.id.food_amount);
 
         FoodResponse food = ingredient.getFood();
-        Long portionId = null;
+        PortionResponse selectedPortion = null;
         String selectedPortionDesc = portionSpinner.getSelectedItem().toString();
         if (!selectedPortionDesc.equals("gram")) {
-            PortionResponse selectedPortion = ListUtil.getPortionFromListByName(selectedPortionDesc, food);
-            if (selectedPortion != null) {
-                portionId = selectedPortion.getId();
-            }
+            selectedPortion = ListUtil.getPortionFromListByName(selectedPortionDesc, food);
         }
         double multiplier = Double.parseDouble(Objects.requireNonNull(amount.getText()).toString());
-        if (portionId == null) {
+        if (selectedPortion == null) {
             multiplier = multiplier / 100;
         }
 
-        IngredientResponse newIngredient = new IngredientResponse(multiplier, food, portionId);
+        IngredientResponse newIngredient = new IngredientResponse(multiplier, food, selectedPortion);
         newIngredients.add(newIngredient);
     }
 

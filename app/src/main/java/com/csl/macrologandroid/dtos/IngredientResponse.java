@@ -6,12 +6,12 @@ public class IngredientResponse implements Serializable {
 
     private Double multiplier;
     private FoodResponse food;
-    private Long portionId;
+    private PortionResponse portion;
 
-    public IngredientResponse(Double multiplier, FoodResponse food, Long portionId) {
+    public IngredientResponse(Double multiplier, FoodResponse food,  PortionResponse portion) {
         this.multiplier = multiplier;
         this.food = food;
-        this.portionId = portionId;
+        this.portion = portion;
     }
 
     public Double getMultiplier() {
@@ -30,11 +30,11 @@ public class IngredientResponse implements Serializable {
         this.food = food;
     }
 
-    public Long getPortionId() {
-        return portionId;
+    public PortionResponse getPortion() {
+        return portion;
     }
 
-    public void setPortionId(Long portionId) {
-        this.portionId = portionId;
+    public void setPortion(PortionResponse portion) {
+        this.portion = portion;
     }
 }
