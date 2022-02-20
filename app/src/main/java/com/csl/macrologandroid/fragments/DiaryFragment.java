@@ -17,9 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
-import com.csl.macrologandroid.AddLogEntryActivity;
 import com.csl.macrologandroid.ActivityActivity;
-import com.csl.macrologandroid.EditLogEntryActivity;
+import com.csl.macrologandroid.EditEntryActivity;
 import com.csl.macrologandroid.R;
 import com.csl.macrologandroid.adapters.DiaryPager;
 import com.csl.macrologandroid.adapters.DiaryPagerAdaper;
@@ -34,7 +33,6 @@ import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.services.ActivityService;
 import com.csl.macrologandroid.services.UserService;
 import com.csl.macrologandroid.util.DateParser;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -129,13 +127,6 @@ public class DiaryFragment extends Fragment {
             setGoalIntake(userSettings);
         }
 
-        FloatingActionButton button = view.findViewById(R.id.floating_button);
-        button.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), AddLogEntryActivity.class);
-            intent.putExtra("DATE", selectedDate);
-            startActivityForResult(intent, ADD_LOG_ENTRY_ID);
-        });
-
         return view;
     }
 
@@ -161,7 +152,7 @@ public class DiaryFragment extends Fragment {
     }
 
     private void startEditMeal(Meal meal) {
-        Intent intent = new Intent(getActivity(), EditLogEntryActivity.class);
+        Intent intent = new Intent(getActivity(), EditEntryActivity.class);
         List<LogEntryResponse> entries = logEntryCache.getFromCache(selectedDate);
         List<LogEntryResponse> filteredEntries = new ArrayList<>();
         for (LogEntryResponse entry : entries) {

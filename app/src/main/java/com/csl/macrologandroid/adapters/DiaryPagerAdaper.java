@@ -23,7 +23,7 @@ import com.csl.macrologandroid.dtos.ActivityResponse;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.services.ActivityService;
-import com.csl.macrologandroid.services.LogEntryService;
+import com.csl.macrologandroid.services.EntryService;
 import com.csl.macrologandroid.util.DateParser;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +42,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class DiaryPagerAdaper extends PagerAdapter {
 
     private final Context context;
-    private final LogEntryService logService;
+    private final EntryService logService;
     private final ActivityService activityService;
     private Date selectedDate;
     private int currentPosition = -1;
@@ -80,7 +80,7 @@ public class DiaryPagerAdaper extends PagerAdapter {
 
     public DiaryPagerAdaper(Context context) {
         this.context = context;
-        this.logService = new LogEntryService(context.getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", ""));
+        this.logService = new EntryService(context.getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", ""));
         this.activityService = new ActivityService(context.getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", ""));
     }
 

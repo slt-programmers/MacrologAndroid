@@ -28,14 +28,14 @@ import com.csl.macrologandroid.adapters.AutocompleteAdapter;
 import com.csl.macrologandroid.dtos.DishResponse;
 import com.csl.macrologandroid.dtos.FoodResponse;
 import com.csl.macrologandroid.dtos.IngredientResponse;
-import com.csl.macrologandroid.dtos.LogEntryRequest;
+import com.csl.macrologandroid.dtos.EntryDto;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
 import com.csl.macrologandroid.dtos.PortionResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.services.DishService;
 import com.csl.macrologandroid.services.FoodService;
-import com.csl.macrologandroid.services.LogEntryService;
+import com.csl.macrologandroid.services.EntryService;
 import com.csl.macrologandroid.util.KeyboardManager;
 import com.csl.macrologandroid.util.SpinnerSetupUtil;
 import com.google.android.material.textfield.TextInputEditText;
@@ -51,12 +51,12 @@ import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
-public class EditLogEntryActivity extends AppCompatActivity {
+public class EditEntryActivity extends AppCompatActivity {
 
     private static final int ADD_FOOD_ID = 567;
 
     private Date selectedDate;
-    private LogEntryService logEntryService;
+    private EntryService entryService;
     private FoodService foodService;
     private DishService dishService;
 
@@ -115,14 +115,14 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
         selectedDate = (Date) getIntent().getSerializableExtra("DATE");
 
-        logEntryService = new LogEntryService(getToken());
+        entryService = new EntryService(getToken());
         foodService = new FoodService(getToken());
         dishService = new DishService(getToken());
 
         getFoodAndDishes();
 
         logEntries = new ArrayList<>();
-        List entries = (List) getIntent().getSerializableExtra("LOGENTRIES");
+        List<EntryDto> entries = (List) getIntent().getSerializableExtra("LOGENTRIES");
         if (entries != null) {
             for (Object entry : entries) {
                 if (entry instanceof LogEntryResponse) {
@@ -194,7 +194,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            Intent intent = new Intent(EditLogEntryActivity.this, SplashscreenActivity.class);
+            Intent intent = new Intent(EditEntryActivity.this, SplashscreenActivity.class);
             intent.putExtra("SESSION_EXPIRED", true);
             startActivity(intent);
         }
@@ -356,13 +356,13 @@ public class EditLogEntryActivity extends AppCompatActivity {
     }
 
     private void saveLogEntries() {
-        List<LogEntryRequest> entries = new ArrayList<>();
+        List<EntryDto> entries = new ArrayList<>();
         for (LogEntryResponse entry : logEntries) {
-            LogEntryRequest request = makeLogEntryRequest(entry);
+            EntryDto request = makeLogEntryRequest(entry);
             entries.add(request);
         }
 
-        postDisposable = logEntryService.postEntries(entries, selectedDate, selectedMeal)
+        postDisposable = entryService.postEntries(entries, selectedDate)
                 .subscribe(
                         res -> {
                             Intent resultIntent = new Intent();
@@ -376,7 +376,7 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
     }
 
-    private LogEntryRequest makeLogEntryRequest(LogEntryResponse entry) {
+    private EntryDto makeLogEntryRequest(LogEntryResponse entry) {
         int index = logEntries.indexOf(entry);
         ConstraintLayout logEntryLayout = (ConstraintLayout) logEntryContraintLayout.getChildAt(index);
         Spinner portionSpinner = (Spinner) logEntryLayout.getChildAt(2);
@@ -388,12 +388,12 @@ public class EditLogEntryActivity extends AppCompatActivity {
             multiplier = Double.parseDouble(foodAmount.getText().toString());
         }
 
-        Long portionId = null;
+        PortionResponse portion = null;
         if (!item.equals("gram")) {
-            for (PortionResponse portion : entry.getFood().getPortions()) {
+            for (PortionResponse prt : entry.getFood().getPortions()) {
                 String trimmedItem = item.substring(0, item.indexOf('(')).trim();
-                if (trimmedItem.equals(portion.getDescription())) {
-                    portionId = portion.getId();
+                if (trimmedItem.equals(prt.getDescription())) {
+                    portion = prt;
                     break;
                 }
             }
@@ -403,10 +403,10 @@ public class EditLogEntryActivity extends AppCompatActivity {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-        return new LogEntryRequest(
+        return new EntryDto(
                 (long) entry.getId(),
-                entry.getFood().getId(),
-                portionId,
+                entry.getFood(),
+                portion,
                 multiplier,
                 format.format(entry.getDay()),
                 entry.getMeal().toString()

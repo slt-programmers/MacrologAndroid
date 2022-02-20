@@ -83,13 +83,10 @@
             android:name=".ChangePasswordActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".EditLogEntryActivity"
+            android:name=".EditEntryActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ActivityActivity"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".AddLogEntryActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AboutActivity"

@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class LogEntryRequest implements Serializable {
+public class EntryDto implements Serializable {
 
     @Expose
     @SerializedName("id")
     private final Long id;
 
     @Expose
-    @SerializedName("foodId")
-    private final Long foodId;
+    @SerializedName("food")
+    private final FoodResponse food;
 
     @Expose
-    @SerializedName("portionId")
-    private final Long portionId;
+    @SerializedName("portion")
+    private final PortionResponse portion;
 
     @Expose
     @SerializedName("multiplier")
@@ -31,10 +31,10 @@ public class LogEntryRequest implements Serializable {
     @SerializedName("meal")
     private final String meal;
 
-    public LogEntryRequest(Long id, Long foodId, Long portionId, double multiplier, String day, String meal) {
+    public EntryDto(Long id, FoodResponse food, PortionResponse portion, double multiplier, String day, String meal) {
         this.id = id;
-        this.foodId = foodId;
-        this.portionId = portionId;
+        this.food = food;
+        this.portion = portion;
         this.multiplier = multiplier;
         this.day = day;
         this.meal = meal;
