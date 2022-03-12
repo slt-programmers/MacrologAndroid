@@ -33,7 +33,7 @@ public class DateDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
         @SuppressLint("InflateParams")
@@ -68,7 +68,7 @@ public class DateDialogFragment extends DialogFragment {
         customTitle.setTextSize(20);
         customTitle.setPadding(48, 48, 0 ,0);
         customTitle.setTextColor(getResources().getColor(R.color.colorPrimary, null));
-        customTitle.setTypeface(ResourcesCompat.getFont(Objects.requireNonNull(getContext()), R.font.assistant_light), Typeface.BOLD);
+        customTitle.setTypeface(ResourcesCompat.getFont(requireContext(), R.font.assistant_light), Typeface.BOLD);
 
         builder.setCustomTitle(customTitle)
                 .setView(dialogView)

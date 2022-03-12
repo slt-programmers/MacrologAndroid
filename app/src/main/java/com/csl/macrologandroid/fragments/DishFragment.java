@@ -164,7 +164,7 @@ public class DishFragment extends Fragment {
     };
 
     private String getToken() {
-        return Objects.requireNonNull(this.getContext()).getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+        return this.requireContext().getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 
 

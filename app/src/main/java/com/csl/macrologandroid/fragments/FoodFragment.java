@@ -265,16 +265,16 @@ public class FoodFragment extends Fragment {
 
         switch (sortHeader) {
             case PROTEIN:
-                Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getProtein(), o1.getProtein()));
+                convertedFood.sort((o1, o2) -> Double.compare(o2.getProtein(), o1.getProtein()));
                 break;
             case FAT:
-                Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getFat(), o1.getFat()));
+                convertedFood.sort((o1, o2) -> Double.compare(o2.getFat(), o1.getFat()));
                 break;
             case CARBS:
-                Collections.sort(convertedFood, (o1, o2) -> Double.compare(o2.getCarbs(), o1.getCarbs()));
+                convertedFood.sort((o1, o2) -> Double.compare(o2.getCarbs(), o1.getCarbs()));
                 break;
             default:
-                Collections.sort(convertedFood, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+                convertedFood.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
 
         }
 
@@ -288,7 +288,7 @@ public class FoodFragment extends Fragment {
     private TextView getDecimalNumberTextView(double text) {
         TextView view = new TextView(getContext());
         view.setText(String.format(Locale.ENGLISH, "%.1f", text));
-        Typeface typeface = ResourcesCompat.getFont(Objects.requireNonNull(getContext()), R.font.assistant_light);
+        Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.assistant_light);
         view.setTypeface(typeface);
         setTextViewLayout(view);
         return getCustomizedTextView(view);
@@ -308,7 +308,7 @@ public class FoodFragment extends Fragment {
     }
 
     private String getToken() {
-        return Objects.requireNonNull(this.getContext()).getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+        return this.requireContext().getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 
     private final TextWatcher watcher = new TextWatcher() {

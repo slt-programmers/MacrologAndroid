@@ -5,8 +5,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion = '30.0.3'
+    compileSdk 31
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId "com.csl.macrologandroid"
@@ -27,22 +27,14 @@ android {
         }
     }
 
-    def isRunningOnTravis = System.getenv("CI") == "true"
-    if (isRunningOnTravis) {
-        signingConfigs.release.storeFile = file("../macrologKeyStore")
-        signingConfigs.release.keyAlias = System.getenv("keystore_alias")
-        signingConfigs.release.storePassword = System.getenv("keystore_store_password")
-        signingConfigs.release.keyPassword = System.getenv("keystore_password")
-    } else {
-        def props = new Properties()
-        file("../ignore/keystore.properties").withInputStream {
-            props.load(it)
-        }
-        signingConfigs.release.storeFile = file("../ignore/macrologKeyStore")
-        signingConfigs.release.keyAlias = props.getProperty('keyAlias')
-        signingConfigs.release.storePassword = props.getProperty('storePassword')
-        signingConfigs.release.keyPassword = props.getProperty('keyPassword')
+    def props = new Properties()
+    file("../ignore/keystore.properties").withInputStream {
+        props.load(it)
     }
+    signingConfigs.release.storeFile = file("../ignore/macrologKeyStore")
+    signingConfigs.release.keyAlias = props.getProperty('keyAlias')
+    signingConfigs.release.storePassword = props.getProperty('storePassword')
+    signingConfigs.release.keyPassword = props.getProperty('keyPassword')
 
     buildTypes {
         debug {
@@ -67,25 +59,27 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     packagingOptions {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/notice.txt'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
 }
 
 play {
     promoteTrack.set("beta")
     serviceAccountCredentials.set(file("../secrets.tar.enc"))
-    def isRunningOnTravis = System.getenv("CI") == "true"
-    if (isRunningOnTravis) {
-        serviceAccountCredentials.set(file("../macrolog-service-account-key.json"))
-    } else {
-        serviceAccountCredentials.set(file("../ignore/macrolog-service-account-key.json"))
-    }
+    serviceAccountCredentials.set(file("../ignore/macrolog-service-account-key.json"))
     defaultToAppBundles.set(true)
 }
 

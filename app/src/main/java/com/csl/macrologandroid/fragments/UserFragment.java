@@ -31,8 +31,6 @@ import com.csl.macrologandroid.services.UserService;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 import io.reactivex.disposables.Disposable;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -174,7 +172,7 @@ public class UserFragment extends Fragment {
         Gender gender = userSettings.getGender();
         if (gender != null) {
             String genderStr = gender.toString();
-            genderStr = genderStr.substring(0, 1) + genderStr.substring(1).toLowerCase();
+            genderStr = genderStr.charAt(0) + genderStr.substring(1).toLowerCase();
             userGender.setText(genderStr);
         } else {
             userGender.setText(R.string.gender_unknown);
@@ -229,6 +227,6 @@ public class UserFragment extends Fragment {
     }
 
     private String getToken() {
-        return Objects.requireNonNull(this.getContext()).getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+        return this.requireContext().getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 }
