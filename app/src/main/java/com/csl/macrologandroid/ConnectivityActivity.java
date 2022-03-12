@@ -37,7 +37,7 @@ public class ConnectivityActivity extends AppCompatActivity implements BitmapHan
 
     private long applicationId;
 
-    private String redirectUri = "https://www.macrolog.herokuapp.com/callback";
+    private final String redirectUri = "https://www.macrolog.herokuapp.com/callback";
 
     private UserService userService;
     private LinearLayout notConnectedLayout;
@@ -84,12 +84,10 @@ public class ConnectivityActivity extends AppCompatActivity implements BitmapHan
         });
 
         Button stravaDisconnect = findViewById(R.id.strava_disconnect);
-        stravaDisconnect.setOnClickListener(v -> {
-            disposable = userService.deleteConnectivitySetting("STRAVA").subscribe(
-                    res -> handleGetSetting(),
-                    err -> Log.e(this.getLocalClassName(), err.getMessage())
-            );
-        });
+        stravaDisconnect.setOnClickListener(v -> disposable = userService.deleteConnectivitySetting("STRAVA").subscribe(
+                res -> handleGetSetting(),
+                err -> Log.e(this.getLocalClassName(), err.getMessage())
+        ));
     }
 
     private void handleGetSetting() {
@@ -170,7 +168,7 @@ public class ConnectivityActivity extends AppCompatActivity implements BitmapHan
 
     static class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
 
-        private BitmapHandler bitmapHandler;
+        private final BitmapHandler bitmapHandler;
 
         LoadImageTask(BitmapHandler bitmapHandler) {
             this.bitmapHandler = bitmapHandler;

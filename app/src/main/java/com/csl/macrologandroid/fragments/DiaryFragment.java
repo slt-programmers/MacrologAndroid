@@ -50,7 +50,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class DiaryFragment extends Fragment {
 
-    private static final int ADD_LOG_ENTRY_ID = 345;
     private static final int EDIT_LOG_ENTRY_ID = 456;
     private static final int EDIT_ACTIVITY_ID = 567;
 
@@ -84,7 +83,6 @@ public class DiaryFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case (ADD_LOG_ENTRY_ID):
             case (EDIT_LOG_ENTRY_ID):
                 if (resultCode == Activity.RESULT_OK) {
                     logEntryCache.removeFromCache(selectedDate);
@@ -205,7 +203,7 @@ public class DiaryFragment extends Fragment {
         diaryDate.setText(simpleDateFormat.format(selectedDate));
 
         viewPager = view.findViewById(R.id.diary_pager_layout);
-        adapter = new DiaryPagerAdaper(Objects.requireNonNull(getContext()));
+        adapter = new DiaryPagerAdaper(requireContext());
         adapter.setSelectedDate(selectedDate);
         adapter.setOnTotalsUpdateListener(this::updateTotals);
         adapter.setOnMealClickListener(this::startEditMeal);
@@ -339,10 +337,10 @@ public class DiaryFragment extends Fragment {
             setupViewPager(view);
 
         });
-        dialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), "WeighDialogFragment");
+        dialog.show(requireActivity().getSupportFragmentManager(), "WeighDialogFragment");
     }
 
     private String getToken() {
-        return Objects.requireNonNull(this.getContext()).getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
+        return this.requireContext().getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", "");
     }
 }

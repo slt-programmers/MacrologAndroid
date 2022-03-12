@@ -33,7 +33,6 @@ public class DiaryLogCache {
     }
 
     public void removeFromCache(Date date) {
-        //noinspection ConstantConditions
         cache.put(date, null);
     }
 

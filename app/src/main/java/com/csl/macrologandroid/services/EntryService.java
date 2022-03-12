@@ -3,6 +3,7 @@ package com.csl.macrologandroid.services;
 import com.csl.macrologandroid.BuildConfig;
 import com.csl.macrologandroid.dtos.EntryDto;
 import com.csl.macrologandroid.dtos.LogEntryResponse;
+import com.csl.macrologandroid.models.Meal;
 import com.csl.macrologandroid.util.DateParser;
 
 import java.util.Date;
@@ -51,8 +52,8 @@ public class EntryService {
         return apiService.getLogsForDay(DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<List<LogEntryResponse>> postEntries(List<EntryDto> entries, Date date) {
-        return apiService.postEntries(entries, DateParser.format(date)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    public Observable<List<LogEntryResponse>> postEntries(List<EntryDto> entries, Date date, Meal meal) {
+        return apiService.postEntries(entries, DateParser.format(date), meal).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     private interface ApiService {
@@ -60,9 +61,10 @@ public class EntryService {
         @GET("logs/day/{date}")
         Observable<List<LogEntryResponse>> getLogsForDay(@Path("date") String date);
 
-        @POST("logs/day/{date}")
+        @POST("logs/day/{date}/{meal}")
         Observable<List<LogEntryResponse>> postEntries(@Body List<EntryDto> entries,
-                                                       @Path("date") String date);
+                                                       @Path("date") String date,
+                                                       @Path("meal") Meal meal);
 
     }
 }

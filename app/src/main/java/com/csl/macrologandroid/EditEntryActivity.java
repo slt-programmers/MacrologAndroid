@@ -122,7 +122,7 @@ public class EditEntryActivity extends AppCompatActivity {
         getFoodAndDishes();
 
         logEntries = new ArrayList<>();
-        List<EntryDto> entries = (List) getIntent().getSerializableExtra("LOGENTRIES");
+        List entries = (List) getIntent().getSerializableExtra("LOGENTRIES");
         if (entries != null) {
             for (Object entry : entries) {
                 if (entry instanceof LogEntryResponse) {
@@ -362,7 +362,7 @@ public class EditEntryActivity extends AppCompatActivity {
             entries.add(request);
         }
 
-        postDisposable = entryService.postEntries(entries, selectedDate)
+        postDisposable = entryService.postEntries(entries, selectedDate, meal)
                 .subscribe(
                         res -> {
                             Intent resultIntent = new Intent();
