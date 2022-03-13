@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import com.csl.macrologandroid.AboutActivity;
@@ -37,37 +39,28 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class UserFragment extends Fragment {
 
-    private static final int EDIT_DETAILS_ID = 123;
-    private static final int ADJUST_INTAKE_ID = 234;
-    private static final int EDIT_WEIGHT_ID = 345;
-    private static final int DELETE_ACCOUNT = 999;
-
     private View view;
     private UserSettingsResponse userSettings;
 
     private Disposable settingsDisposable;
     private OnLogoutPressedListener onLogoutPressedListener;
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case (EDIT_WEIGHT_ID):
-            case (EDIT_DETAILS_ID):
-            case (ADJUST_INTAKE_ID):
-                if (resultCode == Activity.RESULT_OK) {
+    private final ActivityResultLauncher<Intent> editDetailsForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
                     fetchUserSettings();
                 }
-                break;
-            case (DELETE_ACCOUNT):
-                if (resultCode == Activity.RESULT_OK) {
+            });
+
+    private final ActivityResultLauncher<Intent> deleteAccountForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
                     onLogoutPressedListener.onLogoutPressed();
                 }
-                break;
-            default:
-                break;
-        }
-    }
+            });
+
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
@@ -93,20 +86,19 @@ public class UserFragment extends Fragment {
         LinearLayout personal = view.findViewById(R.id.personal);
         personal.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditPersonalDetailsActivity.class);
-            startActivityForResult(intent, EDIT_DETAILS_ID);
+            editDetailsForResult.launch(intent);
         });
 
         ImageView header = view.findViewById(R.id.header);
         header.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AdjustIntakeActivity.class);
-            startActivityForResult(intent, ADJUST_INTAKE_ID);
+            editDetailsForResult.launch(intent);
         });
-
 
         Button weightButton = view.findViewById(R.id.weight_button);
         weightButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), WeightChartActivity.class);
-            startActivityForResult(intent, EDIT_WEIGHT_ID);
+            editDetailsForResult.launch(intent);
         });
 
         Button connectivityButton = view.findViewById(R.id.connectivity_button);
@@ -130,7 +122,7 @@ public class UserFragment extends Fragment {
         Button deleteButton = view.findViewById(R.id.delete_account);
         deleteButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), DeleteAccountActivity.class);
-            startActivityForResult(intent, DELETE_ACCOUNT);
+            deleteAccountForResult.launch(intent);
         });
 
         return view;
@@ -189,9 +181,6 @@ public class UserFragment extends Fragment {
         TextView userActivity = view.findViewById(R.id.user_activity);
         String activity;
         switch (String.valueOf(userSettings.getActivity())) {
-            case "1.2":
-                activity = "Sedentary";
-                break;
             case "1.375":
                 activity = "Lightly active";
                 break;

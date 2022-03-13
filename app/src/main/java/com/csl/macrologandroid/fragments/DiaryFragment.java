@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -50,9 +52,6 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class DiaryFragment extends Fragment {
 
-    private static final int EDIT_LOG_ENTRY_ID = 456;
-    private static final int EDIT_ACTIVITY_ID = 567;
-
     private View view;
     private DiaryPager viewPager;
     private DiaryLogCache logEntryCache;
@@ -67,6 +66,23 @@ public class DiaryFragment extends Fragment {
     private DiaryPagerAdaper adapter;
     private ActivityService activityService;
 
+    private final ActivityResultLauncher<Intent> editEntriesForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    logEntryCache.removeFromCache(selectedDate);
+                    setupViewPager(view);
+                }
+            });
+    private final ActivityResultLauncher<Intent> editActivitiesForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    activityCache.removeFromCache(selectedDate);
+                    setupViewPager(view);
+                }
+            });
+
     public DiaryFragment() {
         // Non arg constructor
     }
@@ -79,25 +95,6 @@ public class DiaryFragment extends Fragment {
         activityService = new ActivityService(getToken());
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case (EDIT_LOG_ENTRY_ID):
-                if (resultCode == Activity.RESULT_OK) {
-                    logEntryCache.removeFromCache(selectedDate);
-                    setupViewPager(view);
-                }
-                break;
-            case (EDIT_ACTIVITY_ID):
-                if (resultCode == Activity.RESULT_OK) {
-                    activityCache.removeFromCache(selectedDate);
-                    setupViewPager(view);
-                }
-            default:
-                break;
-        }
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,7 +160,7 @@ public class DiaryFragment extends Fragment {
         intent.putExtra("DATE", selectedDate);
         intent.putExtra("MEAL", meal);
         intent.putExtra("LOGENTRIES", (Serializable) entries);
-        startActivityForResult(intent, EDIT_LOG_ENTRY_ID);
+        editEntriesForResult.launch(intent);
     }
 
     private void startEditActivity() {
@@ -171,7 +168,7 @@ public class DiaryFragment extends Fragment {
         List<ActivityResponse> activities = activityCache.getFromCache(selectedDate);
         intent.putExtra("DATE", selectedDate);
         intent.putExtra("ACTIVITIES", (Serializable) activities);
-        startActivityForResult(intent, EDIT_ACTIVITY_ID);
+        editActivitiesForResult.launch(intent);
     }
 
     private void setGoalIntake(UserSettingsResponse settings) {

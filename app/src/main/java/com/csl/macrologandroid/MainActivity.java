@@ -3,8 +3,8 @@ package com.csl.macrologandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,16 +21,25 @@ import com.csl.macrologandroid.fragments.UserFragment;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.notifications.NotificationSender;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 
 public class MainActivity extends AppCompatActivity implements UserFragment.OnLogoutPressedListener {
 
-    private static final int SUCCESSFUL_LOGIN = 789;
-    private static final int SUCCESSFUL_REGISTER = 890;
-
     private BottomNavigationView navigation;
 
-    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
+    private final ActivityResultLauncher<Intent> loginRegisterForResult =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            FoodCache.getInstance().clearCache();
+                            DiaryLogCache.getInstance().clearCache();
+                            ActivityCache.getInstance().clearCache();
+                            navigation.setSelectedItemId(R.id.navigation_diary);
+                        }
+                    });
+
+    private final NavigationBarView.OnItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         switch (item.getItemId()) {
             case R.id.navigation_diary:
                 setFragment(new DiaryFragment());
@@ -53,37 +62,16 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
     };
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case (SUCCESSFUL_LOGIN):
-            case (SUCCESSFUL_REGISTER):
-                if (resultCode == Activity.RESULT_OK) {
-                    FoodCache.getInstance().clearCache();
-                    DiaryLogCache.getInstance().clearCache();
-                    ActivityCache.getInstance().clearCache();
-                    navigation.setSelectedItemId(R.id.navigation_diary);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         NotificationSender.initNotificationSending(getApplicationContext());
-
         setFragment(new DiaryFragment());
         navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if (!isLoggedIn()) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivityForResult(intent, SUCCESSFUL_LOGIN);
+            loginRegisterForResult.launch(new Intent(this, LoginActivity.class));
         }
     }
 
@@ -109,8 +97,7 @@ public class MainActivity extends AppCompatActivity implements UserFragment.OnLo
         FoodCache.getInstance().clearCache();
         DiaryLogCache.getInstance().clearCache();
         ActivityCache.getInstance().clearCache();
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivityForResult(intent, SUCCESSFUL_REGISTER);
+        loginRegisterForResult.launch(new Intent(this, LoginActivity.class));
         navigation.callOnClick();
     }
 

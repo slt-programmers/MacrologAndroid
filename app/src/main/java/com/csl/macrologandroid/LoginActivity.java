@@ -5,15 +5,17 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.csl.macrologandroid.dtos.AuthenticationResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.AuthenticationService;
@@ -21,6 +23,7 @@ import com.csl.macrologandroid.util.ResetErrorTextWatcher;
 
 import java.net.ConnectException;
 import java.util.Objects;
+
 import io.reactivex.disposables.Disposable;
 
 public class LoginActivity extends AppCompatActivity {
@@ -139,20 +142,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String username, String password) {
-        disposable = authService.authenticate(username, password)
-                .subscribe(res -> {
-                            saveCredentials(res);
-                            finishWithResult();
-                        }, err -> {
-                            Log.e(this.getLocalClassName(), err.getMessage());
-                            if (err instanceof ConnectException) {
-                                passwordError.setText(R.string.connection_error);
-                            } else {
-                                passwordError.setText(R.string.login_failed);
-                            }
-                            passwordError.setVisibility(View.VISIBLE);
-                        }
-                );
+        disposable = authService.authenticate(username, password).subscribe(res -> {
+                    saveCredentials(res);
+                    finishWithResult();
+                }, err -> {
+                    Log.e(this.getLocalClassName(), err.getMessage());
+                    if (err instanceof ConnectException) {
+                        passwordError.setText(R.string.connection_error);
+                    } else {
+                        passwordError.setText(R.string.login_failed);
+                    }
+                    passwordError.setVisibility(View.VISIBLE);
+                }
+        );
 
     }
 

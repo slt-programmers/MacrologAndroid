@@ -12,7 +12,8 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -40,36 +40,34 @@ import static android.view.KeyEvent.KEYCODE_ENTER;
 
 public class DishFragment extends Fragment {
 
-    private static final int ADD_DISH_ID = 1;
-    private static final int EDIT_DISH_ID = 2;
-
     private Disposable dishDisposable;
     private List<DishResponse> allDishes = new ArrayList<>();
     private final List<DishResponse> searchedDishes = new ArrayList<>();
 
     private DishListAdapter dishAdapter;
 
+    private final ActivityResultLauncher<Intent> dishForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    DishCache.getInstance().clearCache();
+                    DishService dishService = new DishService(getToken());
+                    dishDisposable = dishService.getAllDishes()
+                            .subscribe(res ->
+                            {
+                                DishCache.getInstance().addToCache(res);
+                                allDishes = res;
+                                searchedDishes.clear();
+                                searchedDishes.addAll(allDishes);
+                                dishAdapter.notifyDataSetChanged();
+                            }, err -> Log.e(this.getClass().getName(), err.toString()));
+
+//                    super.onActivityResult(requestCode, resultCode, data);
+                }
+            });
+
     public DishFragment() {
         // Non arg constructor
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            DishCache.getInstance().clearCache();
-            DishService dishService = new DishService(getToken());
-            dishDisposable = dishService.getAllDishes()
-                    .subscribe(res ->
-                    {
-                        DishCache.getInstance().addToCache(res);
-                        allDishes = res;
-                        searchedDishes.clear();
-                        searchedDishes.addAll(allDishes);
-                        dishAdapter.notifyDataSetChanged();
-                    }, err -> Log.e(this.getClass().getName(), err.toString()));
-
-            super.onActivityResult(requestCode, resultCode, data);
-        }
     }
 
     @Override
@@ -93,7 +91,7 @@ public class DishFragment extends Fragment {
         FloatingActionButton fab = view.findViewById(R.id.floating_button);
         fab.setOnClickListener((v) -> {
             Intent intent = new Intent(this.getActivity(), DishActivity.class);
-            startActivityForResult(intent, ADD_DISH_ID);
+            dishForResult.launch(intent);
         });
 
         DishService dishService = new DishService(getToken());
@@ -111,6 +109,8 @@ public class DishFragment extends Fragment {
 
         return view;
     }
+
+
 
     @Override
     public void onDestroyView() {
@@ -151,7 +151,7 @@ public class DishFragment extends Fragment {
     private void onEditClick(DishResponse dish) {
         Intent intent = new Intent(this.getActivity(), DishActivity.class);
         intent.putExtra("DISH", dish);
-        startActivityForResult(intent, EDIT_DISH_ID);
+        dishForResult.launch(intent);
     }
 
     private final TextView.OnEditorActionListener actionListener = (v, actionId, event) -> {

@@ -3,14 +3,9 @@ package com.csl.macrologandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,6 +16,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textfield.TextInputEditText;
 
 import com.csl.macrologandroid.cache.UserSettingsCache;
 import com.csl.macrologandroid.dtos.SettingsResponse;
@@ -41,8 +38,6 @@ import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 
 public class EditPersonalDetailsActivity extends AppCompatActivity {
-
-    private static final int ADJUST_INTAKE_INTAKE = 901;
 
     private static final String DEFAULT_ACTIVITY = "1.375";
 
@@ -66,16 +61,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
     private Disposable disposable;
     private TextInputLayout editBirthdayLayout;
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADJUST_INTAKE_INTAKE && resultCode == Activity.RESULT_OK) {
-            Intent resultIntent = new Intent();
-            setResult(Activity.RESULT_OK, resultIntent);
-            finish();
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -184,9 +169,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         editActivity.setAdapter(dataAdapter);
 
         switch (String.valueOf(originalActivity)) {
-            case "1.2":
-                editActivity.setSelection(0);
-                break;
             case DEFAULT_ACTIVITY:
                 editActivity.setSelection(1);
                 break;
@@ -204,6 +186,14 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
     }
 
+    private final ActivityResultLauncher<Intent> adjustIntakeForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent resultIntent = new Intent();
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            });
+
     private void saveSettings() {
         String newBirthday = Objects.requireNonNull(editBirthday.getText()).toString();
         Date newDate = DateParser.parse(newBirthday);
@@ -219,7 +209,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
                             Intent intent = new Intent(this, AdjustIntakeActivity.class);
                             intent.putExtra("userSettings", userSettings);
                             intent.putExtra("INTAKE", true);
-                            startActivityForResult(intent, ADJUST_INTAKE_INTAKE);
+                            adjustIntakeForResult.launch(intent);
                         } else {
                             UserSettingsCache.getInstance().clearCache();
                             Intent resultIntent = new Intent();
@@ -260,15 +250,15 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         }
 
         String newHeight = Objects.requireNonNull(editHeight.getText()).toString();
-        if (!newHeight.isEmpty() && originalHeight != Integer.valueOf(newHeight)) {
+        if (!newHeight.isEmpty() && originalHeight != Integer.parseInt(newHeight)) {
             obsList.add(userService.putSetting(new SettingsResponse(null, "height", newHeight)));
-            userSettings.setHeight(Integer.valueOf(newHeight));
+            userSettings.setHeight(Integer.parseInt(newHeight));
         }
 
         String newWeight = Objects.requireNonNull(editWeight.getText()).toString();
         if (!newWeight.isEmpty() && !String.valueOf(originalWeight).equals(newWeight)) {
             obsList.add(userService.putSetting(new SettingsResponse(null, "weight", newWeight)));
-            userSettings.setWeight(Double.valueOf(newWeight));
+            userSettings.setWeight(Double.parseDouble(newWeight));
         }
 
         String item = (String) editActivity.getSelectedItem();
@@ -276,9 +266,6 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
         switch (item) {
             case "Sedentary":
                 newActivity = "1.2";
-                break;
-            case "Lightly active":
-                newActivity = DEFAULT_ACTIVITY;
                 break;
             case "Moderately active":
                 newActivity = "1.55";
@@ -295,7 +282,7 @@ public class EditPersonalDetailsActivity extends AppCompatActivity {
 
         if (!String.valueOf(originalActivity).equals(newActivity)) {
             obsList.add(userService.putSetting(new SettingsResponse(null, "activity", newActivity)));
-            userSettings.setActivity(Double.valueOf(newActivity));
+            userSettings.setActivity(Double.parseDouble(newActivity));
         }
 
         return obsList;

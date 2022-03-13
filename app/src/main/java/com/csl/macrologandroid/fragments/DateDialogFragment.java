@@ -78,7 +78,7 @@ public class DateDialogFragment extends DialogFragment {
                         onDialogResult.finish(newDate);
                     }
                 })
-                .setNegativeButton(R.string.cancel, (dialog, id) -> getDialog().cancel());
+                .setNegativeButton(R.string.cancel, (dialog, id) -> Objects.requireNonNull(getDialog()).cancel());
 
         return builder.create();
     }

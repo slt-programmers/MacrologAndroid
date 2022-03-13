@@ -99,9 +99,9 @@ public class ChangeCaloriesFragment extends Fragment implements ChangeGoalMacros
     @Override
     public Bundle getGoalMacros() {
         Bundle bundle = new Bundle();
-        bundle.putInt("goalProtein", Integer.valueOf(String.valueOf(Math.round(goalProtein))));
-        bundle.putInt("goalFat", Integer.valueOf(String.valueOf(Math.round(goalFat))));
-        bundle.putInt("goalCarbs", Integer.valueOf(String.valueOf(Math.round(goalCarbs))));
+        bundle.putInt("goalProtein", Integer.parseInt(String.valueOf(Math.round(goalProtein))));
+        bundle.putInt("goalFat", Integer.parseInt(String.valueOf(Math.round(goalFat))));
+        bundle.putInt("goalCarbs", Integer.parseInt(String.valueOf(Math.round(goalCarbs))));
         return bundle;
     }
 

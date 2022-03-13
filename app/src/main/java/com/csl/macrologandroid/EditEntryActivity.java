@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckedTextView;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -53,8 +55,6 @@ import io.reactivex.disposables.Disposable;
 
 public class EditEntryActivity extends AppCompatActivity {
 
-    private static final int ADD_FOOD_ID = 567;
-
     private Date selectedDate;
     private EntryService entryService;
     private FoodService foodService;
@@ -85,14 +85,14 @@ public class EditEntryActivity extends AppCompatActivity {
     private Disposable foodDisposable;
     private Disposable dishDisposable;
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_FOOD_ID && resultCode == Activity.RESULT_OK) {
-            String foodName = (String) data.getSerializableExtra("FOOD_NAME");
-            setNewlyAddedFood(foodName);
-        }
-    }
+    private final ActivityResultLauncher<Intent> addFoodForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    String foodName = (String) result.getData().getSerializableExtra("FOOD_NAME");
+                    setNewlyAddedFood(foodName);
+                }
+            });
 
     @Override
     protected void onDestroy() {
@@ -176,9 +176,9 @@ public class EditEntryActivity extends AppCompatActivity {
 
         addNewFoodButton = findViewById(R.id.add_new_food_button);
         addNewFoodButton.setOnClickListener(v -> {
-            Intent addFoodIntent = new Intent(this, AddFoodActivity.class);
-            addFoodIntent.putExtra("FOOD_NAME", foodTextView.getText().toString());
-            startActivityForResult(addFoodIntent, ADD_FOOD_ID);
+            Intent intent = new Intent(this, AddFoodActivity.class);
+            intent.putExtra("FOOD_NAME", foodTextView.getText().toString());
+            addFoodForResult.launch(intent);
         });
 
         fillLogEntryLayout();

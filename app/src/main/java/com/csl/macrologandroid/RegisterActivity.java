@@ -5,19 +5,25 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.csl.macrologandroid.dtos.AuthenticationResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.AuthenticationService;
 import com.csl.macrologandroid.util.ResetErrorTextWatcher;
 
 import java.util.Objects;
+
 import io.reactivex.disposables.Disposable;
 import retrofit2.HttpException;
 
@@ -33,16 +39,13 @@ public class RegisterActivity extends AppCompatActivity {
 
     private AuthenticationService authService;
 
-    private static final int INTAKE_SUCCESSFUL = 678;
     private Disposable disposable;
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == INTAKE_SUCCESSFUL && resultCode == Activity.RESULT_OK) {
+    private final ActivityResultLauncher<Intent> editPersonalDetailsForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
             finishWithResult();
         }
-    }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity((intent));
         finish();
     }
+
     @Override
     public void onBackPressed() {
         toLogin();
@@ -165,22 +169,20 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void register(String username, String email, String password) {
-        disposable = authService.register(username, email, password)
-                .subscribe(res -> {
-                            saveCredentials(res);
-                            Intent intent = new Intent(this, EditPersonalDetailsActivity.class);
-                            intent.putExtra("INTAKE", true);
-                            startActivityForResult(intent, INTAKE_SUCCESSFUL);
-                        },
-                        err -> {
-                            if (err instanceof HttpException &&
-                                    ((HttpException) err).response().errorBody() != null) {
-                                passwordError.setText(Objects.requireNonNull(((HttpException) err).response().errorBody()).string());
-                            } else {
-                                passwordError.setText(R.string.general_error);
-                            }
-                            passwordError.setVisibility(View.VISIBLE);
-                        });
+        disposable = authService.register(username, email, password).subscribe(res -> {
+                    saveCredentials(res);
+                    Intent intent = new Intent(this, EditPersonalDetailsActivity.class);
+                    intent.putExtra("INTAKE", true);
+                    editPersonalDetailsForResult.launch(intent);
+                },
+                err -> {
+                    if (err instanceof HttpException && ((HttpException) err).response().errorBody() != null) {
+                        passwordError.setText(Objects.requireNonNull(((HttpException) err).response().errorBody()).string());
+                    } else {
+                        passwordError.setText(R.string.general_error);
+                    }
+                    passwordError.setVisibility(View.VISIBLE);
+                });
     }
 
     private void saveCredentials(AuthenticationResponse result) {

@@ -18,6 +18,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
@@ -33,9 +35,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
@@ -44,7 +46,6 @@ import static android.view.KeyEvent.KEYCODE_ENTER;
 
 public class FoodFragment extends Fragment {
 
-    private static final int ADD_FOOD_ID = 123;
     private List<FoodResponse> allFood;
     private List<FoodResponse> searchedFood;
     private List<FoodResponse> convertedFood;
@@ -69,21 +70,22 @@ public class FoodFragment extends Fragment {
         // Non arg constructor
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        KeyboardManager.hideKeyboard(getActivity());
-        if (requestCode == ADD_FOOD_ID && resultCode == Activity.RESULT_OK) {
-            search.setText("");
-            radioGroup.check(R.id.grams_radio);
-            currentSortHeader = SortHeader.FOOD;
-            sortDirectionReversed = false;
+    private final ActivityResultLauncher<Intent> addFoodForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                KeyboardManager.hideKeyboard(getActivity());
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    search.setText("");
+                    radioGroup.check(R.id.grams_radio);
+                    currentSortHeader = SortHeader.FOOD;
+                    sortDirectionReversed = false;
 
-            loader.setVisibility(View.VISIBLE);
-            foodTable.setVisibility(View.INVISIBLE);
-            refreshAllFood();
-        }
-    }
+                    loader.setVisibility(View.VISIBLE);
+                    foodTable.setVisibility(View.INVISIBLE);
+                    refreshAllFood();
+                }
+            }
+    );
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
@@ -94,7 +96,7 @@ public class FoodFragment extends Fragment {
         FloatingActionButton floatingButton = view.findViewById(R.id.floating_button);
         floatingButton.setOnClickListener(v -> {
             Intent intent = new Intent(this.getActivity(), AddFoodActivity.class);
-            startActivityForResult(intent, ADD_FOOD_ID);
+            addFoodForResult.launch(intent);
         });
 
         search = view.findViewById(R.id.search);
@@ -183,7 +185,7 @@ public class FoodFragment extends Fragment {
         }
 
         intent.putExtra("FOOD_RESPONSE", food);
-        startActivityForResult(intent, ADD_FOOD_ID);
+        addFoodForResult.launch(intent);
     }
 
     private void refreshAllFood() {
@@ -274,7 +276,7 @@ public class FoodFragment extends Fragment {
                 convertedFood.sort((o1, o2) -> Double.compare(o2.getCarbs(), o1.getCarbs()));
                 break;
             default:
-                convertedFood.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+                convertedFood.sort(Comparator.comparing(FoodResponse::getName));
 
         }
 

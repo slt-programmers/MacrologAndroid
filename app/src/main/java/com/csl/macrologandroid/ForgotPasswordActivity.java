@@ -64,7 +64,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         .subscribe(
                                 res -> finish(),
                                 err -> {
-                                    if (err.getMessage().contains("404")) {
+                                    if (err.getMessage() != null && err.getMessage().contains("404")) {
                                         emailError.setText(R.string.error_email_not_found);
                                     } else {
                                         emailError.setText(R.string.error_general);

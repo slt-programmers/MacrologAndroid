@@ -22,7 +22,6 @@ import com.csl.macrologandroid.services.WeightService;
 import com.csl.macrologandroid.util.DateParser;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
@@ -82,7 +81,7 @@ public class WeightChartActivity extends AppCompatActivity {
     }
 
     private void sortWeightRequestsByDate() {
-        Collections.sort(weightRequests, (o1, o2) -> {
+        weightRequests.sort((o1, o2) -> {
             if (DateParser.parse(o1.getDay()).before(DateParser.parse(o2.getDay()))) {
                 return 1;
             } else if (DateParser.parse(o1.getDay()).after(DateParser.parse(o2.getDay()))) {
@@ -127,7 +126,7 @@ public class WeightChartActivity extends AppCompatActivity {
 
     private double getCurrentWeight() {
         List<WeightRequest> weightList = weightRequests;
-        Collections.sort(weightList, (o1, o2) -> {
+        weightList.sort((o1, o2) -> {
             if (DateParser.parse(o1.getDay()).before(DateParser.parse(o2.getDay()))) {
                 return 1;
             } else if (DateParser.parse(o1.getDay()).after(DateParser.parse(o2.getDay()))) {

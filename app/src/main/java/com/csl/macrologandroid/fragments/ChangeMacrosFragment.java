@@ -85,9 +85,9 @@ public class ChangeMacrosFragment extends Fragment implements ChangeGoalMacros {
 
     public Bundle getGoalMacros() {
         Bundle bundle = new Bundle();
-        bundle.putInt("goalProtein", Integer.valueOf(Objects.requireNonNull(proteinView.getText()).toString()));
-        bundle.putInt("goalFat", Integer.valueOf(Objects.requireNonNull(fatView.getText()).toString()));
-        bundle.putInt("goalCarbs", Integer.valueOf(Objects.requireNonNull(carbsView.getText()).toString()));
+        bundle.putInt("goalProtein", Integer.parseInt(Objects.requireNonNull(proteinView.getText()).toString()));
+        bundle.putInt("goalFat", Integer.parseInt(Objects.requireNonNull(fatView.getText()).toString()));
+        bundle.putInt("goalCarbs", Integer.parseInt(Objects.requireNonNull(carbsView.getText()).toString()));
         return bundle;
     }
 
