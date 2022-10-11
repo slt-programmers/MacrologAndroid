@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.csl.macrologandroid.dtos.AuthenticationResponse;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.AuthenticationService;
+import com.csl.macrologandroid.ui.login.LoginActivity;
 import com.csl.macrologandroid.util.ResetErrorTextWatcher;
 
 import java.util.Objects;

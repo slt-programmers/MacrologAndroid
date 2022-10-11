@@ -24,8 +24,8 @@ import java.util.Locale;
 
 public class DishListAdapter extends RecyclerView.Adapter<DishListAdapter.DishViewHolder> {
 
-    private List<DishResponse> dishList;
-    private Context context;
+    private final List<DishResponse> dishList;
+    private final Context context;
     private OnEditClickListener onEditClickLister;
 
     public DishListAdapter(Context context, List<DishResponse> dishList) {
@@ -140,8 +140,7 @@ public class DishListAdapter extends RecyclerView.Adapter<DishListAdapter.DishVi
         return view;
     }
 
-
-    class DishViewHolder extends RecyclerView.ViewHolder {
+    static class DishViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         LinearLayout ingredientLayout;
         Button edit;
@@ -154,7 +153,6 @@ public class DishListAdapter extends RecyclerView.Adapter<DishListAdapter.DishVi
             edit = view.findViewById(R.id.dish_edit);
         }
     }
-
 
     public interface OnEditClickListener {
         void onEditClick(DishResponse dish);

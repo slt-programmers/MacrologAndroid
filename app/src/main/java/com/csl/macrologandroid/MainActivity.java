@@ -20,6 +20,7 @@ import com.csl.macrologandroid.fragments.FoodFragment;
 import com.csl.macrologandroid.fragments.UserFragment;
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.notifications.NotificationSender;
+import com.csl.macrologandroid.ui.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
