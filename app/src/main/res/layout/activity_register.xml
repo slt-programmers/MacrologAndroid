@@ -110,8 +110,9 @@
                 android:background="@drawable/button_white_background"
                 android:elevation="12dp"
                 android:textAllCaps="true"
-                android:fontFamily="@font/assistant_bold"                android:text="@string/login_register"
-                android:textColor="@color/colorPrimary" />
+                android:fontFamily="@font/assistant_bold"
+                android:text="@string/login_register"
+                android:textColor="@color/darkblue" />
         </LinearLayout>
 
         <LinearLayout

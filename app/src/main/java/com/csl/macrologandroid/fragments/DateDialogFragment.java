@@ -67,7 +67,7 @@ public class DateDialogFragment extends DialogFragment {
         customTitle.setText(getResources().getString(R.string.choose_date));
         customTitle.setTextSize(20);
         customTitle.setPadding(48, 48, 0 ,0);
-        customTitle.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+        customTitle.setTextColor(getResources().getColor(R.color.darkblue, null));
         customTitle.setTypeface(ResourcesCompat.getFont(requireContext(), R.font.assistant_light), Typeface.BOLD);
 
         builder.setCustomTitle(customTitle)

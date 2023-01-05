@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:drawableEnd="@drawable/edit"
+                android:drawableTint="@color/editIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:drawableEnd="@drawable/edit"
+                android:drawableTint="@color/editIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -147,6 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:drawableEnd="@drawable/edit"
+                android:drawableTint="@color/editIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -209,6 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:drawableEnd="@drawable/edit"
+                android:drawableTint="@color/editIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -271,6 +275,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:drawableEnd="@drawable/edit"
+                android:drawableTint="@color/editIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -281,6 +286,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:drawableEnd="@drawable/sync"
+                android:drawableTint="@color/editIcon"
                 app:layout_constraintEnd_toStartOf="@+id/edit_activities"
                 app:layout_constraintTop_toTopOf="parent" />
 

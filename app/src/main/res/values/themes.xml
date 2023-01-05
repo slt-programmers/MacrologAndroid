@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application LIGHT theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">@color/darkblue</item>
+        <item name="colorAccent">@color/lightblue</item>
+        <item name="android:fontFamily">@font/assistant_light</item>
+
+        <!-- All buttons, unless style is defined on xml -->
+        <item name="buttonStyle">@style/buttonRound</item>
+
+        <item name="alertDialogTheme">@style/alertDialogTheme</item>
+
+        <!-- Color selected item -->
+        <item name="android:spinnerItemStyle">@style/spinnerItemStyle</item>
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:fontFamily">@font/assistant_light</item>
+    </style>
+
+    <style name="bottomNavigationView" parent="Widget.Design.BottomNavigationView">
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>
