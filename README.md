@@ -1,5 +1,8 @@
 # Macrolog Android
 
+## Debugging
+Debugging sometimes doesnt work when Intellij is also running.
+
 ## Files not to commit
 The following files should never be committed to git and will reside in the ignore folder of
 this project.
@@ -11,6 +14,12 @@ this project.
 
 
 ## Manual releasing
+Before releasing: 
+- Test on your own physical device via USB.
+- Test on an emulator with the highest supported version.
+- Test on an emulator with the lowest supported version.
+
+Make sure to set the build variant to "release" to target the right backend with the right settings.
 
 You can manually release a new version by using the Gradle 'publishBundle' task.
 This task is part of the Gradle Play Publisher plugin 
@@ -20,7 +29,7 @@ It is configured in the build.gradle files and uses te SigningConfigs
 which are stored in the ignore folder for security reasons. 
 For signing the app, the keystore and its passwords and alias is used. 
 
-Be sure to increase the version code in the android.defaultConfig in the build.gradle file 
+Be sure to increase the versionCode in the android.defaultConfig in the build.gradle file 
 before running the task. The PlayStore won't handle the same version code twice.
 
 

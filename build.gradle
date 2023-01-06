@@ -19,3 +19,5 @@ task clean(type: Delete) {
 task build()
 
 task lintDebug()
+
+task publishBundle()

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#283593</color>
-    <color name="colorAccent">#2196F3</color>
-
-<!--    Deprecated-->
+    <!--    General-->
+    <color name="darkblue">#3F51B5</color>
+    <color name="lightblue">#2196F3</color>
     <color name="colorSignal">#FFAB91</color>
     <color name="red">#FFFF0000</color>
 
@@ -12,4 +10,13 @@
     <color name="whiteTransparent">#66FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="text">#8a000000</color>
+    <color name="black">#000000</color>
+
+    <!--    Specific-->
+    <color name="bottomNavItem">@color/darkblue</color>
+    <color name="bottomNavBackground">@color/white</color>
+    <color name="diaryDate">@color/darkblue</color>
+    <color name="dateArrow">@color/darkblue</color>
+    <color name="editIcon">@color/darkblue</color>
+
 </resources>

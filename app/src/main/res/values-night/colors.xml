@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bottomNavItem">@color/lightblue</color>
+    <color name="bottomNavBackground">@color/black</color>
+    <color name="diaryDate">@color/lightblue</color>
+    <color name="dateArrow">@color/lightblue</color>
+    <color name="editIcon">@color/lightblue</color>
+
+</resources>

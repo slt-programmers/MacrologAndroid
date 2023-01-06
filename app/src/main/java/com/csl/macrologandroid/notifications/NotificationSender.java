@@ -46,8 +46,8 @@ public class NotificationSender {
 
         // Intent to launch future notification
         Intent notificationIntent = new Intent(context, NotificationReceiver.class);
-        PendingIntent pendingNotification = PendingIntent.getBroadcast(context, 1, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        PendingIntent secondPendingNotification = PendingIntent.getBroadcast(context, 2, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingNotification = PendingIntent.getBroadcast(context, 1, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent secondPendingNotification = PendingIntent.getBroadcast(context, 2, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, morningCal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingNotification);
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, eveningCal.getTimeInMillis(), AlarmManager.INTERVAL_DAY, secondPendingNotification);

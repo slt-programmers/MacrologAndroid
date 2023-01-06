@@ -171,7 +171,7 @@ public class FoodFragment extends Fragment {
         proteinHeader.setTextColor(getResources().getColor(R.color.text, null));
         fatHeader.setTextColor(getResources().getColor(R.color.text, null));
         carbsHeader.setTextColor(getResources().getColor(R.color.text, null));
-        header.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+        header.setTextColor(getResources().getColor(R.color.darkblue, null));
     }
 
     private void selectFood(FoodResponse foodResponse) {
