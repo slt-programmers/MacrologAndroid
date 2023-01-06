@@ -23,7 +23,7 @@ import retrofit2.http.Path;
 
 public class UserService {
 
-    private ApiService apiService;
+    private final ApiService apiService;
 
     public UserService(String token) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();

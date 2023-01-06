@@ -89,7 +89,7 @@ public class EditEntryActivity extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    String foodName = (String) result.getData().getSerializableExtra("FOOD_NAME");
+                    String foodName = (String) Objects.requireNonNull(result.getData()).getSerializableExtra("FOOD_NAME");
                     setNewlyAddedFood(foodName);
                 }
             });
