@@ -19,6 +19,8 @@ Before releasing:
 - Test on an emulator with the highest supported version.
 - Test on an emulator with the lowest supported version.
 
+Make sure to set the build variant to "release" to target the right backend with the right settings.
+
 You can manually release a new version by using the Gradle 'publishBundle' task.
 This task is part of the Gradle Play Publisher plugin 
 (https://github.com/Triple-T/gradle-play-publisher).
