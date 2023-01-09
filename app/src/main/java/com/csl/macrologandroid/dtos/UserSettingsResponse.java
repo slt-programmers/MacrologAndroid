@@ -37,7 +37,6 @@ public class UserSettingsResponse implements Serializable {
     @SerializedName("activity")
     private double activity;
 
-
     @Expose
     @SerializedName("goalProtein")
     private int goalProtein;

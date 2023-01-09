@@ -49,6 +49,9 @@ public class LogEntryResponse implements Serializable {
         return macrosCalculated;
     }
 
+    public void setMacrosCalculated(MacrosResponse macros) {
+        this.macrosCalculated = macros;
+    }
 
     public double getMultiplier() {
         return multiplier;
