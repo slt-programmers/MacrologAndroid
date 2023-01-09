@@ -4,6 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import androidx.annotation.Keep;
+
 import com.csl.macrologandroid.BuildConfig;
 
 import io.reactivex.Observable;
@@ -35,9 +37,9 @@ public class HealthcheckService extends Service {
 
     public Observable<Boolean> healthcheck(String token) {
         if (token != null) {
-            return apiService.healthcheck("Bearer " + token).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+            return (Observable<Boolean>) apiService.healthcheck("Bearer " + token).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         } else {
-            return apiService.healthcheck("").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+            return (Observable<Boolean>) apiService.healthcheck("").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
         }
     }
 

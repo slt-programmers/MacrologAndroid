@@ -3,6 +3,11 @@
 ## Debugging
 Debugging sometimes doesnt work when Intellij is also running.
 
+## Common issues
+After not developing the app for a while, weird issues may come up. 
+Make sure to test the app in the release build variant with minify enabled. 
+Often a Gradle update fixes things, or updating ProGuard rules.
+
 ## Files not to commit
 The following files should never be committed to git and will reside in the ignore folder of
 this project.
@@ -15,9 +20,10 @@ this project.
 
 ## Manual releasing
 Before releasing: 
-- Test on your own physical device via USB.
-- Test on an emulator with the highest supported version.
 - Test on an emulator with the lowest supported version.
+- Test on an emulator with the highest supported version.
+- Test release build variant on an emulator with highest supported version.
+- Test on your own physical device via USB.
 
 Make sure to set the build variant to "release" to target the right backend with the right settings.
 

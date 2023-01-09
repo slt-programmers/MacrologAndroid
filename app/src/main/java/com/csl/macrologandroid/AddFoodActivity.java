@@ -137,7 +137,7 @@ public class AddFoodActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if (Session.getInstance().isExpired()) {
-            Intent intent = new Intent(AddFoodActivity.this, SplashscreenActivity.class);
+            Intent intent = new Intent(AddFoodActivity.this, RoutingActivity.class);
             intent.putExtra("SESSION_EXPIRED", true);
             startActivity(intent);
         }

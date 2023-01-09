@@ -1,24 +1,21 @@
 package com.csl.macrologandroid;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
 
 import com.csl.macrologandroid.lifecycle.Session;
 import com.csl.macrologandroid.services.HealthcheckService;
 
 import java.net.SocketTimeoutException;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class SplashscreenActivity extends AppCompatActivity {
+public class RoutingActivity extends AppCompatActivity {
 
     private HealthcheckService service;
     private String token;
@@ -28,28 +25,16 @@ public class SplashscreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splashscreen);
+        splashScreen.setKeepOnScreenCondition(() -> true );
 
         service = new HealthcheckService();
         token = getSharedPreferences("AUTH", MODE_PRIVATE).getString("TOKEN", null);
 
-        ImageView image = findViewById(R.id.animated_image);
-
-        Handler handler = new Handler();
-        Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-        fadeIn.setDuration(1000);
-        handler.postDelayed(() -> {
-            image.setBackgroundResource(R.drawable.hamster_wheel);
-            AnimatedVectorDrawable animation = (AnimatedVectorDrawable) image.getBackground();
-            animation.start();
-        }, 2000);
-
         Intent intent = getIntent();
         expired = (Boolean) intent.getSerializableExtra("SESSION_EXPIRED");
-
         Session.resetTimestamp();
-
         doHealthCheck();
     }
 
@@ -63,11 +48,11 @@ public class SplashscreenActivity extends AppCompatActivity {
 
     private void doHealthCheck() {
         callCounter++;
-        disposable = service.healthcheck(token)
+        disposable = ((Observable<Boolean>) service.healthcheck(token))
                 .subscribe(
                         res -> {
                             if (expired == null) {
-                                startActivity(new Intent(SplashscreenActivity.this, MainActivity.class));
+                                startActivity(new Intent(RoutingActivity.this, MainActivity.class));
                             }
                             finish();
                         },

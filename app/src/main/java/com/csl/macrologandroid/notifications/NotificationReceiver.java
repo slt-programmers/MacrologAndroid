@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.csl.macrologandroid.R;
-import com.csl.macrologandroid.SplashscreenActivity;
+import com.csl.macrologandroid.RoutingActivity;
 
 public class NotificationReceiver extends BroadcastReceiver {
 
@@ -18,7 +18,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-        Intent mainIntent = new Intent(context, SplashscreenActivity.class);
+        Intent mainIntent = new Intent(context, RoutingActivity.class);
         mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, mainIntent, PendingIntent.FLAG_IMMUTABLE);
 
